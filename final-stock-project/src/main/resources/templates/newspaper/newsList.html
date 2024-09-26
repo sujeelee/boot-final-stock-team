@@ -167,8 +167,7 @@
 				function formatDate(date){
 					const year = date.getFullYear();
 					const month = (date.getMonth() + 1).toString().padStart(2, '0');
-					// 서버에 데이터 형식에 맞추기 위해 추가
-					const day = date.getDate();
+					const day = date.getDate().toString().padStart(2, '0');
 					const yyyy_mm_dd = year + "-" + month + "-" + day;
 					return yyyy_mm_dd;
 				} // 날짜를 문자열로 포맷팅
@@ -237,10 +236,10 @@
 				                    </div>
 				                    <div class="news-content-box">
 				                    	<div class="news-title">
-				                    		<a href="#" style="font-size: 20px;">${news.ne_title}</a>
+				                    		<a href="/newspaper/detail/${news.ne_no}" style="font-size: 20px;">${news.ne_title}</a>
 				                    	</div>
 				                    	<div class="news-content">
-					                        <a href="#">${news.ne_content}</a>                   		
+					                        <a href="/newspaper/detail/${news.ne_no}">${news.ne_content}</a>                   		
 				                    	</div>
 				                    </div>
 			                    </div>

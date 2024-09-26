@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.service.NewsService;
@@ -63,6 +65,12 @@ public class NewsController {
 		List<NewsVO> newsList = newsService.getNewsList(np_no, ne_datetime);
 		map.put("newsList", newsList);
 		return map;
+	}
+	
+	@GetMapping("/detail/{ne_no}")
+	public String detail(Model model, @PathVariable int ne_no) {
+		
+		return "newspaper/detail";
 	}
 
 }
