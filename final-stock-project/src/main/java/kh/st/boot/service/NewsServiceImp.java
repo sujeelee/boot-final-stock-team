@@ -40,5 +40,6 @@ public class NewsServiceImp implements NewsService{
 			return null;
 		}
 		return newsDao.selectNewsListByPaper(np_no, ne_datetime);
-	} 
+	}
+
 }

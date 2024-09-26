@@ -1,5 +1,7 @@
 package kh.st.boot.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +35,9 @@ public class NewsController {
 	@PostMapping("/views")
 	public Map<String, List<NewsVO>> views(@RequestBody NewsVO news){
 		Map<String, List<NewsVO>> map = new HashMap<String, List<NewsVO>>();
+		Date ne_datetime = news.getNe_datetime();
 		// 서비스에게 날짜를 주고 리스트를 가져옴
-		List<NewsVO> newsList = newsService.getNewsList(news.getNe_datetime());
+		List<NewsVO> newsList = newsService.getNewsList(ne_datetime);
 		map.put("newsList", newsList);
 		return map;
 	}
@@ -45,7 +48,21 @@ public class NewsController {
 		List<NewsVO> newsList = newsService.getNewsList(np_no, ne_datetime);
 		model.addAttribute("newspaper",newspaper);
 		model.addAttribute("newsList", newsList);
+		model.addAttribute("ne_datetime", ne_datetime);
 		return "newspaper/newsList";
+	}
+	
+	@ResponseBody
+	@PostMapping("/newsList/views")
+	public Map<String, List<NewsVO>> newsListViews(@RequestBody NewsVO news){
+		Map<String, List<NewsVO>> map = new HashMap<String, List<NewsVO>>();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String ne_datetime = format.format(news.getNe_datetime());
+		int np_no = news.getNp_no();
+		// 서비스에게 날짜와 뉴스페이퍼 번호를 주고 리스트를 가져옴
+		List<NewsVO> newsList = newsService.getNewsList(np_no, ne_datetime);
+		map.put("newsList", newsList);
+		return map;
 	}
 
 }

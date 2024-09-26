@@ -28,4 +28,5 @@
 			NP_NO = #{np_no}
 			AND NE_DATETIME LIKE CONCAT(SUBSTRING(#{ne_datetime},1,7), '%')
 	</select>
+
 </mapper>

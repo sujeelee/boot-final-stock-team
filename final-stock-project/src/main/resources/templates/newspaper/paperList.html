@@ -66,7 +66,7 @@
 		    grid-template-columns: repeat(2, 1fr);
 		    gap: 10px;
 		}
-		
+
 		.news-box{
 			padding: 26px 26px 26px;
 		}
@@ -163,14 +163,13 @@
 			$(document).ready(function(){
 				let today = new Date();
 				let currentDate = new Date(today);
-				
 				$('#selected-date').text(formatDate(currentDate).substr(0,7));
 				
 				function formatDate(date){
 					const year = date.getFullYear();
 					const month = (date.getMonth() + 1).toString().padStart(2, '0');
 					// 서버에 데이터 형식에 맞추기 위해 추가
-					const day = '01';
+					const day = date.getDate();
 					const yyyy_mm_dd = year + "-" + month + "-" + day;
 					return yyyy_mm_dd;
 				} // 날짜를 문자열로 포맷팅
