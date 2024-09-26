@@ -2,16 +2,30 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.st.boot.dao.NewsDAO">
 
-	<select id="selectNewsList" resultType="NewsVO">
+	<select id="selectNewsListByDate" resultType="NewsVO">
 		SELECT *
 		FROM
 			NEWSPAPER
 		JOIN
 			NEWS ON NEWSPAPER.NP_NO = NEWS.NP_NO
 		WHERE
-			DATE_FORMAT(NE_DATETIME, '%Y.%m') = DATE_FORMAT(#{ne_datetime}, '%Y.%m')
+			NE_DATETIME LIKE CONCAT(#{formatDate}, '%')
 		GROUP BY
-			NEWSPAPER.NQ_NO
+			NEWSPAPER.NP_NO
 	</select>
-
+	<select id="selectNewsPaper" resultType="NewsPaperVO">
+		SELECT *
+		FROM
+			NEWSPAPER
+		WHERE
+			NEWSPAPER.NP_NO = #{np_no}
+	</select>
+	<select id="selectNewsListByPaper" resultType="NewsVO">
+		SELECT *
+		FROM
+			NEWS
+		WHERE
+			NP_NO = #{np_no}
+			AND NE_DATETIME LIKE CONCAT(SUBSTRING(#{ne_datetime},1,7), '%')
+	</select>
 </mapper>

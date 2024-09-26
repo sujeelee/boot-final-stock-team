@@ -7,11 +7,13 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
@@ -36,4 +38,14 @@ public class NewsController {
 		map.put("newsList", newsList);
 		return map;
 	}
+	
+	@GetMapping("/newsList/{np_no}/{ne_datetime}")
+	public String list(Model model, @PathVariable int np_no, @PathVariable String ne_datetime) {
+		NewsPaperVO newspaper = newsService.getNewsPaper(np_no);
+		List<NewsVO> newsList = newsService.getNewsList(np_no, ne_datetime);
+		model.addAttribute("newspaper",newspaper);
+		model.addAttribute("newsList", newsList);
+		return "newspaper/newsList";
+	}
+
 }
