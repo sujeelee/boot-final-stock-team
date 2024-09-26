@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.MemberDAO">
+
+	<select id="findById" resultType="MemberVO">
+    select * from member where mb_id = #{id}
+    </select>
+
+    <update id="serUserCookie">
+    update member 
+    set 
+        mb_cookie = #{user.mb_cookie}, 
+        mb_cookie_limit = #{user.mb_cookie_limit}
+    where 
+        mb_id = #{user.mb_id}
+    </update>
+
+    <update id="add_Fail_Number">
+    update member
+    set
+        mb_fail = mb_fail + 1
+    where
+        mb_id = #{id}
+    </update>
+
+    <update id="reset_Fail_Number">
+    update member
+    set
+        mb_fail = 0
+    where
+        mb_id = #{id}
+    </update>
+
+    <insert id="join">
+    <!-- insert into member() value() -->
+    </insert>
+
+</mapper>
