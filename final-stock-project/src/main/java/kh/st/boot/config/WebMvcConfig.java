@@ -41,7 +41,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         // autoLoginInterceptor 적용 경로 설정
         registry.addInterceptor(autoLoginInterceptor)
-                .addPathPatterns("/member/**") // 회원 관련 경로
+                .addPathPatterns("/**") // 회원 관련 경로
                 .excludePathPatterns("/login", "/join"); // 특정 경로 제외
     }
 }

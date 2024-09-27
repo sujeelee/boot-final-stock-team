@@ -1,6 +1,6 @@
 24.09.27
  - H : DB에 email체크를 위해 email_Verification 추가하였습니다.
-
- - H : TODOLIST : autoLogin
+ - H : TODOLIST : Join 메퍼 안했음 해야함
+ - H : TODOLIST : autoLogin (완료, 미확인)
  - H : TODOLIST : 이벤트 페이지 백엔드
  

@@ -10,7 +10,7 @@ CREATE TABLE `member` (
 	`mb_password`	varchar(255)	NULL,
 	`mb_name`	varchar(50)	NULL,
 	`mb_nick`	varchar(100)	NULL,
-	`mb_hp`	varchar(100)	NULL,
+	`mb_ph`	varchar(100)	NULL,
 	`mb_email`	varchar(255)	NULL,
 	`mb_zip`	int(11)	NULL,
 	`mb_addr`	varchar(255)	NULL,

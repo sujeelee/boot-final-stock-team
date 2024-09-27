@@ -35,4 +35,8 @@
     <!-- insert into member() value() -->
     </insert>
 
+    <select id="findIdByCookie" resultType="MemberVO">
+    select * from member where mb_cookie = #{mb_cookie} and mb_cookie_limit > now()
+    </select>
+
 </mapper>

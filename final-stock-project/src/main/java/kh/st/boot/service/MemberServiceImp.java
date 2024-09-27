@@ -101,7 +101,7 @@ public class MemberServiceImp implements MemberService{
         New_User.setMb_password(passwordEncoder.encode(user_.getPw()));//인코딩해서 저장
         New_User.setMb_name(user_.getName()); //이름
         New_User.setMb_nick(user_.getNick()); //닉네임
-        New_User.setMb_hp(user_.getHp()); //전화번호
+        New_User.setMb_ph(user_.getPh()); //전화번호
         New_User.setMb_email(user_.getEmail());
         New_User.setMb_birth(user_.getBirth());
         //addr1, 2, zip 넣어주어야 함
@@ -126,17 +126,10 @@ public class MemberServiceImp implements MemberService{
         return false;
     }
 
-    //이메일 인증 
-    //ajax에서 받아올 예정입니다.
-    //email은 인증받을 이메일, str은 email에 보낼 무작위 문자열 6자리 (숫자로 할까요?)
-    private boolean Check_Email(String email, String str){
-        //받은 이메일에 ,가 있으면 안됨 + @가 없으면 안됨
-        if (email.contains(",") || !email.contains("@")) {
-            //,가 있을 경우, @가 없을 경우
-            return false;
-        }
-        //send Email
-        return true;
+    
+    @Override
+    public MemberVO findIdByCookie(String sid) {
+        return memberDao.findIdByCookie(sid);
     }
 
 
