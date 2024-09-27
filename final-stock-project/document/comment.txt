@@ -1,0 +1,6 @@
+24.09.27
+ - H : DB에 email체크를 위해 email_Verification 추가하였습니다.
+
+ - H : TODOLIST : autoLogin
+ - H : TODOLIST : 이벤트 페이지 백엔드
+ 

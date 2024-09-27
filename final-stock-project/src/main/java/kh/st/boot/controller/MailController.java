@@ -27,11 +27,11 @@ public class MailController {
     private MailService mailService;
 
     //코드를 이메일로 보내는 일
-    @PostMapping("/ajax.set.check.email")
+    @PostMapping("/ajax/set_check")
     public @ResponseBody boolean set_Email_Check(@RequestParam("ec_email") String ec_email){
         //렌덤한 6자리 숫자열
         int code = customUtil.getCustomNumber(6);
-        String str = "안녕하세요. SID인증 메일입니다. 6자리 코드를 회원가입 창에서 입력해 주세요. <p>인증 코드 :" + code + " </p>";
+        String str = "안녕하세요. S2D KEY 회원 인증 메일입니다. 6자리 코드를 회원가입 창에서 입력해 주세요. <p>인증 코드 :" + code + " </p>";
         boolean res = mailService.setMailCode(ec_email, code);
         if (res) res = mailSend(ec_email, "SID 인증 이메일", str);
         // t, f 보내주면, 코드 6자리 입력할 수 있는 창을 열어주기
@@ -39,7 +39,7 @@ public class MailController {
     }
 
     //유저가 코드를 확인하는 일
-    @PostMapping("/ajax.get.check.email")
+    @PostMapping("/ajax/get_check")
     public @ResponseBody boolean get_Email_Check(@RequestParam("ec_email") String ec_email, @RequestParam("code") int code){
         return mailService.checkMailCode(ec_email, code);
     }

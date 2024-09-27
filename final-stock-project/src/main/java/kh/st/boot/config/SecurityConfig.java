@@ -31,7 +31,7 @@ public class SecurityConfig{
             .formLogin((form) -> form
                 .loginPage("/member/login")  // 커스텀 로그인 페이지 설정
                 .permitAll()           // 로그인 페이지는 접근 허용
-                .loginProcessingUrl("/login")//
+                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
             )
             .logout((logout) -> logout

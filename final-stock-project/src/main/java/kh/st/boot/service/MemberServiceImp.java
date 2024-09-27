@@ -26,22 +26,22 @@ public class MemberServiceImp implements MemberService{
             return null;
         }
         //id가 비었거나, 공백처리 되어있으면 DB처리할 필요 없이 리턴
-        if (user_.getId() == null || user_.getId().trim().length() == 0) {
+        if (user_.getUsername() == null || user_.getUsername().trim().length() == 0) {
             return null;
         }
         //pw가 비었거나, 공백처리 되어있으면 DB확인하지 않고 리턴
-        if (user_.getPw() == null || user_.getPw().trim().length() == 0) {
+        if (user_.getPassword() == null || user_.getPassword().trim().length() == 0) {
             return null;
         }
         //id 로 회원정보 DB에서 가져오기
-        MemberVO user = findById(user_.getId());
+        MemberVO user = findById(user_.getUsername());
 
         //일치하는 아이디가 없으면 null
         if (user == null) {
             return null;
         }
         //입력한 비번이, 인코딩 된 비번과 일치하는지 확인
-        if (passwordEncoder.matches(user_.getPw(), user.getMb_password())) {
+        if (passwordEncoder.matches(user_.getPassword(), user.getMb_password())) {
             //다 일치하면 fail 횟수 0 (String id 값을 넘겨주도록 하겠습니다.)
             memberDao.reset_Fail_Number(user.getMb_id());
             //유저 반환

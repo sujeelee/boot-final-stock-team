@@ -6,7 +6,7 @@ import kh.st.boot.model.vo.MemberVO;
 
 public interface MemberDAO {
 	
-	MemberVO findById(@Param("id")String id);
+	MemberVO findById(@Param("id")String username);
 
     void serUserCookie(@Param("user")MemberVO user);
     
