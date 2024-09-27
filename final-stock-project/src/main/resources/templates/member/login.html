@@ -17,7 +17,7 @@
 	    }
 	    .login-wrapper{
 	    width: 400px;
-	    height: 350px;
+	    height: 100%;
 	    padding: 40px;
 	    box-sizing: border-box;
 	    }
@@ -70,9 +70,9 @@
 	<main layout:fragment="content">
 		<div class="login-wrapper">
 	        <h2>Login</h2>
-	        <form method="post" action='<c:url value="/member/login"/>' id="login-form">
-	            <input type="text" name="id" placeholder="Email">
-	            <input type="password" name="pw" placeholder="Password">
+	        <form method="post" th:action="@{/member/login}" id="login-form">
+	            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+	            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
 	            <label for="remember-check">
 	                <input type="checkbox" id="remember-check" name="re">아이디 기억하기
 	            </label>

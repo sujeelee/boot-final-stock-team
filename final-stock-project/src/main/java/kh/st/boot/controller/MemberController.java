@@ -46,7 +46,7 @@ public class MemberController {
         } else {
             // 성공
             //user_가 on 값을 가져온 경우 *(null일때 오류가 난다면 수정해 주어야 할)
-            if (user_.getRe().equals("on")) {
+            if (user_.getRe() != null) {
                 user.setAuto_login(true); //자동로그인 하겠습니다.
             } else {
                 user.setAuto_login(false); //자동로그인 안하겠습니다.
@@ -54,7 +54,7 @@ public class MemberController {
             
             //postHandle에서 사용하기 위해 mo에 user 저장 (자동로그인을 위한 re값이 처리되어 있습니다.)
             mo.addAttribute("user", user);
-            return "redirect:/home";
+            return "redirect:/";
         }
     }
     
@@ -113,12 +113,12 @@ public class MemberController {
         // 세션아이디 앞부터 6개를 짤라서 주려고 합니다
         // !!! 화면에 input hidden 을 email로 하고 인증이 되면 해당하는 이메일을 거기에 value값으로 넣어준 뒤 전송하는 방법을 사용하겠습니다.
         Boolean res = false;
+        res = memberService.join(user_);//if 안에 있어야 함 
         if (ec != null) {
-            res = memberService.join(user_);
         }
         if (res) {
             //회원가입이 성공일 시
-            return "redirect:/home";
+            return "redirect:/";
         } else {
             //회원가입이 실패일 시
             return "redirect:/member/join";

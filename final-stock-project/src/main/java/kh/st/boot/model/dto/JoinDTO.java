@@ -15,7 +15,7 @@ public class JoinDTO {
     private String pw;
     private String name;
     private String nick;
-    private String hp;
+    private String ph;
     private String email;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth; //DB에서는 timedate로 되어있음 시간정보가 필요하지 않기 때문에 > Date 형식으로 바꾸기
@@ -34,7 +34,7 @@ public class JoinDTO {
     
     @Override
     public String toString() {
-        return "JoinDTO [id=" + id + ", pw=" + pw + ", name=" + name + ", nick=" + nick + ", hp=" + hp + ", email="
+        return "JoinDTO [id=" + id + ", pw=" + pw + ", name=" + name + ", nick=" + nick + ", ph=" + ph + ", email="
                 + email + ", birth=" + birth + ", emailing=" + emailing + ", mb_fail=" + mb_fail + ", mb_level="
                 + mb_level + ", mb_point=" + mb_point + "]";
     }

@@ -18,8 +18,9 @@
     }
     .login-wrapper{
     width: 400px;
-    height: 350px;
+    height: 100%;
     padding: 40px;
+    margin: auto;
     box-sizing: border-box;
     }
 
@@ -41,6 +42,13 @@
         color: #D2D2D2;
     }
     #login-form > input[type="submit"]{
+        color: #fff;
+        font-size: 16px;
+        background-color: #6A24FE;
+        margin-top: 20px;
+    }
+
+    #login-form > input[type="button"]{
         color: #fff;
         font-size: 16px;
         background-color: #6A24FE;
@@ -71,16 +79,33 @@
 	<main layout:fragment="content">
 		<div class="login-wrapper">
 	        <h2>Join</h2>
-	        <form method="post" action='<c:url value="/member/join"/>' id="login-form">
-	            <input type="text" name="id" placeholder="Email">
+	        <form method="post" th:action="@{/member/join}" id="login-form">
+	            <input type="text" name="id" placeholder="ID">
 	            <input type="password" name="pw" placeholder="Password">
 	            <input type="password" name="pw2" placeholder="Password">
+                <input type="text" name="name" placeholder="Name">
+                <input type="text" name="nick" placeholder="Nick Name">
+
+                <input type="text" name="ph" placeholder="Phone Number">
+                <input type="email" name="email" placeholder="Email">
+                <input type="button" onclick="ajax_email_check" value="이메일 테스트" >
+
+                <input type="date" name="birth" placeholder="birth">
+
 	            <label for="remember-check">
-	                <input type="checkbox" id="remember-check" name="re">join test
+	                <input type="checkbox" id="remember-check" name="emailing"> <span>이메일 수신 동의 확인</span>
 	            </label>
 	            <input type="submit" value="Login">
 	        </form>
 	    </div>
 	</main>
+
+<script>
+function ajax_email_check(){
+    alert(1);
+}
+
+</script>
+
 </body>
 </html>
