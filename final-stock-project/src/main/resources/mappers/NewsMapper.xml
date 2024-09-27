@@ -28,5 +28,48 @@
 			NP_NO = #{np_no}
 			AND NE_DATETIME LIKE CONCAT(SUBSTRING(#{ne_datetime},1,7), '%')
 	</select>
-
+	<select id="selectNews" resultType="NewsVO">
+		SELECT *
+		FROM
+			NEWS
+		WHERE NE_NO = #{ne_no}
+	</select>
+	<select id="selectNewsEmoji" resultType="NewsEmojiVO">
+		SELECT *
+		FROM
+			NEWS_EMOJI
+		WHERE
+			NE_NO = #{ne_no} AND
+			MB_ID = #{mb_id}
+	</select>
+	<insert id="insertNewsEmoji"  useGeneratedKeys="true" keyProperty="em.em_no">
+		INSERT INTO NEWS_EMOJI(NE_NO, EM_ACT, MB_ID, EM_DATETIME) VALUES
+		(#{em.ne_no}, #{em.em_act}, #{em.mb_id}, NOW())
+	</insert>
+	<update id="updateNewsEmojiCount">
+		UPDATE NEWS
+		<choose>
+			<when test="em.em_act == 1">
+				SET NE_HAPPY = NE_HAPPY + #{count}
+			</when>
+			<when test="em.em_act == 2">
+				SET NE_ANGRY = NE_ANGRY + #{count}
+			</when>
+			<when test="em.em_act == 3">
+				SET NE_ABSURD = NE_ABSURD + #{count}
+			</when>
+			<when test="em.em_act == 4">
+				SET NE_SAD = NE_SAD + #{count}
+			</when>
+		</choose>
+		WHERE NE_NO = #{em.ne_no}
+	</update>
+	<update id="updateNewsEmoji">
+		UPDATE 
+			NEWS_EMOJI 
+		SET 
+			EM_ACT = #{em_act}, EM_DATETIME = NOW() 
+		WHERE
+			NE_NO = #{ne_no}
+	</update>
 </mapper>

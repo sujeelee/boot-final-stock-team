@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.NewsDAO;
+import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import lombok.AllArgsConstructor;
@@ -42,4 +43,40 @@ public class NewsServiceImp implements NewsService{
 		return newsDao.selectNewsListByPaper(np_no, ne_datetime);
 	}
 
+	@Override
+	public NewsVO getNews(int ne_no) {
+		return newsDao.selectNews(ne_no);
+	}
+
+	@Override
+	public NewsEmojiVO getNewsEmoji(NewsEmojiVO emoji) {
+		if(emoji == null) {
+			return null;
+		}
+		return newsDao.selectNewsEmoji(emoji);
+	}
+
+	@Override
+	public boolean insertNewsEmoji(NewsEmojiVO emoji) {
+		if(emoji == null) {
+			return false;
+		}
+		return newsDao.insertNewsEmoji(emoji);
+	}
+
+	@Override
+	public void updateNewsEmojiCount(NewsEmojiVO emoji, int count) {
+		if(emoji == null) {
+			return;
+		}
+		newsDao.updateNewsEmojiCount(emoji, count);
+	}
+
+	@Override
+	public void updateNewsEmoji(NewsEmojiVO emoji) {
+		if(emoji == null) {
+			return;
+		}
+		newsDao.updateNewsEmoji(emoji);
+	}
 }

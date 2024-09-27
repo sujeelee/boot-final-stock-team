@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import jakarta.servlet.http.HttpSession;
+import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.service.NewsService;
@@ -69,8 +70,45 @@ public class NewsController {
 	
 	@GetMapping("/detail/{ne_no}")
 	public String detail(Model model, @PathVariable int ne_no) {
-		
+		NewsVO news = newsService.getNews(ne_no);
+		NewsPaperVO newspaper = newsService.getNewsPaper(news.getNp_no());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String ne_datetime = format.format(news.getNe_datetime());
+		model.addAttribute("news", news);
+		model.addAttribute("newspaper", newspaper);
+		model.addAttribute("ne_datetime", ne_datetime);
 		return "newspaper/detail";
 	}
-
+	
+	@ResponseBody
+	@PostMapping("/emoji")
+	public Map<String, Object> newsEmoji(@RequestBody NewsEmojiVO emoji, HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// 회원 기능 완료되면 봉인해제
+		// MemberVO user = (MemberVO)session.getAttribute("user");
+		emoji.setMb_id("www7878");
+		NewsVO news = newsService.getNews(emoji.getNe_no());
+		// 이전에 선택한 이모지
+		NewsEmojiVO prevEmoji = newsService.getNewsEmoji(emoji);
+		if(prevEmoji == null) {
+			// 사용자가 처음으로 선택한 이모지
+			boolean res = newsService.insertNewsEmoji(emoji);
+			// 새로운 반응에 대한 카운트 증가
+			newsService.updateNewsEmojiCount(emoji, 1);
+			news = newsService.getNews(emoji.getNe_no());
+		} else {
+			// 사용자가 다른 반응으로 바꾼 경우
+			if(prevEmoji.getEm_act() != emoji.getEm_act()) {
+				// 이전 카운트를 감소
+				newsService.updateNewsEmojiCount(prevEmoji, -1);
+				// 새로운 이모지 카운트 증가
+				newsService.updateNewsEmojiCount(emoji, 1);
+				// 이모지 업데이트
+				newsService.updateNewsEmoji(emoji);
+				news = newsService.getNews(emoji.getNe_no());
+			}
+		}
+		map.put("news", news);
+		return map;
+	}
 }

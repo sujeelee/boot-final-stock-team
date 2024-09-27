@@ -158,10 +158,8 @@
 		</div>
 			<script th:inline="javascript">
 			$(document).ready(function(){
-
 				let today = new Date($('input[name=ne_datetime]').val());
 				let currentDate = new Date(today);
-				console.log(currentDate);
 				$('#selected-date').text(formatDate(currentDate).substr(0,7));
 				
 				function formatDate(date){
