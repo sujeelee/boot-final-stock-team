@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/newspaper")
+@Log4j2
 public class NewsController {
 	private NewsService newsService;
 	
@@ -30,6 +32,8 @@ public class NewsController {
 	@ResponseBody
 	@PostMapping("/views")
 	public Map<String, List<NewsVO>> views(@RequestBody NewsVO news){
+		log.info("newspaper/views:post");
+		log.info(news);
 		Map<String, List<NewsVO>> map = new HashMap<String, List<NewsVO>>();
 		// 서비스에게 날짜를 주고 리스트를 가져옴
 		List<NewsVO> newsList = newsService.getNewsList(news.getNe_datetime());

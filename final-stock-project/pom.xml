@@ -90,19 +90,32 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		
 		<!-- 타임리프에서 sec를 사용하여 로그인 여부를 확인하기 위해  -->
 		<dependency>
 		    <groupId>org.thymeleaf.extras</groupId>
 		    <artifactId>thymeleaf-extras-springsecurity6</artifactId>
 	    </dependency>
-	    
 		<!-- SpringBoot mailService -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-
+		<!-- log4j 사용하기 위한 작업 -->
+		<dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-web</artifactId>
+		  <exclusions>
+		    <exclusion>
+		      <groupId>org.springframework.boot</groupId>
+		      <artifactId>spring-boot-starter-logging</artifactId>
+		    </exclusion>
+		  </exclusions>
+		</dependency>
+		<!--2.1 logging -->
+		<dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
 		
 	</dependencies>
 
