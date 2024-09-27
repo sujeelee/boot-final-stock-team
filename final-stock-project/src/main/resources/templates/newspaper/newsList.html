@@ -49,7 +49,7 @@
 		    color: #1e1e23;
 		}
 		
-		.news-container {
+		.news-container{
 			width: 100%;
 		}
 		
@@ -74,7 +74,7 @@
 		    height: 220px;
 		}
 		
-		.news-heading-box a {
+		.news-heading-box span {
 		    font-weight: bold;
 		    font-size: 19px;
 		    color: black;
@@ -119,45 +119,46 @@
 			-webkit-line-clamp: 3;
 			-webkit-box-orient: vertical;
 		}
-
 	</style>
 </head>
 <body>
 	<main layout:fragment="content">
-		<h1>뉴스 게시판</h1>
-
-	    <div class="main_wrap">
-	        <!-- 날짜 선택 버튼 영역 -->
-	        <div class="news-date">
-	            <button id="prev-date-btn" class="date-btn">◀</button>
-	            <span id="selected-date"></span>
-	            <button id="next-date-btn" class="date-btn">▶</button>
-	        </div>
-	        <!-- 뉴스 리스트 박스 -->
-	        <div class="news-container">
-	            <ul class="news-list">
-	                <li class="news-item">
-	               		<div class="news-box">
-		                    <div class="news-heading-box">
-		                        <a href="#">신문사</a>
+		<div class="container">
+			<h1 th:text="${newspaper.np_name}"></h1>
+			<input type="hidden" name="np_num" th:value="${newspaper.np_no}">
+			<div class="main_wrap">
+		        <!-- 날짜 선택 버튼 영역 -->
+		        <div class="news-date">
+		            <button id="prev-date-btn" class="date-btn">◀</button>
+		            <span id="selected-date"></span>
+		            <input type="hidden" name="ne_datetime" th:value="${ne_datetime}">
+		            <button id="next-date-btn" class="date-btn">▶</button>
+		        </div>
+		        <!-- 뉴스 리스트 박스 -->
+		        <div class="news-container">
+		            <ul class="news-list">
+		                <li class="news-item" th:each="item:${newsList}">
+		                	<div class="news-box">
+		                		<div class="news-heading-box">
+			                        <span>신문 발행 날짜</span>
+			                    </div>
+			                    <div class="news-content-box">
+			                    	<div class="news-title mb-2">
+			                    		<a href="#" style="font-size: 18px;">헤드라인 제목</a>
+			                    	</div>
+			                    	<div class="news-content">
+				                        <a href="#">헤드라인 내용</a>                   		
+			                    	</div>
+			                    </div>
 		                    </div>
-		                    <div class="news-content-box">
-		                    	<div class="news-title mb-2">
-		                    		<a href="#" style="font-size: 20px;">헤드라인 제목</a>
-		                    	</div>
-		                    	<div class="news-content">
-			                        <a href="#">헤드라인 내용</a>                   		
-		                    	</div>
-		                    </div>
-	                    </div>
-	                </li>
-	            </ul>
-	        </div>
-	    </div>
-
-		<script th:inline="javascript">
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+			<script th:inline="javascript">
 			$(document).ready(function(){
-				let today = new Date();
+				let today = new Date($('input[name=ne_datetime]').val());
 				let currentDate = new Date(today);
 				$('#selected-date').text(formatDate(currentDate).substr(0,7));
 				
@@ -196,12 +197,14 @@
 				
 				function fetchNews(date){
 					let ne_datetime = formatDate(date);
+					let np_no = $('input[name=np_num]').val();
 					let news = {
-						ne_datetime : ne_datetime
+						ne_datetime : ne_datetime,
+						np_no : np_no
 					}
 					$.ajax({
 						async : true, // 비동기 : true(비동기), false(동기)
-						url : '/newspaper/views', 
+						url : '/newspaper/newsList/views', 
 						type : 'post', 
 						data : JSON.stringify(news), 
 						contentType : "application/json; charset=utf-8",
@@ -227,14 +230,14 @@
 							<li class="news-item">
 			                	<div class="news-box">
 				                    <div class="news-heading-box">
-				                        <a href="/newspaper/newsList/${news.np_no}/${ne_datetime}">${news.np_name}</a>
+				                        <span>${ne_datetime}</span>
 				                    </div>
 				                    <div class="news-content-box">
 				                    	<div class="news-title">
-				                    		<a href="#" style="font-size: 20px;">${news.ne_title}</a>
+				                    		<a href="/newspaper/detail/${news.ne_no}" style="font-size: 20px;">${news.ne_title}</a>
 				                    	</div>
 				                    	<div class="news-content">
-					                        <a href="#">${news.ne_content}</a>                   		
+					                        <a href="/newspaper/detail/${news.ne_no}">${news.ne_content}</a>                   		
 				                    	</div>
 				                    </div>
 			                    </div>
