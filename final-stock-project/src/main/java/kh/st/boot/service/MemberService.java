@@ -14,5 +14,7 @@ public interface MemberService {
 
 	MemberVO findIdByCookie(String sid);
 
+	MemberVO findById(String id);
+
 }
 

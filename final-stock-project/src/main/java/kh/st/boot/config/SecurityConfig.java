@@ -7,12 +7,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 import org.springframework.security.web.SecurityFilterChain;
 
+import kh.st.boot.handler.LoginSuccessHandler;
 import kh.st.boot.model.util.UserRole;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
 
+	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		//csrf : 사이트간 공격을 막아줄때 사용하는 
@@ -31,14 +33,18 @@ public class SecurityConfig{
             .formLogin((form) -> form
                 .loginPage("/member/login")  // 커스텀 로그인 페이지 설정
                 .permitAll()           // 로그인 페이지는 접근 허용
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/member/login")
+//                .usernameParameter("userId")
+//                .passwordParameter("password") // 비밀번호 파라미터명
                 .defaultSuccessUrl("/")
+                .successHandler(new LoginSuccessHandler())
             )
             .logout((logout) -> logout
             		.logoutUrl("/logout") //이 URL로  post방식으로 전송하면 자동으로 로그아웃이 실행됨
             		.logoutSuccessUrl("/")
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
+            		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
     }
