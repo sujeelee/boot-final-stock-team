@@ -116,6 +116,12 @@
 		  <groupId>org.springframework.boot</groupId>
 		  <artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
+		<!-- json문서 파싱을 위한 라이브러리 -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20211205</version>
+		</dependency>
 		
 	</dependencies>
 
