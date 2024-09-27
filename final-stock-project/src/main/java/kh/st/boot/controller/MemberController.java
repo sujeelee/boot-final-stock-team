@@ -1,19 +1,13 @@
 package kh.st.boot.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.mail.internet.MimeMessage;
+
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -29,8 +23,6 @@ import lombok.AllArgsConstructor;
 public class MemberController {
 	
 	private MemberService memberService;
-	
-    private JavaMailSender mailSender;
 	
 	//로그인
     @GetMapping("/login")
@@ -134,40 +126,6 @@ public class MemberController {
 
     }
 
-    
-    @PostMapping("/ajax-email")
-    public @ResponseBody Map<String, String> email_Check(HttpSession session, @RequestParam("ec_email") String ec_email){    	
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	String sids = session.getId().substring(0,6);
-    	mailSend(ec_email, "SID 인증 이메일", "인증 코드 : " + sids);
-    	map.put("ec", sids);
-    	return map;
-    }
-    
-    
-    //메세지 보낼 것
-    public boolean mailSend(String to, String title, String content) {
-
-        String setfrom = "stajun@naver.com";
-       try{
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper messageHelper
-                = new MimeMessageHelper(message, true, "UTF-8");
-
-            messageHelper.setFrom(setfrom);// 보내는사람 생략하거나 하면 정상작동을 안함
-            messageHelper.setTo(to);// 받는사람 이메일
-            messageHelper.setSubject(title);// 메일제목은 생략이 가능하다
-            messageHelper.setText(content, true);// 메일 내용
-
-            mailSender.send(message);
-            return true;
-        } catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    
 
 
 
