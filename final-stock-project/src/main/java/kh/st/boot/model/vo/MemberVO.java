@@ -35,5 +35,15 @@ public class MemberVO {
     private int mb_fail; 
     private Date mb_cookie_limit; // 쿠키 만료기간
     private boolean auto_login; // autoLogin, DB에는 없습니다. (re 가 on 일 경우 true 값이 들어옵니다.)
+	public String getMb_auth() {
+		String auth = "GUEST";
+		int lev = this.mb_level;
+		if(lev < 8) {
+			auth = "USER";
+		} else {
+			auth = "ADMIN";
+		}
+		return auth;
+	}
     
 }

@@ -90,7 +90,14 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-<!-- SpringBoot mailService -->
+		
+		<!-- 타임리프에서 sec를 사용하여 로그인 여부를 확인하기 위해  -->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+	    </dependency>
+	    
+		<!-- SpringBoot mailService -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
