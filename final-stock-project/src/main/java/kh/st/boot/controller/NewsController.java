@@ -22,12 +22,10 @@ import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/newspaper")
-@Log4j2
 public class NewsController {
 	private NewsService newsService;
 	
@@ -39,8 +37,6 @@ public class NewsController {
 	@ResponseBody
 	@PostMapping("/views")
 	public Map<String, List<NewsVO>> views(@RequestBody NewsVO news){
-		log.info("newspaper/views:post");
-		log.info(news);
 		Map<String, List<NewsVO>> map = new HashMap<String, List<NewsVO>>();
 		Date ne_datetime = news.getNe_datetime();
 		// 서비스에게 날짜를 주고 리스트를 가져옴
@@ -86,7 +82,7 @@ public class NewsController {
 	
 	@ResponseBody
 	@PostMapping("/emoji")
-	public Map<String, Object> newsEmoji(@RequestBody NewsEmojiVO emoji, HttpSession session) {
+	public Map<String, Object> emoji(@RequestBody NewsEmojiVO emoji, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		// 회원 기능 완료되면 봉인해제
 		// MemberVO user = (MemberVO)session.getAttribute("user");
@@ -102,7 +98,7 @@ public class NewsController {
 				newsService.updateNewsEmojiCount(emoji, 1);
 				news = newsService.getNews(emoji.getNe_no());
 			}else {
-				System.out.println("ㅗ^.^ㅗ");
+				return null;
 			}
 		} else {
 			// 사용자가 다른 반응으로 바꾼 경우
@@ -118,5 +114,29 @@ public class NewsController {
 		}
 		map.put("news", news);
 		return map;
+	}
+	
+	@GetMapping("/insert/{np_no}")
+	public String insert(Model model, @PathVariable int np_no) {
+		return "newspaper/insert";
+	}
+	
+	@PostMapping("/insert/{np_no}")
+	public String insertPost(Model model, @PathVariable int np_no ,NewsVO news, HttpSession session) {
+		System.out.println(news);
+		//MemberVO user = (MemberVO) session.getAttribute("user");
+		MemberVO user = new MemberVO();
+		user.setMb_id("www7878");		
+		// 맵퍼에 기자명을 추가해야됨
+		// Member 테이블에 mb_name => ne_name
+		boolean res = newsService.insertNews(news, user);
+		if(res) {
+			model.addAttribute("msg" , "뉴스 등록 성공");
+			model.addAttribute("url" , "/newspaper");
+		}else {
+			model.addAttribute("msg" , "뉴스 등록 실패");
+			model.addAttribute("url" , "/newspaper/insert/" + np_no);
+		}
+		return "util/msg";
 	}
 }

@@ -25,4 +25,6 @@ public interface NewsDAO {
 	void updateNewsEmojiCount(@Param("em")NewsEmojiVO emoji, @Param("count")int count);
 
 	void updateNewsEmoji(NewsEmojiVO emoji);
+
+	boolean insertNews(NewsVO news);
 }

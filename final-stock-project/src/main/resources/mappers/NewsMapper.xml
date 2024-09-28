@@ -72,4 +72,8 @@
 		WHERE
 			NE_NO = #{ne_no}
 	</update>
+	<insert id="insertNews">
+		INSERT INTO NEWS(NE_TITLE, NE_CONTENT, MB_ID, NP_NO, NE_DATETIME) VALUES
+		(#{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW())
+	</insert>
 </mapper>

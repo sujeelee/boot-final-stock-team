@@ -3,6 +3,7 @@ package kh.st.boot.service;
 import java.util.Date;
 import java.util.List;
 
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
@@ -24,6 +25,8 @@ public interface NewsService {
 	void updateNewsEmojiCount(NewsEmojiVO newEmoji, int i);
 
 	void updateNewsEmoji(NewsEmojiVO emoji);
+
+	boolean insertNews(NewsVO news, MemberVO user);
 
 }
 
