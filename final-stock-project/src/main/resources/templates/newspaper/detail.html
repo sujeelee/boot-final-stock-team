@@ -170,7 +170,7 @@
 			        <input type="checkbox" name="em_act" id="em_4" value="4" onclick="checkOnlyOne(this);">
 			        <span>😭</span>
 			        <span>슬퍼요</span>
-			        <span th:text="${news.ne_sad}" class></span>
+			        <span th:text="${news.ne_sad}"></span>
 			    </label>
 			</div>
         </section>
@@ -208,7 +208,7 @@
 	        }
 	        function displayNewsEmoji(news){
 	        	if(news == null) {
-	        		console.log('news가 null이에요!!!!');
+	        		return;
 	        	}
 	        	str = `
 	        		<h3>이 기사를 추천합니다</h3>
