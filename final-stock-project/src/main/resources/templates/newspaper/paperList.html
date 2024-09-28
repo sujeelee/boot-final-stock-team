@@ -7,114 +7,122 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<style type="text/css">
-		body{
-			background-color: #f4f6f8;
-		}
-
-		.main_wrap {
-		    display: flex;
-		    flex-direction: column;
-		    align-items: center;
-		    gap: 20px;
-		}
-
-		.news-date {
-			width: 100%;
-		    height: 65px;
-		    background-color: #fff;
-		    border: 1px solid #ddd;
-		    border-radius: 15px;
-		    padding: 17px 0 15px;
-		    font-size: 1.2rem;
-		    display: flex;
-		    align-items: center;
-		    justify-content: center;
-		}
-		
-		.date-btn {
-		    background-color: #fff;
-			border: none;
-		    padding: 8px 8px 8px 12px;
-		}
-		
-		#selected-date {
-		    margin: 0 16px;
-		    font-size: 19px;
-		    font-weight: bold;
-		    color: #1e1e23;
-		}
-		
-		.news-container {
-			width: 100%;
-		}
-		
-		.news-list {
-			width: 1100px;
-		    list-style: none;
-		    padding: 0;
-		    margin: 0 -14px -15px 0;
-		    display: grid;
-		    grid-template-columns: repeat(2, 1fr);
-		    gap: 22px;
-		}
-		
-		.news-box {
-			padding: 26px;
-		}
-		
-		.news-item {
-		    background-color: #fff;
-		    border: 1px solid #ddd;
-		    border-radius: 15px;
-		    height: 220px;
-		}
-		
-		.news-heading-box a {
-		    font-weight: bold;
-		    font-size: 19px;
-		    color: black;
-		    text-decoration: none;
-		}
-		
-		.news-title a {
-		    font-size: 15px;
-		    color: black;
-		    text-decoration: none;
-		}
-		
-		.news-content a {
-		    font-size: 16px;
-		    color: #777;
-		    text-decoration: none;
-		}
-		
-		.news-heading-box{
-			padding: 16px 23px 0 0;
-		}
-		
-		.news-content-box{
-			padding:12px 0 21px;
-		}
-		
-		.news-content a {
-			/* 한 줄 자르기 */
-			display: inline-block;
-			width: 490px;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			/* 여러 줄 자르기 추가 스타일 */
-			white-space: normal;
-			line-height: 1.2;
-			height: 3.6em;
-			font-size: 16px;
-			text-align: left;
-			word-wrap: break-word;
-			display: -webkit-box;
-			-webkit-line-clamp: 3;
-			-webkit-box-orient: vertical;
-		}
-
+		body {
+	        background-color: #f4f6f8;
+	    }
+	
+	    .main_wrap {
+	        flex-direction: column;
+	        align-items: center;
+	    }
+	
+	    .news-date {
+	        width: 100%;
+	        height: 65px;
+	        background-color: #fff;
+	        border: 1px solid #ddd;
+	        border-radius: 15px;
+	        padding: 17px 0 15px;
+	        font-size: 1.2rem;
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        margin-bottom: 20px;
+	    }
+	
+	    .date-btn {
+	        background-color: #fff;
+	        border: none;
+	        padding: 8px 8px 8px 12px;
+	    }
+	
+	    #selected-date {
+	        margin: 0 16px;
+	        font-size: 19px;
+	        font-weight: bold;
+	        color: #1e1e23;
+	    }
+	
+	    .news-container {
+	        width: 100%;
+	    }
+	
+	    /* 기본 2열 그리드 레이아웃 */
+	    .news-list {
+	        width: 1110px;
+	        list-style: none;
+	        padding: 0;
+	        margin: 0 -14px -15px 0;
+	        display: grid;
+	        grid-template-columns: repeat(2, 1fr);
+	        gap: 22px;
+	    }
+	
+	    .news-box {
+	        padding: 26px;
+	    }
+	
+	    .news-item {
+	        background-color: #fff;
+	        border: 1px solid #ddd;
+	        border-radius: 15px;
+	        height: 220px;
+	    }
+	
+	    .news-heading-box a {
+	        font-weight: bold;
+	        font-size: 19px;
+	        color: black;
+	        text-decoration: none;
+	    }
+	
+	    .news-title a {
+	        font-size: 15px;
+	        color: black;
+	        text-decoration: none;
+	    }
+	
+	    .news-content a {
+	        font-size: 16px;
+	        color: #777;
+	        text-decoration: none;
+	    }
+	
+	    .news-heading-box {
+	        padding: 16px 23px 0 0;
+	    }
+	
+	    .news-content-box {
+	        padding: 12px 0 21px;
+	    }
+	
+	    .news-content a {
+	        /* 여러 줄 자르기 추가 스타일 */
+	        display: -webkit-box;
+	        -webkit-line-clamp: 3;
+	        -webkit-box-orient: vertical;
+	        overflow: hidden;
+	        text-overflow: ellipsis;
+	        line-height: 1.2;
+	        height: 3.6em;
+	        font-size: 16px;
+	        word-wrap: break-word;
+	    }
+	
+	    @media (max-width: 1200px) {
+	        .news-list {
+	            width: 100%;
+	            grid-template-columns: 1fr;
+	        }
+	
+	        .news-item {
+	            width: 100%;
+	        }
+	
+	        .news-date {
+	            width: 100%;
+	        }
+	    }
 	</style>
 </head>
 <body>
@@ -226,10 +234,10 @@
 				                    </div>
 				                    <div class="news-content-box">
 				                    	<div class="news-title">
-				                    		<a href="#" style="font-size: 20px;">${news.ne_title}</a>
+				                    		<a href="/newspaper/detail/${news.ne_no}" style="font-size: 20px;">${news.ne_title}</a>
 				                    	</div>
 				                    	<div class="news-content">
-					                        <a href="#">${news.ne_content}</a>                   		
+					                        <a href="/newspaper/detail/${news.ne_no}">${news.ne_content}</a>                   		
 				                    	</div>
 				                    </div>
 			                    </div>
@@ -238,6 +246,7 @@
 					}
 					$('.news-list').html(str);
 				} // 서버에서 가져온 데이터로 html을 새로 생성하는 함수
+				
 				fetchNews(currentDate);
 				buttonStatus();
 			});
