@@ -27,4 +27,6 @@ public interface NewsDAO {
 	void updateNewsEmoji(NewsEmojiVO emoji);
 
 	boolean insertNews(NewsVO news);
+
+	boolean updateNews(NewsVO news);
 }

@@ -76,4 +76,13 @@
 		INSERT INTO NEWS(NE_TITLE, NE_CONTENT, MB_ID, NP_NO, NE_DATETIME) VALUES
 		(#{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW())
 	</insert>
+	<update id="updateNews">
+		UPDATE NEWS
+		SET
+			NE_TITLE = #{ne_title},
+			NE_CONTENT = #{ne_content},
+			NE_EDIT_DATE = NOW()
+		WHERE
+			NE_NO = #{ne_no}
+	</update>
 </mapper>

@@ -123,7 +123,6 @@ public class NewsController {
 	
 	@PostMapping("/insert/{np_no}")
 	public String insertPost(Model model, @PathVariable int np_no ,NewsVO news, HttpSession session) {
-		System.out.println(news);
 		//MemberVO user = (MemberVO) session.getAttribute("user");
 		MemberVO user = new MemberVO();
 		user.setMb_id("www7878");		
@@ -136,6 +135,33 @@ public class NewsController {
 		}else {
 			model.addAttribute("msg" , "뉴스 등록 실패");
 			model.addAttribute("url" , "/newspaper/insert/" + np_no);
+		}
+		return "util/msg";
+	}
+	
+	@GetMapping("/update/{ne_no}")
+	public String update(Model model, @PathVariable int ne_no) {
+		NewsVO news = newsService.getNews(ne_no);
+		System.out.println(news);
+		model.addAttribute("news", news);
+		return "newspaper/update";
+	}
+	
+
+	@PostMapping("/update/{ne_no}")
+	public String updatePost(Model model, @PathVariable int ne_no ,NewsVO news, HttpSession session) {
+		//MemberVO user = (MemberVO) session.getAttribute("user");
+		MemberVO user = new MemberVO();
+		user.setMb_id("www7878");		
+		// 맵퍼에 기자명을 추가해야됨
+		// Member 테이블에 mb_name => ne_name
+		boolean res = newsService.updateNews(news, user);
+		if(res) {
+			model.addAttribute("msg" , "뉴스 수정 성공");
+			model.addAttribute("url" , "/newspaper/detail/" + ne_no);
+		}else {
+			model.addAttribute("msg" , "뉴스 수정 실패");
+			model.addAttribute("url" , "/newspaper/detail/" + ne_no);
 		}
 		return "util/msg";
 	}

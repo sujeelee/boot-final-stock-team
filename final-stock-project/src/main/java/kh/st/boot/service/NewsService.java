@@ -28,5 +28,7 @@ public interface NewsService {
 
 	boolean insertNews(NewsVO news, MemberVO user);
 
+	boolean updateNews(NewsVO news, MemberVO user);
+
 }
 

@@ -95,4 +95,23 @@ public class NewsServiceImp implements NewsService{
 		news.setMb_id(user.getMb_id());
 		return newsDao.insertNews(news);
 	}
+
+	@Override
+	public boolean updateNews(NewsVO news, MemberVO user) {
+		if(news == null || user == null) {
+			return false;
+		}
+		if(news.getNe_title().trim().length() == 0) {
+			return false;
+		}
+		if(news.getNe_content().trim().length() == 0) {
+			return false;
+		}
+		NewsVO tmp = getNews(news.getNe_no());
+		if(!tmp.getMb_id().equals(user.getMb_id())) {
+			return false;
+		}
+		return newsDao.updateNews(news);
+	}
+
 }
