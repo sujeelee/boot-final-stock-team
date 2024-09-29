@@ -114,4 +114,16 @@ public class NewsServiceImp implements NewsService{
 		return newsDao.updateNews(news);
 	}
 
+	@Override
+	public boolean deleteNews(int ne_no, MemberVO user) {
+		if(user == null) {
+			return false;
+		}
+		NewsVO post = getNews(ne_no);
+		if(!post.getMb_id().equals(user.getMb_id())) {
+			return false;
+		}
+		return newsDao.deleteNews(ne_no);
+	}
+
 }

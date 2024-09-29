@@ -85,4 +85,7 @@
 		WHERE
 			NE_NO = #{ne_no}
 	</update>
+	<delete id="deleteNews">
+		DELETE FROM NEWS WHERE NE_NO = #{ne_no}
+	</delete>
 </mapper>

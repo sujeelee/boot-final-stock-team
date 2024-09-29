@@ -165,4 +165,22 @@ public class NewsController {
 		}
 		return "util/msg";
 	}
+	
+	@GetMapping("/delete/{ne_no}")
+	public String delete(Model model, @PathVariable int ne_no, HttpSession session) {
+		//MemberVO user = (MemberVO)session.getAttribute("user");
+		MemberVO user = new MemberVO();
+		user.setMb_id("www7878");		
+		// 맵퍼에 기자명을 추가해야됨
+		// Member 테이블에 mb_name => ne_name
+		boolean res = newsService.deleteNews(ne_no, user);
+		if(res) {
+			model.addAttribute("msg", "뉴스 삭제 성공");
+			model.addAttribute("url", "/newspaper");
+		}else {
+			model.addAttribute("msg", "뉴스 삭제 실패");
+			model.addAttribute("url", "/newspaper/detail/" + ne_no);
+		}
+		return "util/msg";
+	}
 }

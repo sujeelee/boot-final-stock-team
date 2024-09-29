@@ -30,5 +30,7 @@ public interface NewsService {
 
 	boolean updateNews(NewsVO news, MemberVO user);
 
+	boolean deleteNews(int ne_no, MemberVO user);
+
 }
 

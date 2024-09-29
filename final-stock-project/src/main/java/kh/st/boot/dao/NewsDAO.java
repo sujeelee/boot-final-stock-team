@@ -29,4 +29,6 @@ public interface NewsDAO {
 	boolean insertNews(NewsVO news);
 
 	boolean updateNews(NewsVO news);
+
+	boolean deleteNews(int ne_no);
 }
