@@ -72,11 +72,10 @@ public class NewsController {
 	public String detail(Model model, @PathVariable int ne_no) {
 		NewsVO news = newsService.getNews(ne_no);
 		NewsPaperVO newspaper = newsService.getNewsPaper(news.getNp_no());
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		String ne_datetime = format.format(news.getNe_datetime());
+		int totalCount = news.getNe_happy() + news.getNe_angry() + news.getNe_absurd() + news.getNe_sad();
 		model.addAttribute("news", news);
 		model.addAttribute("newspaper", newspaper);
-		model.addAttribute("ne_datetime", ne_datetime);
+		model.addAttribute("totalCount", totalCount);
 		return "newspaper/detail";
 	}
 	
@@ -89,7 +88,6 @@ public class NewsController {
 		emoji.setMb_id("www7878");
 		NewsVO news = newsService.getNews(emoji.getNe_no());
 		// 이전에 선택한 이모지
-		System.out.println(emoji);
 		NewsEmojiVO prevEmoji = newsService.getNewsEmoji(emoji);
 		if(prevEmoji == null) {
 			// 사용자가 처음으로 선택한 이모지
@@ -113,10 +111,11 @@ public class NewsController {
 				newsService.updateNewsEmojiCount(prevEmoji, -1);
 				newsService.deleteNewsEmoji(emoji);
 				news = newsService.getNews(emoji.getNe_no());
-				
 			}
 		}
+		int totalCount = news.getNe_happy() + news.getNe_angry() + news.getNe_absurd() + news.getNe_sad();
 		map.put("news", news);
+		map.put("totalCount", totalCount);
 		return map;
 	}
 	

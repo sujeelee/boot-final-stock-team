@@ -138,7 +138,7 @@
         <div class="reaction-bar">
             <div class="reaction">
                 <span>👏</span>
-                <span>추천수 (토탈 갯수)</span>
+                <span>추천수 (<span th:text="${totalCount}"></span>)</span>
             </div>
         </div>
         <article>
@@ -199,12 +199,20 @@
 	            	contentType : "application/json; charset=utf-8",
 	            	dataType : "json", 
 	            	success : function (data){
+	            		displayTotalCount(data.totalCount);
 	            		displayNewsEmoji(data.news);
 	            	}, 
 	            	error : function(jqXHR, textStatus, errorThrown){
 						console.log(jqXHR);
 	            	}
 	            });
+	        }
+	        function displayTotalCount(totalCount){
+	        	str = `
+	        		<span>👏</span>
+	                <span>추천수 (${totalCount})</span>	
+	        	`;
+	        	$('.reaction').html(str);
 	        }
 	        function displayNewsEmoji(news){
 	        	if(news == null) {
