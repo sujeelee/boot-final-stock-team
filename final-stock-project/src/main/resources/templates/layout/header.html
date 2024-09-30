@@ -7,14 +7,14 @@
 		  </div>         
 		  <!-- 가운데 메뉴 -->
 		  <div class="menu">
-			<a href="#">홈</a>
-			<a href="#">뉴스</a>
-			<a href="#">주식 골라보기</a>
-			<a href="#">내 계좌</a>
+			<a th:href="@{/}">홈</a>
+			<a th:href="@{/newspaper}">뉴스</a>
+			<a href="@{/stockList}">주식 골라보기</a>
+			<a href="@{/myaccount}">내 계좌</a>
 		  </div>        
 		  <!-- 오른쪽 로그인 -->
 		  <div class="login">
-			<a href="#">로그인</a>
+			<a th:href="@{/member/login}">로그인</a>
 		  </div>
 		</nav>
 	  </header>
