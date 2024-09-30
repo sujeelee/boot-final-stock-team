@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 
 @Service
 @AllArgsConstructor	
-@NoArgsConstructor
 public class MemberServiceImp implements MemberService{
 	
 	private MemberDAO memberDao;

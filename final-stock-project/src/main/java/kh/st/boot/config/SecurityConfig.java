@@ -1,5 +1,6 @@
 package kh.st.boot.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,11 +9,14 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import kh.st.boot.handler.LoginSuccessHandler;
 import kh.st.boot.model.util.UserRole;
+import kh.st.boot.service.MemberDetailService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
 	
+	@Autowired
+	private MemberDetailService memberDetailService;
 	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,12 +42,18 @@ public class SecurityConfig{
                 .defaultSuccessUrl("/")
                 .successHandler(new LoginSuccessHandler())
             )
+            .rememberMe((rm)->rm
+            		.key("team1")
+            		.rememberMeParameter("re")
+            		.userDetailsService(memberDetailService)
+            		.rememberMeCookieName("AUTO_LOGIN")
+            		.tokenValiditySeconds(60*60*24*7))
             .logout((logout) -> logout
             		.logoutUrl("/logout") //이 URL로  post방식으로 전송하면 자동으로 로그아웃이 실행됨
             		.logoutSuccessUrl("/")
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
-            		.deleteCookies("JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명
+            		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
     }
