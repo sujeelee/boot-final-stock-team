@@ -13,6 +13,7 @@
 		GROUP BY
 			NEWSPAPER.NP_NO
 	</select>
+	
 	<select id="selectNewsPaper" resultType="NewsPaperVO">
 		SELECT *
 		FROM
@@ -20,6 +21,7 @@
 		WHERE
 			NEWSPAPER.NP_NO = #{np_no}
 	</select>
+	
 	<select id="selectNewsListByPaper" resultType="NewsVO">
 		SELECT *
 		FROM
@@ -28,12 +30,14 @@
 			NP_NO = #{np_no}
 			AND NE_DATETIME LIKE CONCAT(SUBSTRING(#{ne_datetime},1,7), '%')
 	</select>
+	
 	<select id="selectNews" resultType="NewsVO">
 		SELECT *
 		FROM
 			NEWS
 		WHERE NE_NO = #{ne_no}
 	</select>
+	
 	<select id="selectNewsEmoji" resultType="NewsEmojiVO">
 		SELECT *
 		FROM
@@ -42,10 +46,12 @@
 			NE_NO = #{ne_no} AND
 			MB_ID = #{mb_id}
 	</select>
-	<insert id="insertNewsEmoji"  useGeneratedKeys="true" keyProperty="em.em_no">
+	
+	<insert id="insertNewsEmoji">
 		INSERT INTO NEWS_EMOJI(NE_NO, EM_ACT, MB_ID, EM_DATETIME) VALUES
-		(#{em.ne_no}, #{em.em_act}, #{em.mb_id}, NOW())
+		(#{ne_no}, #{em_act}, #{mb_id}, NOW())
 	</insert>
+	
 	<update id="updateNewsEmojiCount">
 		UPDATE NEWS
 		<choose>
@@ -64,12 +70,66 @@
 		</choose>
 		WHERE NE_NO = #{em.ne_no}
 	</update>
+	
 	<update id="updateNewsEmoji">
 		UPDATE 
 			NEWS_EMOJI 
 		SET 
 			EM_ACT = #{em_act}, EM_DATETIME = NOW() 
 		WHERE
+			NE_NO = #{ne_no} AND MB_ID = #{mb_id}
+	</update>
+	
+	<delete id="deleteNewsEmoji">
+		DELETE FROM NEWS_EMOJI WHERE NE_NO = #{ne_no} AND MB_ID = #{mb_id}
+	</delete>
+	
+	<insert id="insertNews">
+		INSERT INTO NEWS(NE_TITLE, NE_CONTENT, MB_ID, NP_NO, NE_DATETIME) VALUES
+		(#{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW())
+	</insert>
+	
+	<select id="selectNewsLimitOne" resultType="NewsVO">
+		SELECT * FROM NEWS ORDER BY NE_NO DESC LIMIT 1
+	</select>
+	
+	<insert id="insertFile">
+		INSERT INTO FILE(FI_ORG_NAME, FI_PATH, FI_REG_NO, FI_TYPE) VALUES
+		(#{fi_org_name}, #{fi_path}, #{fi_reg_no}, #{fi_type})
+	</insert>
+	
+	<update id="updateNews">
+		UPDATE NEWS
+		SET
+			NE_TITLE = #{ne_title},
+			NE_CONTENT = #{ne_content},
+			NE_EDIT_DATE = NOW()
+		WHERE
 			NE_NO = #{ne_no}
 	</update>
+	
+	<select id="selectFileByNeNo" resultType="FileVO">
+		SELECT *
+		FROM
+			FILE
+		WHERE
+			FI_REG_NO = #{ne_no}
+	</select>
+	
+	<select id="selectFileByFiNo" resultType="FileVO">
+		SELECT *
+		FROM
+			FILE
+		WHERE
+			FI_NO = #{fi_no}
+	</select>
+	
+	<update id="deleteFile">
+		DELETE FROM FILE WHERE FI_NO = #{fi_no}
+	</update>
+	
+	<delete id="deleteNews">
+		DELETE FROM NEWS WHERE NE_NO = #{ne_no}
+	</delete>
+	
 </mapper>
