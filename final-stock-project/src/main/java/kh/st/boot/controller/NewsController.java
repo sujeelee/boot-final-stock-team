@@ -99,12 +99,8 @@ public class NewsController {
 			// 사용자가 처음으로 선택한 이모지
 			newsService.insertNewsEmoji(emoji);
 			// 새로운 반응에 대한 카운트 증가
-			if(res) {
-				newsService.updateNewsEmojiCount(emoji, 1);
-				news = newsService.getNews(emoji.getNe_no());
-			}else {
-				System.out.println("ㅗ^.^ㅗ");
-			}
+			newsService.updateNewsEmojiCount(emoji, 1);
+			news = newsService.getNews(emoji.getNe_no());
 		} else {
 			// 사용자가 다른 반응으로 바꾼 경우
 			if(prevEmoji.getEm_act() != emoji.getEm_act()) {
