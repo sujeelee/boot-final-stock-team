@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -459,32 +460,21 @@ body {
               </div>
             </nav>
           </header>
-          <div class="text">Dashboard</div>
+
       </section>
       <script>
         $(document).ready(function() {
-        let $sidebar = $(".sidebar");
-        let $closeBtn = $("#btn");
-        let $searchBtn = $(".bx-search");
-
-        $closeBtn.on("click", function() {
-            $sidebar.toggleClass("open");
+        $("#btn").on("click", function() {
+            $(".sidebar").toggleClass("open");
             menuBtnChange(); // calling the function(optional)
         });
-
-        $searchBtn.on("click", function() { // Sidebar open when you click on the search icon
-            $sidebar.toggleClass("open");
-            menuBtnChange(); // calling the function(optional)
-        });
-
         // following are the code to change sidebar button(optional)
         function menuBtnChange() {
-            if ($sidebar.hasClass("open")) {
-            $closeBtn.removeClass("bx-menu").addClass("bx-menu-alt-right"); // replacing the icons class
+            if ( $(".sidebar").hasClass("open")) {
+            $(".sidebar").removeClass("bx-menu").addClass("bx-menu-alt-right"); // replacing the icons class
             } else {
-            $closeBtn.removeClass("bx-menu-alt-right").addClass("bx-menu"); // replacing the icons class
-            }
-        }
+            $(".sidebar").removeClass("bx-menu-alt-right").addClass("bx-menu"); // replacing the icons class
+            }}
         });
       </script>
 </body>

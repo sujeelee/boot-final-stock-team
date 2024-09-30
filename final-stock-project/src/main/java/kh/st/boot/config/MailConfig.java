@@ -17,14 +17,14 @@ public class MailConfig {
         mailSender.setPort(587); // 구글은 587 사용
 
         mailSender.setUsername("bnbz201@gmail.com"); 
-        mailSender.setPassword("ckal tvkx hcng ncae"); //앱비밀번호      
+        mailSender.setPassword("evif fnob yklx yyzl"); //앱비밀번호      
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true"); //보안설정
         props.put("mail.smtp.starttls.required", "true"); // 보안설정
-        props.put("mail.debug", "true");  // 디버깅을 위해 true 설정
+        props.put("mail.debug", "false");  // 디버깅을 위해 true 설정
         props.put("mail.smtp.ssl.protocols", "TLSv1.2"); // 보안설정
 
         return mailSender;

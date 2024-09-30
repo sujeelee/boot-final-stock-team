@@ -254,6 +254,7 @@
     display: none;
   }
 }
+
 /* 사이드바가 열렸을 때 로그인 버튼 이동 */
 .sidebar-open .login {
   margin-right: 270px; /* 사이드바 너비보다 약간 더 많이 띄움 */
@@ -261,3 +262,4 @@
 .sidebar, .login, .header, li.profile {
   transition: all 0.5s ease-in-out; /* 부드러운 가속과 감속 */
 }
+

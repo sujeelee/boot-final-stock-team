@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MailVO {
     private int evc_id;
-    private String evc_mb_id;
+    private String evc_email;
     private int evc_code;
 }

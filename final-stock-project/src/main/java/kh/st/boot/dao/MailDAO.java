@@ -4,8 +4,8 @@ import kh.st.boot.model.vo.MailVO;
 
 public interface MailDAO {
 
-	boolean setMailCode(String ec_email, int code);
+	boolean setMailCode(String evc_email, int code);
 	
-	MailVO getMailCode(String ec_email);
+	MailVO getMailCode(String evc_email);
     
 }

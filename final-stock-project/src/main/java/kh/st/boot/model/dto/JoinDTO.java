@@ -22,7 +22,7 @@ public class JoinDTO {
     private String emailing; // on, null 이고 memberVO에서 1 , 0 으로 mb_emailing에 넣어주기
     
     //우편번호 주소 상세주소
-    private String zip;
+    private int zip;
     private String addr;
     private String addr2;
     
@@ -31,13 +31,15 @@ public class JoinDTO {
     private int mb_level = 1;
     private int mb_point = 50;
 
-    
+    //디버깅용
     @Override
     public String toString() {
         return "JoinDTO [id=" + id + ", pw=" + pw + ", name=" + name + ", nick=" + nick + ", ph=" + ph + ", email="
-                + email + ", birth=" + birth + ", emailing=" + emailing + ", mb_fail=" + mb_fail + ", mb_level="
-                + mb_level + ", mb_point=" + mb_point + "]";
+                + email + ", birth=" + birth + ", emailing=" + emailing + ", zip=" + zip + ", addr=" + addr + ", addr2="
+                + addr2 + ", mb_fail=" + mb_fail + ", mb_level=" + mb_level + ", mb_point=" + mb_point + "]";
     }
 
+    
+    
 
 }

@@ -13,16 +13,16 @@ public class MailServiceImp implements MailService{
     private MailDAO mailDao;
 
 	@Override
-	public boolean setMailCode(String ec_email, int code) {
-		if (ec_email == null) {
+	public boolean setMailCode(String evc_email, int code) {
+		if (evc_email == null) {
             return false;
         }
-		return mailDao.setMailCode(ec_email, code);
+		return mailDao.setMailCode(evc_email, code);
 	}
 
 	@Override
-	public boolean checkMailCode(String ec_email, int code) {
-		MailVO mailVO = mailDao.getMailCode(ec_email);
+	public boolean checkMailCode(String evc_email, int code) {
+		MailVO mailVO = mailDao.getMailCode(evc_email);
 		if (mailVO.getEvc_code() == code) {
 			return true;
 		}
