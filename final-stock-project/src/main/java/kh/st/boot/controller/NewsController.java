@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -161,7 +162,7 @@ public class NewsController {
 	
 
 	@PostMapping("/update/{ne_no}")
-	public String updatePost(Model model, @PathVariable int ne_no ,NewsVO news, HttpSession session, MultipartFile file, int num) {
+	public String updatePost(Model model, @PathVariable int ne_no ,NewsVO news, HttpSession session, MultipartFile file,@RequestParam(required = false) Integer num) {
 		//MemberVO user = (MemberVO) session.getAttribute("user");
 		MemberVO user = new MemberVO();
 		user.setMb_id("www7878");	

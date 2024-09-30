@@ -108,23 +108,6 @@
 			<version>20211205</version>
 		</dependency>
 		
-		<!-- log4j 사용하기 위한 작업 -->
-		<dependency>
-		  <groupId>org.springframework.boot</groupId>
-		  <artifactId>spring-boot-starter-web</artifactId>
-		  <exclusions>
-		    <exclusion>
-		      <groupId>org.springframework.boot</groupId>
-		      <artifactId>spring-boot-starter-logging</artifactId>
-		    </exclusion>
-		  </exclusions>
-		</dependency>
-		<!--2.1 logging -->
-		<dependency>
-		  <groupId>org.springframework.boot</groupId>
-		  <artifactId>spring-boot-starter-log4j2</artifactId>
-		</dependency>
-		
 		<!-- pom.xml -->
 		<dependency>
 		    <groupId>commons-fileupload</groupId>

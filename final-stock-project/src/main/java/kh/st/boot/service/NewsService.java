@@ -33,7 +33,7 @@ public interface NewsService {
 	
 	boolean insertNews(NewsVO news, MemberVO user, MultipartFile file);
 
-	boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, int num);
+	boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, Integer num);
 
 	boolean deleteNews(int ne_no, MemberVO user);
 

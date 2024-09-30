@@ -143,7 +143,7 @@ public class NewsServiceImp implements NewsService{
 	}
 	
 	@Override
-	public boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, int num) {
+	public boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, Integer num) {
 		if(news == null || user == null) {
 			return false;
 		}
@@ -162,6 +162,9 @@ public class NewsServiceImp implements NewsService{
 			return false;
 		}
 		uploadFile(file, news.getNe_no());
+		if(num == null) {
+			return true;
+		}
 		FileVO tmp_news = newsDao.selectFileByFiNo(num);
 		deleteFile(tmp_news);
 		return true;
