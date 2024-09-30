@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor	
 public class MemberServiceImp implements MemberService{
-
+	
 	private MemberDAO memberDao;
 	
 	private PasswordEncoder passwordEncoder;
@@ -26,22 +26,22 @@ public class MemberServiceImp implements MemberService{
             return null;
         }
         //id가 비었거나, 공백처리 되어있으면 DB처리할 필요 없이 리턴
-        if (user_.getId() == null || user_.getId().trim().length() == 0) {
+        if (user_.getUsername() == null || user_.getUsername().trim().length() == 0) {
             return null;
         }
         //pw가 비었거나, 공백처리 되어있으면 DB확인하지 않고 리턴
-        if (user_.getPw() == null || user_.getPw().trim().length() == 0) {
+        if (user_.getPassword() == null || user_.getPassword().trim().length() == 0) {
             return null;
         }
         //id 로 회원정보 DB에서 가져오기
-        MemberVO user = findById(user_.getId());
+        MemberVO user = findById(user_.getUsername());
 
         //일치하는 아이디가 없으면 null
         if (user == null) {
             return null;
         }
         //입력한 비번이, 인코딩 된 비번과 일치하는지 확인
-        if (passwordEncoder.matches(user_.getPw(), user.getMb_password())) {
+        if (passwordEncoder.matches(user_.getPassword(), user.getMb_password())) {
             //다 일치하면 fail 횟수 0 (String id 값을 넘겨주도록 하겠습니다.)
             memberDao.reset_Fail_Number(user.getMb_id());
             //유저 반환
@@ -53,7 +53,7 @@ public class MemberServiceImp implements MemberService{
         return null;
     }  
     // id로 유저 찾기
-    private MemberVO findById(String id) {
+    public MemberVO findById(String id) {
         MemberVO findUser = memberDao.findById(id);
         return findUser;//없으면 null 리턴
     }
@@ -94,22 +94,33 @@ public class MemberServiceImp implements MemberService{
         if (dup_id != null) {
             return false;
         }
-
+        
         //new user 생성
         MemberVO New_User = new MemberVO();// <- 실질적으로 DB에 저장될 VO
         New_User.setMb_id(user_.getId()); //아이디
         New_User.setMb_password(passwordEncoder.encode(user_.getPw()));//인코딩해서 저장
         New_User.setMb_name(user_.getName()); //이름
         New_User.setMb_nick(user_.getNick()); //닉네임
-        New_User.setMb_hp(user_.getHp()); //전화번호
+        //전화번호에 - 가 있으면 제거
+        if (user_.getPh().contains("-")) {
+        	String[] moStr = user_.getPh().split("-");
+        	if (moStr.length != 3) {return false;}
+        	New_User.setMb_ph(moStr[0] + moStr[1] + moStr[2]);
+		} else {
+	        New_User.setMb_ph(user_.getPh()); //전화번호
+		}
         New_User.setMb_email(user_.getEmail());
         New_User.setMb_birth(user_.getBirth());
         //addr1, 2, zip 넣어주어야 함
-        if (user_.getEmailing().equals("on")) {
-            New_User.setMb_emailing((byte) 1);
+        if (user_.getEmailing() == null) {
+        	New_User.setMb_emailing((byte) 0);
         } else {
-            New_User.setMb_emailing((byte) 0);
+            New_User.setMb_emailing((byte) 1);
         }
+        New_User.setMb_zip(user_.getZip());
+        New_User.setMb_addr(user_.getAddr());
+        New_User.setMb_addr2(user_.getAddr2());
+        //디폴트값 추가
         New_User.setMb_fail(0);
         New_User.setMb_level(1);
         New_User.setMb_point(50);
@@ -126,17 +137,10 @@ public class MemberServiceImp implements MemberService{
         return false;
     }
 
-    //이메일 인증 
-    //ajax에서 받아올 예정입니다.
-    //email은 인증받을 이메일, str은 email에 보낼 무작위 문자열 6자리 (숫자로 할까요?)
-    private boolean Check_Email(String email, String str){
-        //받은 이메일에 ,가 있으면 안됨 + @가 없으면 안됨
-        if (email.contains(",") || !email.contains("@")) {
-            //,가 있을 경우, @가 없을 경우
-            return false;
-        }
-        //send Email
-        return true;
+    
+    @Override
+    public MemberVO findIdByCookie(String sid) {
+        return memberDao.findIdByCookie(sid);
     }
 
 

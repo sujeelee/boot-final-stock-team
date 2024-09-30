@@ -12,5 +12,9 @@ public interface MemberService {
 	
 	Boolean join(JoinDTO user_);
 
+	MemberVO findIdByCookie(String sid);
+
+	MemberVO findById(String id);
+
 }
 
