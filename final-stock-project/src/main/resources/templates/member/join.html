@@ -100,11 +100,11 @@
                 <input type="button" id="email" value="이메일 유효성 검사" >
 
                 <!--/* 다음 kakao를 이용한 주소 가져오기 */-->
+                <input type="button" onclick="sample3_execDaumPostcode()" value="우편번호 찾기"><br>
                 <input type="text" id="sample3_postcode" name="zip" placeholder="우편번호" readonly>
                 <input type="text" id="sample3_address" name="addr" placeholder="주소" readonly><br>
                 <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소" >
                 <input type="text" id="sample3_extraAddress" name="addr2" placeholder="참고항목" readonly>
-                <input type="button" onclick="sample3_execDaumPostcode()" value="우편번호 찾기"><br>
 
                 <div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
                 <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
@@ -112,7 +112,7 @@
 
 
                 <input type="date" name="birth" placeholder="birth">
-
+                <input type="hidden" id="ec_checked" name="ec" value="f">
 	            <label for="remember-check">
 	                <input type="checkbox" id="remember-check" name="emailing"> <span>이메일 수신 동의 확인</span>
 	            </label>
@@ -131,8 +131,9 @@ function Email_Check(){
         return false; 
     }
     else { 
-        $('#email_input').attr("disabled", true);
+        $('#email_input').attr("readonly", true);
         getEmailCode(mail);
+        alert("이메일을 전송하였습니다. 잠시만 기다려주세요 (최대 5분정도 걸릴 수도 있습니다.)")
         return true; 
     }
 }
@@ -150,7 +151,7 @@ function getEmailCode(mail){
         },
         error: function (data, status, err) {
             alert("이메일 전송 실패! 이메일이 잘못 되었거나 잠시 후 다시 시도해 주세요.")
-            $('#email_input').attr("disabled", false);
+            $('#email_input').attr("readonly", false);
         },
 
     });
@@ -170,8 +171,9 @@ function checkEmailCode(){
         data : {evc_email : mail,
                 code : code},
         success: function (data) {
-            $('#code').attr("disabled", true);
+            $('#code').attr("readonly", true);
             $('#codeCheck').remove();
+            $('#ec_checked').val("t");
         },
         error: function (data, status, err) {
             alert("잘못된 코드입니다! 다시 확인해주세요!")

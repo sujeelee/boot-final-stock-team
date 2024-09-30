@@ -8,6 +8,6 @@
 	</insert>
 
 	<select id="getMailCode" resultType="MailVO">
-	select * from email_verification where evc_email = #{evc_email}
+	select * from email_verification where evc_email = #{evc_email} order by evc_email desc LIMIT 1
 	</select>
 </mapper>

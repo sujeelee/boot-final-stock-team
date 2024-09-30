@@ -10,7 +10,6 @@ import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
 import kh.st.boot.model.vo.MemberVO;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @Service
 @AllArgsConstructor	
@@ -118,7 +117,9 @@ public class MemberServiceImp implements MemberService{
         } else {
             New_User.setMb_emailing((byte) 1);
         }
-        
+        New_User.setMb_zip(user_.getZip());
+        New_User.setMb_addr(user_.getAddr());
+        New_User.setMb_addr2(user_.getAddr2());
         //디폴트값 추가
         New_User.setMb_fail(0);
         New_User.setMb_level(1);

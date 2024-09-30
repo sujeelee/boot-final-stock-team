@@ -43,6 +43,10 @@ public class MailController {
     //유저가 코드를 확인하는 일
     @PostMapping("/ajax/get_check")
     public @ResponseBody boolean get_Email_Check(@RequestParam("evc_email") String evc_email, @RequestParam("code") int code){
+
+        System.out.println(code);
+        System.out.println(evc_email);
+        
         return mailService.checkMailCode(evc_email, code);
     }
 
