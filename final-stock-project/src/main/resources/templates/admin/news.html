@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신문사 리스트 관리</title>
+</head>
+<body>
+    <h1>신문사 리스트 관리</h1>
+
+    <!-- 신문사 등록 -->
+    <form action="/newspaper/register" method="post">
+        <label for="name">신문사 이름:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">등록</button>
+    </form>
+
+    <!-- 신문사 목록 표시 -->
+    <h3>신문사 리스트</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>신문사 이름</th>
+                <th>사용 여부</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Thymeleaf로 데이터를 표시하는 부분 -->
+            <tr th:each="newspaper : ${newspapers}">
+                <td th:text="${newspaper.npNo}"></td>
+                <td th:text="${newspaper.npName}"></td>
+                <td th:text="${newspaper.npUse == 1 ? '사용' : '미사용'}"></td>
+                <td>
+                    <form action="/newspaper/update" method="post">
+                        <input type="hidden" name="npNo" th:value="${newspaper.npNo}">
+                        <input type="text" name="name" th:value="${newspaper.npName}">
+                        <button type="submit">수정</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/newspaper/delete" method="post">
+                        <input type="hidden" name="npNo" th:value="${newspaper.npNo}">
+                        <button type="submit">삭제</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
