@@ -20,12 +20,14 @@ public interface NewsService {
 
 	NewsEmojiVO getNewsEmoji(NewsEmojiVO emoji);
 
-	boolean insertNewsEmoji(NewsEmojiVO emoji);
+	void insertNewsEmoji(NewsEmojiVO emoji);
 
 	void updateNewsEmojiCount(NewsEmojiVO newEmoji, int i);
 
 	void updateNewsEmoji(NewsEmojiVO emoji);
 
+	void deleteNewsEmoji(NewsEmojiVO emoji);
+	
 	boolean insertNews(NewsVO news, MemberVO user);
 
 	boolean updateNews(NewsVO news, MemberVO user);

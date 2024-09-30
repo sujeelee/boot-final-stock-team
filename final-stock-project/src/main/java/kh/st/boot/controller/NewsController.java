@@ -89,17 +89,14 @@ public class NewsController {
 		emoji.setMb_id("www7878");
 		NewsVO news = newsService.getNews(emoji.getNe_no());
 		// 이전에 선택한 이모지
+		System.out.println(emoji);
 		NewsEmojiVO prevEmoji = newsService.getNewsEmoji(emoji);
 		if(prevEmoji == null) {
 			// 사용자가 처음으로 선택한 이모지
-			boolean res = newsService.insertNewsEmoji(emoji);
+			newsService.insertNewsEmoji(emoji);
 			// 새로운 반응에 대한 카운트 증가
-			if(res) {
-				newsService.updateNewsEmojiCount(emoji, 1);
-				news = newsService.getNews(emoji.getNe_no());
-			}else {
-				return null;
-			}
+			newsService.updateNewsEmojiCount(emoji, 1);
+			news = newsService.getNews(emoji.getNe_no());
 		} else {
 			// 사용자가 다른 반응으로 바꾼 경우
 			if(prevEmoji.getEm_act() != emoji.getEm_act()) {
@@ -110,6 +107,13 @@ public class NewsController {
 				// 이모지 업데이트
 				newsService.updateNewsEmoji(emoji);
 				news = newsService.getNews(emoji.getNe_no());
+			}
+			// 사용자가 같은 반응을 클릭한 경우
+			else {
+				newsService.updateNewsEmojiCount(prevEmoji, -1);
+				newsService.deleteNewsEmoji(emoji);
+				news = newsService.getNews(emoji.getNe_no());
+				
 			}
 		}
 		map.put("news", news);

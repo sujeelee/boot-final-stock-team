@@ -58,11 +58,15 @@ public class NewsServiceImp implements NewsService{
 	}
 
 	@Override
-	public boolean insertNewsEmoji(NewsEmojiVO emoji) {
+	public void insertNewsEmoji(NewsEmojiVO emoji) {
 		if(emoji == null) {
-			return false;
+			return;
 		}
-		return newsDao.insertNewsEmoji(emoji);
+		try {
+			newsDao.insertNewsEmoji(emoji);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -79,6 +83,14 @@ public class NewsServiceImp implements NewsService{
 			return;
 		}
 		newsDao.updateNewsEmoji(emoji);
+	}
+	
+	@Override
+	public void deleteNewsEmoji(NewsEmojiVO emoji) {
+		if(emoji == null) {
+			return;
+		}
+		newsDao.deleteNewsEmoji(emoji);
 	}
 
 	@Override

@@ -20,15 +20,18 @@ public interface NewsDAO {
 
 	NewsEmojiVO selectNewsEmoji(NewsEmojiVO emoji);
 
-	boolean insertNewsEmoji(@Param("em")NewsEmojiVO emoji);
+	void insertNewsEmoji(NewsEmojiVO emoji);
 
 	void updateNewsEmojiCount(@Param("em")NewsEmojiVO emoji, @Param("count")int count);
 
 	void updateNewsEmoji(NewsEmojiVO emoji);
+	
+	void deleteNewsEmoji(NewsEmojiVO emoji);
 
 	boolean insertNews(NewsVO news);
 
 	boolean updateNews(NewsVO news);
 
 	boolean deleteNews(int ne_no);
+
 }
