@@ -37,7 +37,7 @@ ex) 19960908',
 -- 이메일 확인을 위한 DB추가 evc_me_id = id, code는 6자리 영, 숫자
 create table `email_Verification`(
 	`evc_id` INT(11) primary key AUTO_INCREMENT	NOT NULL,
-	`evc_mb_id` VARCHAR(255) null,
+	`evc_email` VARCHAR(255) null,
 	`evc_code` CHAR(6)
 );
 
@@ -299,13 +299,6 @@ REFERENCES `member` (
 
 ALTER TABLE `account` ADD CONSTRAINT `FK_member_TO_account_1` FOREIGN KEY (
 	`mb_no`
-)
-REFERENCES `member` (
-	`mb_no`
-);
-
-ALTER TABLE `Email_Verification` ADD CONSTRAINT `FK_member_TO_Email_Verification_1` FOREIGN KEY (
-	`evc_id`
 )
 REFERENCES `member` (
 	`mb_no`

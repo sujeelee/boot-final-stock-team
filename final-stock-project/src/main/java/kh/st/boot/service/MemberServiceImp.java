@@ -95,22 +95,31 @@ public class MemberServiceImp implements MemberService{
         if (dup_id != null) {
             return false;
         }
-
+        
         //new user 생성
         MemberVO New_User = new MemberVO();// <- 실질적으로 DB에 저장될 VO
         New_User.setMb_id(user_.getId()); //아이디
         New_User.setMb_password(passwordEncoder.encode(user_.getPw()));//인코딩해서 저장
         New_User.setMb_name(user_.getName()); //이름
         New_User.setMb_nick(user_.getNick()); //닉네임
-        New_User.setMb_ph(user_.getPh()); //전화번호
+        //전화번호에 - 가 있으면 제거
+        if (user_.getPh().contains("-")) {
+        	String[] moStr = user_.getPh().split("-");
+        	if (moStr.length != 3) {return false;}
+        	New_User.setMb_ph(moStr[0] + moStr[1] + moStr[2]);
+		} else {
+	        New_User.setMb_ph(user_.getPh()); //전화번호
+		}
         New_User.setMb_email(user_.getEmail());
         New_User.setMb_birth(user_.getBirth());
         //addr1, 2, zip 넣어주어야 함
-        if (user_.getEmailing().equals("on")) {
-            New_User.setMb_emailing((byte) 1);
+        if (user_.getEmailing() == null) {
+        	New_User.setMb_emailing((byte) 0);
         } else {
-            New_User.setMb_emailing((byte) 0);
+            New_User.setMb_emailing((byte) 1);
         }
+        
+        //디폴트값 추가
         New_User.setMb_fail(0);
         New_User.setMb_level(1);
         New_User.setMb_point(50);

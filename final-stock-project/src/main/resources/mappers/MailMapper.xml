@@ -3,11 +3,11 @@
 <mapper namespace="kh.st.boot.dao.MailDAO">
 
 	<insert id="setMailCode">
-	insert into email_verification(evc_mb_id, evc_code)
-	value(#{ec_email}, #{code})
+	insert into email_verification(evc_email, evc_code)
+	value(#{evc_email}, #{code})
 	</insert>
 
 	<select id="getMailCode" resultType="MailVO">
-	select * from email_verification where evc_mb_id = #{ec_email}
+	select * from email_verification where evc_email = #{evc_email}
 	</select>
 </mapper>

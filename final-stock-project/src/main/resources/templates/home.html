@@ -5,18 +5,12 @@
 	layout:decorate="~{layout/layout.html}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>title</title>
 </head>
 <body>
 	<main layout:fragment="content">
-		<h1>주식사이트 만들긔</h1>
-		<p th:text="${user}"></p>
-		
-		<p sec:authorize="isAuthenticated()">
-			<span th:text="${#authentication.principal.member.mb_id}"></span>님 반갑습니다.<br>
-			당신의 이메일은 <span th:text="${#authentication.principal.member.mb_email}"></span> 입니다.
-		</p>
-		
+		<h1>이벤트 페이지</h1>
+
 	</main>
 </body>
 </html>
