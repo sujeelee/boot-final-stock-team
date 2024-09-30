@@ -16,11 +16,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.MemberService;
+import kh.st.boot.service.MemberServiceImp;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
-	@Autowired
-	private MemberService memberService;
+
+	private MemberService memberService = new MemberServiceImp();
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,Authentication authentication) throws IOException, ServletException {
@@ -32,38 +35,43 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 			UserDetails user_ = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 			System.out.println(user_.getUsername());
-			MemberVO user = memberService.findById(user_.getUsername());
-			session.setAttribute("user", user);
-			System.out.println(user);
-
-			// 자동 로그인이 false이면 리턴
-			if (!user.isAuto_login()) {
-				response.sendRedirect("/");
-				return;
-			}
-
-			// 자동 로그인이 true이면 쿠키 생성
-			String sid = session.getId(); // 세션 ID 가져오기
-
-			// AUTO_LOGIN 쿠키 생성
-			Cookie cookie = new Cookie("AUTO_LOGIN", sid);
-
-			// 쿠키 유효기간 설정 (7일)
-			int time = 60 * 60 * 24 * 7;
-			cookie.setMaxAge(time);
-			cookie.setPath("/"); // 모든 경로에서 사용 가능
-
-			// DB에 쿠키 정보 저장
-			Date date = new Date(System.currentTimeMillis() + time * 1000);
-			user.setMb_cookie(sid); // 세션 ID를 사용자 정보에 저장
-			user.setMb_cookie_limit(date); // 만료일 설정
-
-			memberService.setUserCookie(user); // DB에 사용자 쿠키 정보 업데이트
-
-			// 쿠키를 클라이언트에 전송
-			response.addCookie(cookie);
+			
+			
+			log.info(memberService);
+			
+			
+//			session.setAttribute("user", user);
+//			System.out.println(user);
+//
+//			// 자동 로그인이 false이면 리턴
+//			if (!user.isAuto_login()) {
+//				response.sendRedirect("/");
+//				return;
+//			}
+//
+//			// 자동 로그인이 true이면 쿠키 생성
+//			String sid = session.getId(); // 세션 ID 가져오기
+//
+//			// AUTO_LOGIN 쿠키 생성
+//			Cookie cookie = new Cookie("AUTO_LOGIN", sid);
+//
+//			// 쿠키 유효기간 설정 (7일)
+//			int time = 60 * 60 * 24 * 7;
+//			cookie.setMaxAge(time);
+//			cookie.setPath("/"); // 모든 경로에서 사용 가능
+//
+//			// DB에 쿠키 정보 저장
+//			Date date = new Date(System.currentTimeMillis() + time * 1000);
+//			user.setMb_cookie(sid); // 세션 ID를 사용자 정보에 저장
+//			user.setMb_cookie_limit(date); // 만료일 설정
+//
+//			memberService.setUserCookie(user); // DB에 사용자 쿠키 정보 업데이트
+//
+//			// 쿠키를 클라이언트에 전송
+//			response.addCookie(cookie);
 		} else {
 			String user = "anonymousUser";
+			log.info("user");
 		}
 		response.sendRedirect("/");//메인으로
 

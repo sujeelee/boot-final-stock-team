@@ -10,11 +10,13 @@ import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
 import kh.st.boot.model.vo.MemberVO;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Service
 @AllArgsConstructor	
+@NoArgsConstructor
 public class MemberServiceImp implements MemberService{
-
+	
 	private MemberDAO memberDao;
 	
 	private PasswordEncoder passwordEncoder;

@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
 import org.springframework.security.web.SecurityFilterChain;
 
 import kh.st.boot.handler.LoginSuccessHandler;
@@ -13,7 +12,7 @@ import kh.st.boot.model.util.UserRole;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
-
+	
 	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -44,7 +43,7 @@ public class SecurityConfig{
             		.logoutSuccessUrl("/")
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
-            		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
+            		.deleteCookies("JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
     }
