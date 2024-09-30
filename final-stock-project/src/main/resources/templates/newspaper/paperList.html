@@ -95,19 +95,24 @@
 	    .news-content-box {
 	        padding: 12px 0 21px;
 	    }
-	
-	    .news-content a {
-	        /* 여러 줄 자르기 추가 스타일 */
-	        display: -webkit-box;
-	        -webkit-line-clamp: 3;
-	        -webkit-box-orient: vertical;
-	        overflow: hidden;
-	        text-overflow: ellipsis;
-	        line-height: 1.2;
-	        height: 3.6em;
-	        font-size: 16px;
-	        word-wrap: break-word;
-	    }
+	    
+	    .news-content img {
+		    max-width: 100%;
+		    height: auto;
+		    display: block;
+		    margin: 10px 0;
+		}
+		
+		.news-title a, 
+		.news-content a {
+		    display: -webkit-box;
+		    -webkit-line-clamp: 2;
+		    -webkit-box-orient: vertical;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    white-space: normal;
+		}
+
 	
 	    @media (max-width: 1200px) {
 	        .news-list {

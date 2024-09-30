@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<style type="text/css">
+	.entire {
+		width: 600px;
+		margin: 0 auto;
+	}
 	
 	header {
 	    text-align: left;
@@ -126,59 +130,61 @@
 </head>
 <body>
 	<main layout:fragment="content">
-		<header>
-            <h1 th:text="${newspaper.np_name}"></h1>
-            <h2 th:text="${news.ne_title}"></h2>
-            <div class="sub-info">
-                <span>입력</span>
-                <span th:text="${#dates.format(news.ne_datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                <span th:text="${news.ne_name} + ' 기자'"></span>
-            </div>
-        </header>
-        <div class="reaction-bar">
-            <div class="reaction">
-                <span>👏</span>
-                <span>추천수 (<span th:text="${totalCount}"></span>)</span>
-            </div>
-        </div>
-        <article>
-            <img th:if="${file != null}" th:src="@{'/uploads' + ${file.fi_path}}" alt="이미지">			
-            <div th:utext="${news.ne_content}" style="min-height: 400px; height: auto; font-size: 18px;"></div>
-        </article>
-         <section class="recommend-section">
-            <h3>이 기사를 추천합니다</h3>
-            <div class="icon-bar">
-			    <label class="icon-item" for="em_1">
-			        <input type="checkbox" name="em_act" id="em_1" value="1" onclick="checkOnlyOne(this);">
-			        <span>😁</span>
-			        <span>기뻐요</span>
-			        <span th:text="${news.ne_happy}"></span>
-			    </label>
-			    <label class="icon-item" for="em_2">
-			        <input type="checkbox" name="em_act" id="em_2" value="2" onclick="checkOnlyOne(this);">
-			        <span>🤬</span>
-			        <span>화나요</span>
-			        <span th:text="${news.ne_angry}"></span>
-			    </label>
-			    <label class="icon-item" for="em_3">
-			        <input type="checkbox" name="em_act" id="em_3" value="3" onclick="checkOnlyOne(this);">
-			        <span>😲</span>
-			        <span>황당해요</span>
-			        <span th:text="${news.ne_absurd}"></span>
-			    </label>
-			    <label class="icon-item" for="em_4">
-			        <input type="checkbox" name="em_act" id="em_4" value="4" onclick="checkOnlyOne(this);">
-			        <span>😭</span>
-			        <span>슬퍼요</span>
-			        <span th:text="${news.ne_sad}"></span>
-			    </label>
-			</div>
-        </section>
-        <div class="footer mb-5">
-            <a th:text="${newspaper.np_name} + ' 언론사홈 바로가기'"></a>
-        </div>
-        <a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}" class="btn btn-outline-dark">수정</a>
-        <a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}" class="btn btn-outline-dark">삭제</a>
+		<div class="entire">
+			<header>
+	            <h1 th:text="${newspaper.np_name}"></h1>
+	            <h2 th:text="${news.ne_title}"></h2>
+	            <div class="sub-info">
+	                <span>입력</span>
+	                <span th:text="${#dates.format(news.ne_datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+	                <span th:text="${news.ne_name} + ' 기자'"></span>
+	            </div>
+	        </header>
+	        <div class="reaction-bar">
+	            <div class="reaction">
+	                <span>👏</span>
+	                <span>추천수 (<span th:text="${totalCount}"></span>)</span>
+	            </div>
+	        </div>
+	        <article>
+	            <img th:if="${file != null}" th:src="@{'/uploads' + ${file.fi_path}}" alt="이미지" style="width: 580px; height: 480px;">			
+	            <div th:utext="${news.ne_content}" style="min-height: 400px; height: auto; font-size: 18px;"></div>
+	        </article>
+	         <section class="recommend-section">
+	            <h3>이 기사를 추천합니다</h3>
+	            <div class="icon-bar">
+				    <label class="icon-item" for="em_1">
+				        <input type="checkbox" name="em_act" id="em_1" value="1" onclick="checkOnlyOne(this);">
+				        <span>😁</span>
+				        <span>기뻐요</span>
+				        <span th:text="${news.ne_happy}"></span>
+				    </label>
+				    <label class="icon-item" for="em_2">
+				        <input type="checkbox" name="em_act" id="em_2" value="2" onclick="checkOnlyOne(this);">
+				        <span>🤬</span>
+				        <span>화나요</span>
+				        <span th:text="${news.ne_angry}"></span>
+				    </label>
+				    <label class="icon-item" for="em_3">
+				        <input type="checkbox" name="em_act" id="em_3" value="3" onclick="checkOnlyOne(this);">
+				        <span>😲</span>
+				        <span>황당해요</span>
+				        <span th:text="${news.ne_absurd}"></span>
+				    </label>
+				    <label class="icon-item" for="em_4">
+				        <input type="checkbox" name="em_act" id="em_4" value="4" onclick="checkOnlyOne(this);">
+				        <span>😭</span>
+				        <span>슬퍼요</span>
+				        <span th:text="${news.ne_sad}"></span>
+				    </label>
+				</div>
+	        </section>
+	        <div class="footer mb-5">
+	            <a th:text="${newspaper.np_name} + ' 언론사홈 바로가기'"></a>
+	        </div>
+	        <a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}" class="btn btn-outline-dark">수정</a>
+			<a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}" class="btn btn-outline-dark">삭제</a>
+		</div>
         <script th:inline="javascript">
 	        function checkOnlyOne(act) {
 	            const checkboxes = $("input[name='em_act']");
