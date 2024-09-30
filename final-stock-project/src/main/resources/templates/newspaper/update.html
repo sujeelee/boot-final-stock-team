@@ -12,11 +12,18 @@
 <body>
 	<main layout:fragment="content">
 		<h1>뉴스 수정</h1>
-		<p th:text="${np_no}"></p>
-		<form th:action="@{/newspaper/update/{ne_no}(ne_no=${ne_no})}" method="post">
+		<form th:action="@{/newspaper/update/{ne_no}(ne_no=${ne_no})}" method="post" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="ne_title">제목:</label>
 				<input type="text" class="form-control" th:field="${news.ne_title}" readonly>
+			</div>
+			<div class="form-group box-att">
+				<label>첨부파일:</label>
+				<br>
+				<div class="form-control d-flex justify-content-between">
+					<span th:text="${file.fi_org_name}"></span>
+					<a href="javascript:void(0);" class="btn-del" th:data-num="${file.fi_no}">X</a>
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="ne_content">내용:</label>
@@ -24,12 +31,23 @@
 			</div>
 			<button type="submit" class="btn btn-outline-dark col-12 mb-2">수정</button>
 		</form>
-		<script type="text/javascript">
+		<script>
 		 	$('#ne_content').summernote({
 				placeholder: '내용을 작성하세요',
 				tabsize: 2,
 				height: 400
 			})
+		</script>
+		<script th:inline="javascript">
+		$('.btn-del').click(function(){
+    		var fi_no = $(this).data('num');
+    		console.log(fi_no);
+    		var str1 = `<input type="hidden" name="num" value="`+fi_no+`">`;
+    		var str2 = `<input type="file" name="file"/>`
+    		$('.box-att').append(str1);
+    		$('.box-att').append(str2);
+    		$(this).parent().remove();
+    	});
 		</script>
 	</main>
 </body>

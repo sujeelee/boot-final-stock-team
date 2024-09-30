@@ -3,6 +3,9 @@ package kh.st.boot.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
@@ -28,11 +31,13 @@ public interface NewsService {
 
 	void deleteNewsEmoji(NewsEmojiVO emoji);
 	
-	boolean insertNews(NewsVO news, MemberVO user);
+	boolean insertNews(NewsVO news, MemberVO user, MultipartFile file);
 
-	boolean updateNews(NewsVO news, MemberVO user);
+	boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, int num);
 
 	boolean deleteNews(int ne_no, MemberVO user);
+
+	FileVO getFile(int ne_no);
 
 }
 

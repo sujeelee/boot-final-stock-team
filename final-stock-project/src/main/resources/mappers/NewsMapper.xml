@@ -89,6 +89,15 @@
 		(#{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW())
 	</insert>
 	
+	<select id="selectNewsLimitOne" resultType="NewsVO">
+		SELECT * FROM NEWS ORDER BY NE_NO DESC LIMIT 1
+	</select>
+	
+	<insert id="insertFile">
+		INSERT INTO FILE(FI_ORG_NAME, FI_PATH, FI_REG_NO, FI_TYPE) VALUES
+		(#{fi_org_name}, #{fi_path}, #{fi_reg_no}, #{fi_type})
+	</insert>
+	
 	<update id="updateNews">
 		UPDATE NEWS
 		SET
@@ -97,6 +106,26 @@
 			NE_EDIT_DATE = NOW()
 		WHERE
 			NE_NO = #{ne_no}
+	</update>
+	
+	<select id="selectFileByNeNo" resultType="FileVO">
+		SELECT *
+		FROM
+			FILE
+		WHERE
+			FI_REG_NO = #{ne_no}
+	</select>
+	
+	<select id="selectFileByFiNo" resultType="FileVO">
+		SELECT *
+		FROM
+			FILE
+		WHERE
+			FI_NO = #{fi_no}
+	</select>
+	
+	<update id="deleteFile">
+		DELETE FROM FILE WHERE FI_NO = #{fi_no}
 	</update>
 	
 	<delete id="deleteNews">

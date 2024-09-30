@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
@@ -29,9 +30,19 @@ public interface NewsDAO {
 	void deleteNewsEmoji(NewsEmojiVO emoji);
 
 	boolean insertNews(NewsVO news);
+	
+	NewsVO selectNewsLimitOne();
 
+	void insertFile(FileVO fileVo);
+	
 	boolean updateNews(NewsVO news);
 
 	boolean deleteNews(int ne_no);
+
+	FileVO selectFileByNeNo(int ne_no);
+
+	FileVO selectFileByFiNo(int fi_no);
+	
+	void deleteFile(int fi_no);
 
 }
