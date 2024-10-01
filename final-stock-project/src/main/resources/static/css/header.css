@@ -10,11 +10,15 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 header {
   background-color: #ffffff;
-  
 }
 .header {
   display: flex;
@@ -29,7 +33,7 @@ header {
   transition: margin-left 0.3s ease;
 }
 .navbar {
-  display: flex; 
+  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
@@ -50,14 +54,30 @@ header {
   padding: 10px;
 }
 
+.login {
+  margin-right: 5%;
+}
+
 .login a {
   font-size: 14px; /* 글자 크기 조정 */
   font-weight: bold; /* 굵은 글씨 */
   color: #096c8a; /* 청록색 글씨 */
   background-color: transparent; /* 투명 배경 */
   padding: 0; /* 패딩 없애기 */
+  margin-left: 10px;
   text-decoration: none; /* 아래선 제거 */
-  margin-right: 80px;
+  position: relative; /* 기본적으로 요소가 flow에 따라 위치 */
+  transition: color 0.3s; /* 호버 시 부드러운 전환 */
+}
+
+.login button {
+  font-size: 14px; /* 글자 크기 조정 */
+  font-weight: bold; /* 굵은 글씨 */
+  color: #096c8a; /* 청록색 글씨 */
+  background-color: transparent; /* 투명 배경 */
+  padding: 0; /* 패딩 없애기 */
+  margin-left: 10px;
+  text-decoration: none; /* 아래선 제거 */
   position: relative; /* 기본적으로 요소가 flow에 따라 위치 */
   transition: color 0.3s; /* 호버 시 부드러운 전환 */
 }
