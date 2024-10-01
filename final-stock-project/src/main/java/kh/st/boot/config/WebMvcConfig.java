@@ -2,6 +2,7 @@ package kh.st.boot.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kh.st.boot.interceptor.GuestInterceptor;
@@ -31,4 +32,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/login", "/join"); // 특정 경로 제외
 
     }
+    
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:///D:/uploads/");
+    }
+
 }
