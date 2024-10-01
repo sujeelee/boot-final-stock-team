@@ -24,4 +24,5 @@ public class NewsVO {
 	private int ne_sad;			// 슬퍼요 누적
 	
 	private String np_name; 	// 신문사 이름
+	private String fi_path;		// 파일 저장된 패스명
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.EventDAO">
+
+    <select id="getEventList" resultType="kh.st.boot.model.dto.EventDTO">
+        select ev_no, ev_title, ev_start, ev_end, ev_status, fi_path 
+        from event 
+        left join file on  ev_no = fi_reg_no 
+        where fi_type = "event" and ev_status = #{eventStatus}
+    </select>
+
+    <select id="getEvent" resultType="EventVO">
+        select *, fi_path
+        from event
+        left join file on ev_on = fi_reg_no
+        where fi_type = "event" and ev_status = #{eventStatus} and ev_no = #{ev_no}
+    </select>
+	
+</mapper>

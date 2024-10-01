@@ -33,7 +33,7 @@
 
     <insert id="join">
     insert into member(mb_id, mb_password, mb_name, mb_nick, mb_ph, mb_email, mb_fail, mb_level, mb_point, mb_emailing, mb_datetime, mb_edit_date, mb_zip, mb_addr, mb_addr2, mb_birth)
-    value(#{mb_id}, #{mb_password}, #{mb_name}, #{mb_nick}, #{mb_ph}, #{mb_email}, 0 , 1, 50, #{mb_emailing}, now(), now(),  #{mb_zip}, #{mb_addr} #{mb_addr2}, #{mb_birth})
+    value(#{mb_id}, #{mb_password}, #{mb_name}, #{mb_nick}, #{mb_ph}, #{mb_email}, 0 , 1, 50, #{mb_emailing}, now(), now(),  #{mb_zip}, #{mb_addr}, #{mb_addr2}, #{mb_birth})
     </insert>
 
     <select id="findIdByCookie" resultType="MemberVO">

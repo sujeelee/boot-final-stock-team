@@ -137,10 +137,10 @@ CREATE TABLE `news` (
 	`ne_datetime`	DATETIME	NULL,
 	`ne_edit_date`	DATETIME	NULL,
 	`ne_name`	varchar(255)	NULL,
-	`ne_happy`	int(11)	NULL,
-	`ne_angry`	int(11)	NULL,
-	`ne_absurd`	int(11)	NULL,
-	`ne_sad`	int(11)	NULL
+	`ne_happy`	int(11)	DEFAULT 0,
+	`ne_angry`	int(11)	DEFAULT 0,
+	`ne_absurd`	int(11)	DEFAULT 0,
+	`ne_sad`	int(11)	DEFAULT 0
 );
 
 CREATE TABLE `member_lv` (
@@ -176,7 +176,7 @@ CREATE TABLE `event` (
 	`ev_datetime`	DATETIME	NULL,
 	`ev_start`	DATETIME	NULL,
 	`ev_end`	DATETIME	NULL,
-	`ev_status`	char(2)	NULL,
+	`ev_status`	char(7)	DEFAULT "Ending",
 	`ev_cnt`	int(11)	NULL
 );
 
@@ -303,3 +303,15 @@ ALTER TABLE `account` ADD CONSTRAINT `FK_member_TO_account_1` FOREIGN KEY (
 REFERENCES `member` (
 	`mb_no`
 );
+
+ALTER TABLE `file` ADD CONSTRAINT `FK_news_TO_file` FOREIGN KEY (
+	`fi_reg_no`
+)
+REFERENCES `news` (
+	`ne_no`
+)
+ON DELETE CASCADE;
+
+
+-- Group By 에러 해결 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

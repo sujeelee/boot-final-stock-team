@@ -34,8 +34,6 @@ public class MemberController {
     @PostMapping("/login")
     public String login_post(Model mo, LoginDTO user_){
     	//화면에서 id, pw, re(자동로그인 여부 => on, null로 값이 전달됨) 가져옴
-    	System.out.println("입력받은 로그인 정보 : " + user_);//디버깅용
-
         //받은 정보를 DB에서 있는지 없는지 확인 함 
         MemberVO user = memberService.login(user_);
 
@@ -69,7 +67,7 @@ public class MemberController {
         if (user == null) {
 
             mo.addAttribute("msg", "로그인 상태가 아닙니다.");
-            mo.addAttribute("url", "/home");
+            mo.addAttribute("url", "/");
             return "util/msg";
         }
 
@@ -100,7 +98,6 @@ public class MemberController {
     @PostMapping("/join")
     public String join_post(Model mo, JoinDTO user_, String ec) {
 
-    	System.out.println("회원가입시 정보 : " + user_);
         Boolean res = false;
         
         //이메일 체크가 되었으면 t 아니면 f

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.StockDAO">
+
+	<select id="getStockCompany" resultType="StockVO">
+		select * from stock where st_code = #{st_code}
+	</select>
+	<update id="companyType">
+		update stock 
+		set st_type = #{st_type}
+		where st_code = #{st_code}
+	</update>
+	<insert id="insertStockCompany">
+		insert into stock
+		set st_code = #{st.st_code},
+			st_name = #{st.st_name},
+			st_qty = #{st.st_qty},
+			st_board_cnt = 0,
+			st_status = #{st.st_status},
+			st_issue = #{st.st_issue},
+			st_type = #{st.st_type}
+	</insert>
+	<select id="getCompanyList" resultType="StockVO">
+		select * from stock where st_status != "상장폐지"
+	</select>
+	<select id="getStockPrice" resultType="StockPriceVO">
+		select * from stock_info where si_date = #{si_date} and st_code = #{st_code}
+	</select>
+	<insert id="insertStockPrice">
+		insert into stock_info
+		set	si_date = #{si.si_date},
+			si_price = #{si.si_price},
+			st_code = #{si.st_code},
+			si_vs = #{si.si_vs},
+			si_fltRt = #{si.si_fltRt},
+			si_mrkTotAmt = #{si.si_mrkTotAmt},
+			si_hipr = #{si.si_hipr},
+			si_lopr = #{si.si_lopr},
+			si_trqu = #{si.si_trqu}
+	</insert>
+</mapper>

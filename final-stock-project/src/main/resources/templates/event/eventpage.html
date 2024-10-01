@@ -3,26 +3,17 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
 	layout:decorate="~{layout/layout.html}">
+    
+	
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<main layout:fragment="content">
-<<<<<<< Updated upstream
-		<h1>주식사이트 만들긔</h1>
-		<p th:text="${user}"></p>
-		
-		<p sec:authorize="isAuthenticated()">
-			<span th:text="${#authentication.principal.member.mb_id}"></span>님 반갑습니다.<br>
-			당신의 이메일은 <span th:text="${#authentication.principal.member.mb_email}"></span> 입니다.
-		</p>
-		
-=======
 
-    <style>
+	<main layout:fragment="content">
+   <style>
   .event-container {
-  margin-top: 50px;
   padding: 10px;
   border: 2px solid #ccc; /* 외각선 */
   border-radius: 10px; /* 둥근 모서리 */
@@ -284,7 +275,6 @@
             </ul>
         </div>
     </div>
->>>>>>> Stashed changes
 	</main>
 </body>
 </html>

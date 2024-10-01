@@ -163,7 +163,7 @@ $('#codeCheck').click(checkEmailCode);
 function checkEmailCode(){
     const mail = $('#email_input').val();
     const code = $('#code').val();
-    alert(mail);
+
     $.ajax({
         url: '/mail/ajax/get_check',
         method: 'post',
@@ -174,6 +174,7 @@ function checkEmailCode(){
             $('#code').attr("readonly", true);
             $('#codeCheck').remove();
             $('#ec_checked').val("t");
+            alert("Email 인증 성공");
         },
         error: function (data, status, err) {
             alert("잘못된 코드입니다! 다시 확인해주세요!")
