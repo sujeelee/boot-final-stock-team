@@ -34,7 +34,7 @@ public class NewsController {
 	private NewsService newsService;
 	
 	@GetMapping("")
-	public String newsList(Model model) {
+	public String newspaperList(Model model) {
 		List<NewsPaperVO> list = newsService.getNewsPaperList();
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -56,7 +56,7 @@ public class NewsController {
 	}
 	
 	@GetMapping("/newsList/{np_no}/{ne_datetime}")
-	public String list(Model model, @PathVariable int np_no, @PathVariable String ne_datetime) {
+	public String newsList(Model model, @PathVariable int np_no, @PathVariable String ne_datetime) {
 		NewsPaperVO newspaper = newsService.getNewsPaper(np_no);
 		List<NewsVO> newsList = newsService.getNewsList(np_no, ne_datetime);
 		model.addAttribute("newspaper",newspaper);
