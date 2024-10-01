@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import kh.st.boot.handler.LoginFailHandler;
 import kh.st.boot.handler.LoginSuccessHandler;
 import kh.st.boot.model.util.UserRole;
 import kh.st.boot.service.MemberDetailService;
@@ -41,6 +42,7 @@ public class SecurityConfig{
 //                .passwordParameter("password") // 비밀번호 파라미터명
                 .defaultSuccessUrl("/")
                 .successHandler(new LoginSuccessHandler())
+                .failureHandler(new LoginFailHandler())
             )
             .rememberMe((rm)->rm
             		.key("team1")
