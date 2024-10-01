@@ -4,50 +4,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>신문사 리스트 관리</title>
+    <style>
+        /* 페이지 전체 스타일 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            margin: 30px 0;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        /* 검색 폼 스타일 */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-container form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+        }
+
+        .search-container select, .search-container input[type="text"] {
+            padding: 12px;
+            border: 2px solid #2980b9;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-container select {
+            width: 20%;
+        }
+
+        .search-container input[type="text"] {
+            width: 60%;
+        }
+
+        .search-container button {
+            padding: 12px 20px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .search-container button:hover {
+            background-color: #216f99;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        td {
+            color: #555;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
     <h1>신문사 리스트 관리</h1>
 
-    <!-- 신문사 등록 -->
-    <form action="/newspaper/register" method="post">
-        <label for="name">신문사 이름:</label>
-        <input type="text" id="name" name="name" required>
-        <button type="submit">등록</button>
-    </form>
+    <!-- 검색 폼 -->
+    <div class="search-container">
+        <form id="searchForm">
+            <select name="searchType" id="searchType">
+                <option value="name">신문사명</option>
+                <option value="code">신문사 기본코드</option>
+                <option value="title">뉴스 제목</option>
+                <option value="memberId">작성 회원 아이디</option>
+                <option value="author">작성자</option>
+            </select>
+            <input type="text" id="searchKeyword" placeholder="검색어 입력" required>
+            <button type="submit">검색</button>
+        </form>
+    </div>
 
     <!-- 신문사 목록 표시 -->
-    <h3>신문사 리스트</h3>
-    <table border="1">
+    <table>
         <thead>
             <tr>
-                <th>번호</th>
-                <th>신문사 이름</th>
+                <th>신문사명</th>
+                <th>신문사 기본코드</th>
+                <th>뉴스 제목</th>
+                <th>작성 회원 아이디</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>수정일</th>
                 <th>사용 여부</th>
-                <th>수정</th>
-                <th>삭제</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- Thymeleaf로 데이터를 표시하는 부분 -->
-            <tr th:each="newspaper : ${newspapers}">
-                <td th:text="${newspaper.npNo}"></td>
-                <td th:text="${newspaper.npName}"></td>
-                <td th:text="${newspaper.npUse == 1 ? '사용' : '미사용'}"></td>
-                <td>
-                    <form action="/newspaper/update" method="post">
-                        <input type="hidden" name="npNo" th:value="${newspaper.npNo}">
-                        <input type="text" name="name" th:value="${newspaper.npName}">
-                        <button type="submit">수정</button>
-                    </form>
-                </td>
-                <td>
-                    <form action="/newspaper/delete" method="post">
-                        <input type="hidden" name="npNo" th:value="${newspaper.npNo}">
-                        <button type="submit">삭제</button>
-                    </form>
-                </td>
-            </tr>
+        <tbody id="newspaperList">
+            <!-- 검색된 데이터가 여기에 표시됩니다. -->
         </tbody>
     </table>
+
+    <!-- jQuery CDN 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 검색 폼 제출 시 AJAX로 검색 요청
+        $('#searchForm').on('submit', function(event) {
+            event.preventDefault();  // 기본 폼 제출 방지
+
+            // 검색 조건과 검색어를 가져오기
+            var searchType = $('#searchType').val();
+            var searchKeyword = $('#searchKeyword').val();
+
+            // AJAX로 서버에 요청 보내기
+            $.ajax({
+                url: '/newspaper/search',  // 서버의 검색 엔드포인트
+                method: 'GET',
+                data: {
+                    searchType: searchType,
+                    searchKeyword: searchKeyword
+                },
+                success: function(response) {
+                    // 서버에서 응답받은 데이터를 리스트에 렌더링
+                    var newspaperList = $('#newspaperList');
+                    newspaperList.empty();  // 기존 데이터를 지우고
+
+                    // 새로운 데이터를 추가
+                    response.forEach(function(newspaper) {
+                        var row = `<tr>
+                            <td>${newspaper.npName}</td>
+                            <td>${newspaper.npCode}</td>
+                            <td>${newspaper.newsTitle}</td>
+                            <td>${newspaper.memberId}</td>
+                            <td>${newspaper.authorName}</td>
+                            <td>${newspaper.createdDate}</td>
+                            <td>${newspaper.updatedDate}</td>
+                            <td>${newspaper.npUse == 1 ? '사용' : '미사용'}</td>
+                        </tr>`;
+                        newspaperList.append(row);
+                    });
+                },
+                error: function() {
+                    alert('검색에 실패했습니다. 다시 시도해주세요.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
