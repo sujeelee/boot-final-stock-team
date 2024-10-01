@@ -215,8 +215,22 @@
 	        	}
 				return true;
         	});
+        	
+        	function checkLogin(){
+        		let mb_id = /*[[${#authentication.getName()}]]*/ '';
+	        	if(mb_id != 'anonymousUser') {
+	        		return true;
+	        	}
+        		if(confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하겠습니까?')){
+    				location.href = "/member/login";
+    			}
+        		return false;
+        	}
         
 	        function checkOnlyOne(act) {
+	        	if(!checkLogin()) {
+	        		return;
+	        	}
 	            const checkboxes = $("input[name='em_act']");
 	            checkboxes.each(function() {
 	                $(this).prop('checked', false);

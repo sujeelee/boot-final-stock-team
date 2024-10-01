@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.dao.NewsDAO;
 import kh.st.boot.model.vo.FileVO;
-import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
@@ -121,7 +120,6 @@ public class NewsServiceImp implements NewsService{
 		if(!res) {
 			return false;
 		}
-		
 		NewsVO tmp_news = newsDao.selectNewsLimitOne();
 		uploadFile(file, tmp_news.getNe_no());
 		return true;
@@ -142,7 +140,6 @@ public class NewsServiceImp implements NewsService{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Override
@@ -178,7 +175,7 @@ public class NewsServiceImp implements NewsService{
 			return;
 		}
 		UploadFileUtils.delteFile(uploadPath, file.getFi_path());
-		newsDao.deleteFile(file.getFi_no());
+		newsDao.deleteFileByFiNo(file.getFi_no());
 	}
 
 	@Override
@@ -191,11 +188,16 @@ public class NewsServiceImp implements NewsService{
 		if(mb_id == null) {
 			return false;
 		}
-		NewsVO post = getNews(ne_no);
-		if(!post.getMb_id().equals(mb_id)) {
+		NewsVO news = getNews(ne_no);
+		if(!news.getMb_id().equals(mb_id)) {
 			return false;
 		}
-		return newsDao.deleteNews(ne_no);
+		boolean res = newsDao.deleteNews(ne_no);
+		if(!res) {
+			return false;
+		}
+		newsDao.deleteFileByNeNo(ne_no);
+		return true;
 	}
 
 }

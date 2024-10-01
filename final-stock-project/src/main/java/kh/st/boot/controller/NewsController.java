@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpSession;
-import kh.st.boot.model.util.CustomUser;
 import kh.st.boot.model.vo.FileVO;
-import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
