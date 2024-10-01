@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.annotation.Resource;
 import kh.st.boot.dao.NewsDAO;
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.MemberVO;
@@ -18,7 +17,6 @@ import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.utils.UploadFileUtils;
-import lombok.AllArgsConstructor;
 
 @Service
 public class NewsServiceImp implements NewsService{
@@ -28,6 +26,11 @@ public class NewsServiceImp implements NewsService{
 	
 	@Value("${file.upload-dir}")
 	String uploadPath;
+	
+	@Override
+	public List<NewsPaperVO> getNewsPaperList() {
+		return newsDao.selectNewsPaperList();
+	}
 	
 	@Override
 	public List<NewsVO> getNewsList(Date ne_datetime) {
@@ -194,6 +197,5 @@ public class NewsServiceImp implements NewsService{
 		}
 		return newsDao.deleteNews(ne_no);
 	}
-
 
 }

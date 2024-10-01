@@ -69,7 +69,7 @@ public class MemberController {
         if (user == null) {
 
             mo.addAttribute("msg", "로그인 상태가 아닙니다.");
-            mo.addAttribute("url", "/home");
+            mo.addAttribute("url", "/");
             return "util/msg";
         }
 
