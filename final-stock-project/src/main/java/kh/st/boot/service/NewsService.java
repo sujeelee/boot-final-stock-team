@@ -12,6 +12,8 @@ import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 
 public interface NewsService {
+	
+	List<NewsPaperVO> getNewsPaperList();
 
 	List<NewsVO> getNewsList(Date ne_datetime);
 
