@@ -30,6 +30,7 @@ public class MyBatisConfig {
         );
          // TypeAlias 적용
         sessionFactory.setTypeAliasesPackage("kh.st.boot.model.vo");  // 여기에 패키지 경로 지정
+        sessionFactory.setTypeAliasesPackage("kh.st.boot.model.dto"); // 여긴 DTO 패키지 경로 ㅎㅎ
         return sessionFactory.getObject();
     }
 }
