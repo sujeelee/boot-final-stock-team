@@ -162,6 +162,10 @@
 			.news-date {
 			    width: 100%;
 			}
+			
+			.news-text-box{
+				width: 580px;
+			}
 	    }
 	</style>
 </head>
@@ -169,6 +173,7 @@
 	<main layout:fragment="content">
 		<div class="container">
 			<h1 th:text="${newspaper.np_name}" class="text-center mt-4 mb-4"></h1>
+			<a th:href="@{/newspaper/insert/{np_no}(np_no=${newspaper.np_no})}" class="btn btn-outline-dark mb-2">등록</a>
 			<!-- Member -> news_Member 신문사명이 같아야 보이도록 해야됨 -->
 			<input type="hidden" name="np_num" th:value="${newspaper.np_no}">
 			<div class="main_wrap">
