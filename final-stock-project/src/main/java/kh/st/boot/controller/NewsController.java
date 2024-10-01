@@ -82,10 +82,14 @@ public class NewsController {
 		NewsPaperVO newspaper = newsService.getNewsPaper(news.getNp_no());
 		int totalCount = news.getNe_happy() + news.getNe_angry() + news.getNe_absurd() + news.getNe_sad();
 		FileVO file = newsService.getFile(ne_no);
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String ne_datetime = format.format(date);
 		model.addAttribute("news", news);
 		model.addAttribute("newspaper", newspaper);
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("file", file);
+		model.addAttribute("ne_datetime", ne_datetime);
 		return "newspaper/detail";
 	}
 	
