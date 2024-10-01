@@ -10,9 +10,10 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  /* 스크롤 삭제 */
   -ms-overflow-style: none;
 }
-
+  /* 스크롤 삭제 */
 ::-webkit-scrollbar {
   display: none;
 }
