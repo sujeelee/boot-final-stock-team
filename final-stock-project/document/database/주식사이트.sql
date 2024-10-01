@@ -176,7 +176,7 @@ CREATE TABLE `event` (
 	`ev_datetime`	DATETIME	NULL,
 	`ev_start`	DATETIME	NULL,
 	`ev_end`	DATETIME	NULL,
-	`ev_status`	char(2)	NULL,
+	`ev_status`	char(7)	DEFAULT "Ending",
 	`ev_cnt`	int(11)	NULL
 );
 
