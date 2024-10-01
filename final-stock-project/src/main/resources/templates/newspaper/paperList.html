@@ -184,7 +184,10 @@
 				</button>
 				<div class="dropdown-menu">
 					<h5 class="dropdown-header">언론사 홈 바로가기</h5>
-					<a class="dropdown-item" th:each="item : ${list}" href="#" th:text="${item.np_name}"></a>
+					<a  class="dropdown-item" 
+						th:each="item : ${list}" 
+						th:href="@{/newspaper/newsList/{np_no}/{date}(np_no=${item.np_no},date=${ne_datetime})}" 
+						th:text="${item.np_name}"></a>
 				</div>
 			</div>
 	        <!-- 뉴스 리스트 박스 -->
@@ -305,47 +308,45 @@
 						`;
 					}
 					$('.news-list').html(str);
-					addDragAndDropListeners();
+					displayDrag();
 				} // 서버에서 가져온 데이터로 html을 새로 생성하는 함수
 				
 				fetchNews(currentDate);
 				buttonStatus();
 				
-				function addDragAndDropListeners() {
-					const newsItems = document.querySelectorAll('.news-item');
-					let draggedItem = null;
+				function displayDrag() {
+				    const newsItems = $('.news-item');
+				    let draggedItem = null;
 
-					newsItems.forEach(item => {
-						item.addEventListener('dragstart', () => {
-							draggedItem = item;
-							item.style.opacity = 0.5;
-						});
+				    newsItems.on('dragstart', function() {
+				        draggedItem = $(this);
+				        draggedItem.css('opacity', 0.5);
+				    });
 
-						item.addEventListener('dragend', () => {
-							draggedItem = null;
-							item.style.opacity = '';
-						});
+				    newsItems.on('dragend', function() {
+				        draggedItem = null;
+				        $(this).css('opacity', '');
+				    });
 
-						item.addEventListener('dragover', (event) => {
-							event.preventDefault();
-						});
+				    newsItems.on('dragover', function(event) {
+				        event.preventDefault();
+				    });
 
-						item.addEventListener('drop', (event) => {
-							event.preventDefault();
-							if (draggedItem) {
-								const list = document.querySelector('.news-list');
-								const items = Array.from(list.children);
-								const draggedIndex = items.indexOf(draggedItem);
-								const dropIndex = items.indexOf(item);
+				    newsItems.on('drop', function(event) {
+				        event.preventDefault();
+				        if (draggedItem) {
+				            const list = $('.news-list');
+				            const items = list.children();
+				            const draggedIndex = items.index(draggedItem);
+				            const dropIndex = items.index($(this));
 
-								if (draggedIndex < dropIndex) {
-									list.insertBefore(draggedItem, item.nextSibling);
-								} else {
-									list.insertBefore(draggedItem, item);
-								}
-							}
-						});
-					});
+				            if (draggedIndex < dropIndex) {
+				                $(this).after(draggedItem);
+				            } else {
+				                $(this).before(draggedItem);
+				            }
+				        }
+				    });
 				}
 			});
 		</script>

@@ -168,9 +168,8 @@
 <body>
 	<main layout:fragment="content">
 		<div class="container">
-			<h1 th:text="${newspaper.np_name}"></h1>
+			<h1 th:text="${newspaper.np_name}" class="text-center mt-4 mb-4"></h1>
 			<!-- Member -> news_Member 신문사명이 같아야 보이도록 해야됨 -->
-			<a th:href="@{/newspaper/insert/{np_no}(np_no=${newspaper.np_no})}" class="btn btn-outline-dark mb-2">등록</a>
 			<input type="hidden" name="np_num" th:value="${newspaper.np_no}">
 			<div class="main_wrap">
 		        <!-- 날짜 선택 버튼 영역 -->
@@ -307,47 +306,45 @@
 			            `;
 			        }
 			        $('.news-list').html(str);
-			        addDragAndDropListeners();
+			        displayDrag();
 			    }
 	
 			    fetchNews(currentDate);
 			    buttonStatus();
 			    
-			    function addDragAndDropListeners() {
-					const newsItems = document.querySelectorAll('.news-item');
-					let draggedItem = null;
+			    function displayDrag() {
+				    const newsItems = $('.news-item');
+				    let draggedItem = null;
 
-					newsItems.forEach(item => {
-						item.addEventListener('dragstart', () => {
-							draggedItem = item;
-							item.style.opacity = 0.5;
-						});
+				    newsItems.on('dragstart', function() {
+				        draggedItem = $(this);
+				        draggedItem.css('opacity', 0.5);
+				    });
 
-						item.addEventListener('dragend', () => {
-							draggedItem = null;
-							item.style.opacity = '';
-						});
+				    newsItems.on('dragend', function() {
+				        draggedItem = null;
+				        $(this).css('opacity', '');
+				    });
 
-						item.addEventListener('dragover', (event) => {
-							event.preventDefault();
-						});
+				    newsItems.on('dragover', function(event) {
+				        event.preventDefault();
+				    });
 
-						item.addEventListener('drop', (event) => {
-							event.preventDefault();
-							if (draggedItem) {
-								const list = document.querySelector('.news-list');
-								const items = Array.from(list.children);
-								const draggedIndex = items.indexOf(draggedItem);
-								const dropIndex = items.indexOf(item);
+				    newsItems.on('drop', function(event) {
+				        event.preventDefault();
+				        if (draggedItem) {
+				            const list = $('.news-list');
+				            const items = list.children();
+				            const draggedIndex = items.index(draggedItem);
+				            const dropIndex = items.index($(this));
 
-								if (draggedIndex < dropIndex) {
-									list.insertBefore(draggedItem, item.nextSibling);
-								} else {
-									list.insertBefore(draggedItem, item);
-								}
-							}
-						});
-					});
+				            if (draggedIndex < dropIndex) {
+				                $(this).after(draggedItem);
+				            } else {
+				                $(this).before(draggedItem);
+				            }
+				        }
+				    });
 				}
 			});
 		</script>
