@@ -16,7 +16,6 @@
 	    text-align: left;
 	    border-bottom: 1px solid #ccc;
 	    padding-bottom: 7px;
-	    margin-bottom: 15px;
 	}
 	
 	header h1 {
@@ -199,18 +198,20 @@
 					</div>
 		        </section>
 		        <div class="footer mb-5">
-		            <a th:text="${newspaper.np_name} + ' 언론사홈 바로가기'"></a>
+		            <a  th:text="${newspaper.np_name} + ' 언론사홈 바로가기'"
+		            	th:href="@{/newspaper/newsList/{np_no}/{date}(np_no=${newspaper.np_no},date=${ne_datetime})}"></a>
 		        </div>
 	        </div>
-
 		</div>
         <script th:inline="javascript">
         	$('.del-up').click(function(e){
-        		e.preventDefault();
 	       		let mb_id = /*[[${#authentication.getName()}]]*/ '';
-	        	let ne_id = '[[${news.mb_id}]]';
+	        	let ne_id = /*[[${news.mb_id}]]*/ '';
+	        	console.log(mb_id);
+	        	console.log(ne_id);
 	        	if(mb_id != ne_id){
 	        		alert("작성자만 접근할 수 있습니다.");
+	        		e.preventDefault();
 	        		return false;
 	        	}
 				return true;
