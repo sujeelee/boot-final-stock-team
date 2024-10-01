@@ -21,12 +21,22 @@ public class EventController {
 
     private EventService eventService;
 
+
+    //eventStatus : Opening, Ending, resUser
     @GetMapping("/eventhome/{eventStatus}")
     public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus){
         List<EventDTO> list = eventService.getEventList(eventStatus);
-        System.out.println("test");
         mo.addAttribute("list",list);
         return "/event/eventhome";
     }
     
+
+    @GetMapping("/eventhome/{eventStatus}/{ev_no}")
+    public String eventShow(@PathVariable("eventStatus") String eventStatus, @PathVariable("ev_no") int ev_no){
+        // EventVO event = eventService.getEvent();
+
+        return "/event/eventShow";
+    }
+
+
 }
