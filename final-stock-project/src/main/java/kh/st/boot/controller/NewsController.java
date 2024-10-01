@@ -35,6 +35,8 @@ public class NewsController {
 	
 	@GetMapping("")
 	public String newsList(Model model) {
+		List<NewsPaperVO> list = newsService.getNewsPaperList();
+		model.addAttribute("list", list);
 		return "newspaper/paperList";
 	}
 	

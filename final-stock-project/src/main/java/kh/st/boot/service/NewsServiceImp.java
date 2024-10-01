@@ -30,6 +30,11 @@ public class NewsServiceImp implements NewsService{
 	String uploadPath;
 	
 	@Override
+	public List<NewsPaperVO> getNewsPaperList() {
+		return newsDao.selectNewsPaperList();
+	}
+	
+	@Override
 	public List<NewsVO> getNewsList(Date ne_datetime) {
 		if(ne_datetime == null) {
 			return null;
@@ -194,6 +199,5 @@ public class NewsServiceImp implements NewsService{
 		}
 		return newsDao.deleteNews(ne_no);
 	}
-
 
 }
