@@ -54,6 +54,7 @@ public class SecurityConfig{
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
             		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
+                    .deleteCookies("JSESSIONID")
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
     }
