@@ -48,6 +48,8 @@ public class SecurityConfig{
             		.userDetailsService(memberDetailService)
             		.rememberMeCookieName("AUTO_LOGIN")
             		.tokenValiditySeconds(60*60*24*7))
+
+                    
             .logout((logout) -> logout
             		.logoutUrl("/member/logout") //이 URL로  post방식으로 전송하면 자동으로 로그아웃이 실행됨
             		.logoutSuccessUrl("/")

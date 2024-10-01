@@ -13,7 +13,7 @@ public class EventDTO {
     private String ev_title;
     private Date ev_start;
     private Date ev_end;
-    private String ev_status;// Opening, Endding, resUser
+    private String ev_status;// Opening, Ending, resUser
     private String fi_path; //파일경로가 저장될 위치
     
 }

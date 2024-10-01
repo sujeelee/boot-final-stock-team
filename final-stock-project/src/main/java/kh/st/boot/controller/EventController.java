@@ -26,7 +26,7 @@ public class EventController {
     public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus) {
         List<EventDTO> list = eventService.getEventList(eventStatus);
         mo.addAttribute("list", list);
-        return "/event/eventhome";
+        return "/event/eventpage";
     }
 
     @GetMapping("/eventhome/{eventStatus}/{ev_no}")
