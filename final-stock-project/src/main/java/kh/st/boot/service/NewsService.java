@@ -33,11 +33,11 @@ public interface NewsService {
 
 	void deleteNewsEmoji(NewsEmojiVO emoji);
 	
-	boolean insertNews(NewsVO news, MemberVO user, MultipartFile file);
+	boolean insertNews(NewsVO news, String mb_id, MultipartFile file);
 
-	boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, Integer num);
+	boolean updateNews(NewsVO news, String mb_id, MultipartFile file, Integer num);
 
-	boolean deleteNews(int ne_no, MemberVO user);
+	boolean deleteNews(int ne_no, String mb_id);
 
 	FileVO getFile(int ne_no);
 

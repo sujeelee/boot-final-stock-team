@@ -36,7 +36,7 @@
 	        border: 1px solid #ddd;
 	        border-radius: 0 0 15px 15px;
 	        border-top-style: none;
-			padding: 20px;
+			padding: 15px;
 	        margin-bottom: 20px;
 	        color: #777;
 	    }
@@ -56,6 +56,21 @@
 	
 	    .news-container {
 	        width: 100%;
+	    }
+	    
+	    .undata-box{
+	    	width: 1080px;
+	    	height: 340px;
+	    	background-color: #fff;
+	        border: 1px solid #ddd;
+	        border-radius: 15px;
+	    }
+	    
+	    .undata-box p{
+	    	color: #777;
+	    	text-align: center;
+	    	padding: 140px;
+	    	font-size: 20px;
 	    }
 	
 	    /* 기본 2열 그리드 레이아웃 */
@@ -173,7 +188,7 @@
 	<main layout:fragment="content">
 		<div class="container">
 			<h1 th:text="${newspaper.np_name}" class="text-center mt-4 mb-4"></h1>
-			<a th:href="@{/newspaper/insert/{np_no}(np_no=${newspaper.np_no})}" class="btn btn-outline-dark mb-2">등록</a>
+			
 			<!-- Member -> news_Member 신문사명이 같아야 보이도록 해야됨 -->
 			<input type="hidden" name="np_num" th:value="${newspaper.np_no}">
 			<div class="main_wrap">
@@ -184,8 +199,9 @@
 		            <input type="hidden" name="ne_datetime" th:value="${ne_datetime}">
 		            <button id="next-date-btn" class="date-btn">▶</button>
 		        </div>
-		        <div class="explanatory-text">
-	            	<span>뉴스를 누른 채 이동하면 순서 변경이 가능합니다.</span>
+		        <div class="explanatory-text d-flex">
+	            	<span class="mr-auto">뉴스를 누른 채 이동하면 순서 변경이 가능합니다.</span>
+	            	<a th:href="@{/newspaper/insert/{np_no}(np_no=${newspaper.np_no})}" class="btn btn-outline-secondary">뉴스 등록</a>
 	       		</div>
 		        <!-- 뉴스 리스트 박스 -->
 		        <div class="news-container">
@@ -279,13 +295,19 @@
 	
 			    function displayNewsList(list) {
 			        if (list == null || list.length == 0) {
-			            $('.news-list').html('<li class="news-item text-center"><b>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</b></li>');
-			            return;
+			        	let tmp = `
+							<div class="undata-box">
+								<p>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</p>
+							</div>
+						`;
+						$('.news-container').html(tmp);
+						return;
 			        }
-			        let str = '';
+			        let str1 = '';
+			        let str2 = '';
 			        for (news of list) {
 			            var ne_datetime = formatDate(new Date(news.ne_datetime));
-			            str += `
+			            str1 += `
 			                <li class="news-item" draggable="true">
 			                    <div class="news-box">
 			                        <div class="news-heading-box">
@@ -308,9 +330,12 @@
 			                        </div>
 			                    </div>
 			                </li>
-			            `;
+	           			 `;
+		            str2 = `
+						<ul class="news-list">${str1}</ul>
+					`;
 			        }
-			        $('.news-list').html(str);
+			        $('.news-container').html(str2);
 			        displayDrag();
 			    }
 	
