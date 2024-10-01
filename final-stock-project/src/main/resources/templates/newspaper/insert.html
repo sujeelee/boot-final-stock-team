@@ -11,6 +11,7 @@
 </head>
 <body>
 	<main layout:fragment="content">
+		<h1 class="text-center mt-4 mb-4">뉴스 등록</h1>
 		<div class="mt-5">
 			<form th:action="@{/newspaper/insert/{np_no}(np_no=${np_no})}" method="post" enctype="multipart/form-data">
 				<div class="form-group">

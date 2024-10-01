@@ -32,7 +32,7 @@
 	}
 	
 	.sub-info {
-	    font-size: 12px;
+	    font-size: 14px;
 	    color: gray;
 	}
 	
@@ -143,66 +143,79 @@
 <body>
 	<main layout:fragment="content">
 		<div class="entire">
-			<header>
-	            <h1 th:text="${newspaper.np_name}"></h1>
-	            <h2 th:text="${news.ne_title}"></h2>
-	            <div class="d-flex">
-		            <div class="sub-info mr-auto">
-		                <span>입력</span>
-		                <span th:text="${#dates.format(news.ne_datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-		                <span th:text="${news.ne_name} + ' 기자'"></span>
+			<div class="mt-5">
+				<header>
+		            <h1 th:text="${newspaper.np_name}"></h1>
+		            <h2 th:text="${news.ne_title}"></h2>
+		            <div class="d-flex">
+			            <div class="sub-info mr-auto">
+			                <span>입력</span>
+			                <span th:text="${#dates.format(news.ne_datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+			                <span th:text="${news.ne_name} + ' 기자'"></span>
+			            </div>
+			            <div sec:authorize="isAuthenticated()" class="update-delete">
+			            	<a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}" class="del-up">수정</a>
+							<a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}" class="del-up">삭제</a>
+			            </div>
 		            </div>
-		            <div class="update-delete">
-		            	<a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}" class="">수정</a>
-						<a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}" class="">삭제</a>
+		        </header>
+		        <div class="reaction-bar">
+		            <div class="reaction">
+		                <span>👏</span>
+		                <span>추천수 (<span th:text="${totalCount}"></span>)</span>
 		            </div>
-	            </div>
-	        </header>
-	        <div class="reaction-bar">
-	            <div class="reaction">
-	                <span>👏</span>
-	                <span>추천수 (<span th:text="${totalCount}"></span>)</span>
-	            </div>
-	        </div>
-	        <article>
-	            <img th:if="${file != null}" th:src="@{'/uploads' + ${file.fi_path}}" alt="이미지" style="width: 580px; height: 480px;">			
-	            <div th:utext="${news.ne_content}" style="min-height: 400px; height: auto; font-size: 18px;"></div>
-	        </article>
-	         <section class="recommend-section">
-	            <h3>이 기사를 추천합니다</h3>
-	            <div class="icon-bar">
-				    <label class="icon-item" for="em_1">
-				        <input type="checkbox" name="em_act" id="em_1" value="1" onclick="checkOnlyOne(this);">
-				        <span>😁</span>
-				        <span>기뻐요</span>
-				        <span th:text="${news.ne_happy}"></span>
-				    </label>
-				    <label class="icon-item" for="em_2">
-				        <input type="checkbox" name="em_act" id="em_2" value="2" onclick="checkOnlyOne(this);">
-				        <span>🤬</span>
-				        <span>화나요</span>
-				        <span th:text="${news.ne_angry}"></span>
-				    </label>
-				    <label class="icon-item" for="em_3">
-				        <input type="checkbox" name="em_act" id="em_3" value="3" onclick="checkOnlyOne(this);">
-				        <span>😲</span>
-				        <span>황당해요</span>
-				        <span th:text="${news.ne_absurd}"></span>
-				    </label>
-				    <label class="icon-item" for="em_4">
-				        <input type="checkbox" name="em_act" id="em_4" value="4" onclick="checkOnlyOne(this);">
-				        <span>😭</span>
-				        <span>슬퍼요</span>
-				        <span th:text="${news.ne_sad}"></span>
-				    </label>
-				</div>
-	        </section>
-	        <div class="footer mb-5">
-	            <a th:text="${newspaper.np_name} + ' 언론사홈 바로가기'"></a>
+		        </div>
+		        <article>
+		            <img th:if="${file != null}" th:src="@{'/uploads' + ${file.fi_path}}" alt="이미지" style="width: 580px; height: 480px;">			
+		            <div th:utext="${news.ne_content}" style="min-height: 400px; height: auto; font-size: 18px;"></div>
+		        </article>
+		         <section class="recommend-section">
+		            <h3>이 기사를 추천합니다</h3>
+		            <div class="icon-bar">
+					    <label class="icon-item" for="em_1">
+					        <input type="checkbox" name="em_act" id="em_1" value="1" onclick="checkOnlyOne(this);">
+					        <span>😁</span>
+					        <span>기뻐요</span>
+					        <span th:text="${news.ne_happy}"></span>
+					    </label>
+					    <label class="icon-item" for="em_2">
+					        <input type="checkbox" name="em_act" id="em_2" value="2" onclick="checkOnlyOne(this);">
+					        <span>🤬</span>
+					        <span>화나요</span>
+					        <span th:text="${news.ne_angry}"></span>
+					    </label>
+					    <label class="icon-item" for="em_3">
+					        <input type="checkbox" name="em_act" id="em_3" value="3" onclick="checkOnlyOne(this);">
+					        <span>😲</span>
+					        <span>황당해요</span>
+					        <span th:text="${news.ne_absurd}"></span>
+					    </label>
+					    <label class="icon-item" for="em_4">
+					        <input type="checkbox" name="em_act" id="em_4" value="4" onclick="checkOnlyOne(this);">
+					        <span>😭</span>
+					        <span>슬퍼요</span>
+					        <span th:text="${news.ne_sad}"></span>
+					    </label>
+					</div>
+		        </section>
+		        <div class="footer mb-5">
+		            <a th:text="${newspaper.np_name} + ' 언론사홈 바로가기'"></a>
+		        </div>
 	        </div>
 
 		</div>
         <script th:inline="javascript">
+        	$('.del-up').click(function(e){
+        		e.preventDefault();
+	       		let mb_id = /*[[${#authentication.getName()}]]*/ '';
+	        	let ne_id = '[[${news.mb_id}]]';
+	        	if(mb_id != ne_id){
+	        		alert("작성자만 접근할 수 있습니다.");
+	        		return false;
+	        	}
+				return true;
+        	});
+        
 	        function checkOnlyOne(act) {
 	            const checkboxes = $("input[name='em_act']");
 	            checkboxes.each(function() {
