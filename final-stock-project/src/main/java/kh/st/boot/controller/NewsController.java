@@ -36,7 +36,11 @@ public class NewsController {
 	@GetMapping("")
 	public String newsList(Model model) {
 		List<NewsPaperVO> list = newsService.getNewsPaperList();
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String ne_datetime = format.format(date);
 		model.addAttribute("list", list);
+		model.addAttribute("ne_datetime", ne_datetime);
 		return "newspaper/paperList";
 	}
 	
