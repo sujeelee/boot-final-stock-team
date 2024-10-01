@@ -10,6 +10,8 @@ import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 
 public interface NewsDAO {
+
+	List<NewsPaperVO> selectNewsPaperList();
 	
 	List<NewsVO> selectNewsListByDate(String formatDate);
 
