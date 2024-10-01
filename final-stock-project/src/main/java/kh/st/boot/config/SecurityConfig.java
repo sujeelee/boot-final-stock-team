@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import kh.st.boot.handler.LoginFailHandler;
@@ -37,12 +38,21 @@ public class SecurityConfig{
             .formLogin((form) -> form
                 .loginPage("/member/login")  // 커스텀 로그인 페이지 설정
                 .permitAll()           // 로그인 페이지는 접근 허용
-                .loginProcessingUrl("/member/login")
-//                .usernameParameter("userId")
-//                .passwordParameter("password") // 비밀번호 파라미터명
-                .defaultSuccessUrl("/")
+                .loginProcessingUrl("/member/login") //실제 로그인 되는 곳
+//                .usernameParameter("userId") //아이디 파라미터 명
+//                .passwordParameter("password") // 비밀번호 파라미터 명
+                .failureUrl("/member/login")//실패한다면 이 url로
+                .defaultSuccessUrl("/") //성공후
                 .successHandler(new LoginSuccessHandler())
                 .failureHandler(new LoginFailHandler())
+            )
+            .sessionManagement((session) -> session
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionFixation().changeSessionId()//세션 고정 보호 (공격자가 쿠키를 임의로 만들어서 접속하려는 경우 방지)
+                .invalidSessionUrl("/") // 세션이 유효하지 않을 대 이동 할 페이지
+                .maximumSessions(1) // 세션 최대 허용 개수
+                .maxSessionsPreventsLogin(true) // true : 동시 로그인 차단 | false : 기존 세션 만료(default)
+                .expiredUrl("/") //세션이 만료될 경우 이동될 url
             )
             .rememberMe((rm)->rm
             		.key("team1")
@@ -60,6 +70,7 @@ public class SecurityConfig{
             		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
                     .deleteCookies("JSESSIONID")
             		.permitAll());  // 로그아웃도 모두 접근 가능
+            
         return http.build();
     }
 
