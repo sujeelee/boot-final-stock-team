@@ -15,7 +15,7 @@
 	header {
 	    text-align: left;
 	    border-bottom: 1px solid #ccc;
-	    padding-bottom: 15px;
+	    padding-bottom: 7px;
 	    margin-bottom: 15px;
 	}
 	
@@ -124,8 +124,20 @@
 	    text-decoration: underline;
 	}
 	.icon-item input[type="checkbox"] {
-       display: none; /* 라디오 버튼을 숨깁니다 */
+		display: none; /* 라디오 버튼을 숨깁니다 */
    }
+   
+   .update-delete a {
+		font-size: 16px;
+		color: #888888; /* 회색 */
+		text-decoration: none;
+		padding: 10px;
+	}
+	
+	/* 마우스 호버 시 검은색으로 변경 */
+	.update-delete a:hover {
+		color: #000000; /* 검은색 */
+	}
 	</style>
 </head>
 <body>
@@ -134,10 +146,16 @@
 			<header>
 	            <h1 th:text="${newspaper.np_name}"></h1>
 	            <h2 th:text="${news.ne_title}"></h2>
-	            <div class="sub-info">
-	                <span>입력</span>
-	                <span th:text="${#dates.format(news.ne_datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-	                <span th:text="${news.ne_name} + ' 기자'"></span>
+	            <div class="d-flex">
+		            <div class="sub-info mr-auto">
+		                <span>입력</span>
+		                <span th:text="${#dates.format(news.ne_datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+		                <span th:text="${news.ne_name} + ' 기자'"></span>
+		            </div>
+		            <div class="update-delete">
+		            	<a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}" class="">수정</a>
+						<a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}" class="">삭제</a>
+		            </div>
 	            </div>
 	        </header>
 	        <div class="reaction-bar">
@@ -182,8 +200,7 @@
 	        <div class="footer mb-5">
 	            <a th:text="${newspaper.np_name} + ' 언론사홈 바로가기'"></a>
 	        </div>
-	        <a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}" class="btn btn-outline-dark">수정</a>
-			<a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}" class="btn btn-outline-dark">삭제</a>
+
 		</div>
         <script th:inline="javascript">
 	        function checkOnlyOne(act) {

@@ -93,8 +93,12 @@
 	</delete>
 	
 	<insert id="insertNews">
-		INSERT INTO NEWS(NE_TITLE, NE_CONTENT, MB_ID, NP_NO, NE_DATETIME) VALUES
-		(#{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW())
+		INSERT INTO NEWS (NE_TITLE, NE_CONTENT, MB_ID, NP_NO, NE_DATETIME, NE_NAME)
+		SELECT #{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW(), MB_NAME
+		FROM
+			MEMBER
+		WHERE
+			MB_ID = #{mb_id}
 	</insert>
 	
 	<select id="selectNewsLimitOne" resultType="NewsVO">
