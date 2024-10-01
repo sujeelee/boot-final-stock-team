@@ -26,6 +26,7 @@ public class EventController {
     public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus) {
         List<EventDTO> list = eventService.getEventList(eventStatus);
         mo.addAttribute("list", list);
+        System.out.println(list);
         return "/event/eventpage";
     }
 
@@ -35,6 +36,14 @@ public class EventController {
         EventVO event = eventService.getEvent(eventStatus, ev_no);
         mo.addAttribute("event", event);
         return "/event/eventShow";
+    }
+
+
+    
+    @GetMapping("/write")
+    public String eventWrite(Model mo) {
+
+        return "/event/eventWrite";
     }
 
 }
