@@ -57,6 +57,21 @@
 	    .news-container {
 	        width: 100%;
 	    }
+	    
+	    .undata-box{
+	    	width: 1110px;
+	    	height: 340px;
+	    	background-color: #fff;
+	        border: 1px solid #ddd;
+	        border-radius: 15px;
+	    }
+	    
+	    .undata-box p{
+	    	color: #777;
+	    	text-align: center;
+	    	padding: 140px;
+	    	font-size: 20px;
+	    }
 	
 	    /* 기본 2열 그리드 레이아웃 */
 	    .news-list {
@@ -276,13 +291,19 @@
 				
 				function displayNewsList(list){
 					if(list == null || list.length == 0){
-						$('.news-list').html('<li class="news-item text-center"><b>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</b></li>');
+						let tmp = `
+							<div class="undata-box">
+								<p>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</p>
+							</div>
+						`;
+						$('.news-container').html(tmp);
 						return;
 					}
-					let str = '';
+					let str1 = '';
+					let str2 = '';
 					for(news of list){
 						var ne_datetime = formatDate(new Date(news.ne_datetime));
-						str += `
+						str1 += `
 							<li class="news-item" draggable="true">
 			                	<div class="news-box">
 				                    <div class="news-heading-box">
@@ -306,8 +327,12 @@
 			                    </div>
 			                </li>
 						`;
+					str2 = `
+						<ul class="news-list">${str1}</ul>
+					`;
+		                
 					}
-					$('.news-list').html(str);
+					$('.news-container').html(str2);
 					displayDrag();
 				} // 서버에서 가져온 데이터로 html을 새로 생성하는 함수
 				

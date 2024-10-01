@@ -106,8 +106,8 @@ public class NewsServiceImp implements NewsService{
 	}
 	
 	@Override
-	public boolean insertNews(NewsVO news, MemberVO user, MultipartFile file) {
-		if(news == null || user == null) {
+	public boolean insertNews(NewsVO news, String mb_id, MultipartFile file) {
+		if(news == null || mb_id == null) {
 			return false;
 		}
 		if(news.getNe_title().trim().length() == 0) {
@@ -116,7 +116,7 @@ public class NewsServiceImp implements NewsService{
 		if(news.getNe_content().trim().length() == 0) {
 			return false;
 		}
-		news.setMb_id(user.getMb_id());
+		news.setMb_id(mb_id);
 		boolean res = newsDao.insertNews(news);
 		if(!res) {
 			return false;
@@ -146,8 +146,8 @@ public class NewsServiceImp implements NewsService{
 	}
 	
 	@Override
-	public boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, Integer num) {
-		if(news == null || user == null) {
+	public boolean updateNews(NewsVO news, String mb_id, MultipartFile file, Integer num) {
+		if(news == null || mb_id == null) {
 			return false;
 		}
 		if(news.getNe_title().trim().length() == 0) {
@@ -157,7 +157,7 @@ public class NewsServiceImp implements NewsService{
 			return false;
 		}
 		NewsVO tmp = getNews(news.getNe_no());
-		if(!tmp.getMb_id().equals(user.getMb_id())) {
+		if(!tmp.getMb_id().equals(mb_id)) {
 			return false;
 		}
 		boolean res = newsDao.updateNews(news);
@@ -187,12 +187,12 @@ public class NewsServiceImp implements NewsService{
 	}
 
 	@Override
-	public boolean deleteNews(int ne_no, MemberVO user) {
-		if(user == null) {
+	public boolean deleteNews(int ne_no, String mb_id) {
+		if(mb_id == null) {
 			return false;
 		}
 		NewsVO post = getNews(ne_no);
-		if(!post.getMb_id().equals(user.getMb_id())) {
+		if(!post.getMb_id().equals(mb_id)) {
 			return false;
 		}
 		return newsDao.deleteNews(ne_no);
