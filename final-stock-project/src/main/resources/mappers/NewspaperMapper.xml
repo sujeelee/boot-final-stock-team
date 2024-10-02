@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.NewspaperDAO">
+
+    <select id="selectAllNewspapers" resultType="kh.st.boot.model.dto.NewspaperDTO">
+        SELECT * FROM newspaper
+    </select>
+
+    <insert id="insertNewspaper" parameterType="kh.st.boot.model.dto.NewspaperDTO">
+        INSERT INTO newspaper (np_name, np_use) VALUES (#{np_name}, #{np_use})
+    </insert>
+
+    <update id="updateNewspaper" parameterType="kh.st.boot.model.dto.NewspaperDTO">
+        UPDATE newspaper
+        SET np_name = #{np_name}, np_use = #{np_use}
+        WHERE np_no = #{np_no}
+    </update>
+
+    <delete id="deleteNewspaper" parameterType="int">
+        DELETE FROM newspaper WHERE np_no = #{np_no}
+    </delete>
+
+    <select id="selectNewspapersByStatus" parameterType="int" resultType="kh.st.boot.model.dto.NewspaperDTO">
+        SELECT * FROM newspaper WHERE np_use = #{np_use}
+    </select>
+
+</mapper>

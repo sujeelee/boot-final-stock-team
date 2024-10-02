@@ -5,184 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>신문사 리스트 관리</title>
     <style>
-        /* 페이지 전체 스타일 */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
             margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        h1 {
-            margin: 30px 0;
-            font-size: 2.5rem;
-            color: #2c3e50;
-            text-align: center;
-        }
-
-        /* 검색 폼 스타일 */
-        .search-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .search-container form {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 80%;
-        }
-
-        .search-container select, .search-container input[type="text"] {
-            padding: 12px;
-            border: 2px solid #2980b9;
-            border-radius: 5px 0 0 5px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .search-container select {
-            width: 20%;
-        }
-
-        .search-container input[type="text"] {
-            width: 60%;
-        }
-
-        .search-container button {
-            padding: 12px 20px;
-            background-color: #2980b9;
-            color: white;
-            border: none;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .search-container button:hover {
-            background-color: #216f99;
-        }
-
-        /* 테이블 스타일 */
-        table {
-            width: 90%;
-            margin: 0 auto;
-            border-collapse: collapse;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        th {
-            background-color: #2980b9;
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        td {
-            color: #555;
-        }
-
-        tr:nth-child(even) {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
             background-color: #f9f9f9;
         }
 
-        tr:hover {
-            background-color: #f1f1f1;
+        .sidebar {
+            width: 220px;
+            background-color: #f4f4f4;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            overflow-y: auto;
+            padding-bottom: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            background-color: #003366;
+            color: white;
+            padding: 15px;
+            margin: 0;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .menu-item {
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .menu-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        .sub-menu {
+            display: none;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            background-color: #e8e8e8;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .sub-menu-item {
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .sub-menu-item:hover {
+            background-color: #d0d0d0;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #003366;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        input[type="text"], select, button {
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 0 5px;
+            width: 200px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00509E;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
         }
     </style>
 </head>
 <body>
-    <h1>신문사 리스트 관리</h1>
-
-    <!-- 검색 폼 -->
-    <div class="search-container">
-        <form id="searchForm">
-            <select name="searchType" id="searchType">
-                <option value="name">신문사명</option>
-                <option value="code">신문사 기본코드</option>
-                <option value="title">뉴스 제목</option>
-                <option value="memberId">작성 회원 아이디</option>
-                <option value="author">작성자</option>
-            </select>
-            <input type="text" id="searchKeyword" placeholder="검색어 입력" required>
-            <button type="submit">검색</button>
-        </form>
+    <div class="sidebar">
+        <h2>관리자 메뉴</h2>
+        <div class="menu">
+            <!-- Sidebar menu items here -->
+            <div class="menu-item" onclick="location.href='/news'">신문사 리스트 관리</div>
+        </div>
     </div>
 
-    <!-- 신문사 목록 표시 -->
-    <table>
-        <thead>
-            <tr>
-                <th>신문사명</th>
-                <th>신문사 기본코드</th>
-                <th>뉴스 제목</th>
-                <th>작성 회원 아이디</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>수정일</th>
-                <th>사용 여부</th>
-            </tr>
-        </thead>
-        <tbody id="newspaperList">
-            <!-- 검색된 데이터가 여기에 표시됩니다. -->
-        </tbody>
-    </table>
+    <div class="content">
+        <h1>신문사 리스트 관리</h1>
+        <div class="search-form">
+            <form action="/newspapers/search" method="get">
+                <input type="text" name="name" placeholder="신문사 이름">
+                <select name="status">
+                    <option value="">모두</option>
+                    <option value="1">사용 중</option>
+                    <option value="0">사용 안 함</option>
+                </select>
+                <button type="submit">검색</button>
+            </form>
+        </div>
+        
+        <h2>신문사 추가</h2>
+        <form th:action="@{/newspapers/add}" method="post">
+            <input type="text" name="np_name" placeholder="신문사 이름" required>
+            <select name="np_use">
+                <option value="1">사용 중</option>
+                <option value="0">사용 안 함</option>
+            </select>
+            <button type="submit">등록</button>
+        </form>
 
-    <!-- jQuery CDN 추가 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <h2>신문사 목록</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>신문사 이름</th>
+                    <th>사용 여부</th>
+                    <th>작업</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="newspaper : ${newspapers}">
+                    <td th:text="${newspaper.np_name}"></td>
+                    <td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"></td>
+                    <td>
+                        <form th:action="@{/newspapers/edit/{np_no}(np_no=${newspaper.np_no})}" method="get" style="display:inline;">
+                            <button type="submit">수정</button>
+                        </form>
+                        <form th:action="@{/newspapers/delete/{np_no}(np_no=${newspaper.np_no})}" method="post" style="display:inline;">
+                            <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <script>
-        // 검색 폼 제출 시 AJAX로 검색 요청
-        $('#searchForm').on('submit', function(event) {
-            event.preventDefault();  // 기본 폼 제출 방지
-
-            // 검색 조건과 검색어를 가져오기
-            var searchType = $('#searchType').val();
-            var searchKeyword = $('#searchKeyword').val();
-
-            // AJAX로 서버에 요청 보내기
-            $.ajax({
-                url: '/newspaper/search',  // 서버의 검색 엔드포인트
-                method: 'GET',
-                data: {
-                    searchType: searchType,
-                    searchKeyword: searchKeyword
-                },
-                success: function(response) {
-                    // 서버에서 응답받은 데이터를 리스트에 렌더링
-                    var newspaperList = $('#newspaperList');
-                    newspaperList.empty();  // 기존 데이터를 지우고
-
-                    // 새로운 데이터를 추가
-                    response.forEach(function(newspaper) {
-                        var row = `<tr>
-                            <td>${newspaper.npName}</td>
-                            <td>${newspaper.npCode}</td>
-                            <td>${newspaper.newsTitle}</td>
-                            <td>${newspaper.memberId}</td>
-                            <td>${newspaper.authorName}</td>
-                            <td>${newspaper.createdDate}</td>
-                            <td>${newspaper.updatedDate}</td>
-                            <td>${newspaper.npUse == 1 ? '사용' : '미사용'}</td>
-                        </tr>`;
-                        newspaperList.append(row);
-                    });
-                },
-                error: function() {
-                    alert('검색에 실패했습니다. 다시 시도해주세요.');
-                }
-            });
-        });
+        function toggleSubMenu(menuId) {
+            const subMenu = document.getElementById(menuId);
+            subMenu.style.display = subMenu.style.display === 'none' || subMenu.style.display === '' ? 'block' : 'none';
+        }
     </script>
 </body>
 </html>
