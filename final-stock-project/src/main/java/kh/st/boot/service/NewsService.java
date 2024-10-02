@@ -10,4 +10,3 @@ public interface NewsService {
 	List<NewsVO> getNewsList(Date ne_datetime);
 
 }
-

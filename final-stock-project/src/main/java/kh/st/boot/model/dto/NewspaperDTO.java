@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewspaperDTO {
-    private int np_no; // 신문사 번호
-    private String np_name; // 신문사 이름
-    private int np_use; // 사용 여부
+	private int np_no; // 신문사 번호
+	private String np_name; // 신문사 이름
+	private int np_use; // 사용 여부
 }

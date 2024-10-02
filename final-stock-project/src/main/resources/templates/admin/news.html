@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -114,14 +117,14 @@
     </style>
 </head>
 <body>
+	<main layout:fragment="content">
     <div class="sidebar">
         <h2>관리자 메뉴</h2>
         <div class="menu">
             <!-- Sidebar menu items here -->
-            <div class="menu-item" onclick="location.href='/news'">신문사 리스트 관리</div>
+            <div class="menu-item" onclick="location.href='/admin/news'">신문사 리스트 관리</div>
         </div>
     </div>
-
     <div class="content">
         <h1>신문사 리스트 관리</h1>
         <div class="search-form">
@@ -171,6 +174,7 @@
             </tbody>
         </table>
     </div>
+    </main>
 
     <script>
         function toggleSubMenu(menuId) {

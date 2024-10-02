@@ -21,15 +21,15 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/newspaper")
 public class NewsController {
 	private NewsService newsService;
-	
+
 	@GetMapping("")
 	public String newsList(Model model) {
 		return "newspaper/paperList";
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/views")
-	public Map<String, List<NewsVO>> views(@RequestBody NewsVO news){
+	public Map<String, List<NewsVO>> views(@RequestBody NewsVO news) {
 		Map<String, List<NewsVO>> map = new HashMap<String, List<NewsVO>>();
 		// 서비스에게 날짜를 주고 리스트를 가져옴
 		List<NewsVO> newsList = newsService.getNewsList(news.getNe_datetime());

@@ -10,16 +10,16 @@ import kh.st.boot.model.vo.NewsVO;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor	
-public class NewsServiceImp implements NewsService{
+@AllArgsConstructor
+public class NewsServiceImp implements NewsService {
 
 	private NewsDAO newsDao;
 
 	@Override
 	public List<NewsVO> getNewsList(Date ne_datetime) {
-		if(ne_datetime == null) {
+		if (ne_datetime == null) {
 			return null;
 		}
 		return newsDao.selectNewsList(ne_datetime);
-	} 
+	}
 }

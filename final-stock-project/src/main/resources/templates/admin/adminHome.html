@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,6 +64,7 @@
     </style>
 </head>
 <body>
+<main layout:fragment="content">
     <div class="sidebar">
         <h2>관리자 메뉴</h2>
         <div class="menu">
@@ -101,7 +105,9 @@
                 <div class="sub-menu-item" onclick="location.href='/attendance/view'">출석 리스트</div>
             </div>
 
-       <div class="menu-item" onclick="location.href='/news'">신문사 리스트 관리</div>
+       <div class="menu-item">
+      	<a th:href="@{/admin/news}">신문사 리스트 관리</a>
+       </div>
 
 
             <div class="menu-item" onclick="toggleSubMenu('stockManagement')">주식 관리</div>
@@ -138,5 +144,6 @@
             }
         }
     </script>
+    </main>
 </body>
 </html>
