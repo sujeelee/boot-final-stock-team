@@ -9,7 +9,7 @@
 		update stock 
 		set st_type = #{st_type}
 		<if test="st_status != null">
-			, st_status = #{st_status}
+			, st_status = #{st_status} 
 		</if>
 		where st_code = #{st_code}
 	</update>

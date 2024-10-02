@@ -34,7 +34,7 @@ public class StockService {
 			}
 			stockDao.insertStockCompany(newStock);
 		}
-	}
+	} 
 	
 	public List<StockVO> getCompanyList(String type, StockCriteria cri) {
 		return stockDao.getCompanyList(type, cri);
