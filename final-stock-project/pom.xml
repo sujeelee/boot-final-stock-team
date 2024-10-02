@@ -82,13 +82,42 @@
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
 		    <artifactId>lombok</artifactId>
-		    <version>1.18.34</version>
 		    <scope>provided</scope>
 		</dependency>
 		<!-- 시큐리티 의존성 추가-->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- 타임리프에서 sec를 사용하여 로그인 여부를 확인하기 위해  -->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+	    </dependency>
+		<!-- SpringBoot mailService -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+	
+		<!-- json문서 파싱을 위한 라이브러리 -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20211205</version>
+		</dependency>
+		
+		<!-- pom.xml -->
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.3.2</version>
+		</dependency>
+		<!-- @Resource 사용을 위한  -->
+		<dependency>
+		    <groupId>javax.annotation</groupId>
+		    <artifactId>javax.annotation-api</artifactId>
+		    <version>1.3.2</version>
 		</dependency>
 	</dependencies>
 
