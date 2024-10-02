@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class StockVO {
+public class StockVO { 
 	private String st_code; //주식 주 고유 번호
 	private String st_name; //주식 주 이름
 	private String st_qty; //총 주식 개수(발행주식수)

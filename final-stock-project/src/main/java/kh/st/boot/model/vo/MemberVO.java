@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MemberVO {
-
 	private int mb_no; //(11자리), auto_incre
     private String mb_id;
     private String mb_password;
