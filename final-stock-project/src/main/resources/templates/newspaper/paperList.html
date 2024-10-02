@@ -268,6 +268,11 @@
 					buttonStatus();
 				} // 날짜, 기사, 버튼 활성화/비활성화를 업데이트 하는 함수
 				
+				function deleteTag(content) {
+				    // HTML을 삭제하고 텍스트만 반환
+				    return $('<div>').html(content).text();
+				} // 디비에 있는 태그들을 제거하고 순수 텍스트만 가져오는 함수
+				
 				function fetchNews(date){
 					let ne_datetime = formatDate(date);
 					let news = {
@@ -303,6 +308,7 @@
 					let str2 = '';
 					for(news of list){
 						var ne_datetime = formatDate(new Date(news.ne_datetime));
+						var ne_content = deleteTag(news.ne_content);
 						str1 += `
 							<li class="news-item" draggable="true">
 			                	<div class="news-box">
@@ -315,7 +321,7 @@
 					                    		<a href="/newspaper/detail/${news.ne_no}" style="font-size: 20px;">${news.ne_title}</a>
 					                    	</div>
 					                    	<div class="news-content">
-						                        <a href="/newspaper/detail/${news.ne_no}">${news.ne_content}</a>                   		
+						                        <a href="/newspaper/detail/${news.ne_no}">${ne_content}</a>                   		
 					                    	</div>
 					                    </div>
 					                    ${news.fi_path ? `
