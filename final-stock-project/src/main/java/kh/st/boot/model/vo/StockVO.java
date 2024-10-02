@@ -14,4 +14,6 @@ public class StockVO {
 	private String st_status; //상장폐지등 주식 상태
 	private String st_issue; //청산간주등의 정보가 있는 주식발행사 명칭
 	private String st_type; //코스닥, 코스피 등 어떤 주식인지
+	
+	private int st_price_cnt; //DB에는 없는데 주식 가격 정보 몇개인지 보는 용으로 사용
 }
