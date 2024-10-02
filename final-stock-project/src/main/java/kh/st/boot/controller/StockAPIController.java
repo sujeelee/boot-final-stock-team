@@ -250,7 +250,7 @@ public class StockAPIController {
 	                Object value = entry.getValue();
 	                if( ( stock.getSt_type() == null && jsonKey.contains("mrktCtg") ) || stock.getSt_status().equals("상장폐지")) {
 	                	stockService.updateCompanyType(st_code, (String) value, "정상");
-	                }
+	                } 
 	                String voFieldName = field.get(jsonKey);
 	                if (voFieldName != null) {
 	                	Field fields;
