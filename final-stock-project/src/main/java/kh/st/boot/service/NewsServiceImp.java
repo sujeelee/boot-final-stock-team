@@ -101,7 +101,7 @@ public class NewsServiceImp implements NewsService{
 		if(emoji == null) {
 			return;
 		}
-		newsDao.deleteNewsEmoji(emoji);
+		newsDao.deleteNewsEmoji(emoji.getNe_no(), emoji.getMb_id());
 	}
 	
 	@Override
@@ -196,7 +196,10 @@ public class NewsServiceImp implements NewsService{
 		if(!res) {
 			return false;
 		}
+		// 파일 삭제
 		newsDao.deleteFileByNeNo(ne_no);
+		// 뉴스 이모지 삭제
+		newsDao.deleteNewsEmoji(ne_no, mb_id);
 		return true;
 	}
 

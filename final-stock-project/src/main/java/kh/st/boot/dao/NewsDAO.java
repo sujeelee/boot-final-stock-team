@@ -28,8 +28,8 @@ public interface NewsDAO {
 	void updateNewsEmojiCount(@Param("em")NewsEmojiVO emoji, @Param("count")int count);
 
 	void updateNewsEmoji(NewsEmojiVO emoji);
-	
-	void deleteNewsEmoji(NewsEmojiVO emoji);
+
+	void deleteNewsEmoji(int ne_no, String mb_id);
 
 	boolean insertNews(NewsVO news);
 	
