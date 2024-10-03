@@ -152,9 +152,9 @@
 			                <span th:text="${#dates.format(news.ne_datetime, 'yyyy-MM-dd HH:mm:ss')}"></span>
 			                <span th:text="${news.ne_name} + ' 기자'"></span>
 			            </div>
-			            <div sec:authorize="isAuthenticated()" class="update-delete">
-			            	<a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}" class="del-up">수정</a>
-							<a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}" class="del-up">삭제</a>
+			            <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.mb_id} == ${news.mb_id}" class="update-delete">
+			            	<a th:href="@{/newspaper/update/{ne_no}(ne_no=${news.ne_no})}">수정</a>
+							<a th:href="@{/newspaper/delete/{ne_no}(ne_no=${news.ne_no})}">삭제</a>
 			            </div>
 		            </div>
 		        </header>
@@ -203,19 +203,6 @@
 	        </div>
 		</div>
         <script th:inline="javascript">
-        	$('.del-up').click(function(e){
-	       		let mb_id = /*[[${#authentication.getName()}]]*/ '';
-	        	let ne_id = /*[[${news.mb_id}]]*/ '';
-	        	console.log(mb_id);
-	        	console.log(ne_id);
-	        	if(mb_id != ne_id){
-	        		alert("작성자만 접근할 수 있습니다.");
-	        		e.preventDefault();
-	        		return false;
-	        	}
-				return true;
-        	});
-        	
         	function checkLogin(){
         		let mb_id = /*[[${#authentication.getName()}]]*/ '';
 	        	if(mb_id != 'anonymousUser') {
@@ -299,7 +286,6 @@
 	        	`
 	        	$('.recommend-section').html(str);
 	        }
-	        
         </script>
 	</main>
 </body>
