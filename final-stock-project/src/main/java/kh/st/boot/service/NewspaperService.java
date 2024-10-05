@@ -33,16 +33,16 @@ public class NewspaperService {
 
 
 	
-	public List<NewsPaperVO> searchNewspapers(String name, String status) {
+	public List<NewsPaperVO> searchNewspapers(String np_name, byte np_use, int np_no) {
 		List<NewsPaperVO> allNewspapers = newspaperDAO.selectAllNewspapers(); // 모든 신문사 가져오기
 		List<NewsPaperVO> filteredNewspapers = new ArrayList<>();
-
+	
 		for (NewsPaperVO newspaper : allNewspapers) {
-			boolean matchesName = (name == null || name.isEmpty() || newspaper.getNp_name().contains(name));
-			boolean matchesStatus = (status == null || status.isEmpty()
-					|| (status.equals("active") && newspaper.getNp_use() == 1)
-					|| (status.equals("inactive") && newspaper.getNp_use() == 0));
-
+			boolean matchesName = (np_name == null || np_name.isEmpty() || newspaper.getNp_name().contains(np_name));
+			// 여기서 이름을 판별해서 matchesName 안에 넣는데 
+			boolean matchesStatus = (np_use == 1 && newspaper.getNp_use() == 1) || 
+                    				(np_use == 0 && newspaper.getNp_use() == 0); 
+			
 			if (matchesName && matchesStatus) {
 				filteredNewspapers.add(newspaper);
 			}
@@ -50,4 +50,6 @@ public class NewspaperService {
 
 		return filteredNewspapers; // 필터링된 신문사 목록 반환
 	}
+
+	
 }

@@ -26,6 +26,7 @@ public class AdminController {
 	public String newsPage(Model model) {
 		List<NewsPaperVO> newspapers = newspaperService.getAllNewspapers();
 		model.addAttribute("newspapers", newspapers);
+		System.out.println("안녕");
 		return "admin/news"; // admin/news.html로 이동
 	}
 
@@ -41,11 +42,18 @@ public class AdminController {
 		return "redirect:/news"; // 신문사 목록으로 리다이렉트
 	}
 
-	@GetMapping("/newspapers/search")
-	public String searchNewspapers(@RequestParam(required = false) String name,
-			@RequestParam(required = false) String status, Model model) {
-		List<NewsPaperVO> newspapers = newspaperService.searchNewspapers(name, status);
+	@PostMapping("/newspapers/search")
+	public String searchNewspapers
+	
+			(@RequestParam(required = false) String np_name,
+			 @RequestParam(required = false) String np_use,
+			 @RequestParam(required = false)  int np_no, Model model) {
+		System.out.println("컨트롤러");
+		  byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 1 : (byte) 0;
+		List<NewsPaperVO> newspapers = newspaperService.searchNewspapers(np_name, useByte, np_no);
 		model.addAttribute("newspapers", newspapers);
+		model.addAttribute("np_no", np_no);
+		System.out.println("컨트롤러2");
 		return "admin/news"; // admin/news.html로 이동
 	}
 }

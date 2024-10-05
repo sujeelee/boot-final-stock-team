@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>신문사 리스트 관리</title>
+    <title>신문사 목록</title>
     <style>
         body {
             margin: 0;
@@ -29,16 +29,9 @@
             text-align: left; /* 좌측 정렬 */
         }
 
-        h2 {
-            color: #003366;
-            font-size: 24px; /* 제목 크기 신문사 리스트 관리와 통일 */
-            text-align: left; /* 좌측 정렬 */
-            margin-top: 20px; /* 간격 조정 */
-        }
-
         .search-form {
             display: flex;
-            justify-content: flex-start; /* 왼쪽 정렬 */
+            justify-content: flex-end; /* 오른쪽 정렬 */
             margin: 20px 0;
         }
 
@@ -80,30 +73,19 @@
 <body>
 	<main layout:fragment="content">
     <div class="content">
-        <h1>신문사 리스트 관리</h1>
+        <h1>신문사 목록</h1>
+        
         <div class="search-form">
-            <form action="/newspapers/search" method="get">
-                <input type="text" name="name" placeholder="신문사 이름">
-                <select name="status">
-                    <option value="">모두</option>
+            <form action="/newspapers/search" method="post">
+                <input type="text" name="np_name" placeholder="신문사 이름">
+                <select name="np_use">
                     <option value="1">사용 중</option>
                     <option value="0">사용 안 함</option>
                 </select>
                 <button type="submit">검색</button>
             </form>
         </div>
-        
-        <h2>신문사 추가</h2>
-        <form th:action="@{/newspapers/add}" method="post">
-            <input type="text" name="np_name" placeholder="신문사 이름" required>
-            <select name="np_use">
-                <option value="1">사용 중</option>
-                <option value="0">사용 안 함</option>
-            </select>
-            <button type="submit">등록</button>
-        </form>
 
-        <h2>신문사 목록</h2>
         <table>
             <thead>
                 <tr>
@@ -124,6 +106,9 @@
                             <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
                         </form>
                     </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(newspapers)}">
+                    <td colspan="3">검색 결과가 없습니다.</td>
                 </tr>
             </tbody>
         </table>
