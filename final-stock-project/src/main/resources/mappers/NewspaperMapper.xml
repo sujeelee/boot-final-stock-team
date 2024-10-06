@@ -6,10 +6,10 @@
         SELECT * FROM newspaper
     </select>
 
-    <insert id="insertNewspaper">
-        INSERT INTO newspaper (np_name, np_use) VALUES (#{np.np_name}, #{np.np_use})
+     <insert id="insertNewspaper">
+        INSERT INTO newspaper (np_name, np_use)
+        VALUES (#{np_name}, #{np_use})
     </insert>
-
     <update id="updateNewspaper">
         UPDATE newspaper
         SET np_name = #{np.np_name}, np_use = #{np.np_use}
@@ -25,4 +25,6 @@
         SELECT * FROM newspaper WHERE np_use = #{np_use}
     </select>
 
+	
+    
 </mapper>

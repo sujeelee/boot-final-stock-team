@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.NewspaperDAO;
+import kh.st.boot.model.dto.NewspaperDTO;
 import kh.st.boot.model.vo.NewsPaperVO;
 
 @Service
@@ -19,14 +20,20 @@ public class NewspaperService {
 		return newspaperDAO.selectAllNewspapers();
 	}
 
-	public void addNewspaper(NewsPaperVO newspaper) {
-		newspaperDAO.insertNewspaper(newspaper);
-	}
-
-	public void updateNewspaper(NewsPaperVO newspaper) {
-		newspaperDAO.updateNewspaper(newspaper);
-	}
-
+	
+    public void addNewspaper(NewspaperDTO newspaperDTO) {
+        newspaperDAO.insertNewspaper(newspaperDTO);
+    }
+	
+	
+	 public void updateNewspaper(NewspaperDTO newspaperDTO) {
+	        NewsPaperVO newspaper = new NewsPaperVO(); // VO 객체 생성
+	        newspaper.setNp_no(newspaperDTO.getNp_no()); // DTO에서 값을 가져와서 VO에 설정
+	        newspaper.setNp_name(newspaperDTO.getNp_name());
+	        newspaper.setNp_use(newspaperDTO.getNp_use());
+	        
+	        newspaperDAO.updateNewspaper(newspaper); // VO를 사용하여 신문사 업데이트
+	    }
 	public void deleteNewspaper(int np_no) {
 		newspaperDAO.deleteNewspaper(np_no);
 	}
@@ -50,6 +57,8 @@ public class NewspaperService {
 
 		return filteredNewspapers; // 필터링된 신문사 목록 반환
 	}
+
+
 
 	
 }
