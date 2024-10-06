@@ -30,8 +30,8 @@ public class NewspaperService {
 	        newspaperDAO.updateNewspaper(newspaperDTO);
 	    }
 	 
-	public void deleteNewspaper(int np_no) {
-		newspaperDAO.deleteNewspaper(np_no);
+	public void deleteNewspaper(NewspaperDTO newspaperDTO) {
+		newspaperDAO.deleteNewspaper(newspaperDTO);
 	}
 
 

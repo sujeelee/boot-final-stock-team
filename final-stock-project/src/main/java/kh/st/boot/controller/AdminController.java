@@ -20,67 +20,66 @@ import kh.st.boot.service.NewspaperService;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private NewspaperService newspaperService;
+	@Autowired
+	private NewspaperService newspaperService;
 
-    @GetMapping("/news")
-    public String newsPage(Model model) {
-        List<NewsPaperVO> newspapers = newspaperService.getAllNewspapers();
-        model.addAttribute("newspapers", newspapers);
-        System.out.println("안녕");
-        return "admin/news"; // admin/news.html로 이동
-    }
+	@GetMapping("/news")
+	public String newsPage(Model model) {
+		List<NewsPaperVO> newspapers = newspaperService.getAllNewspapers();
+		model.addAttribute("newspapers", newspapers);
+		System.out.println("안녕");
+		return "admin/news"; // admin/news.html로 이동
+	}
 
-    @PostMapping("/newspapers/edit")
-    public String updateNewspaper(@RequestParam("np_no") int np_no,
-                                   @RequestParam("np_name") String np_name, 
-                                   @RequestParam("np_use") int np_use) {
-        NewspaperDTO newNewspaper = new NewspaperDTO();
-        newNewspaper.setNp_no(np_no);
-        newNewspaper.setNp_name(np_name);
-        newNewspaper.setNp_use(np_use);
+	@PostMapping("/newspapers/edit")
+	public String updateNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
+			@RequestParam("np_use") int np_use) {
+		NewspaperDTO newNewspaper = new NewspaperDTO();
+		newNewspaper.setNp_no(np_no);
+		newNewspaper.setNp_name(np_name);
+		newNewspaper.setNp_use(np_use);
 
-        newspaperService.updateNewspaper(newNewspaper);
-        return "redirect:/admin/news"; // 신문사 목록으로 리다이렉트
-    }
-    
-    
-    @PostMapping("/newspapers/register")
-    public String registerNewspaper(@RequestParam("np_no") int np_no,
-                                     @RequestParam("np_name") String np_name, 
-                                     @RequestParam("np_use") int np_use) {
-        NewspaperDTO newNewspaper = new NewspaperDTO();
-        newNewspaper.setNp_no(np_no); // 
-        newNewspaper.setNp_name(np_name);
-        newNewspaper.setNp_use(np_use);
-        
-        newspaperService.addNewspaper(newNewspaper); 
-        return "redirect:/admin/news"; 
-    }
-    
-    
-    @PostMapping("/newspapers/delete/{np_no}")
-    public String deleteNewspaper(@PathVariable int np_no) {
-        System.out.println("서비스로 호출(삭제)");
-        newspaperService.deleteNewspaper(np_no); // 서비스에서 삭제 메서드 호출
-        return "redirect:/admin/news";  // 삭제 후 신문사 목록으로 리다이렉트
-    }
+		newspaperService.updateNewspaper(newNewspaper);
+		return "redirect:/admin/news"; // 신문사 목록으로 리다이렉트
+	}
 
-    @PostMapping("/newspapers/search")
-    public String searchNewspapers(
-        @RequestParam(required = false) String np_name,
-        @RequestParam(required = false) String np_use,
-        @RequestParam(required = false) Integer np_no, Model model) {
-        
-        int intNpNo = (np_no != null) ? np_no.intValue() : 0; // np_no가 null이면 기본값 0 사용
-        System.out.println("컨트롤러");
-        
-        // np_use를 byte로 변환 (1 또는 0)
-        byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 1 : (byte) 0;
-        List<NewsPaperVO> newspapers = newspaperService.searchNewspapers(np_name, useByte, intNpNo);
-        
-        model.addAttribute("newspapers", newspapers);
-        System.out.println("컨트롤러2");
-        return "admin/news"; // admin/news.html로 이동
-    }
+	@PostMapping("/newspapers/register")
+	public String registerNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
+			@RequestParam("np_use") int np_use) {
+		NewspaperDTO newNewspaper = new NewspaperDTO();
+		newNewspaper.setNp_no(np_no); //
+		newNewspaper.setNp_name(np_name);
+		newNewspaper.setNp_use(np_use);
+
+		newspaperService.deleteNewspaper(newNewspaper);
+		return "redirect:/admin/news";
+	}
+
+	@PostMapping("/newspapers/delete")
+	public String deleteNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
+			@RequestParam("np_use") int np_use) {
+		NewspaperDTO newNewspaper = new NewspaperDTO();
+		newNewspaper.setNp_no(np_no); //
+		newNewspaper.setNp_name(np_name);
+		newNewspaper.setNp_use(np_use);
+
+		newspaperService.deleteNewspaper(newNewspaper);
+		return "redirect:/admin/news";
+	}
+
+	@PostMapping("/newspapers/search")
+	public String searchNewspapers(@RequestParam(required = false) String np_name,
+			@RequestParam(required = false) String np_use, @RequestParam(required = false) Integer np_no, Model model) {
+
+		int intNpNo = (np_no != null) ? np_no.intValue() : 0; // np_no가 null이면 기본값 0 사용
+		System.out.println("컨트롤러");
+
+		// np_use를 byte로 변환 (1 또는 0)
+		byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 1 : (byte) 0;
+		List<NewsPaperVO> newspapers = newspaperService.searchNewspapers(np_name, useByte, intNpNo);
+
+		model.addAttribute("newspapers", newspapers);
+		System.out.println("컨트롤러2");
+		return "admin/news"; // admin/news.html로 이동
+	}
 }

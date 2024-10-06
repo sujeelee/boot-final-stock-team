@@ -16,7 +16,7 @@ public interface NewspaperDAO {
 
 	void updateNewspaper(NewspaperDTO newspaperDTO);
 
-	void deleteNewspaper(@Param("np_no")int np_no); // 신문사 삭제
+	void deleteNewspaper(NewspaperDTO newspaperDTO); // 신문사 삭제
 
 	List<NewsPaperVO> selectNewspapersByStatus(@Param("np_use") int np_use); // 사용 여부에 따라 신문사 조회
 

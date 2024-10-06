@@ -142,6 +142,8 @@
                         </form>
                         <form action="/admin/newspapers/delete" method="post" style="display:inline;">
                             <input type="hidden" name="np_no" th:value="${newspaper.np_no}"/>
+                            <input type="hidden" name="np_name" th:value="${newspaper.np_name}"/>
+                            <input type="hidden" name="np_use" th:value="${newspaper.np_use}"/>
                             <button type="submit" style="font-size: 12px;" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button> <!-- 삭제 버튼 크기 조정 -->
                         </form>
                     </td>
