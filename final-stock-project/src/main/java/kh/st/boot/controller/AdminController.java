@@ -31,6 +31,20 @@ public class AdminController {
         return "admin/news"; // admin/news.html로 이동
     }
 
+    @PostMapping("/newspapers/edit")
+    public String updateNewspaper(@RequestParam("np_no") int np_no,
+                                   @RequestParam("np_name") String np_name, 
+                                   @RequestParam("np_use") int np_use) {
+        NewspaperDTO newNewspaper = new NewspaperDTO();
+        newNewspaper.setNp_no(np_no);
+        newNewspaper.setNp_name(np_name);
+        newNewspaper.setNp_use(np_use);
+
+        newspaperService.updateNewspaper(newNewspaper);
+        return "redirect:/admin/news"; // 신문사 목록으로 리다이렉트
+    }
+    
+    
     @PostMapping("/newspapers/register")
     public String registerNewspaper(@RequestParam("np_no") int np_no,
                                      @RequestParam("np_name") String np_name, 

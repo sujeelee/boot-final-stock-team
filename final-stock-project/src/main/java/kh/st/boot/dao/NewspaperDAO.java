@@ -14,7 +14,7 @@ public interface NewspaperDAO {
 
 	public void insertNewspaper(NewspaperDTO newspaperDTO); // 신문사 등록
 
-	void updateNewspaper(@Param("np")NewsPaperVO newspaper); // 신문사 수정
+	void updateNewspaper(NewspaperDTO newspaperDTO);
 
 	void deleteNewspaper(@Param("np_no")int np_no); // 신문사 삭제
 
@@ -22,4 +22,5 @@ public interface NewspaperDAO {
 
 	int findMaxNpNo();
 
+	
 }

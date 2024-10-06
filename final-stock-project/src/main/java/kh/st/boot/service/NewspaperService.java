@@ -27,13 +27,9 @@ public class NewspaperService {
 	
 	
 	 public void updateNewspaper(NewspaperDTO newspaperDTO) {
-	        NewsPaperVO newspaper = new NewsPaperVO(); // VO 객체 생성
-	        newspaper.setNp_no(newspaperDTO.getNp_no()); // DTO에서 값을 가져와서 VO에 설정
-	        newspaper.setNp_name(newspaperDTO.getNp_name());
-	        newspaper.setNp_use(newspaperDTO.getNp_use());
-	        
-	        newspaperDAO.updateNewspaper(newspaper); // VO를 사용하여 신문사 업데이트
+	        newspaperDAO.updateNewspaper(newspaperDTO);
 	    }
+	 
 	public void deleteNewspaper(int np_no) {
 		newspaperDAO.deleteNewspaper(np_no);
 	}

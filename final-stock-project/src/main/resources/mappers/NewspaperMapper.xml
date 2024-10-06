@@ -10,10 +10,11 @@
         INSERT INTO newspaper (np_name, np_use)
         VALUES (#{np_name}, #{np_use})
     </insert>
-    <update id="updateNewspaper">
+    
+ 	 <update id="updateNewspaper">
         UPDATE newspaper
-        SET np_name = #{np.np_name}, np_use = #{np.np_use}
-        WHERE np_no = #{np.np_no}
+        SET np_name = #{np_name}, np_use = #{np_use}
+        WHERE np_no = #{np_no}
     </update>
 
     <delete id="deleteNewspaper">

@@ -16,21 +16,23 @@
             background-color: #f9f9f9;
         }
         .content {
-            margin-left: 0; 
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px; /* 최대 너비 설정 */
+            margin: 20px auto; /* 중앙 정렬 */
         }
         h1 {
             color: #003366;
-            font-size: 24px; 
+            font-size: 28px; 
             text-align: left; 
+            margin-bottom: 20px; /* 제목과 콘텐츠 간격 */
         }
         .form-container {
             display: flex;
             flex-direction: column; 
-            margin: 20px 0;
+            margin-bottom: 20px;
         }
         .search-form, .register-form {
             display: flex; 
@@ -42,19 +44,21 @@
             border: 1px solid #ccc;
             padding: 8px; 
             margin: 0 5px;
-            height: 36px; 
+            height: 30px; /* 버튼과 입력 필드의 높이를 줄임 */
+            font-size: 14px; /* 폰트 크기 조정 */
         }
         .register-form input[type="text"] {
             width: 120px; /* 번호 입력 필드 */
         }
         .search-form select, .register-form select {
-            width: 120px; 
+            width: 130px; 
         }
         button {
             background-color: #003366;
             color: white;
             cursor: pointer;
-            width: 100px; 
+            width: 80px; /* 버튼 너비 줄이기 */
+            transition: background-color 0.3s; /* 배경색 전환 효과 */
         }
         button:hover {
             background-color: #00509E;
@@ -66,11 +70,19 @@
         }
         th, td {
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
         }
         th {
             background-color: #f4f4f4;
+        }
+        tr:hover {
+            background-color: #f1f1f1; /* 행 hover 효과 */
+        }
+        .no-data {
+            text-align: center;
+            color: #999;
+            font-style: italic; /* 기울임 효과 */
         }
     </style>
 </head>
@@ -93,7 +105,7 @@
 
             <div class="register-form">
                 <form action="/admin/newspapers/register" method="post">
-                    <input type="text" name="np_no" placeholder="신문사 번호" required> <!-- 번호 입력 필드 -->
+                    <input type="text" name="np_no" placeholder="신문사 번호" required>
                     <input type="text" name="np_name" placeholder="신문사 이름" required>
                     <select name="np_use" required>
                         <option value="1">사용 중</option>
@@ -119,16 +131,23 @@
                     <td th:text="${newspaper.np_name}"></td>
                     <td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"></td>
                     <td>
-                        <form th:action="@{/newspapers/edit/{np_no}(np_no=${newspaper.np_no})}" method="post" style="display:inline;">
-                            <button type="submit">수정</button>
+                        <form action="/admin/newspapers/edit" method="post" style="display:inline;">
+                            <input type="hidden" name="np_no" th:value="${newspaper.np_no}"/>
+                            <input type="text" name="np_name" th:value="${newspaper.np_name}" required style="width: 100px;"/> <!-- 수정된 입력 필드 너비 -->
+                            <select name="np_use" required style="width: 90px;"> <!-- 수정된 선택 필드 너비 -->
+                                <option th:value="1" th:text="'사용 중'" th:if="${newspaper.np_use == 1}"></option>
+                                <option th:value="0" th:text="'사용 안 함'" th:if="${newspaper.np_use == 0}"></option>
+                            </select>
+                            <button type="submit" style="font-size: 12px;">수정</button> <!-- 수정 버튼 크기 조정 -->
                         </form>
-                        <form th:action="@{/newspapers/delete/{np_no}(np_no=${newspaper.np_no})}" method="post" style="display:inline;">
-                            <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                        <form action="/admin/newspapers/delete" method="post" style="display:inline;">
+                            <input type="hidden" name="np_no" th:value="${newspaper.np_no}"/>
+                            <button type="submit" style="font-size: 12px;" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button> <!-- 삭제 버튼 크기 조정 -->
                         </form>
                     </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(newspapers)}">
-                    <td colspan="3">검색 결과가 없습니다.</td>
+                    <td colspan="4" class="no-data">검색 결과가 없습니다.</td>
                 </tr>
             </tbody>
         </table>
