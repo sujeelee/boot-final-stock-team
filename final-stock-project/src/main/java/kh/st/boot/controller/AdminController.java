@@ -38,8 +38,9 @@ public class AdminController {
 
     @PostMapping("/newspapers/delete/{np_no}")
     public String deleteNewspaper(@PathVariable int np_no) {
+        System.out.println("서비스로 호출(삭제)");
         newspaperService.deleteNewspaper(np_no); // 서비스에서 삭제 메서드 호출
-        return "redirect:/admin/news"; // 삭제 후 신문사 목록으로 리다이렉트
+        return "/admin/news";  // 삭제 후 신문사 목록으로 리다이렉트
     }
 
     @PostMapping("/newspapers/search")

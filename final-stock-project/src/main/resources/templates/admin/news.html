@@ -89,6 +89,7 @@
         <table>
             <thead>
                 <tr>
+                	<th>번호</th>
                     <th>신문사 이름</th>
                     <th>사용 여부</th>
                     <th>작업</th>
@@ -96,10 +97,11 @@
             </thead>
             <tbody>
                 <tr th:each="newspaper : ${newspapers}">
+                 <td th:text="${newspaper.np_no}"></td>
                     <td th:text="${newspaper.np_name}"></td>
                     <td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"></td>
                     <td>
-                        <form th:action="@{/newspapers/edit/{np_no}(np_no=${newspaper.np_no})}" method="get" style="display:inline;">
+                        <form th:action="@{/newspapers/edit/{np_no}(np_no=${newspaper.np_no})}" method="post" style="display:inline;">
                             <button type="submit">수정</button>
                         </form>
                         <form th:action="@{/newspapers/delete/{np_no}(np_no=${newspaper.np_no})}" method="post" style="display:inline;">

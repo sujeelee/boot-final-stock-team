@@ -18,6 +18,7 @@
 
     <delete id="deleteNewspaper">
         DELETE FROM newspaper WHERE np_no = #{np_no}
+      
     </delete>
 
     <select id="selectNewspapersByStatus" resultType="NewspaperVO">
