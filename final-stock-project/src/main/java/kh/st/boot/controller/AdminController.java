@@ -31,6 +31,7 @@ public class AdminController {
 		return "admin/news"; // admin/news.html로 이동
 	}
 
+	// 수정
 	@PostMapping("/newspapers/edit")
 	public String updateNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") int np_use) {
@@ -40,9 +41,10 @@ public class AdminController {
 		newNewspaper.setNp_use(np_use);
 
 		newspaperService.updateNewspaper(newNewspaper);
-		return "redirect:/admin/news"; // 신문사 목록으로 리다이렉트
+		return "redirect:/admin/news";
 	}
 
+	// 등록
 	@PostMapping("/newspapers/register")
 	public String registerNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") int np_use) {
@@ -51,10 +53,11 @@ public class AdminController {
 		newNewspaper.setNp_name(np_name);
 		newNewspaper.setNp_use(np_use);
 
-		newspaperService.deleteNewspaper(newNewspaper);
+		newspaperService.addNewspaper(newNewspaper);
 		return "redirect:/admin/news";
 	}
 
+	// 삭제
 	@PostMapping("/newspapers/delete")
 	public String deleteNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") int np_use) {
@@ -67,6 +70,7 @@ public class AdminController {
 		return "redirect:/admin/news";
 	}
 
+	// 검색
 	@PostMapping("/newspapers/search")
 	public String searchNewspapers(@RequestParam(required = false) String np_name,
 			@RequestParam(required = false) String np_use, @RequestParam(required = false) Integer np_no, Model model) {
