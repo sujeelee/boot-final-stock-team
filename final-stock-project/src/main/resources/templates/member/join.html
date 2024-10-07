@@ -167,17 +167,21 @@ function checkEmailCode(){
     $.ajax({
         url: '/mail/ajax/get_check',
         method: 'post',
-        dataType : 'text',
+        dataType : 'json',
         data : {evc_email : mail,
                 code : code},
         success: function (data) {
-            $('#code').attr("readonly", true);
-            $('#codeCheck').remove();
-            $('#ec_checked').val("t");
-            alert("Email 인증 성공");
+            if(data){
+                $('#code').attr("readonly", true);
+                $('#codeCheck').remove();
+                $('#ec_checked').val("t");
+                alert("Email 인증 성공");
+            }else{
+                alert("잘못된 코드입니다! 다시 확인해주세요!")
+            }
         },
         error: function (data, status, err) {
-            alert("잘못된 코드입니다! 다시 확인해주세요!")
+            alert("오류! 전송이 잘못되었습니다.")
         },
 
     });
