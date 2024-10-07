@@ -1,189 +1,278 @@
-/* 노멀라이즈 시작 */
-body, ul, li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.sidebar {
+	position: fixed;
+	right: 0;
+	top: 0;
+	height: 100%;
+	width: 78px;
+	background: #096c8a;
+	padding: 6px 14px;
+	z-index: 99;
+	transition: all 0.5s ease;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-/* 노멀라이즈 끝 */
-
-/* 커스텀 시작 */
-
-/* 사이드바-아이콘 시작 */
-.side-bar__icon-box {
-  display: flex;
-  justify-content: flex-start;
-  margin-left: 20px;
-  margin-top: 20px;
-  margin-bottom: 50px;
+.sidebar.open {
+	width: 250px;
 }
 
-.side-bar__icon-1 {
-  position: relative;
-  width: 30px;
-  height: 22px;
-  margin: 15px;
-  transition: .5s;
-  
+.sidebar .logo-details {
+	height: 60px;
+	display: flex;
+	align-items: center;
+	position: relative;
 }
 
-:root {
-  --side-bar__icon: .5s;
+.sidebar .logo-details .icon {
+	opacity: 0;
+	transition: all 0.5s ease;
 }
 
-.side-bar__icon-1 > div {
-  position: absolute;
-  width: 100%;
-  height: 20%;
-  background-color: #096c8a;
-  transition: all var(--side-bar__icon);
-  
+.sidebar .logo-details .logo_name {
+	color: #fff;
+	font-size: 20px;
+	font-weight: 600;
+	opacity: 0;
+	transition: all 0.5s ease;
 }
 
-.side-bar__icon-1 > div:nth-of-type(1) {
-  top: 0;
-  width: auto;
-  left: 0;
-  right: 0;
-  background-color: #008080; /* 첫 번째 아이콘에 청록색 */
-  transition: all var(--side-bar__icon), left calc(var(--side-bar__icon) / 2) calc(var(--side-bar__icon) / 2), right calc(var(--side-bar__icon) / 2) calc(var(--side-bar__icon) / 2), height calc(var(--side-bar__icon) / 2) 0s;
+.sidebar.open .logo-details .icon, .sidebar.open .logo-details .logo_name
+	{
+	opacity: 1;
 }
 
-.side-bar__icon-1 > div:nth-of-type(2) {
-  top: 40%;
-  transform-origin:bottom left;
-  background-color: #20B2AA; /* 두 번째 아이콘에 밝은 청록색 */
+.sidebar .logo-details #btn {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
+	font-size: 22px;
+	cursor: pointer;
+	transition: all 0.5s ease;
 }
 
-.side-bar__icon-1 > div:nth-of-type(3) {
-  top: 80%;
-  left: auto;
-  right: 0;
-  transform-origin:bottom right;
-  background-color: #5F9EA0; /* 세 번째 아이콘에 짙은 청록색 */
+.sidebar.open .logo-details #btn {
+	text-align: right;
 }
 
-.side-bar:hover .side-bar__icon-1 > div:nth-of-type(2) {
-  transform:rotate(45deg);
-  width: 70.5%;
-  height: 25%;
+.sidebar i {
+	color: #fff;
+	height: 60px;
+	min-width: 50px;
+	font-size: 28px;
+	text-align: center;
+	line-height: 60px;
+	background-color: #096c8a; /* 아이콘 배경색 */
 }
 
-.side-bar:hover .side-bar__icon-1 > div:nth-of-type(3) {
-  top: 40%;
-  transform:rotate(-45deg);
-  width: 70.5%;
-  height: 25%;
+.sidebar .nav-list {
+	margin-top: 20px;
+	height: 100%;
 }
 
-.side-bar:hover .side-bar__icon-1 > div:nth-of-type(1) {
-  left: 41%;
-  right: 41%;
-  height: 100%;
-  transition: all var(--side-bar__icon), left calc(var(--side-bar__icon) / 2) 0s, right calc(var(--side-bar__icon) / 2) 0s, height calc(var(--side-bar__icon) / 2) calc(var(--side-bar__icon) / 2);
-}
-/* 사이드바-아이콘 끝 */
-
-/* 사이드바-메뉴 시작 */
-.side-bar > ul ul {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 100%;
-  background-color: #666;
+.sidebar li {
+	position: relative;
+	margin: 8px 0;
+	list-style: none;
 }
 
-.side-bar {
-  position: fixed;
-  min-height: 100vh;
-  width: 100px;
-  background-color: white;
-  overflow: hidden;
-  transition: .5s;
-  
+.sidebar li .tooltip {
+	position: absolute;
+	top: -20px;
+	left: calc(100% + 15px);
+	z-index: 3;
+	background: #fff;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-size: 15px;
+	font-weight: 400;
+	opacity: 0;
+	white-space: nowrap;
+	pointer-events: none;
+	transition: 0s;
 }
 
-.side-bar ul > li > a {
-  display: block;
-  color: black;
-  font-size: 1.7rem;
-  padding: 10px 20px;
-  white-space: nowrap;
-  text-decoration: none; /* 밑줄 제거 */
-  transition: color 0.3s ease;
+.sidebar li:hover .tooltip {
+	opacity: 1;
+	pointer-events: auto;
+	transition: all 0.4s ease;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
-.side-bar > ul > li > a > span:first-child {
-  position: relative;
-  display: inline-block;
-  border: 5px solid #096c8a; /* 테두리 흰색으로 유지 */
-  border-radius: 60%;
-  width: 3rem;
-  height: 3rem;
-  margin-right: 15px;
-  transition: border-color 0.3s ease; /* 테두리 색상 부드럽게 변경 */
+.sidebar.open li .tooltip {
+	display: none;
 }
 
-.side-bar > ul > li > a > span:last-child {
- 	opacity: 0;
-	transition: opacity 0.5s 0.1s ease; /* 투명도 전환을 부드럽게 */
+.sidebar input {
+	font-size: 15px;
+	color: #fff;
+	font-weight: 400;
+	outline: none;
+	height: 50px;
+	border: none;
+	border-radius: 12px;
+	transition: all 0.5s ease;
+	background: #1d1b31;
 }
 
-.side-bar > ul > li > a > span > i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #096c8a; /* 청록색 */
-  background-color: #ffffff; /* 아이콘의 배경색을 흰색으로 변경 */
+.sidebar.open input {
+	padding: 0 20px 0 50px;
+	width: 100%;
 }
 
-.side-bar ul > li > a > span {
-  vertical-align: middle;
-  line-height: 0; /* line-height를 0으로 설정 */
+.sidebar .bx-search {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	font-size: 22px;
+	background: #1d1b31;
+	color: #fff;
 }
 
-.side-bar:hover {
-  width: 270px;
-  overflow: visible;
-  background-color: #f0f8ff; /* 호버 시 배경을 밝은 청록색으로 */
-  transition: background-color 0.3s ease; /* 부드러운 배경 전환 */
+.sidebar li a {
+	display: flex;
+	height: 100%;
+	width: 100%;
+	border-radius: 12px;
+	align-items: center;
+	text-decoration: none;
+	transition: all 0.4s ease;
+	background: #11101d;
 }
 
-.side-bar:hover > ul > li > a > span:last-child {
-  opacity: 1;
-  transition: .5s .1s;
+.sidebar li a:hover {
+	background: #fff;
 }
 
-.side-bar ul > li:hover > a {
-  background-color: #20b2aa; /* 메뉴 항목 호버 시 밝은 청록색 */
-  color: black; /* 텍스트 색상을 흰색으로 변경 */
-  transition: background-color 0.1s ease, color 0.1s ease; /* 부드러운 전환 */
-  text-decoration: none; /* 호버 시에도 밑줄 제거 */
+.sidebar li a .links_name {
+	color: #fff;
+	font-size: 15px;
+	font-weight: 400;
+	white-space: nowrap;
+	opacity: 0;
+	pointer-events: none;
+	transition: 0.4s;
 }
 
-.side-bar > ul > li {
-  position: relative;
+.sidebar.open li a .links_name {
+	opacity: 1;
+	pointer-events: auto;
 }
 
-.side-bar > ul > li:hover > ul {
-  display: block;
+.sidebar li a:hover .links_name, .sidebar li a:hover i {
+	transition: all 0.5s ease;
+	color: #11101d;
 }
-.side-bar > ul > li:hover > a > span:first-child {
-  border-color: #096c8a; /* 호버 시 테두리 색상 변경 */
+
+.sidebar li.profile {
+	position: fixed;
+	height: 40px;
+	width: 78px;
+	right: 0;
+	bottom: 0px;
+	padding: 10px 14px;
+	background: #096c8a;
+	overflow: hidden;
 }
-.side-bar > ul > li > a > span i {
-    font-size: 1.5rem; /* 아이콘 크기 조정 */
-    margin-right: 10px; /* 아이콘과 텍스트 간의 여백 */
-    color: #096c8a; /* 아이콘 색상 */
+
+.sidebar li img {
+	height: 45px;
+	width: 45px;
+	object-fit: cover;
+	border-radius: 6px;
+	margin-right: 10px;
 }
-.side-bar > ul > li:hover > a > span > i {
-  background-color: #20b2aa; /* 아이콘 배경색을 밝은 청록색으로 변경 */
+
+.sidebar li.profile .name, .sidebar li.profile .job {
+	font-size: 15px;
+	font-weight: 400;
+	color: #fff;
+	white-space: nowrap;
 }
-/* 사이드바-메뉴 끝 */
-/* 커스텀 끝 */
+
+.sidebar li.profile .job {
+	font-size: 12px;
+}
+
+.sidebar .profile #log_out {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	background: #1d1b31;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	border-radius: 0px;
+	transition: all 0.5s ease;
+}
+
+.sidebar.open .profile #log_out {
+	width: 50px;
+	background: none;
+}
+
+.home-section {
+	position: relative;
+	background: #ffffff;
+	top: 0;
+	left: 0px;
+	width: calc(100% - 78px);
+	transition: all 0.5s ease;
+	z-index: 2;
+}
+
+.sidebar.open ~ .home-section {
+	right: 250px;
+	width: calc(100% - 250px);
+}
+
+.home-section .text {
+	display: inline-block;
+	color: #11101d;
+	font-size: 25px;
+	font-weight: 500;
+	margin: 18px;
+}
+
+@media ( max-width : 420px) {
+	.sidebar li .tooltip {
+		display: none;
+	}
+}
+
+.test {
+	position: fixed; /* 화면에 고정 */
+	right: 78px; /* 오른쪽에 붙이기 */
+	top: 0; /* 상단에 붙이기 */
+	height: 100%;
+	display: none; /* 처음에 보이지 않도록 설정 */
+	width: 0;
+	z-index: 1000; /* 다른 요소 위로 올리기 */
+	background-color: snow;
+	transition: width 0.25s ease; /* 부드러운 애니메이션 효과 추가 */
+	overflow: hidden; /* 내용이 잘리지 않도록 숨김 */
+	border: 3px solid #20b2aa ; /* 테두리를 밝은청록색으로 설정 */
+	border-radius: 3px; /* 각 모서리를 10px만큼 둥글게 */
+	text-align: center;
+}
+.sidebar, .login, .header, li.profile {
+	transition: all 0.5s ease-in-out; /* 부드러운 가속과 감속 */
+}
+.login-button {
+  background-color: #096c8a; /* 로그인 버튼 색상 */
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.login-button:hover {
+  background-color: #065a6e; /* 로그인 버튼 hover 색상 */
+}
+
+#log_out {
+  cursor: pointer;
+  font-size: 24px;
+}
