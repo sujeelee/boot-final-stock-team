@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
+<head>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stock.css}">
+</head>
+<body>
+<main layout:fragment="content">
+	<h1>주식정보관리</h1>
+	<p th:text="${url}"></p>
+	<div class="form-search center">
+			<form th:action="@{/stock/getListStock}" method="get" onsubmit="return fsearchstocksubmit(this);">
+				<div class="form-group">
+				  <select name="sfl">
+				  	<option value="cmpname" th:selected="${#strings.equals(param.sfl, 'cmpname')}">주식회사명</option>
+            		<option value="crno" th:selected="${#strings.equals(param.sfl, 'crno')}">법인등록번호</option>
+				  </select>
+				  <input type="text" placeholder="검색어를 입력하세요" name="stx" th:value="${param.stx}">
+				</div>
+				<div class="form-group">
+				  <button class="btn btn-info" type="submit">검색</button>
+				  <a class="btn btn-info" th:href="@{/stock/getListStock}">초기화</a>
+				</div>
+			</form>
+		</div>
+	<ul class="pagination justify-content-center center" 
+		th:object="${pm}" 
+		th:if="${pm.endPage != 0}">
+	    <li class="page-item" th:if="*{prev}">
+	    	<a class="page-link" th:href="@{/stock/getListStock(page=*{startPage-1},sfl=${param.sfl},stx=${param.stx})}">이전</a>
+	    </li>
+	    <li class="page-item" 
+	    	th:each="i : *{#numbers.sequence(startPage, endPage)}"
+	    	th:classappend="*{cri.page} == ${i} ? 'active' : ''">
+	    	<a class="page-link" th:href="@{/stock/getListStock(page=${i},sfl=${param.sfl},stx=${param.stx})}" th:text="${i}"></a>
+	    </li>
+	    <li class="page-item" th:if="*{next}">
+	    	<a class="page-link" th:href="@{/stock/getListStock(page=*{endPage+1},sfl=${param.sfl},stx=${param.stx})}">다음</a>
+	    </li>
+	</ul>
+	<script th:inline="javascript">
+		function fsearchstocksubmit(f) {
+			if(f.sfl.value && !f.stx.value){
+				alert("검색어를 입력해주세요.");
+				f.stx.focus();
+				return false;
+			}
+			if(!f.stx.value && !f.sfl.value){
+				alert("검색하실 내용을 선택해주세요.");
+				f.stx.focus();
+				return false;
+			}
+			return true;
+		}
+	</script>
+</main>
+</body>
+</html>
