@@ -23,12 +23,12 @@ public class AdminController {
 	@Autowired
 	private NewspaperService newspaperService;
 
-	@GetMapping("/news")
+	@GetMapping("/admNews/news")
 	public String newsPage(Model model) {
 		List<NewsPaperVO> newspapers = newspaperService.getAllNewspapers();
 		model.addAttribute("newspapers", newspapers);
 		System.out.println("안녕");
-		return "admin/news"; // admin/news.html로 이동
+		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
 
 	// 수정
@@ -41,7 +41,7 @@ public class AdminController {
 		newNewspaper.setNp_use(np_use);
 
 		newspaperService.updateNewspaper(newNewspaper);
-		return "redirect:/admin/news";
+		return "redirect:/admin/admNews/news";
 	}
 
 	// 등록
@@ -54,7 +54,7 @@ public class AdminController {
 		newNewspaper.setNp_use(np_use);
 
 		newspaperService.addNewspaper(newNewspaper);
-		return "redirect:/admin/news";
+		return "redirect:/admin/admNews/news";
 	}
 
 	// 삭제
@@ -67,7 +67,7 @@ public class AdminController {
 		newNewspaper.setNp_use(np_use);
 
 		newspaperService.deleteNewspaper(newNewspaper);
-		return "redirect:/admin/news";
+		return "redirect:/admin/admNews/news";
 	}
 
 	// 검색
@@ -84,6 +84,6 @@ public class AdminController {
 
 		model.addAttribute("newspapers", newspapers);
 		System.out.println("컨트롤러2");
-		return "admin/news"; // admin/news.html로 이동
+		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
 }
