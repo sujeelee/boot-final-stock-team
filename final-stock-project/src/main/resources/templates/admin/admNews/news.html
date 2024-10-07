@@ -148,97 +148,60 @@ tr:hover {
 </style>
 </head>
 <body>
-	<div class="sidebar">
-		<h2>관리자 메뉴</h2>
-		<div class="menu">
-			<div class="menu-item" onclick="toggleSubMenu('memberManagement')">회원
-				관리</div>
-			<div id="memberManagement" class="sub-menu">
-				<div class="sub-menu-item"
-					onclick="location.href='/member/register'">등록</div>
-				<div class="sub-menu-item" onclick="location.href='/member/update'">수정</div>
-				<div class="sub-menu-item" onclick="location.href='/member/delete'">삭제</div>
-			</div>
+    <div class="sidebar">
+        <h2>관리자 메뉴</h2> 
+        <div class="menu">
+            <div class="menu-item" onclick="toggleSubMenu('memberManagement')">회원 관리</div>
+            <div id="memberManagement" class="sub-menu">
+                <div class="sub-menu-item" onclick="location.href='/admin/admMember/insert'">등록</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admMember/update'">수정</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admMember/delete'">삭제</div>
+            </div>
 
-			<div class="menu-item"
-				onclick="toggleSubMenu('stockApprovalManagement')">주식 승인 관리</div>
-			<div id="stockApprovalManagement" class="sub-menu">
-				<div class="sub-menu-item" onclick="location.href='/stock/approval'">승인
-					여부</div>
-			</div>
+            <div class="menu-item" onclick="location.href='/admin/amdStockManage/stockManage'">주식 승인 관리</div>
 
-			<div class="menu-item" onclick="toggleSubMenu('orderManagement')">주문
-				내역 관리</div>
-			<div id="orderManagement" class="sub-menu">
-				<div class="sub-menu-item" onclick="location.href='/order/view'">주문
-					내역 조회</div>
-				<div class="sub-menu-item" onclick="location.href='/order/update'">수정</div>
-				<div class="sub-menu-item" onclick="location.href='/order/delete'">삭제</div>
-			</div>
+            <div class="menu-item" onclick="toggleSubMenu('orderManagement')">주문 내역 관리</div>
+            <div id="orderManagement" class="sub-menu">
+                <div class="sub-menu-item" onclick="location.href='/admin/admOrder/view'">주문 내역 조회</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admOrder/update'">수정</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admOrder/delete'">삭제</div>
+            </div>
 
-			<div class="menu-item" onclick="toggleSubMenu('pointManagement')">포인트
-				관리</div>
-			<div id="pointManagement" class="sub-menu">
-				<div class="sub-menu-item" onclick="location.href='/point/give'">포인트
-					지급</div>
-				<div class="sub-menu-item" onclick="location.href='/point/recall'">포인트
-					회수</div>
-				<div class="sub-menu-item" onclick="location.href='/point/register'">등록</div>
-				<div class="sub-menu-item" onclick="location.href='/point/delete'">삭제</div>
-			</div>
+            <div class="menu-item" onclick="toggleSubMenu('pointManagement')">포인트 관리</div>
+            <div id="pointManagement" class="sub-menu">
+                <div class="sub-menu-item" onclick="location.href='/admin/admPoint/give'">포인트 지급</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admPoint/recall'">포인트 회수</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admPoint/register'">등록</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admPoint/delete'">삭제</div>
+            </div>
 
-			<div class="menu-item" onclick="toggleSubMenu('levelManagement')">레벨별
-				관리</div>
-			<div id="levelManagement" class="sub-menu">
-				<div class="sub-menu-item" onclick="location.href='/level/manage'">레벨
-					관리 (10까지)</div>
-			</div>
+            <div class="menu-item" onclick="location.href='/admin/admLevel/levelManage'">레벨별 관리</div>
 
-			<div class="menu-item"
-				onclick="toggleSubMenu('attendanceManagement')">일자별 출석 체크 인원
-				확인 리스트</div>
-			<div id="attendanceManagement" class="sub-menu">
-				<div class="sub-menu-item"
-					onclick="location.href='/attendance/view'">출석 리스트</div>
-			</div>
+            <div class="menu-item" onclick="location.href='/admin/admDaycheck/view'">일자별 출석 체크 인원 확인 리스트</div>
 
-			<div class="menu-item">
-				<a th:href="@{/admin/news}">신문사 리스트 관리</a>
-			</div>
+ 	        <div class="menu-item" onclick="location.href='/admin/admNews/news'">신문사 리스트 관리</div>
 
 
-			<div class="menu-item" onclick="toggleSubMenu('stockManagement')">주식
-				관리</div>
-			<div id="stockManagement" class="sub-menu">
-				<div class="sub-menu-item" onclick="location.href='/stock/listed'">상장
-					폐지</div>
-				<div class="sub-menu-item" onclick="location.href='/stock/new'">신규
-					등록</div>
-			</div>
+            <div class="menu-item" onclick="toggleSubMenu('stockManagement')">주식 관리</div>
+            <div id="stockManagement" class="sub-menu">
+                <div class="sub-menu-item" onclick="location.href='/admin/admStock/stockOut'">상장 폐지</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admStock/stockIn'">신규 등록</div>
+            </div>
 
-			<div class="menu-item" onclick="toggleSubMenu('eventManagement')">이벤트
-				관리 기능</div>
-			<div id="eventManagement" class="sub-menu">
-				<div class="sub-menu-item" onclick="location.href='/event/register'">상품
-					등록</div>
-				<div class="sub-menu-item" onclick="location.href='/event/raffle'">상품
-					추첨</div>
-			</div>
+            <div class="menu-item" onclick="toggleSubMenu('eventManagement')">이벤트 관리 기능</div>
+            <div id="eventManagement" class="sub-menu">
+                <div class="sub-menu-item" onclick="location.href='/admin/admEvent/insert'">상품 등록</div>
+                <div class="sub-menu-item" onclick="location.href='/admin/admEvent/draw'">상품 추첨</div>
+            </div>
 
-			<div class="menu-item"
-				onclick="toggleSubMenu('basicHomepageManagement')">기본 홈페이지 관리</div>
-			<div id="basicHomepageManagement" class="sub-menu">
-				<div class="sub-menu-item"
-					onclick="location.href='/homepage/manage'">홈페이지 관리</div>
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
 	<div class="content">
 		<h1>신문사 목록</h1>
 
 		<div class="form-container">
 			<div class="search-form">
-				<form action="/admin/newspapers/search" method="post">
+				<form action="/admin/admNews/newspapers/search" method="post">
 					<input type="text" name="np_name" placeholder="신문사 이름" required>
 					<select name="np_use" required>
 						<option value="1">사용 중</option>
@@ -249,7 +212,7 @@ tr:hover {
 			</div>
 
 			<div class="register-form">
-				<form action="/admin/newspapers/register" method="post">
+				<form action="/admin/admNews/newspapers/register" method="post">
 					<input type="text" name="np_no" placeholder="신문사 번호" required>
 					<input type="text" name="np_name" placeholder="신문사 이름" required>
 					<select name="np_use" required>
@@ -276,7 +239,7 @@ tr:hover {
 					<td th:text="${newspaper.np_name}"></td>
 					<td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"></td>
 					<td>
-						<form action="/admin/newspapers/edit" method="post"
+						<form action="/admin/admNews/newspapers/edit" method="post"
 							style="display: inline;">
 							<input type="hidden" name="np_no" th:value="${newspaper.np_no}" />
 							<input type="text" name="np_name" th:value="${newspaper.np_name}"
@@ -292,7 +255,7 @@ tr:hover {
 							<button type="submit" style="font-size: 12px;">수정</button>
 							<!-- 수정 버튼 크기 조정 -->
 						</form>
-						<form action="/admin/newspapers/delete" method="post"
+						<form action="/admin/admNews/newspapers/delete" method="post"
 							style="display: inline;">
 							<input type="hidden" name="np_no" th:value="${newspaper.np_no}" />
 							<input type="hidden" name="np_name"
