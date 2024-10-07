@@ -32,7 +32,7 @@ public class AdminController {
 	}
 
 	// 수정
-	@PostMapping("/newspapers/edit")
+	@PostMapping("/admNews/newspapers/edit")
 	public String updateNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") int np_use) {
 		NewspaperDTO newNewspaper = new NewspaperDTO();
@@ -45,7 +45,7 @@ public class AdminController {
 	}
 
 	// 등록
-	@PostMapping("/newspapers/register")
+	@PostMapping("/admNews/newspapers/register")
 	public String registerNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") int np_use) {
 		NewspaperDTO newNewspaper = new NewspaperDTO();
@@ -58,7 +58,7 @@ public class AdminController {
 	}
 
 	// 삭제
-	@PostMapping("/newspapers/delete")
+	@PostMapping("/admNews/newspapers/delete")
 	public String deleteNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") int np_use) {
 		NewspaperDTO newNewspaper = new NewspaperDTO();
@@ -71,7 +71,7 @@ public class AdminController {
 	}
 
 	// 검색
-	@PostMapping("/newspapers/search")
+	@PostMapping("/admNews/newspapers/search")
 	public String searchNewspapers(@RequestParam(required = false) String np_name,
 			@RequestParam(required = false) String np_use, @RequestParam(required = false) Integer np_no, Model model) {
 
