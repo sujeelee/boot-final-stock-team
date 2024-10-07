@@ -126,6 +126,7 @@ public class MemberServiceImp implements MemberService{
         New_User.setMb_level(1);
         New_User.setMb_point(50);
         
+
         boolean res = memberDao.join(New_User);
         if(!res) {
         	return false;
@@ -134,6 +135,7 @@ public class MemberServiceImp implements MemberService{
         	checkAccountNum(New_User.getMb_id());
         	return true;
         }
+
     }
     
     private void checkAccountNum(String mb_id) {

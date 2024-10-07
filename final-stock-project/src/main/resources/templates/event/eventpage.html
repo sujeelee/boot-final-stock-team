@@ -56,8 +56,8 @@
 
      
 </div>
-
-<a th:href="@{/event/write}" class="btn btn-outline-secondary">어드민용 이벤트 작성</a>
+<!--/* 아이디 권한이 9 이상이면 보임 */-->
+<a th:href="@{/event/write}" class="btn btn-outline-secondary" th:if="${#authentication.Principal.member.mb_level} >= 9">어드민용 이벤트 작성</a>
 
 
 
