@@ -8,6 +8,9 @@
 	<update id="companyType">
 		update stock 
 		set st_type = #{st_type}
+		<if test="st_status != null">
+			, st_status = #{st_status} 
+		</if>
 		where st_code = #{st_code}
 	</update>
 	<insert id="insertStockCompany">
@@ -21,12 +24,39 @@
 			st_type = #{st.st_type}
 	</insert>
 	<select id="getCompanyList" resultType="StockVO">
-		select * from stock where st_status != "상장폐지"
+		select * from stock where (1) 
+		<if test="type != null">
+			and st_status != #{type}
+		</if>
+		<if test="cri.st_type != null and cri.st_type.size() > 0 ">
+			and st_type in
+			<foreach collection="cri.st_type" item="items" open="(" close=")" separator=",">
+				#{items}
+			</foreach>
+		</if>
+		<if test="cri.stx != null and cri.stx != ''">
+			<if test="cri.sfl == 'st_code'">
+				and st_code LIKE CONCAT('%', #{cri.stx}, '%') 
+			</if>
+			<if test="cri.sfl == 'st_name'">
+				and st_name LIKE CONCAT('%', #{cri.stx}, '%') 
+			</if>
+			<if test="cri.sfl == ''">
+				and (st_name LIKE CONCAT('%', #{cri.stx}, '%') or st_code LIKE CONCAT('%', #{cri.stx}, '%') ) 
+			</if>
+		</if>
+		<if test="cri.state != null and cri.state != ''">
+			and st_status = #{cri.state}
+		</if>
+		order by st_name ASC
+		<if test="cri != null">
+			limit #{cri.pageStart}, #{cri.perPageNum}
+		</if>
 	</select>
 	<select id="getStockPrice" resultType="StockPriceVO">
 		select * from stock_info where si_date = #{si_date} and st_code = #{st_code}
 	</select>
-	<insert id="insertStockPrice">
+	<insert id="insertStockPrice" useGeneratedKeys="true" keyColumn="si.si_no">
 		insert into stock_info
 		set	si_date = #{si.si_date},
 			si_price = #{si.si_price},
@@ -38,4 +68,33 @@
 			si_lopr = #{si.si_lopr},
 			si_trqu = #{si.si_trqu}
 	</insert>
+	<select id="getCount" resultType="int">
+		select count(*) from stock where (1)
+		<if test="cri.st_type != null and cri.st_type.size() > 0 ">
+			and st_type in
+			<foreach collection="cri.st_type" item="items" open="(" close=")" separator=",">
+				#{items}
+			</foreach>
+		</if>
+		<if test="cri.stx != null and cri.stx != ''">
+			<if test="cri.sfl == 'st_code'">
+				and st_code LIKE CONCAT('%', #{cri.stx}, '%') 
+			</if>
+			<if test="cri.sfl == 'st_name'">
+				and st_name LIKE CONCAT('%', #{cri.stx}, '%') 
+			</if>
+			<if test="cri.sfl == ''">
+				and (st_name LIKE CONCAT('%', #{cri.stx}, '%') or st_code LIKE CONCAT('%', #{cri.stx}, '%') ) 
+			</if>
+		</if>
+		<if test="cri.state != null and cri.state != ''">
+			and st_status = #{cri.state}
+		</if>
+	</select>
+	<select id="getStockInfoList" resultType="StockPriceVO">
+		select * from stock_info where st_code = #{st_code} order by si_date DESC
+	</select>
+	<select id="getCountStockPrice" resultType="int">
+		select count(*) from stock_info where st_code = #{st_code}
+	</select>
 </mapper>

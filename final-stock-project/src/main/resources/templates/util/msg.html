@@ -14,13 +14,12 @@
       integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
       crossorigin="anonymous"
     ></script>
-    <script th:inline="javascript">
-      var msg = /*[[${msg}]]*/ '';
+    <script type="text/javascript">
+      var msg = "${msg}";
       if (msg != "") {
         alert(msg);
       }
-      let url = /*[[@{${url}}]]*/ '';
-      location.href = url;
+      location.href = '<c:url value="${url}"/>';
     </script>
 	</main>
 </body>

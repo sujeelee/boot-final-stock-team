@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class StockPriceVO {
+public class StockPriceVO { 
 	private int si_id; //기본키
 	private String si_date; //정보값을 뿌려준 날짜
 	private int si_price; //가격

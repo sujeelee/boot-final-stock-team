@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MemberVO {
-
 	private int mb_no; //(11자리), auto_incre
     private String mb_id;
     private String mb_password;
@@ -35,12 +34,6 @@ public class MemberVO {
     private int mb_fail; 
     private Date mb_cookie_limit; // 쿠키 만료기간
     private boolean auto_login; // autoLogin, DB에는 없습니다. (re 가 on 일 경우 true 값이 들어옵니다.)
-    
-    // news_member 테이블
-    private String mb_news; // 회원 신문사명
-    
-    
-    
 	public String getMb_auth() {
 		String auth = "GUEST";
 		int lev = this.mb_level;

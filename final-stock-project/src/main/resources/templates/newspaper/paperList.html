@@ -292,16 +292,10 @@
 				
 				function displayNewsList(list){
 					if(list == null || list.length == 0){
-						let tmp = `
-							<div class="undata-box">
-								<p>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</p>
-							</div>
-						`;
-						$('.news-container').html(tmp);
+						$('.news-list').html('<li class="news-item text-center"><b>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</b></li>');
 						return;
 					}
-					let str1 = '';
-					let str2 = '';
+					let str = '';
 					for(news of list){
 						var ne_datetime = formatDate(new Date(news.ne_datetime));
 						var ne_content = deleteTag(news.ne_content);
@@ -329,12 +323,8 @@
 			                    </div>
 			                </li>
 						`;
-					str2 = `
-						<ul class="news-list">${str1}</ul>
-					`;
-		                
 					}
-					$('.news-container').html(str2);
+					$('.news-list').html(str);
 					displayDrag();
 				} // 서버에서 가져온 데이터로 html을 새로 생성하는 함수
 				

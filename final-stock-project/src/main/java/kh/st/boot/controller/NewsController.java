@@ -1,11 +1,11 @@
 package kh.st.boot.controller;
 
-import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.vo.FileVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
@@ -82,22 +84,20 @@ public class NewsController {
 		NewsPaperVO newspaper = newsService.getNewsPaper(news.getNp_no());
 		int totalCount = news.getNe_happy() + news.getNe_angry() + news.getNe_absurd() + news.getNe_sad();
 		FileVO file = newsService.getFile(ne_no);
-		Date date = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		String ne_datetime = format.format(date);
 		model.addAttribute("news", news);
 		model.addAttribute("newspaper", newspaper);
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("file", file);
-		model.addAttribute("ne_datetime", ne_datetime);
 		return "newspaper/detail";
 	}
 	
 	@ResponseBody
 	@PostMapping("/emoji")
-	public Map<String, Object> emoji(@RequestBody NewsEmojiVO emoji, Principal principal) {
+	public Map<String, Object> emoji(@RequestBody NewsEmojiVO emoji, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		emoji.setMb_id(principal.getName());
+		// 회원 기능 완료되면 봉인해제
+		// MemberVO user = (MemberVO)session.getAttribute("user");
+		emoji.setMb_id("www7878");
 		NewsVO news = newsService.getNews(emoji.getNe_no());
 		// 이전에 선택한 이모지
 		NewsEmojiVO prevEmoji = newsService.getNewsEmoji(emoji);
@@ -137,9 +137,14 @@ public class NewsController {
 	}
 	
 	@PostMapping("/insert/{np_no}")
-	public String insertPost(Model model, @PathVariable int np_no ,NewsVO news, Principal principal, MultipartFile file) {
-		String mb_id = principal.getName();
-		boolean res = newsService.insertNews(news, mb_id, file);
+	public String insertPost(Model model, @PathVariable int np_no ,NewsVO news, HttpSession session, MultipartFile file) {
+		//MemberVO user = (MemberVO) session.getAttribute("user");
+		MemberVO user = new MemberVO();
+		user.setMb_id("www7878");		
+		// 맵퍼에 기자명을 추가해야됨
+		// Member 테이블에 mb_name => ne_name
+		
+		boolean res = newsService.insertNews(news, user, file);
 		if(res) {
 			model.addAttribute("msg" , "뉴스 등록 성공");
 			model.addAttribute("url" , "/newspaper");
@@ -164,9 +169,13 @@ public class NewsController {
 	
 
 	@PostMapping("/update/{ne_no}")
-	public String updatePost(Model model, @PathVariable int ne_no ,NewsVO news, Principal principal, MultipartFile file,@RequestParam(required = false) Integer num) {
-		String mb_id = principal.getName();
-		boolean res = newsService.updateNews(news, mb_id, file, num);
+	public String updatePost(Model model, @PathVariable int ne_no ,NewsVO news, HttpSession session, MultipartFile file,@RequestParam(required = false) Integer num) {
+		//MemberVO user = (MemberVO) session.getAttribute("user");
+		MemberVO user = new MemberVO();
+		user.setMb_id("www7878");	
+		// 맵퍼에 기자명을 추가해야됨
+		// Member 테이블에 mb_name => ne_name
+		boolean res = newsService.updateNews(news, user, file, num);
 		if(res) {
 			model.addAttribute("msg" , "뉴스 수정 성공");
 			model.addAttribute("url" , "/newspaper/detail/" + ne_no);
@@ -178,9 +187,13 @@ public class NewsController {
 	}
 	
 	@GetMapping("/delete/{ne_no}")
-	public String delete(Model model, @PathVariable int ne_no, Principal principal) {
-		String mb_id = principal.getName();
-		boolean res = newsService.deleteNews(ne_no, mb_id);
+	public String delete(Model model, @PathVariable int ne_no, HttpSession session) {
+		//MemberVO user = (MemberVO)session.getAttribute("user");
+		MemberVO user = new MemberVO();
+		user.setMb_id("www7878");		
+		// 맵퍼에 기자명을 추가해야됨
+		// Member 테이블에 mb_name => ne_name
+		boolean res = newsService.deleteNews(ne_no, user);
 		if(res) {
 			model.addAttribute("msg", "뉴스 삭제 성공");
 			model.addAttribute("url", "/newspaper");

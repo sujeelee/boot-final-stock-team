@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신문사 리스트 관리</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            background-color: #f9f9f9;
+        }
+
+        .content {
+            margin-left: 0; /* 사이드바가 없으므로 마진 제거 */
+            padding: 20px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #003366;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        input[type="text"], select, button {
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 0 5px;
+            width: 200px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00509E;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+	<main layout:fragment="content">
+    <div class="content">
+        <h1>신문사 리스트 관리</h1>
+        <div class="search-form">
+            <form action="/newspapers/search" method="get">
+                <input type="text" name="name" placeholder="신문사 이름">
+                <select name="status">
+                    <option value="">모두</option>
+                    <option value="1">사용 중</option>
+                    <option value="0">사용 안 함</option>
+                </select>
+                <button type="submit">검색</button>
+            </form>
+        </div>
+        
+        <h2>신문사 추가</h2>
+        <form th:action="@{/newspapers/add}" method="post">
+            <input type="text" name="np_name" placeholder="신문사 이름" required>
+            <select name="np_use">
+                <option value="1">사용 중</option>
+                <option value="0">사용 안 함</option>
+            </select>
+            <button type="submit">등록</button>
+        </form>
+
+        <h2>신문사 목록</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>신문사 이름</th>
+                    <th>사용 여부</th>
+                    <th>작업</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="newspaper : ${newspapers}">
+                    <td th:text="${newspaper.np_name}"></td>
+                    <td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"></td>
+                    <td>
+                        <form th:action="@{/newspapers/edit/{np_no}(np_no=${newspaper.np_no})}" method="get" style="display:inline;">
+                            <button type="submit">수정</button>
+                        </form>
+                        <form th:action="@{/newspapers/delete/{np_no}(np_no=${newspaper.np_no})}" method="post" style="display:inline;">
+                            <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </main>
+
+</body>
+</html>

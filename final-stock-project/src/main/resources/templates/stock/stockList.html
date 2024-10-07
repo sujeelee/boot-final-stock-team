@@ -5,11 +5,198 @@
 	layout:decorate="~{layout/layout.html}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/stock.css}">
 </head>
 <body>
 	<main layout:fragment="content">
-		<h1>받아오긔</h1>
+		<h2 class="center">주식 리스트</h2> 
+		<div class="form-search center">
+			<form th:action="@{/stock}" method="get" onsubmit="return fsearchstocksubmit(this);">
+				<input type="hidden" name="st_type" th:value="${param.st_type}">
+				<div class="form-group">
+					<span>주식타입 : </span>
+					<label for="all" class="form-check-label">전체</label>
+					<input type="checkbox" value="" id="all">
+					<span class="separator">|</span>
+					<label for="KOSPI" class="form-check-label">KOSPI</label>
+					<input type="checkbox" class="chk" value="KOSPI" id="KOSPI" onclick="chk_value();">
+					<span class="separator">|</span>
+					<label for="KOSDAQ" class="form-check-label">KOSDAQ</label>
+					<input type="checkbox" class="chk" value="KOSDAQ" id="KOSDAQ" onclick="chk_value();">
+					<span class="separator">|</span>
+					<label for="KONEX" class="form-check-label">KONEX</label>
+					<input type="checkbox" class="chk" value="KONEX" id="KONEX" onclick="chk_value();">
+				</div>
+				<div class="form-group">
+					<label for="type_all">전체</label>
+					<input type="radio" name="state" value="" id="type_all" checked>
+					<span class="separator">|</span>
+					<label for="type_close">상장폐지</label>
+					<input type="radio" name="state" value="상장폐지" id="type_close" th:checked="${#strings.equals(param.state, '상장폐지')}">
+					<span class="separator">|</span>
+					<label for="type_nomal">정상</label>
+					<input type="radio" name="state" value="정상" id="type_nomal" th:checked="${#strings.equals(param.state, '정상')}">
+				</div> 
+				<div class="form-group">
+				  <select name="sfl">
+				  	<option value="">전체</option>
+				  	<option value="st_name" th:selected="${#strings.equals(param.sfl, 'st_name')}">주식회사명</option>
+            		<option value="st_code" th:selected="${#strings.equals(param.sfl, 'st_code')}">주식코드</option>
+				  </select>
+				  <input type="text" placeholder="검색어를 입력하세요" name="stx" th:value="${param.stx}">
+				</div>
+				<div class="form-group">
+				  <button class="btn btn-info" type="submit">검색</button>
+				  <a class="btn btn-info" th:href="@{/stock}">초기화</a>
+				</div>
+			</form>
+		</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>주식코드</th>
+					<th>주식회사명</th>
+					<th>보유주식정보</th>
+					<th>주식타입</th>
+					<th>상태</th>
+					<th>주식 가격 상세</th>
+				</tr>
+			</thead>
+		    <tbody>
+				<tr th:each="list:${list}">
+					<td th:text="${list.st_code}"></td>
+					<td th:text="${list.st_name}"></td>
+					<td>
+						<span th:text="${#numbers.formatInteger(list.st_price_cnt,0,'COMMA')}"></span>개
+						<button th:if="${list.st_price_cnt == 0}" type="button" class="btn btn-light" th:value="${list.st_code}" th:onclick="get_new_data_list(this.value);">주식정보 가져오기</button>
+					</td>
+					<td th:text="${list.st_type}"></td>
+					<td th:text="${list.st_status}"></td>
+					<td><a th:href="@{/stock/stockInfo/{code}(code=*{list.st_code})}">상세</a></td>
+				</tr>
+				<tr th:if="${list == null or #lists.isEmpty(list)}">
+					<td colspan="6">주식 리스트가 존재하지 않습니다.</td>
+				</tr>
+		    </tbody>
+	    </table>
+		<ul class="pagination justify-content-center center" 
+			th:object="${pm}" 
+			th:if="${pm.endPage != 0}">
+		    <li class="page-item" th:if="*{prev}">
+		    	<a class="page-link" th:href="@{/stock(page=*{startPage-1},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}">이전</a>
+		    </li>
+		    <li class="page-item" 
+		    	th:each="i : *{#numbers.sequence(startPage, endPage)}"
+		    	th:classappend="*{cri.page} == ${i} ? 'active' : ''">
+		    	<a class="page-link" th:href="@{/stock(page=${i},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}" th:text="${i}"></a>
+		    </li>
+		    <li class="page-item" th:if="*{next}">
+		    	<a class="page-link" th:href="@{/stock(page=*{endPage+1},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}">다음</a>
+		    </li>
+		</ul>
+		<!-- Modal (숨긴 상태로 시작) -->
+		<div id="loadingModal" class="modal" tabindex="-1" role="dialog" style="display: none; position: fixed; top: 35%; z-index: 1050;">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body text-center">
+		        <div class="spinner-border text-info"></div>
+		        <p>데이터를 불러오는 중입니다...</p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<script th:inline="javascript">
+			$(document).ready(function() {
+				$("#all").click(function() {
+					if($("#all").is(":checked")) $(".chk").prop("checked", true);
+					else $(".chk").prop("checked", false);
+					chk_value();
+				});
+	
+				$(".chk").click(function() {
+					var total = $(".chk").length;
+					var checked = $(".chk:checked").length;
+	
+					if(total != checked) $("#all").prop("checked", false);
+					else $("#all").prop("checked", true); 
+					chk_value();
+				});
+			});
+			
+			function chk_value(){
+				// 선택된 체크박스의 값을 가져오기
+			    const selected = $('.chk:checked').map(function() {
+			        return this.value; // 체크된 체크박스의 값 반환
+			    }).get().join(','); // 배열을 문자열로 변환
+			
+			    // 선택된 항목에 따라 입력 필드의 값을 변경
+			    $('input[name="st_type"]').val(selected.length ? selected : '');
+			}
+			function get_new_data_list(val){
+				$('body').append('<div class="modal-backdrop fade show" style="background-color: rgba(211, 211, 211, 0.7);"></div>'); // 새로운 backdrop 추가
+				$('#loadingModal').show();
+				var url = '/stock/getAllStockInfo';
+				var param = {st_code : val};
+		        setTimeout(function() {
+					$.ajax({
+			            url: url,
+			            type: 'post',
+			            data: param,
+			            dataType : 'json',
+			            async: false, 
+			            success: function (data) {
+			                if(data.res == "fail"){
+			                	$('#loadingModal').hide();
+			                	$('.modal-backdrop').remove(); // 백드롭 제거
+			                	alert("KRX에 상장된 주식이 아니거나 잘못된 요청입니다.");
+			                } else {
+			                	alert("["+ data.name + "] 주식 정보 가져오기를 성공했습니다.");
+			                	location.reload();
+			                }
+			            }
+			        });
+		        }, 1000);  // 1초 딜레이
+			}
+			
+			function fsearchstocksubmit(f) {
+				if(f.sfl.value && !f.stx.value){
+					alert("검색어를 입력해주세요.");
+					f.stx.focus();
+					return false;
+				}
+				if(!f.st_type.value && !f.sfl.value && !f.state.value){
+					alert("검색하실 내용을 선택해주세요.");
+					return false;
+				}
+				return true;
+			}
+		</script>
+		
+		<!-- 타임리프를 이용한 조건부 스크립트 실행 -->
+	    <script th:if="${param.st_type}" th:inline="javascript">
+	        $(document).ready(function() {
+	            const inputValue = $('input[name="st_type"]').val();
+	            // 모든 체크박스 해제
+	            $('.chk').prop('checked', false);
+	
+	            // 입력된 값이 체크박스의 값과 일치하는지 확인
+	            if (inputValue) {
+	            	const values = inputValue.split(',').map(item => item.trim());
+
+	                // 각 체크박스의 값이 배열에 포함되어 있는지 확인
+	                $('.chk').each(function() {
+	                    if (values.includes($(this).val())) {
+	                        $(this).prop('checked', true); // 값이 일치하면 체크
+	                    }
+	                    var total = $(".chk").length;
+						var checked = $(".chk:checked").length;
+		
+						if(total != checked) $("#all").prop("checked", false);
+						else $("#all").prop("checked", true); 
+	                });
+	            }
+	        });
+	    </script>
 	</main>
 </body>
 </html>

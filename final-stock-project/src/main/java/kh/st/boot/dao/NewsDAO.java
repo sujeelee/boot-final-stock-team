@@ -1,12 +1,8 @@
 package kh.st.boot.dao;
 
+import java.util.Date;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
-import kh.st.boot.model.vo.FileVO;
-import kh.st.boot.model.vo.NewsEmojiVO;
-import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 
 public interface NewsDAO {
