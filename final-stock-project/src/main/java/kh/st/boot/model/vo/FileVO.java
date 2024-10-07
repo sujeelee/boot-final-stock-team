@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class FileVO {
+	
 	private int fi_no;
 	private String fi_org_name;
 	private String fi_path;

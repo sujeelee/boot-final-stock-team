@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.ui.Model;
 import kh.st.boot.model.dto.EventDTO;
+
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.service.EventService;
 import lombok.AllArgsConstructor;
@@ -18,25 +19,30 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/event")
 public class EventController {
 
-
     private EventService eventService;
 
-
-    //eventStatus : Opening, Ending, resUser
-    @GetMapping("/eventhome/{eventStatus}")
-    public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus){
+    // eventStatus : Opening, Ending, resUser
+    @GetMapping("/eventhome/{eventStatus}") // principal
+    public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus) {
         List<EventDTO> list = eventService.getEventList(eventStatus);
-        mo.addAttribute("list",list);
-        return "/event/eventhome";
+        mo.addAttribute("list", list);
+        return "/event/eventpage";
     }
-    
 
     @GetMapping("/eventhome/{eventStatus}/{ev_no}")
-    public String eventShow(@PathVariable("eventStatus") String eventStatus, @PathVariable("ev_no") int ev_no){
-        // EventVO event = eventService.getEvent();
-
+    public String eventShow(Model mo, @PathVariable("eventStatus") String eventStatus,
+            @PathVariable("ev_no") int ev_no) {
+        EventVO event = eventService.getEvent(eventStatus, ev_no);
+        mo.addAttribute("event", event);
         return "/event/eventShow";
     }
 
+
+    
+    @GetMapping("/write")
+    public String eventWrite(Model mo) {
+
+        return "/event/eventWrite";
+    }
 
 }

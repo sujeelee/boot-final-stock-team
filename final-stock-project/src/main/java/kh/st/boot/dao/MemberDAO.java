@@ -5,14 +5,18 @@ import org.apache.ibatis.annotations.Param;
 import kh.st.boot.model.vo.MemberVO;
 
 public interface MemberDAO {
+	
+	MemberVO findById(@Param("id")String username);
 
-	MemberVO findById(@Param("id") String id);
+    void serUserCookie(@Param("user")MemberVO user);
+    
+    void add_Fail_Number(@Param("id")String mb_id);
+    
+    void reset_Fail_Number(@Param("id")String mb_id);
 
-	void serUserCookie(@Param("user") MemberVO user);
+    Boolean join(@Param("user")MemberVO new_User);
 
-	void add_Fail_Number(@Param("id") String mb_id);
+	MemberVO findIdByCookie(@Param("sid")String sid);
 
-	void reset_Fail_Number(@Param("id") String mb_id);
-
-	Boolean join(@Param("user") MemberVO new_User);
+	boolean updateUserAccount(@Param("account")String mb_account, @Param("id")String mb_id);
 }

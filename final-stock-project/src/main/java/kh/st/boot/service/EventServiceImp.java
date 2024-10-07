@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.EventDAO;
 import kh.st.boot.model.dto.EventDTO;
+import kh.st.boot.model.vo.EventVO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -17,6 +18,11 @@ public class EventServiceImp implements EventService {
     @Override
     public List<EventDTO> getEventList(String eventStatus) {
         return eventDao.getEventList(eventStatus);
+    }
+
+    @Override
+    public EventVO getEvent(String eventStatus, int ev_no) {
+        return eventDao.getEvent(eventStatus, ev_no);
     }
 
 

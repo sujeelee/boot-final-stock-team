@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor 
+@NoArgsConstructor
 public class MailVO {
     private int evc_id;
     private String evc_email;

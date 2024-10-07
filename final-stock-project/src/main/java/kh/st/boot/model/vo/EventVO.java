@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class EventVO {
+
     private int ev_no;
     private String ev_title;
     private String ev_content;
