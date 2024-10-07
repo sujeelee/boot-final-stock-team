@@ -39,9 +39,9 @@
           <!--/* th:each로 list 돌려줄 예정 */-->
             <li class="event-item" th:each="event : ${list}">
                 <a th:href="@{/event/eventhome/${eventStatus}/${event.ev_no}}">
-                    <img src="https://cdn-lostark.game.onstove.com/uploadfiles/banner/ff25d7d22dee4ee8bd52edf40fe1a875.jpg" alt="Event Image">
+                    <img th:src="@{'/uploads' + ${event.fi_path}}" alt="Event Image" style="height: 200px;">
                     <h4>[[${event.ev_title}]]</h4>
-                    <p><i class="fa-solid fa-clock"></i>[[${event.ev_start}]] - [[${event.ev_end}]]</p>
+                    <p style="font-size: 16px;"><i class="fa-solid fa-clock"></i>[[${#dates.format(event.ev_start, 'yyyy년 MM월 dd일 ')}]] ~ [[${#dates.format(event.ev_end, 'yyyy년 MM월 dd일')}]]</p>
                 </a>
             </li>
         </ul>
@@ -56,10 +56,38 @@
 
      
 </div>
-<!--/* 아이디 권한이 9 이상이면 보임 */-->
-<a th:href="@{/event/write}" class="btn btn-outline-secondary" th:if="${#authentication.Principal.member.mb_level} >= 9">어드민용 이벤트 작성</a>
+<!--/* 로그인을 했고 + 아이디 권한이 9 이상이면 보임 */-->
+<div class="container" sec:authorize="isAuthenticated()" th:if="${#authentication.Principal.member.mb_level} >= 9">
+    <a th:href="@{/event/write}" class="btn btn-outline-secondary" >어드민용 이벤트 작성</a>
+</div>
 
+    <script th:inline="javascript">
+        var count = 0;
+        [# th:each="event, stat : ${list}"]
+        var event[[${stat.count}]] = [[${event}]];
+        var nDate = new Date([[${event.ev_end}]]);
+        if(nDate < new Date()){count++}
+        [/]
+        if(count >= 1 && [[${eventStatus}]] == "Opening"){
+            setEventDateAndStatus();
+        }
 
+        function setEventDateAndStatus(){
+            $.ajax({
+                url: '/event/ajax/updateEventDateAndStatus',
+                method: 'post',
+                dataType : 'text',
+                data : {},
+                success: function (data) {
+                    location.reload(true);
+                },
+                error: function (data, status, err) {
+                    console.log(data)
+                },
+
+            });
+        }
+    </script>
 
 </main>
 </body>

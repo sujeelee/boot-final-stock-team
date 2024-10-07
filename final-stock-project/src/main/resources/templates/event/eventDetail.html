@@ -7,15 +7,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Sid key Event Home Page</title>
-	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+
 </head>
 <body>
 	<main layout:fragment="content">
 
 
 
-		<h1 class="text-center mt-4 mb-4">이벤트 등록 페이지</h1>
+		<h1 class="text-center mt-4 mb-4">이벤트 이름</h1>
 
 		<div class="mt-5">
 			<form th:action="@{/event/write}" method="post" enctype="multipart/form-data">
@@ -57,15 +57,6 @@
 				<button type="submit" class="btn btn-outline-dark col-12 mb-2">등록</button>
 			</form>
 		</div>
-
-
-		<script type="text/javascript">
-		 	$('#ev_content').summernote({
-				placeholder: '내용을 작성하세요',
-				tabsize: 2,
-				height: 400
-			})
-		</script>
 
 	</main>
 </body>
