@@ -19,19 +19,24 @@
 		}
 		
 		/* 자산 섹션 */
+		.account-text {
+			font-size: 19px; 
+			color: #888;
+		}
+		
 		.balance-info {
 		    display: flex;
 		    flex-direction: column;
 		    gap: 4px;
 		}
 		
-		.balance-amount {
+		.balance-text1 {
 		    font-size: 24px;
 		    font-weight: bold;
 		    color: #333d4b;
 		}
 
-		.comparison-info {
+		.balance-text2 {
 			font-size: 17px;
 		    color: #888;
 		}
@@ -54,25 +59,54 @@
 		
 		.period-button {
 		    padding: 4px 16px;
-		    border: 1px solid #ddd;
+		    border: 1px solid white;
 		    border-radius: 20px;
-		    background-color: #f1f1f1;
+		    background-color: white;
 		    color: #888;
 		}
 		
-		/* 버튼 선택시 */
-		.period-button.active {
-		    color: black;
-		}
+		.period-button.active { 
+		    padding: 4px 16px;
+		    border: 1px solid #ddd;
+		    border-radius: 20px;
+		    background-color: #f9fafb;
+			color: black;
+		} /* 버튼 선택시 */
 		
 		.period-button:hover{
+			padding: 4px 16px;
+		    border: 1px solid #ddd;
+		    border-radius: 20px;
+		    background-color: #f9fafb;
 			color: black;
 		}
 		
 		/* 주문 가능 금액 섹션 */
-		.head-text {
+		.order-section{
+			display: flex;
+		    flex-direction: column;
+		    gap: 16px;
+		}
+		
+		.order-text {
 			font-size: 15px;
 			color: #888;
+		}
+		
+		.investment-text1 {
+			font-size: 15px; 
+			color: #333d4b; 
+			font-weight: bold;
+		}
+		
+		.investment-text2 {
+			font-size: 19px; 
+			color: #333d4b;
+		}
+		
+		.investment-text3 {
+			font-size: 15px; 
+			color: #333d4b;
 		}
 			
 		.order-buttons {
@@ -82,13 +116,17 @@
 		
 		.action-button {
 		    padding: 4px 16px;
-		    border: 1px solid #ddd;
+		    border: 1px solid white;
 		    border-radius: 20px;
-		    background-color: #f1f1f1;
+		    background-color: white;
 		    color: #888;
 		}
 		
 		.action-button:hover{
+			padding: 4px 16px;
+		    border: 1px solid #ddd;
+		    border-radius: 20px;
+		    background-color: #f9fafb;
 			color: black;
 		}
 		
@@ -108,7 +146,6 @@
 		    background-color: #f9fafb;
 		    width: 500px;
 		    height: 130px;
-		    margin-bottom: 15px;
 		}
 		
 		.investment-details {
@@ -123,21 +160,34 @@
 		    gap: 16px;
 		}
 		
-		.profit-info {
-		    font-size: 16px;
-		}
-		
 		.profit-balance {
 		    font-size: 24px;
 		    font-weight: bold;
 		}
 		
 		.profit-item {
-		    background-color: #f1f1f1;
-		    padding: 12px 16px;
+			display: flex;
+			flex-direction: column;
+		    background-color: #f9fafb;;
+		    padding: 20px 24px;
+		    gap: 12px;
 		    border-radius: 8px;
-		    font-size: 16px;
 		    width: 500px;
+		    height: 100px;
+		}
+		
+		.profit-details {
+		    display: flex;
+		    flex-direction: column;
+		}
+		
+		.order-investment-wrapper {
+		    display: flex;
+		    gap: 20px; /* 섹션 사이 간격을 줌 */
+		}
+		
+		.order-section, .investment-section {
+		    flex: 1; /* 두 섹션을 동일한 너비로 설정 */
 		}
 	</style>
 </head>
@@ -149,86 +199,93 @@
             	<section class="asset-section">
                 	<div class="account-info">
                 		<div class="d-flex">
-                    		<span class="mr-auto" style="font-size: 19px; color: #888;">S2D KEY 000-00-000000</span>
+                    		<span class="account-text mr-auto">S2D KEY 000-00-000000</span>
                     		<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
 			      				페이지 이동
 							</button>
 							<div class="dropdown-menu">
-								<a></a>
+								<h5 class="dropdown-header">페이지 목록</h5>
+								<a class="dropdown-item" th:href="@{/myaccount/asset}" >자산</a>
 							</div>
                     	</div>
                     	<div class="balance-info">
-                        	<span class="balance-amount">0원</span>
-                        	<span class="comparison-info">지난주보다 0원 (0%)</span>
+                        	<span class="balance-text1">0원</span>
+                        	<span class="balance-text2">지난주보다 0원 (0%)</span>
                     	</div>
                 	</div>
             	</section>
 
 	            <!-- 기간 선택 섹션 -->
 	            <section class="period-selection">
-	                <div class="graph-container"></div>
+	                <div class="graph-container">
+	                
+	                </div>
 	                <div class="period-buttons">
-	                    <button class="period-button active">1주</button>
+	                    <button class="period-button">1주</button>
 	                    <button class="period-button">1달</button>
 	                    <button class="period-button">3달</button>
 	                    <button class="period-button">1년</button>
 	                </div>
 	            </section>
 	
-	            <!-- 주문 가능 금액 섹션 -->
-	            <section class="order-section">
-	                <div class="order-info">
-	                    <span class="head-text">주문 가능 금액</span>
-	                    <div class="order-balance">
-	                        <span class="balance-amount">0원</span>
-	                    </div>
-	                    <!-- 원화  -->
-		                <div class="investment-item">
-		                    <span style="font-size: 15px; color: #333d4b; font-weight: bold;">원화</span>
-		                    <div class="investment-details">
-		                        <span style="font-size: 17px; color: #333d4b;">0원</span>
-		                        <span style="font-size: 15px; color: #333d4b;">0원 출금가능</span>
-		                    </div>
-		                </div>
-	                </div>
-	                <div class="order-buttons">
-	                    <button class="action-button">채우기</button>
-	                    <button class="action-button">보내기</button>
-	                    <button class="action-button">환전</button>
-	                </div>
-	            </section>
-	
-	            <!-- 투자 중 섹션 -->
-	            <section class="investment-section">
-	                <div class="investment-info">
-	                    <span class="head-text">투자 중인 금액</span>
-	                    <div class="investment-balance">
-	                        <span class="balance-amount">0원</span>
-	                    </div>
-	                </div>
-	
-	                <!-- 국내 주식 -->
-	                <div class="investment-item">
-	                    <span style="font-size: 15px; color: #333d4b; font-weight: bold;">국내주식</span>
-	                    <div class="investment-details">
-	                        <span style="font-size: 17px; color: #333d4b;">0원</span>
-	                        <span style="font-size: 15px; color: #333d4b;">0원 (0.0%)</span>
-	                    </div>
-	                </div>
-	            </section>
+	            <!-- 주문 가능 금액과 투자 중인 금액을 나란히 배치하는 섹션 -->
+				<section class="order-investment-wrapper">
+				    <!-- 주문 가능 금액 섹션 -->
+				    <section class="order-section">
+				        <div class="order-info">
+				            <span class="order-text">주문 가능 금액</span>
+				            <div class="order-balance">
+				                <span class="balance-text1">0원</span>
+				            </div>
+				        </div>
+				        <!-- 원화  -->
+				        <div class="investment-item">
+				            <span class="investment-text1">원화</span>
+				            <div class="investment-details">
+				                <span class="investment-text2">0원</span>
+				                <span class="investment-text3">0원 출금가능</span>
+				            </div>
+				        </div>
+				        <div class="order-buttons">
+				            <button class="action-button">채우기</button>
+				            <button class="action-button">보내기</button>
+				            <button class="action-button">환전</button>
+				        </div>
+				    </section>
+				
+				    <!-- 투자 중 섹션 -->
+				    <section class="investment-section">
+				        <div class="investment-info">
+				            <span class="order-text">투자 중인 금액</span>
+				            <div class="investment-balance">
+				                <span class="balance-text1">0원</span>
+				            </div>
+				        </div>
+				        <!-- 국내 주식 -->
+				        <div class="investment-item">
+				            <span class="investment-text1">국내주식</span>
+				            <div class="investment-details">
+				                <span class="investment-text2">0원</span>
+				                <span class="investment-text3">0원 (0.0%)</span>
+				            </div>
+				        </div>
+				    </section>
+				</section>
 	
 	            <!-- 수익 섹션 -->
 	            <section class="profit-section">
 	                <div class="profit-info">
-	                    <span class="head-text">10월 수익</span>
+	                    <span class="order-text">10월 수익</span>
 	                    <div class="profit-balance">
-	                        <span class="balance-amount">0원</span>
+	                        <span class="balance-text1">0원</span>
 	                    </div>
 	                </div>
-	
 	                <!-- 판매 수익 -->
 	                <div class="profit-item">
-	                    <span style="font-size: 15px; color: #333d4b; font-weight: bold;">판매 수익 ㅣ 0원</span>
+	                    <span class="investment-text1">판매 수익</span>
+	                    <div class="profit-details">
+	                        <span class="investment-text2">0원</span>
+	                    </div>
 	                </div>
 	            </section>
 	        </div>
