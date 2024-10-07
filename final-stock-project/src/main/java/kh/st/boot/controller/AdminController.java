@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +20,7 @@ public class AdminController {
 
 	@Autowired
 	private NewspaperService newspaperService;
+	
 
 	@GetMapping("/admNews/news")
 	public String newsPage(Model model) {
@@ -46,22 +45,34 @@ public class AdminController {
 
 	// 등록
 	@PostMapping("/admNews/newspapers/register")
-	public String registerNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
-			@RequestParam("np_use") int np_use) {
-		NewspaperDTO newNewspaper = new NewspaperDTO();
-		newNewspaper.setNp_no(np_no); //
-		newNewspaper.setNp_name(np_name);
-		newNewspaper.setNp_use(np_use);
-
-		newspaperService.addNewspaper(newNewspaper);
+	public String registerNewspaper(@RequestParam(required = false) String np_name,
+			@RequestParam(required = false) String np_use, Model model) {
+		
+		// np_use를 byte로 변환 (1 또는 0)
+		byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 1 : (byte) 0;
+		
+		boolean res = newspaperService.addNewspaper(np_name, useByte);
+		
+		if(res == false) {
+			model.addAttribute("msg", "이미 존재하는 신문사 입니다.");
+			model.addAttribute("url", "/admin/admNews/news");
+			return "util/msg";
+		}
+		
 		return "redirect:/admin/admNews/news";
 	}
 
+	//수정기능 할때 이미 존제하는지 확인 
+	// vo로 바꾸기 
+	
+	
+	
+	
 	// 삭제
 	@PostMapping("/admNews/newspapers/delete")
 	public String deleteNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") int np_use) {
-		NewspaperDTO newNewspaper = new NewspaperDTO();
+		NewspaperVO newNewspaper = new NewsPaperVO()
 		newNewspaper.setNp_no(np_no); //
 		newNewspaper.setNp_name(np_name);
 		newNewspaper.setNp_use(np_use);

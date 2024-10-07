@@ -25,7 +25,14 @@
     <select id="selectNewspapersByStatus" resultType="NewspaperVO">
         SELECT * FROM newspaper WHERE np_use = #{np_use}
     </select>
-
-	
+	<!-- 왜 이런 쿼리를 썻는지 주석달기 -->
+	<select id="getNewsOne" resultType="NewspaperVO">
+		SELECT * FROM newspaper WHERE np_name = #{name} limit 1
+	</select>
+	<!--  이게 name np_name 같은거 검색하는 기능       vo 로 보냄  -->
+    
+    
+    
+    
     
 </mapper>
