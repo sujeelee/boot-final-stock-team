@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import kh.st.boot.handler.LoginFailHandler;
@@ -37,28 +38,27 @@ public class SecurityConfig{
             .formLogin((form) -> form
                 .loginPage("/member/login")  // 커스텀 로그인 페이지 설정
                 .permitAll()           // 로그인 페이지는 접근 허용
-                .loginProcessingUrl("/member/login")
-//                .usernameParameter("userId")
-//                .passwordParameter("password") // 비밀번호 파라미터명
-                .defaultSuccessUrl("/")
+                .loginProcessingUrl("/member/login") //실제 로그인 되는 곳
+//                .usernameParameter("userId") //아이디 파라미터 명
+//                .passwordParameter("password") // 비밀번호 파라미터 명
                 .successHandler(new LoginSuccessHandler())
                 .failureHandler(new LoginFailHandler())
             )
+
             .rememberMe((rm)->rm
             		.key("team1")
             		.rememberMeParameter("re")
             		.userDetailsService(memberDetailService)
-            		.rememberMeCookieName("AUTO_LOGIN")
-            		.tokenValiditySeconds(60*60*24*7))
-
-                    
+            		.rememberMeCookieName("AUTO_LOGIN")//저장할 쿠키명
+            		.tokenValiditySeconds(60*60*24*7)//쿠키 만료시간
+            )
             .logout((logout) -> logout
             		.logoutUrl("/member/logout") //이 URL로  post방식으로 전송하면 자동으로 로그아웃이 실행됨
             		.logoutSuccessUrl("/")
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
             		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
-                    .deleteCookies("JSESSIONID")
+                    .deleteCookies("JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
     }

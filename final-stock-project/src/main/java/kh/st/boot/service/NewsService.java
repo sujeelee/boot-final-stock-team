@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.model.vo.FileVO;
-import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;

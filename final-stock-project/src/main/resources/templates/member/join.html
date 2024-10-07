@@ -167,7 +167,7 @@ function checkEmailCode(){
     $.ajax({
         url: '/mail/ajax/get_check',
         method: 'post',
-        dataType : 'json',
+        dataType : 'text',
         data : {evc_email : mail,
                 code : code},
         success: function (data) {

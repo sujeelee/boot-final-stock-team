@@ -124,7 +124,7 @@ public class MemberServiceImp implements MemberService{
         New_User.setMb_fail(0);
         New_User.setMb_level(1);
         New_User.setMb_point(50);
-
+        
         return memberDao.join(New_User);
     }
 
