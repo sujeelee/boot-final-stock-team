@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 import kh.st.boot.model.dto.EventDTO;
 
@@ -37,12 +39,27 @@ public class EventController {
         return "/event/eventShow";
     }
 
-
-    
     @GetMapping("/write")
-    public String eventWrite(Model mo) {
-
+    public String eventWrite() {
         return "/event/eventWrite";
     }
 
-}
+    @PostMapping("/write")
+    public String eventWrite_Post(EventVO event, MultipartFile file){
+        
+        boolean res = eventService.setEvent(event, file);
+        
+        if (event == null && res) {
+            return "redirect:/event/write";
+        } else {
+            return "redirect:/event/eventhome/Opening";
+        }
+
+    }
+
+    @PostMapping("/ajax/updateEventDateAndStatus")
+    public @ResponseBody boolean updateEventDateAndStatus(){
+        boolean res = eventService.updateEventDateAndStatus();
+        return res;
+    }
+}  
