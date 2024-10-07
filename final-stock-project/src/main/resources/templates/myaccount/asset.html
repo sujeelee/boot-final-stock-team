@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html 
+	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout.html}">
 <head>
@@ -206,6 +207,7 @@
 							<div class="dropdown-menu">
 								<h5 class="dropdown-header">페이지 목록</h5>
 								<a class="dropdown-item" th:href="@{/myaccount/asset}" >자산</a>
+								<a class="dropdown-item" th:href="@{/myaccount/transactions}" >거래내역</a>
 							</div>
                     	</div>
                     	<div class="balance-info">

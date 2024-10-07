@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+	<style type="text/css">
+				/* Container */
+		.mypage-container {
+		    max-width: 1280px;
+		    margin: 0 auto;
+		    padding: 40px 24px;
+		    display: flex;
+		    flex-direction: column;
+		    gap: 20px;
+		}
+		
+		/* Header */
+		.mypage-header {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    margin-bottom: 20px;
+		}
+		
+		.header-title {
+		    font-size: 24px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		.dropdown {
+		    position: relative;
+		    display: inline-block;
+		}
+		
+		.dropdown button {
+		    background-color: #f9fafb;
+		    padding: 10px;
+		    border: 1px solid #ddd;
+		    border-radius: 10px;
+		    font-size: 16px;
+		    color: #888;
+		}
+		
+		.dropdown-content {
+		    display: none;
+		    position: absolute;
+		    background-color: white;
+		    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+		    border-radius: 10px;
+		    padding: 10px;
+		    min-width: 200px;
+		    z-index: 1;
+		}
+		
+		.dropdown-content a {
+		    display: block;
+		    padding: 8px;
+		    text-decoration: none;
+		    color: #333d4b;
+		}
+		
+		.dropdown:hover .dropdown-content {
+		    display: block;
+		}
+		
+		/* Balance Section */
+		.balance-section {
+		    display: flex;
+		    justify-content: space-between;
+		    padding: 20px;
+		    background-color: #f9fafb;
+		    border-radius: 10px;
+		    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		}
+		
+		.balance-info {
+		    display: flex;
+		    flex-direction: column;
+		}
+		
+		.balance-text1 {
+		    font-size: 32px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		.balance-text2 {
+		    font-size: 16px;
+		    color: #888;
+		}
+		
+		/* Transactions Section */
+		.transactions {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 16px;
+		}
+		
+		.transaction-item {
+		    display: flex;
+		    justify-content: space-between;
+		    padding: 16px;
+		    border: 1px solid #ddd;
+		    border-radius: 10px;
+		    background-color: #fff;
+		    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		}
+		
+		.transaction-info {
+		    display: flex;
+		    flex-direction: column;
+		}
+		
+		.transaction-title {
+		    font-size: 18px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		.transaction-date {
+		    font-size: 14px;
+		    color: #888;
+		}
+		
+		.transaction-amount {
+		    font-size: 20px;
+		    font-weight: bold;
+		    color: #4caf50; /* Positive */
+		}
+		
+		.transaction-amount.negative {
+		    color: #f44336; /* Negative */
+		}
+	</style>
+</head>
+ <body>
+	<main layout:fragment="content">
+		<div class="mypage-container">
+			<!-- Header -->
+			<div class="mypage-header">
+				<h1 class="header-title">계좌 거래 내역</h1>
+				<div class="dropdown">
+				    <button>전체</button>
+				    <div class="dropdown-content">
+				        <a href="#">입금</a>
+				        <a href="#">출금</a>
+				        <a href="#">매수</a>
+				        <a href="#">매도</a>
+				    </div>
+				</div>
+			</div>
+			
+			<!-- Balance Section -->
+			<div class="balance-section">
+				<div class="balance-info">
+					<span class="balance-text1">₩1,000,000</span>
+					<span class="balance-text2">현재 잔액</span>
+				</div>
+				<div class="balance-info">
+					<span class="balance-text1">₩200,000</span>
+					<span class="balance-text2">이번 달 수익</span>
+				</div>
+			</div>
+			
+			<!-- Transactions Section -->
+			<div class="transactions">
+				<div class="transaction-item">
+					<div class="transaction-info">
+						<span class="transaction-title">입금</span>
+						<span class="transaction-date">2024-10-07</span>
+					</div>
+					<span class="transaction-amount">+₩500,000</span>
+				</div>
+				<div class="transaction-item">
+					<div class="transaction-info">
+						<span class="transaction-title">출금</span>
+						<span class="transaction-date">2024-10-05</span>
+					</div>
+					<span class="transaction-amount negative">-₩300,000</span>
+				</div>
+				<!-- 추가적인 거래 내역 -->
+			</div>
+		</div>
+	
+	</main>
+</body>
+</html>
