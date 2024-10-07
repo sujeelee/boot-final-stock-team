@@ -13,13 +13,13 @@ import kh.st.boot.model.vo.MemberVO;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
-public class MemberServiceImp implements MemberService {
-
+@AllArgsConstructor	
+public class MemberServiceImp implements MemberService{
+	
 	private MemberDAO memberDao;
-
+	
 	private PasswordEncoder passwordEncoder;
-
+	
 	@Override
     public MemberVO login(LoginDTO user_) {
         //null일시 리턴
@@ -109,7 +109,7 @@ public class MemberServiceImp implements MemberService {
         	New_User.setMb_ph(moStr[0] + moStr[1] + moStr[2]);
 		} else {
 	        New_User.setMb_ph(user_.getPh()); //전화번호
-		} 
+		}
         New_User.setMb_email(user_.getEmail());
         New_User.setMb_birth(user_.getBirth());
         //addr1, 2, zip 넣어주어야 함
@@ -146,8 +146,14 @@ public class MemberServiceImp implements MemberService {
     	}while(result != 0);
     } // 회원가입이 된 유저에 계좌 번호를 추가하는 메소드입니다.
 
-		return null;
-	}
+    //regex해주는 메소드 (str은 문자열, regex는 규칙입니다.)
+    private boolean Check_Regex(String str, String regex){
+        //자바 유딜 리젝스 페턴
+        if (str != null && Pattern.matches(regex, str)) {
+            return true;
+        }
+        return false;
+    }
 
     
     @Override

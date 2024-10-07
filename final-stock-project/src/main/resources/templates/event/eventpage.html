@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
+    
+	
+<head>
+<meta charset="UTF-8">
+<title>Event Page</title>
+</head>
+<body>
+
+   
+
+    
+<main layout:fragment="content">
+	 <!--/* 스타일 */-->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/eventpage.css}" >
+</th:block>
+
+
+<h2 class="event-title">이벤트</h2>
+    
+
+<div class="event-container">
+
+    <ul class="tab">
+        <li><a class="tablinks" style="text-decoration-line: none;" th:classappend="${eventStatus} == 'Opening' ? 'active' : '' "  th:href="@{/event/eventhome/Opening}" >진행중인 이벤트</a></li>
+        <li class="separator">|</li>
+        <li><a class="tablinks" style="text-decoration-line: none;" th:classappend="${eventStatus} == 'Ending' ? 'active' : '' " th:href="@{/event/eventhome/Ending}" >종료된 이벤트</a></li>
+        <li class="separator">|</li>
+        <li><a class="tablinks" style="text-decoration-line: none;" th:classappend="${eventStatus} == 'resUser' ? 'active' : '' " th:href="@{/event/eventhome/resUser}" >당첨자 발표</a></li>
+    </ul>        
+
+    <div id="ongoing" class="tabcontent">
+        <ul class="event-list" th:if="${#lists.size(list) != 0}">
+          <!--/* th:each로 list 돌려줄 예정 */-->
+            <li class="event-item" th:each="event : ${list}">
+                <a th:href="@{/event/eventhome/${eventStatus}/${event.ev_no}}">
+                    <img src="https://cdn-lostark.game.onstove.com/uploadfiles/banner/ff25d7d22dee4ee8bd52edf40fe1a875.jpg" alt="Event Image">
+                    <h4>[[${event.ev_title}]]</h4>
+                    <p><i class="fa-solid fa-clock"></i>[[${event.ev_start}]] - [[${event.ev_end}]]</p>
+                </a>
+            </li>
+        </ul>
+
+
+        <ul th:if="${#lists.size(list) == 0}" style="width: 100%; flex-basis: 100%;  list-style: none;">
+            <li class="noneList" style="text-decoration: none;">
+                <p style= " text-align: center; width: 100%; flex-basis: 100%;" >아무런 이벤트가 없어요! 다음에 찾아주세요.</p>
+            </li>
+        </ul>
+    </div>
+
+     
+</div>
+
+<a th:href="@{/event/write}" class="btn btn-outline-secondary">어드민용 이벤트 작성</a>
+
+
+
+</main>
+</body>
+</html>

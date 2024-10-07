@@ -1,26 +1,44 @@
 package kh.st.boot.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.dao.NewsDAO;
+import kh.st.boot.model.vo.FileVO;
+import kh.st.boot.model.vo.NewsEmojiVO;
+import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
-import lombok.AllArgsConstructor;
+import kh.st.boot.utils.UploadFileUtils;
 
 @Service
-@AllArgsConstructor
-public class NewsServiceImp implements NewsService {
-
+public class NewsServiceImp implements NewsService{
+	
+	@Autowired
 	private NewsDAO newsDao;
-
+	
+	@Value("${file.upload-dir}")
+	String uploadPath;
+	
+	@Override
+	public List<NewsPaperVO> getNewsPaperList() {
+		return newsDao.selectNewsPaperList();
+	}
+	
 	@Override
 	public List<NewsVO> getNewsList(Date ne_datetime) {
-		if (ne_datetime == null) {
+		if(ne_datetime == null) {
 			return null;
 		}
-		return newsDao.selectNewsList(ne_datetime);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+		String formatDate = format.format(ne_datetime);
+		return newsDao.selectNewsListByDate(formatDate);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class MailController {
             messageHelper.setTo(to);// 받는사람 이메일
             messageHelper.setSubject(title);// 메일제목은 생략이 가능하다
             messageHelper.setText(content, true);// 메일 내용
- 
+
             mailSender.send(message);
             return true;
         } catch(Exception e){

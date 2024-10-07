@@ -304,10 +304,5 @@ REFERENCES `member` (
 	`mb_no`
 );
 
-ALTER TABLE `file` ADD CONSTRAINT `FK_news_TO_file` FOREIGN KEY (
-	`fi_reg_no`
-)
-REFERENCES `news` (
-	`ne_no`
-)
-ON DELETE CASCADE;
+-- Group By 에러 해결 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
