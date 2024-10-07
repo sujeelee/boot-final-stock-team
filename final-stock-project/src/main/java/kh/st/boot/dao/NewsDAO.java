@@ -15,9 +15,9 @@ public interface NewsDAO {
 	
 	List<NewsVO> selectNewsListByDate(String formatDate);
 
-	NewsPaperVO selectNewsPaper(int np_no);
-
 	List<NewsVO> selectNewsListByPaper(int np_no, String ne_datetime);
+	
+	NewsPaperVO selectNewsPaper(int np_no);
 
 	NewsVO selectNews(int ne_no);
 
@@ -28,23 +28,25 @@ public interface NewsDAO {
 	void updateNewsEmojiCount(@Param("em")NewsEmojiVO emoji, @Param("count")int count);
 
 	void updateNewsEmoji(NewsEmojiVO emoji);
-	
-	void deleteNewsEmoji(NewsEmojiVO emoji);
+
+	void deleteNewsEmoji(int ne_no, String mb_id);
 
 	boolean insertNews(NewsVO news);
-	
-	NewsVO selectNewsLimitOne();
-
-	void insertFile(FileVO fileVo);
 	
 	boolean updateNews(NewsVO news);
 
 	boolean deleteNews(int ne_no);
+	
+	NewsVO selectNewsLimitOne();
+	
+	void insertFile(FileVO fileVo);
+	
+	FileVO selectFileByFiNo(int fi_no);
 
 	FileVO selectFileByNeNo(int ne_no);
-
-	FileVO selectFileByFiNo(int fi_no);
 	
-	void deleteFile(int fi_no);
+	void deleteFileByFiNo(int fi_no);
+
+	void deleteFileByNeNo(int ne_no);
 
 }

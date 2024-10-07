@@ -93,19 +93,14 @@
 	</delete>
 	
 	<insert id="insertNews">
-		INSERT INTO NEWS(NE_TITLE, NE_CONTENT, MB_ID, NP_NO, NE_DATETIME) VALUES
-		(#{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW())
+		INSERT INTO NEWS (NE_TITLE, NE_CONTENT, MB_ID, NP_NO, NE_DATETIME, NE_NAME)
+		SELECT #{ne_title}, #{ne_content}, #{mb_id}, #{np_no}, NOW(), MB_NAME
+		FROM
+			MEMBER
+		WHERE
+			MB_ID = #{mb_id}
 	</insert>
-	
-	<select id="selectNewsLimitOne" resultType="NewsVO">
-		SELECT * FROM NEWS ORDER BY NE_NO DESC LIMIT 1
-	</select>
-	
-	<insert id="insertFile">
-		INSERT INTO FILE(FI_ORG_NAME, FI_PATH, FI_REG_NO, FI_TYPE) VALUES
-		(#{fi_org_name}, #{fi_path}, #{fi_reg_no}, #{fi_type})
-	</insert>
-	
+
 	<update id="updateNews">
 		UPDATE NEWS
 		SET
@@ -116,28 +111,43 @@
 			NE_NO = #{ne_no}
 	</update>
 	
-	<select id="selectFileByNeNo" resultType="FileVO">
-		SELECT *
-		FROM
-			FILE
-		WHERE
-			FI_REG_NO = #{ne_no}
+	<delete id="deleteNews">
+		DELETE FROM NEWS WHERE NE_NO = #{ne_no}
+	</delete>
+	
+	<select id="selectNewsLimitOne" resultType="NewsVO">
+		SELECT * FROM NEWS ORDER BY NE_NO DESC LIMIT 1
 	</select>
+	
+	<insert id="insertFile">
+		INSERT INTO FILE(FI_ORG_NAME, FI_PATH, FI_REG_NO, FI_TYPE) VALUES
+		(#{fi_org_name}, #{fi_path}, #{fi_reg_no}, #{fi_type})
+	</insert>
 	
 	<select id="selectFileByFiNo" resultType="FileVO">
 		SELECT *
 		FROM
 			FILE
 		WHERE
-			FI_NO = #{fi_no}
+			FI_NO = #{fi_no} AND
+			FI_TYPE = 'news'
 	</select>
 	
-	<update id="deleteFile">
-		DELETE FROM FILE WHERE FI_NO = #{fi_no}
-	</update>
+	<select id="selectFileByNeNo" resultType="FileVO">
+		SELECT *
+		FROM
+			FILE
+		WHERE
+			FI_REG_NO = #{ne_no} AND
+			FI_TYPE = 'news'
+	</select>
 	
-	<delete id="deleteNews">
-		DELETE FROM NEWS WHERE NE_NO = #{ne_no}
+	<delete id="deleteFileByFiNo">
+		DELETE FROM FILE WHERE FI_NO = #{fi_no} AND FI_TYPE = 'news'
+	</delete>
+	
+	<delete id="deleteFileByNeNo">
+		DELETE FROM FILE WHERE FI_REG_NO = #{ne_no} AND FI_TYPE = 'news'
 	</delete>
 	
 </mapper>

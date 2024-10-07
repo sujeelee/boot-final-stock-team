@@ -11,19 +11,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
-
-public class LoginSuccessHandler implements AuthenticationSuccessHandler{
-
-
-
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,Authentication authentication) throws IOException, ServletException {
 
-	
+		
 
-		response.sendRedirect("/");//메인으로
+		response.sendRedirect("/");// 메인으로
 
 	}
 

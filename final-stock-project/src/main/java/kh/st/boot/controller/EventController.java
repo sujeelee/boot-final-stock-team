@@ -37,4 +37,12 @@ public class EventController {
         return "/event/eventShow";
     }
 
+
+    
+    @GetMapping("/write")
+    public String eventWrite(Model mo) {
+
+        return "/event/eventWrite";
+    }
+
 }

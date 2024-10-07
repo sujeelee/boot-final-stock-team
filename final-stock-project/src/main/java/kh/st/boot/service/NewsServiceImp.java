@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.dao.NewsDAO;
 import kh.st.boot.model.vo.FileVO;
-import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
@@ -102,12 +101,12 @@ public class NewsServiceImp implements NewsService{
 		if(emoji == null) {
 			return;
 		}
-		newsDao.deleteNewsEmoji(emoji);
+		newsDao.deleteNewsEmoji(emoji.getNe_no(), emoji.getMb_id());
 	}
 	
 	@Override
-	public boolean insertNews(NewsVO news, MemberVO user, MultipartFile file) {
-		if(news == null || user == null) {
+	public boolean insertNews(NewsVO news, String mb_id, MultipartFile file) {
+		if(news == null || mb_id == null) {
 			return false;
 		}
 		if(news.getNe_title().trim().length() == 0) {
@@ -116,12 +115,11 @@ public class NewsServiceImp implements NewsService{
 		if(news.getNe_content().trim().length() == 0) {
 			return false;
 		}
-		news.setMb_id(user.getMb_id());
+		news.setMb_id(mb_id);
 		boolean res = newsDao.insertNews(news);
 		if(!res) {
 			return false;
 		}
-		
 		NewsVO tmp_news = newsDao.selectNewsLimitOne();
 		uploadFile(file, tmp_news.getNe_no());
 		return true;
@@ -142,12 +140,11 @@ public class NewsServiceImp implements NewsService{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Override
-	public boolean updateNews(NewsVO news, MemberVO user, MultipartFile file, Integer num) {
-		if(news == null || user == null) {
+	public boolean updateNews(NewsVO news, String mb_id, MultipartFile file, Integer num) {
+		if(news == null || mb_id == null) {
 			return false;
 		}
 		if(news.getNe_title().trim().length() == 0) {
@@ -157,7 +154,7 @@ public class NewsServiceImp implements NewsService{
 			return false;
 		}
 		NewsVO tmp = getNews(news.getNe_no());
-		if(!tmp.getMb_id().equals(user.getMb_id())) {
+		if(!tmp.getMb_id().equals(mb_id)) {
 			return false;
 		}
 		boolean res = newsDao.updateNews(news);
@@ -178,7 +175,7 @@ public class NewsServiceImp implements NewsService{
 			return;
 		}
 		UploadFileUtils.delteFile(uploadPath, file.getFi_path());
-		newsDao.deleteFile(file.getFi_no());
+		newsDao.deleteFileByFiNo(file.getFi_no());
 	}
 
 	@Override
@@ -187,15 +184,23 @@ public class NewsServiceImp implements NewsService{
 	}
 
 	@Override
-	public boolean deleteNews(int ne_no, MemberVO user) {
-		if(user == null) {
+	public boolean deleteNews(int ne_no, String mb_id) {
+		if(mb_id == null) {
 			return false;
 		}
-		NewsVO post = getNews(ne_no);
-		if(!post.getMb_id().equals(user.getMb_id())) {
+		NewsVO news = getNews(ne_no);
+		if(!news.getMb_id().equals(mb_id)) {
 			return false;
 		}
-		return newsDao.deleteNews(ne_no);
+		boolean res = newsDao.deleteNews(ne_no);
+		if(!res) {
+			return false;
+		}
+		// 파일 삭제
+		newsDao.deleteFileByNeNo(ne_no);
+		// 뉴스 이모지 삭제
+		newsDao.deleteNewsEmoji(ne_no, mb_id);
+		return true;
 	}
 
 }
