@@ -9,7 +9,8 @@
 </head>
 <body>
 	<main layout:fragment="content">
-		<h2 class="center">주식 리스트</h2> 
+		<h2 class="center">주식 리스트</h2>
+		<a class="btn btn-info" th:href="@{/stock/getListStock}">주식 가져오기 구현 테스트 링크</a> 
 		<div class="form-search center">
 			<form th:action="@{/stock}" method="get" onsubmit="return fsearchstocksubmit(this);">
 				<input type="hidden" name="st_type" th:value="${param.st_type}">
