@@ -30,7 +30,7 @@ ex) 19960908',
 	`mb_fail` int DEFAULT 0,
 	`mb_point`	int(11)	NULL,
 	`mb_emailing`	tinyint(4)	NULL,
-	`mb_account`	varchar(255)	NULL
+	`mb_account`	varchar(255)	NULL UNIQUE
 );
 
 
