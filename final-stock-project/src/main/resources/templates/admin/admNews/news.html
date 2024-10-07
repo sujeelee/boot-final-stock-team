@@ -213,7 +213,7 @@ tr:hover {
 
 			<div class="register-form">
 				<form action="/admin/admNews/newspapers/register" method="post">
-					<input type="text" name="np_no" placeholder="신문사 번호" required>
+					<input type="hidden" name="np_no" placeholder="신문사 번호" required>
 					<input type="text" name="np_name" placeholder="신문사 이름" required>
 					<select name="np_use" required>
 						<option value="1">사용 중</option>
@@ -227,7 +227,7 @@ tr:hover {
 		<table>
 			<thead>
 				<tr>
-					<th>코드</th>
+					
 					<th>신문사 이름</th>
 					<th>사용 여부</th>
 					<th>작업</th>
@@ -235,7 +235,7 @@ tr:hover {
 			</thead>
 			<tbody>
 				<tr th:each="newspaper : ${newspapers}">
-					<td th:text="${newspaper.np_no}"></td>
+					<td hidden="${newspaper.np_no}"></td>
 					<td th:text="${newspaper.np_name}"></td>
 					<td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"></td>
 					<td>
