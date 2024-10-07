@@ -155,7 +155,6 @@ public class MemberServiceImp implements MemberService{
         return false;
     }
 
-    
     @Override
     public MemberVO findIdByCookie(String sid) {
         return memberDao.findIdByCookie(sid);
