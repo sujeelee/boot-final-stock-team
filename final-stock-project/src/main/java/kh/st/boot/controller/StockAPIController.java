@@ -21,6 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.StockCriteria;
 import kh.st.boot.service.StockService;
 
 
@@ -76,14 +79,32 @@ public class StockAPIController {
 	}
 	
 	@GetMapping("/getListStock")
-	public void RestAPI() {
+	public String RestAPI(Criteria cri, Model model, @RequestParam Map<String, String> params) {
 		String apiUrl = "http://apis.data.go.kr/1160100/service/"
 				+ "GetStocIssuInfoService_V2/getItemBasiInfo_V2?serviceKey="
 				+ encodeKey
-				+ "&numOfRows=1000&pageNo=1&resultType=json";
+				+ "&numOfRows=100&resultType=json&pageNo=";
+		// 페이지메이커 생성 (페이징 처리를 위한 객체)
+		int count = 50;
+		PageMaker pm = new PageMaker(10, cri, count);
+		model.addAttribute("pm", pm); // 페이지 정보 추가
+		
+		apiUrl += cri.getPage();
+		if(params.get("sfl") != null && params.get("stx") != null) {
+			if(params.get("sfl").equals("cmpname")) {
+				apiUrl += "&stckIssuCmpyNm=" + params.get("stx").toString();
+			} else if(params.get("sfl").equals("crno")) {
+				apiUrl += "&crno=" + params.get("stx").toString();
+			}
+		}
+		model.addAttribute("url", apiUrl);
+		model.addAttribute("param", params);
+		
 		List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl);
+		model.addAttribute("array", jsonArray);
+		return "stock/getStock";
 		// JSON 필드와 StockVO 필드 간의 매핑 정의
-        Map<String, String> field = new HashMap<>();
+        /*Map<String, String> field = new HashMap<>();
         field.put("isinCd", "st_code");
         field.put("isinCdNm", "st_name");
         field.put("issuStckCnt", "st_qty");
@@ -110,8 +131,7 @@ public class StockAPIController {
                 }
             }
             stockService.insertStockCompany(stock);
-           //System.out.println("-------------------------");
-        }
+        }*/
 	}
 	
 	@GetMapping("/Stockprice")
