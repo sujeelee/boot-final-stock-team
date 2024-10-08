@@ -14,12 +14,18 @@ public interface StockDAO {
 	
 	void companyType(@Param("st_code")String st_code, @Param("st_type")String st_type);
 
-	void insertStockCompany(@Param("st")StockVO newStock);
+	void insertStockCompany(@Param("st")StockVO newStock); 
+	 
+	List<StockVO> getCompanyList(@Param("type")String type, @Param("cri")StockCriteria cri); 
+
+	StockPriceVO getStockPrice(@Param("si_date")String si_date, @Param("st_code")String st_code); 
+
+	boolean insertStockPrice(@Param("si")StockPriceVO price); 
+
+	int getCount(@Param("cri")StockCriteria cri); 
 	
-	List<StockVO> getCompanyList();
+	List<StockPriceVO> getStockInfoList(@Param("st_code")String st_code); 
 
-	StockPriceVO getStockPrice(@Param("si_date")String si_date, @Param("st_code")String st_code);
-
-	void insertStockPrice(@Param("si")StockPriceVO price);
+	int getCountStockPrice(@Param("st_code")String st_code); 
 
 }
