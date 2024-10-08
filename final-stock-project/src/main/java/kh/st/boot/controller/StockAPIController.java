@@ -221,11 +221,10 @@ public class StockAPIController {
 	
 	@GetMapping("/Stockprice")
 	public String getStockPrice(Model model) {
-		List<StockVO> list = stockService.getCompanyList();
+		List<StockVO> list = stockService.getCompanyList("상장폐지", null);
 		model.addAttribute("result", list);
 		for(int i=0; i<list.size();i++) {
 			String st_code = list.get(i).getSt_code();
-			System.out.println(list.get(i).getSt_code());
 			String apiUrl = "http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey="
 					+ encodeKey
 					+ "&isinCd=" + st_code
