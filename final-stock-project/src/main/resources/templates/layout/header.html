@@ -1,5 +1,8 @@
 
 	<header class="home-section">
+	<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/header.css}" >
+</th:block>
 		<nav class="navbar">
 		  <!-- 왼쪽 로고 -->
 		  <div class="logo">
@@ -14,12 +17,13 @@
 
 			<a th:href="@{/event/eventhome/Opening}">이벤트페이지 테이스 링크</a>
 			<a th:href="@{/stock}">주식 리스트</a>
+			<a th:href="@{/deposit}">예치금결제</a>
 
 		  </div>        
+		  <p></p>
+		  </div>
 		  <!--/* 메뉴를 가운데로 고정하기 위한 p 테그 */-->
 		  <div ><p></p></div>
 
 		</nav>
 	  </header>
-
-</html>

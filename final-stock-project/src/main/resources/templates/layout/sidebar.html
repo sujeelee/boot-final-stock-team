@@ -1,4 +1,7 @@
 <sidebar th:fragment="sidebar">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}" >
+</th:block>
         <div class="sidebar">
             <ul class="nav-list">
               <li class="side_icon" onclick="showDash(this);">

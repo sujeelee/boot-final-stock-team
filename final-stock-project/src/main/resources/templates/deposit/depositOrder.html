@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/css/deposit.css}">
+<script src="https://pay.nicepay.co.kr/v1/js/"></script> <!--nicepay payment-window client-auth-->
+</head>
+<body>
+	<main layout:fragment="content">
+		<h2 class="center">예치금결제</h2>
+		<div class="center">
+			<form name="fdepositorder" action="" method="post" onsubmit="return fdepositorder_submit(this);">
+				<input type="hidden" name="do_price" value="0">
+				<div class="left_side">
+					<div class="de_price">
+						<input type="radio" name="chk" id="do_pr_1" value="1000" onclick="get_show(this.value);">
+						<label for="do_pr_1">1,000원</label>
+					</div>
+					<div class="de_price">
+						<input type="radio" name="chk" id="do_pr_2" value="5000" onclick="get_show(this.value);">
+						<label for="do_pr_2">5,000원</label>
+					</div>
+					<div class="de_price">
+						<input type="radio" name="chk" id="do_pr_3" value="10000" onclick="get_show(this.value);">
+						<label for="do_pr_3">10,000원</label>
+					</div>
+					<div class="de_price">
+						<input type="radio" name="chk" id="do_pr_4" value="50000" onclick="get_show(this.value);">
+						<label for="do_pr_4">50,000원</label>
+					</div>
+					<div class="de_price">
+						<input type="radio" name="chk" id="do_pr_5" value="ect" onclick="get_show(this.value);">
+						<label for="do_pr_5">직접입력(최대 100,000원까지 충전 가능)</label>
+					</div>
+					<div class="enter_price form-group" style="display:none;">
+						<input type="text" id="ect_price" value="0" size="10" onkeyup="get_price(this.value);"> 원
+						<div class="money_btn btn-list">
+							<button type="button" class="btn btn-info" value="1000" onclick="add_price(this.value);">+1000</button>
+							<button type="button" class="btn btn-info" value="5000" onclick="add_price(this.value);">+5000</button>
+							<button type="button" class="btn btn-info" value="10000" onclick="add_price(this.value);">+10000</button>
+						</div>
+					</div>
+				</div>
+				<div class="rigth_side">
+					<label for="do_name">구매자 성함</label>
+					<input type="text" name="do_name" id="do_name" value="">
+					<label for="do_tel">구매자 연락처</label>
+					<input type="text" name="do_tel" id="do_tel" value="">
+					<label for="do_email">구매자 이메일</label>
+					<input type="text" name="do_email" id="do_email" value="">
+				</div>
+				<button type="submit" class="btn btn-outline-info" onclick="clientAuth()">결제하기</button>
+			</form>
+		    
+		</div>
+		<script th:inline="javascript">
+			function get_show(price){
+				
+				$("input[name=do_price]").val(0);
+				$("#ect_price").val(0);
+				
+				if(price == "ect"){
+					$(".enter_price").show();
+				} else {
+					get_price(price);
+					$(".enter_price").hide();
+				}
+			}
+			
+			function add_price(price){
+				var new_price = parseInt($("#ect_price").val()) + parseInt(price);
+				$("#ect_price").val(new_price);
+				$("input[name=do_price]").val(new_price);
+				get_price(new_price);
+			}
+			
+			function get_price(price){
+				if (/[^0-9]/g.test(price)) {				 
+					price = price.replace(/[^0-9]/g, '');
+					$("#ect_price").val(price);
+				}
+				// price가 100,000을 넘는지 확인
+			    if (parseInt(price) > 100000) {
+			        alert("직접입력으로 충전시 100,000원을 초과할 수 없습니다.");
+			        price = 100000;
+			        $("#ect_price").val(price);
+			    }
+				
+				$("input[name=do_price]").val(price);
+			}
+			function clientAuth() {
+				var price = parseInt($("input[name=do_price]").val());
+				AUTHNICE.requestPay({
+					clientId: [[${clientId}]],
+					method: 'card',
+					orderId: [[${orderId}]],
+					amount: price,
+					goodsName: '예치금 결제',
+					returnUrl: '/deposit/clientAuth',
+					fnError: function (result) {
+						alert('error : ' + result.errorMsg + '');
+					}
+				});
+			}
+			function fdepositorder_submit(f){
+				console.log(f);
+				
+				//clientAuth();
+				return false;
+			}
+		</script>
+	</main>
+</body>
+</html>
