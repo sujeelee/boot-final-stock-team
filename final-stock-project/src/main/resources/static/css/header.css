@@ -38,13 +38,14 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
+  transition: padding 0.4s ease; /* 패딩에 애니메이션 효과 추가 */
 }
-
 .logo a {
-  font-size: 24px;
-  font-weight: bold;
-  color: #0056f7;
-  text-decoration: none;
+	position: static;
+	  font-size: 24px;
+	  font-weight: bold;
+	  color: #0056f7;
+	  text-decoration: none;
 }
 
 /* 기본 글씨 색상 회색 */
