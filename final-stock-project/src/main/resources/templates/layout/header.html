@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
-    <header th:fragment="header">
-		<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-			<a class="navbar-brand" th:href="@{/}">Home</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="collapsibleNavbar">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" th:href="@{/newspaper}">뉴스</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" th:href="@{/member/login}">로그인 테스트</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" th:href="@{/member/join}">회원가입 테스트</a>
-					</li>    
-				</ul>
-			</div>  
+
+	<header>
+		<nav class="navbar">
+		  <!-- 왼쪽 로고 -->
+		  <div class="logo">
+			<a href="#">Toss Securities</a>
+		  </div>         
+		  <!-- 가운데 메뉴 -->
+		  <div class="menu">
+			<a href="#">홈</a>
+			<a href="#">뉴스</a>
+			<a href="#">주식 골라보기</a>
+			<a href="#">내 계좌</a>
+			<a href="/admin/adminHome">관리자</a>
+		  </div>        
+		  <!-- 오른쪽 로그인 -->
+		  <div class="login">
+			<a href="#">로그인</a>
+		  </div>
 		</nav>
-    </header>
-</body>
+	  </header>
+
 </html>

@@ -1,0 +1,93 @@
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	overflow-x: hidden;
+	background-color: #f9f9f9;
+}
+.newcontent {
+	padding: 20px;
+	border-radius: 10px;
+	background-color: white;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	max-width: 800px; /* 최대 너비 설정 */
+	margin: 20px auto; /* 중앙 정렬 */
+}
+
+h1 {
+	color: #003366;
+	font-size: 28px;
+	text-align: left;
+	margin-bottom: 20px; /* 제목과 콘텐츠 간격 */
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+}
+
+.search-form, .register-form {
+	display: flex;
+	justify-content: flex-start;
+	margin-bottom: 10px;
+}
+
+input[type="text"], select, button {
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	padding: 8px;
+	margin: 0 5px;
+	height: 30px; /* 버튼과 입력 필드의 높이를 줄임 */
+	font-size: 14px; /* 폰트 크기 조정 */
+}
+
+.register-form input[type="text"] {
+	width: 120px; /* 번호 입력 필드 */
+}
+
+.search-form select, .register-form select {
+	width: 130px;
+}
+
+button {
+	background-color: #003366;
+	color: white;
+	cursor: pointer;
+	width: 80px; /* 버튼 너비 줄이기 */
+	transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+button:hover {
+	background-color: #00509E;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+th, td {
+	border: 1px solid #ccc;
+	padding: 12px;
+	text-align: center;
+}
+
+th {
+	background-color: #f4f4f4;
+}
+
+tr:hover {
+	background-color: #f1f1f1; /* 행 hover 효과 */
+}
+
+.no-data {
+	text-align: center;
+	color: #999;
+	font-style: italic; /* 기울임 효과 */
+}
+
+.content {
+	margin-left: 240px; /* 사이드바 너비만큼 여백 */
+	padding: 20px;
+}

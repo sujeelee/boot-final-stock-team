@@ -29,7 +29,7 @@
 	<select id="getNewsOne" resultType="NewspaperVO">
 		SELECT * FROM newspaper WHERE np_name = #{name} limit 1
 	</select>
-	<!--  이게 name np_name 같은거 검색하는 기능       vo 로 보냄  -->
+	<!--  이게 중복방지 기능인것같은데 먼저 중복체크하고 vo 로 보냄  -->
     
     
     

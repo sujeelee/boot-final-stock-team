@@ -1,0 +1,55 @@
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+}
+
+.sidebar {
+	width: 220px;
+	background-color: #f4f4f4;
+	height: 100vh;
+	position: fixed;
+	overflow-y: scroll; /* 세로 스크롤 가능 */
+	padding-bottom: 20px; /* 스크롤바 공간 확보 */
+	scrollbar-width: thin; /* Firefox에서 스크롤바 두께 조절 */
+	scrollbar-color: transparent transparent;
+	/* Firefox에서 스크롤바 색상 투명으로 설정 */
+}
+
+/* Webkit 기반 브라우저(Chrome, Safari 등)에서 스크롤바 숨기기 */
+.sidebar::-webkit-scrollbar {
+	width: 0; /* 스크롤바 너비 0 */
+	background: transparent; /* 배경 투명 */
+}
+
+.menu-item {
+	padding: 15px;
+	cursor: pointer;
+	transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.menu-item:hover {
+	background-color: #e0e0e0; /* 마우스 오버 시 색상 변경 */
+}
+
+.sub-menu {
+	display: none; /* 기본적으로 숨김 */
+	padding-left: 20px;
+	margin-bottom: 10px; /* 각 세부 메뉴 간격 */
+	background-color: #e8e8e8; /* 세부 메뉴 배경색 */
+	border-left: 3px solid #4CAF50; /* 세부 메뉴 구분선 */
+}
+
+.sub-menu-item {
+	padding: 10px;
+	cursor: pointer;
+}
+
+.sub-menu-item:hover {
+	background-color: #d0d0d0; /* 세부 메뉴 항목 마우스 오버 색상 */
+}
+
+.content {
+	margin-left: 240px; /* 사이드바 너비만큼 여백 */
+	padding: 20px;
+}

@@ -7,9 +7,14 @@ import kh.st.boot.model.vo.MemberVO;
 public interface MemberService {
 
 	MemberVO login(LoginDTO user_);
-
+	
 	void setUserCookie(MemberVO user);
-
+	
 	Boolean join(JoinDTO user_);
 
+	MemberVO findIdByCookie(String sid);
+
+	MemberVO findById(String id);
+
 }
+
