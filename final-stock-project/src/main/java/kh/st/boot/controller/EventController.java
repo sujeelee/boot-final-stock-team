@@ -32,11 +32,13 @@ public class EventController {
     }
 
     @GetMapping("/eventhome/{eventStatus}/{ev_no}")
-    public String eventShow(Model mo, @PathVariable("eventStatus") String eventStatus,
-            @PathVariable("ev_no") int ev_no) {
+    public String eventShow(Model mo, @PathVariable("eventStatus") String eventStatus, @PathVariable("ev_no") int ev_no) {
+        System.out.println(eventStatus + " :: " + ev_no);
+
         EventVO event = eventService.getEvent(eventStatus, ev_no);
         mo.addAttribute("event", event);
-        return "/event/eventShow";
+
+        return "/event/eventDetail";
     }
 
     @GetMapping("/write")
@@ -45,10 +47,10 @@ public class EventController {
     }
 
     @PostMapping("/write")
-    public String eventWrite_Post(EventVO event, MultipartFile file){
-        
+    public String eventWrite_Post(EventVO event, MultipartFile file) {
+
         boolean res = eventService.setEvent(event, file);
-        
+
         if (event == null && res) {
             return "redirect:/event/write";
         } else {
@@ -58,8 +60,8 @@ public class EventController {
     }
 
     @PostMapping("/ajax/updateEventDateAndStatus")
-    public @ResponseBody boolean updateEventDateAndStatus(){
+    public @ResponseBody boolean updateEventDateAndStatus() {
         boolean res = eventService.updateEventDateAndStatus();
         return res;
     }
-}  
+}
