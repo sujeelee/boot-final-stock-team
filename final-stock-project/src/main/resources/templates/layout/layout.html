@@ -35,5 +35,18 @@
 		<main layout:fragment="content"></main>
 	</div> 
 
+	<script>
+		<!-- URL에 따라 container 클래스 제거하는 스크립트 -->
+		$(document).ready(function() {
+			// 현재 URL 가져오기
+			var currentUrl = window.location.href;
+
+			// URL에 'myaccount'가 포함되어 있는지 확인
+			if (currentUrl.includes('myaccount')) {
+				// 'container' 클래스를 가진 div 요소에서 클래스 제거
+				$('.home-section').removeClass('container');
+			}
+		});
+	</script>
 </body>
 </html>
