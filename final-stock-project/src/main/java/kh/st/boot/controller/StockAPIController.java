@@ -2,9 +2,14 @@ package kh.st.boot.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -32,7 +40,7 @@ import kh.st.boot.service.StockService;
 public class StockAPIController {
 	@Autowired
 	StockService stockService;
-	private String encodeKey = "tBdrMo4/l4MMdJ3rKe4B4eUHI4TBBzdn8HiGalt8fF7Qx4DIh4qpbGtmlQ8TAdbvlePzRRbwfRhKf38N4eOTRw==";
+	private String encodeKey = "Ys5KwqClpBafJnzS5dWVgJrYaBHnZC8udtvx5/NkEepksQAMeaMA5n1N92DJQe39K7dfLtpnJcm9uS8s9i9WTw==";
 	
 	@GetMapping("")
 	public String home(Model model) {
@@ -40,33 +48,39 @@ public class StockAPIController {
 		return "stock/stockList";
 	}
 	
-	private List<Map<String, Object>> getUrlAPI(String apiUrl){
+	private List<Map<String, Object>> getUrlAPI(String apiUrl, String type){
 		StringBuilder result = new StringBuilder();
+		
 	    try {
 	        // URL 객체 사용
 	        @SuppressWarnings("deprecation")
 			URL url = new URL(apiUrl); // apiUrl은 private 멤버 변수로 선언된 상태
-	        
 	        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 	        urlConnection.setRequestMethod("GET");
-
 	        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-
 	        String returnLine;
 	        while ((returnLine = bufferedReader.readLine()) != null) {
 	            result.append(returnLine).append("\n");
 	        }
 	        urlConnection.disconnect();
-
 	        // JSON 문자열을 Java 객체로 변환
 	        ObjectMapper objectMapper = new ObjectMapper();
 	        JsonNode rootNode = objectMapper.readTree(result.toString());
 	        
 	        // "response" -> "body" -> "items" -> "item" 배열 추출
 	        JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
-
 	        // JsonNode를 List로 변환
 	        List<Map<String, Object>> jsonArray = objectMapper.convertValue(itemsNode, new TypeReference<List<Map<String, Object>>>(){});
+	        
+	        if(type == "total") {
+		        JsonNode totalCountTmp = rootNode.path("response").path("body").path("totalCount");
+		        int totalCount = totalCountTmp.asInt();  // totalCount 값을 정수로 추출
+		       
+		        Map<String, Object> totalCountMap = new HashMap<>();
+		        totalCountMap.put("totalCount", totalCount);
+		        //totalCount 값을 jsonArray 리스트에 추가
+		        jsonArray.add(totalCountMap);  // 리스트의 마지막에 totalCount 정보만 추가
+	        }
 	        return jsonArray;
 
 	        // 가공된 데이터를 모델에 추가
@@ -80,58 +94,117 @@ public class StockAPIController {
 	
 	@GetMapping("/getListStock")
 	public String RestAPI(Criteria cri, Model model, @RequestParam Map<String, String> params) {
-		String apiUrl = "http://apis.data.go.kr/1160100/service/"
-				+ "GetStocIssuInfoService_V2/getItemBasiInfo_V2?serviceKey="
+		// 현재 날짜 가져오기
+        LocalDate today = LocalDate.now();
+        
+        // "yyyyMM" 형식으로 포맷팅
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+        String formattedDate = today.format(formatter);
+        
+		String apiUrl = "https://apis.data.go.kr/1160100/service/GetKrxListedInfoService/getItemInfo"
+				+ "?serviceKey="
 				+ encodeKey
-				+ "&numOfRows=100&resultType=json&pageNo=";
-		// 페이지메이커 생성 (페이징 처리를 위한 객체)
-		int count = 50;
-		PageMaker pm = new PageMaker(10, cri, count);
-		model.addAttribute("pm", pm); // 페이지 정보 추가
+				+ "&likeBasDt="+ formattedDate
+				+"&resultType=json&numOfRows=10&pageNo=";
+		
+		int count = 0;
 		
 		apiUrl += cri.getPage();
+		
 		if(params.get("sfl") != null && params.get("stx") != null) {
+			String stx = params.get("stx").toString();
+			try {
+				stx = URLEncoder.encode(params.get("stx").toString(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			if(params.get("sfl").equals("cmpname")) {
-				apiUrl += "&stckIssuCmpyNm=" + params.get("stx").toString();
+				apiUrl += "&likeItmsNm=" + stx;
 			} else if(params.get("sfl").equals("crno")) {
-				apiUrl += "&crno=" + params.get("stx").toString();
+				apiUrl += "&crno=" + stx;
 			}
 		}
-		model.addAttribute("url", apiUrl);
-		model.addAttribute("param", params);
+		List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "total");
 		
-		List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl);
-		model.addAttribute("array", jsonArray);
+		if(jsonArray.isEmpty()) return "stock/getStock"; // 뷰 이름 반환
+		
+		// 페이지메이커 생성 (페이징 처리를 위한 객체)
+		count = (int) jsonArray.getLast().get("totalCount");
+		PageMaker pm = new PageMaker(10, cri, count);
+		jsonArray.removeLast();
+		model.addAttribute("list", jsonArray);
+		model.addAttribute("param", params);
+		model.addAttribute("pm", pm); // 페이지 정보 추가
+		List<String> codeList = new ArrayList<>();
+		for (Map<String, Object> item : jsonArray) {
+			item.put("tmp", "N");
+			for (Map.Entry<String, Object> entry : item.entrySet()) {
+				if ("isinCd".equals(entry.getKey())) {
+			        String st_code = (String) entry.getValue(); // 값을 String으로 변환
+			        if(!codeList.contains(st_code)) {			        	
+			        	codeList.add(st_code);
+			        	StockVO st = stockService.getCompanyOne(st_code);
+			        	if(st != null) {
+			        		item.replace("tmp", "Y");
+			        	}
+			        }
+			    }
+			}
+		}
 		return "stock/getStock";
-		// JSON 필드와 StockVO 필드 간의 매핑 정의
-        /*Map<String, String> field = new HashMap<>();
-        field.put("isinCd", "st_code");
-        field.put("isinCdNm", "st_name");
-        field.put("issuStckCnt", "st_qty");
-        field.put("stckIssuCmpyNm", "st_issue");
-        field.put("lstgAbolDt", "st_status");
-        // jsonArray 값을 확인하기 위한 for문
-        for (Map<String, Object> item : jsonArray) {
-        	 StockVO stock = new StockVO(); // 새로운 StockVO 객체 생성
-            for (Map.Entry<String, Object> entry : item.entrySet()) {
-            	//System.out.println(entry.getKey() + " : " + entry.getValue());
-            	String jsonKey = entry.getKey();
-                Object value = entry.getValue();
-                String voFieldName = field.get(jsonKey);
-                if (voFieldName != null) {
-                	Field fields;
-					try {
-						fields = StockVO.class.getDeclaredField(voFieldName);
-						fields.setAccessible(true); // private 필드 접근
-	                    fields.set(stock, value); // 필드에 값 설정
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }
-            }
-            stockService.insertStockCompany(stock);
-        }*/
+	}
+	
+	@PostMapping("/insertStock")
+	@ResponseBody
+	public Map<String, String> insertStock(@RequestBody Map<String, Object> stockInfo,HttpServletRequest req, HttpServletResponse res) {
+		Map<String, String> result = new HashMap<String, String>();
+		StockVO chkStock = stockService.getCompanyOne((String) stockInfo.get("isinCd"));
+		if(chkStock != null) {
+			result.put("res", "fail");
+			result.put("msg", "이미 등록된 주식회사입니다.");
+		} else {
+			StockVO newStock = new StockVO();
+			newStock.setSt_code((String) stockInfo.get("isinCd"));
+			newStock.setSt_name((String) stockInfo.get("itmsNm"));
+			newStock.setSt_type((String) stockInfo.get("mrktCtg"));
+			
+			String apiUrl = "https://apis.data.go.kr/1160100/service/GetStocIssuInfoService_V2/getItemBasiInfo_V2"
+					+ "?serviceKey="
+					+ encodeKey
+					+ "&crno="+ (String) stockInfo.get("crno")
+					+"&resultType=json&numOfRows=10&pageNo=1";
+			List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
+			
+			if(!jsonArray.isEmpty()) {
+				Map<String, String> field = new HashMap<>();
+		        field.put("issuStckCnt", "st_qty");
+		        field.put("stckIssuCmpyNm", "st_issue");
+		        field.put("lstgAbolDt", "st_status");
+		        // jsonArray 값을 확인하기 위한 for문
+		        for (Map<String, Object> item : jsonArray) {
+		            for (Map.Entry<String, Object> entry : item.entrySet()) {
+		            	String jsonKey = entry.getKey();
+		                Object value = entry.getValue();
+		                String voFieldName = field.get(jsonKey);
+		                if (voFieldName != null) {
+		                	Field fields;
+							try {
+								fields = StockVO.class.getDeclaredField(voFieldName);
+								fields.setAccessible(true); // private 필드 접근
+			                    fields.set(newStock, value); // 필드에 값 설정
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+		                }
+		            }
+		        }
+			}
+			stockService.insertStockCompany(newStock);
+			result.put("res", "success");
+			result.put("msg", "주식회사 등록이 완료되었습니다.");
+		}
+		return result;
 	}
 	
 	@GetMapping("/Stockprice")
@@ -146,9 +219,9 @@ public class StockAPIController {
 					+ "&isinCd=" + st_code
 					+ "&resultType=json";
 			
-			System.out.println(apiUrl);
+			List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
 			
-			List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl);
+			if(jsonArray.isEmpty()) return "stock/Stockprice"; // 뷰 이름 반환
 			
 			Map<String, String> field = new HashMap<>();
 			field.put("basDt", "si_date");
@@ -169,9 +242,6 @@ public class StockAPIController {
 	            for (Map.Entry<String, Object> entry : item.entrySet()) {
 	            	String jsonKey = entry.getKey();
 	                Object value = entry.getValue();
-	                if(stock.getSt_type() == null && jsonKey.contains("mrktCtg")) {
-	                	stockService.updateCompanyType(st_code, (String) value);
-	                }
 	                String voFieldName = field.get(jsonKey);
 	                if (voFieldName != null) {
 	                	Field fields;
@@ -196,4 +266,160 @@ public class StockAPIController {
 		
 		return "stock/Stockprice"; // 뷰 이름 반환
 	}
+	
+	@GetMapping("/stockInfo/{code}")
+	public String getStockInfo(Model model, @PathVariable String code) {
+		
+		// 오늘 날짜 가져오기
+        LocalDate yesterday = LocalDate.now();
+        
+        // 날짜 형식 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        
+        // 어제 날짜를 문자열로 변환
+        String date = yesterday.format(formatter);
+        
+		StockPriceVO today = stockService.getStockPrice(date, code);
+		List<StockPriceVO> list = stockService.getStockInfoList(code);
+		StockVO stock = stockService.getCompanyOne(code);
+		
+		model.addAttribute("today", today);
+		model.addAttribute("date", date);
+		model.addAttribute("list", list);
+		model.addAttribute("stock", stock);
+		
+		return "stock/stockInfo";
+	}
+	
+	@PostMapping("/getNewStockInfo")
+	@ResponseBody
+	public Map<String, String> getNewStockInfo(HttpServletRequest req, HttpServletResponse res, @RequestParam("st_code") String st_code, @RequestParam("si_date") String si_date) {
+			String apiUrl = "http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey="
+					+ encodeKey
+					+ "&isinCd=" + st_code
+					+ "&endBasDt=" + si_date
+					+ "&resultType=json";
+			
+			Map<String, String> result = new HashMap<>();
+			
+			List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
+			if(jsonArray == null) {
+				result.put("res", "fail"); 
+				return result;
+			}
+			Map<String, String> field = new HashMap<>();
+			field.put("basDt", "si_date");
+			field.put("clpr", "si_price");
+			field.put("isinCd", "st_code");
+			field.put("vs", "si_vs");
+			field.put("fltRt", "si_fltRt");
+			field.put("mrktTotAmt", "si_mrkTotAmt");
+			field.put("hipr", "si_hipr");
+			field.put("lopr", "si_lopr");
+			field.put("trqu", "si_trqu");
+			
+			StockVO stock = stockService.getCompanyOne(st_code);
+			boolean chk = false;
+			 // jsonArray 값을 확인하기 위한 for문
+	        for (Map<String, Object> item : jsonArray) {
+	        	 StockPriceVO stockPrice = new StockPriceVO(); // 새로운 StockVO 객체 생성
+	            for (Map.Entry<String, Object> entry : item.entrySet()) {
+	            	String jsonKey = entry.getKey();
+	                Object value = entry.getValue();
+	                String voFieldName = field.get(jsonKey);
+	                if (voFieldName != null) {
+	                	Field fields;
+						try {
+							fields = StockPriceVO.class.getDeclaredField(voFieldName);
+							fields.setAccessible(true); // private 필드 접근
+							if(voFieldName == "si_price") {
+								value = Integer.parseInt((String) value); 
+							}
+		                    fields.set(stockPrice, value); // 필드에 값 설정
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+	                }
+	            }
+	            if(chk == false) {
+	            	chk = stockService.insertPrice(stockPrice);
+	            } else {
+	            	stockService.insertPrice(stockPrice);
+	            }
+	        }
+	        
+	        if(chk) {
+	        	result.put("res", "success"); 
+		        result.put("name", stock.getSt_name());
+	        } else {
+	        	result.put("res", "fail");
+	        }
+			return result;
+	}
+	
+	@PostMapping("/getAllStockInfo")
+	@ResponseBody
+	public Map<String, String> getAllStockInfo(HttpServletRequest req, HttpServletResponse res, @RequestParam("st_code") String st_code) {
+			String apiUrl = "http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey="
+					+ encodeKey
+					+ "&isinCd=" + st_code
+					+ "&numOfRows=100"
+					+ "&resultType=json";
+			
+			Map<String, String> result = new HashMap<>();
+			
+			List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
+			if(jsonArray == null) {
+				result.put("res", "fail"); 
+				return result;
+			}
+			Map<String, String> field = new HashMap<>();
+			field.put("basDt", "si_date");
+			field.put("clpr", "si_price");
+			field.put("isinCd", "st_code");
+			field.put("vs", "si_vs");
+			field.put("fltRt", "si_fltRt");
+			field.put("mrktTotAmt", "si_mrkTotAmt");
+			field.put("hipr", "si_hipr");
+			field.put("lopr", "si_lopr");
+			field.put("trqu", "si_trqu");
+			
+			StockVO stock = stockService.getCompanyOne(st_code);
+			boolean chk = false;
+			 // jsonArray 값을 확인하기 위한 for문
+	        for (Map<String, Object> item : jsonArray) {
+	        	 StockPriceVO stockPrice = new StockPriceVO(); // 새로운 StockVO 객체 생성
+	            for (Map.Entry<String, Object> entry : item.entrySet()) {
+	            	String jsonKey = entry.getKey();
+	                Object value = entry.getValue();
+	                if(stock.getSt_type() == null && jsonKey.contains("mrktCtg")) {
+	                	stockService.updateCompanyType(st_code, (String) value, "");
+	                }
+	                String voFieldName = field.get(jsonKey);
+	                if (voFieldName != null) {
+	                	Field fields;
+						try {
+							fields = StockPriceVO.class.getDeclaredField(voFieldName);
+							fields.setAccessible(true); // private 필드 접근
+							if(voFieldName == "si_price") {
+								value = Integer.parseInt((String) value); 
+							}
+		                    fields.set(stockPrice, value); // 필드에 값 설정
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+	                }
+	            }
+	            chk = stockService.insertPrice(stockPrice);
+	        }
+	        
+	        if(chk) {
+	        	result.put("res", "success"); 
+		        result.put("name", stock.getSt_name());
+	        } else {
+	        	result.put("res", "fail");
+	        }
+			return result;
+	}
+	
 }
