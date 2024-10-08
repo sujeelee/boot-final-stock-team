@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+	<style type="text/css">
+		/* Container */
+		.my-container {
+		    max-width: 1280px;
+		    margin: 0 auto;
+		    padding: 40px 24px;
+		    display: flex;
+		    flex-direction: column;
+		    gap: 20px;
+		}
+		
+		/* Header */
+		.mypage-header {
+		    margin-bottom: 20px;
+		}
+		
+		.header-title {
+		    font-size: 24px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		/* Balance Section */
+		.balance-text {
+		   	color: #888;
+		    font-size: 17px;
+		}
+
+		
+		/* Transactions Section */
+		.transactions {
+		    display: flex;
+		    flex-direction: column;
+		    border: 1px solid #ddd;
+		    border-radius: 10px;
+		    background-color: #fff;
+		    min-height: 700px;
+		}
+		
+		.transaction-item {
+		    display: flex;
+		    justify-content: space-between;
+		    padding: 16px;
+		    
+		}
+		
+		.transaction-info {
+		    display: flex;
+		    flex-direction: column;
+		    
+		}
+		
+		.transaction-title {
+		    font-size: 18px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		.transaction-date {
+		    font-size: 14px;
+		    color: #888;
+		}
+		
+		.transaction-amount {
+		    font-size: 16px;
+		    font-weight: bold;
+		}
+	</style>
+</head>
+ <body>
+	<main layout:fragment="content">
+		<div class="my-container">
+			<!-- Header -->
+			<div class="mypage-header">
+				<div class="d-flex">
+					<h1 class="header-title mr-auto">거래 내역</h1>
+					<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+	      				페이지 이동
+					</button>
+					<div class="dropdown-menu">
+						<h5 class="dropdown-header">페이지 목록</h5>
+						<a class="dropdown-item" th:href="@{/myaccount/asset}" >자산</a>
+						<a class="dropdown-item" th:href="@{/myaccount/transactions}" >거래내역</a>
+					</div>
+				</div>
+			</div>		
+			<!-- Balance Section -->
+			<div class="balance-section">
+				<div class="balance-info">
+					<p class="balance-text">주문 가능 원화 · 0원</p>
+				</div>
+			</div>
+			
+			<!-- Transactions Section -->
+			<div class="transactions">
+				<div class="transaction-item">
+					<div class="transaction-info">
+						<span class="transaction-title">입금</span>
+						<span class="transaction-date">10:30</span>
+					</div>
+					<span class="transaction-amount">-₩300,000</span>
+				</div>
+				<div class="transaction-item">
+					<div class="transaction-info">
+						<span class="transaction-title">출금</span>
+						<span class="transaction-date">2024-10-05</span>
+					</div>
+					<span class="transaction-amount">-₩300,000</span>
+				</div>
+				<!-- 추가적인 거래 내역 -->
+			</div>
+		</div>
+	
+	</main>
+</body>
+</html>

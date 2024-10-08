@@ -12,8 +12,14 @@ import lombok.AllArgsConstructor;
 public class MyAccountController {
 
 	@GetMapping("/asset")
-	public String myAccountOpened() {
+	public String asset() {
 		
 		return "myaccount/asset";
+	}
+	
+	@GetMapping("/transactions")
+	public String transactions() {
+		
+		return "myaccount/transactions";
 	}
 }
