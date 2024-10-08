@@ -84,5 +84,34 @@ public class EventServiceImp implements EventService {
         return eventDao.deleteEventPost(ev_no);
     }
 
+    @Override
+    public FileVO getFile(int ev_no) {
+        return eventDao.getFileByEventNumber(ev_no);
+    }
+
+    @Override
+    public boolean updateEvent_withFile(EventVO event, MultipartFile file) {
+        
+        if (event == null) {
+            return false;
+        }
+
+        if (event.getEv_title() == null || event.getEv_title().trim().length() == 0) {
+            return false;
+        }
+
+        boolean up = eventDao.updateEvent(event);
+
+        if (up && !file.isEmpty()) {
+            up = eventDao.deleteEventThumbnailFile(event.getEv_no());
+            UploadFileUtils.delteFile(uploadPath, event.getFi_path());
+            uploadFile(file, event.getEv_no());
+        }
+
+        return up;
+    }
+
+    
+
     
 }

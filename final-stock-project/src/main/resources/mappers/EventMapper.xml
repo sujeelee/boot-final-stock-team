@@ -49,4 +49,18 @@
         delete from event where ev_no = ${ev_no}
     </delete>
     
+    <select id="getFileByEventNumber" resultType="FileVO">
+        select * from file where fi_reg_no = #{ev_no} and fi_type = 'event'
+    </select>
+
+    <update id="updateEvent">
+        update event
+        set ev_title = #{ev_title}, ev_content = #{ev_content}, ev_start = #{ev_start}, ev_end = #{ev_end}, ev_status = #{ev_status}
+        where ev_no = #{ev_no}
+    </update>
+
+    <delete id="deleteEventThumbnailFile">
+        delete from file where fi_reg_no = #{ev_no} and fi_type = 'event'
+    </delete>
+
 </mapper>

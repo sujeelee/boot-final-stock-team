@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import kh.st.boot.model.dto.EventDTO;
 
 import kh.st.boot.model.vo.EventVO;
+import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.service.EventService;
 import lombok.AllArgsConstructor;
 
@@ -56,6 +57,28 @@ public class EventController {
 
     }
 
+    @GetMapping("/eventUpdate/{eventStatus}/{ev_no}")
+    public String eventPostUpdate_Get(Model mo, @PathVariable("ev_no") int ev_no,
+            @PathVariable("eventStatus") String eventStatus) {
+        EventVO event = eventService.getEvent(eventStatus, ev_no);
+        FileVO file = eventService.getFile(ev_no);
+
+        mo.addAttribute("event", event);
+        mo.addAttribute("file", file);
+        return "/event/eventUpdate";
+    }
+
+    @PostMapping("/eventUpdate")
+    public String eventPostUpdate_Post(EventVO event, MultipartFile file){
+        
+        System.out.println(event);
+        System.out.println(file);
+        boolean res = eventService.updateEvent_withFile(event, file);
+        
+        return "redirect:/event/eventhome/Opening";
+    }
+
+
     @PostMapping("/ajax/updateEventDateAndStatus")
     public @ResponseBody boolean updateEventDateAndStatus() {
         boolean res = eventService.updateEventDateAndStatus();
@@ -63,7 +86,7 @@ public class EventController {
     }
 
     @PostMapping("/ajax/deleteEventPost")
-    public @ResponseBody boolean deleteEventPost(@RequestParam("ev_no")int ev_no){
+    public @ResponseBody boolean deleteEventPost(@RequestParam("ev_no") int ev_no) {
         boolean res = eventService.deleteEventPost(ev_no);
         return res;
     }

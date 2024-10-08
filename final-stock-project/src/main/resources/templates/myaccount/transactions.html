@@ -37,7 +37,7 @@
 		
 		/* Transactions Section */
 		.transactions {
-		    display: flex;
+
 		    flex-direction: column;
 		    border: 1px solid #ddd;
 		    border-radius: 10px;
@@ -46,14 +46,14 @@
 		}
 		
 		.transaction-item {
-		    display: flex;
+
 		    justify-content: space-between;
 		    padding: 16px;
 		    
 		}
 		
 		.transaction-info {
-		    display: flex;
+
 		    flex-direction: column;
 		    
 		}
@@ -101,12 +101,17 @@
 			
 			<!-- Transactions Section -->
 			<div class="transactions">
-				<div class="transaction-item">
-					<div class="transaction-info">
+				<div class="transaction-item d-flex">
+					<div class="transaction-info ">
+						
+						<span>10.11</span>
 						<span class="transaction-title">입금</span>
-						<span class="transaction-date">10:30</span>
+						<div>
+							<span class="transaction-date">10:30</span>
+						</div>
+
 					</div>
-					<span class="transaction-amount">-₩300,000</span>
+					<span class="transaction-amount  ml-auto">-₩300,000</span>
 				</div>
 				<div class="transaction-item">
 					<div class="transaction-info">
