@@ -143,10 +143,10 @@ public class StockAPIController {
 			        String st_code = (String) entry.getValue(); // 값을 String으로 변환
 			        if(!codeList.contains(st_code)) {			        	
 			        	codeList.add(st_code);
-			        	StockVO st = stockService.getCompanyOne(st_code);
-			        	if(st != null) {
-			        		item.replace("tmp", "Y");
-			        	}
+			        }
+			        StockVO st = stockService.getCompanyOne(st_code);
+			        if(st != null) {
+			        	item.replace("tmp", "Y");
 			        }
 			    }
 			}

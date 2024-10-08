@@ -9,7 +9,7 @@
 </head>
 <body>
 	<main layout:fragment="content">
-		<h2 class="center">주식 리스트</h2>
+		<h2 class="center">주식시세관리</h2>
 		<div class="btn-list">
 			<a class="btn btn-info" th:href="@{/stock/getListStock}">주식회사 등록</a> 
 		</div>
@@ -167,7 +167,7 @@
 					f.stx.focus();
 					return false;
 				}
-				if(!f.st_type.value && !f.sfl.value && !f.state.value){
+				if(!f.st_type.value && !f.sfl.value && !f.state.value && !f.stx.value){
 					alert("검색하실 내용을 선택해주세요.");
 					return false;
 				}
