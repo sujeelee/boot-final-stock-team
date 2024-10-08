@@ -12,7 +12,7 @@ public interface StockDAO {
 
 	StockVO getStockCompany(@Param("st_code")String st_code);
 	
-	void companyType(@Param("st_code")String st_code, @Param("st_type")String st_type, @Param("st_status")String st_status);
+	void companyType(@Param("st_code")String st_code, @Param("st_type")String st_type, @Param("st_status")String st_status); 
 
 	void insertStockCompany(@Param("st")StockVO newStock); 
 	 
