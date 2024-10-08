@@ -11,8 +11,5 @@ public class StockCriteria extends Criteria {
    private String sfl;
    private String stx;
    private String state;
-	private List<String> st_type;
-	private String sfl;
-	private String stx;
-	private String state;
+
 }
