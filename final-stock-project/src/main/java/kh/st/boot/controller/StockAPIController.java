@@ -35,6 +35,7 @@ import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.StockCriteria;
 import kh.st.boot.service.StockService;
 
 
@@ -46,8 +47,19 @@ public class StockAPIController {
 	private String encodeKey = "Ys5KwqClpBafJnzS5dWVgJrYaBHnZC8udtvx5/NkEepksQAMeaMA5n1N92DJQe39K7dfLtpnJcm9uS8s9i9WTw==";
 	
 	@GetMapping("")
-	public String home(Model model) {
-		//https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=인증키&numOfRows=1&pageNo=1
+	public String home(@RequestParam Map<String, String> params, StockCriteria cri, Model model) {
+		List<StockVO> list = stockService.getCompanyList("", cri);
+		// 페이지메이커 생성 (페이징 처리를 위한 객체)
+		PageMaker pm = stockService.getPageMaker(cri);
+		
+		for(StockVO st : list) {
+			int cnt = stockService.getCompanyStockCount(st.getSt_code());
+			st.setSt_price_cnt(cnt);
+		}
+	    // 가져온 데이터를 모델에 추가
+	    model.addAttribute("list", list);
+	    model.addAttribute("pm", pm); // 페이지 정보 추가
+	    
 		return "stock/stockList";
 	}
 	
@@ -85,9 +97,6 @@ public class StockAPIController {
 		        jsonArray.add(totalCountMap);  // 리스트의 마지막에 totalCount 정보만 추가
 	        }
 	        return jsonArray;
-
-	        // 가공된 데이터를 모델에 추가
-	        //model.addAttribute("result", jsonArray);
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -261,10 +270,8 @@ public class StockAPIController {
 						}
 	                }
 	            }
-	            System.out.println(stockPrice);
 	            stockService.insertPrice(stockPrice);
 	        }
-	            System.out.println("===========================-");
 		}
 		
 		return "stock/Stockprice"; // 뷰 이름 반환
