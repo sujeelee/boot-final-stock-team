@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.StockDAO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
-import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.StockCriteria;
 import lombok.AllArgsConstructor;

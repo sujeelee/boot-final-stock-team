@@ -10,7 +10,10 @@
 </head>
 <body>
 <main layout:fragment="content">
-	<h1>주식정보관리</h1>
+	<h2 class="center">주식회사관리</h2>
+	<div class="btn-list">
+		<a class="btn btn-info" th:href="@{/stock}">주식시세관리</a> 
+	</div>
 	<div class="form-search center">
 		<form th:action="@{/stock/getListStock}" method="get" onsubmit="return fsearchstocksubmit(this);">
 			<div class="form-group">
