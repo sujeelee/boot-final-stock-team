@@ -16,5 +16,7 @@ public interface EventService {
     boolean setEvent(EventVO event, MultipartFile file);
 
     boolean updateEventDateAndStatus();
+
+    boolean deleteEventPost(int ev_no);
     
 }

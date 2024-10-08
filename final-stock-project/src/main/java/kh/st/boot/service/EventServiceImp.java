@@ -24,11 +24,17 @@ public class EventServiceImp implements EventService {
 
     @Override
     public List<EventDTO> getEventList(String eventStatus) {
+        if (eventStatus.equals("resUser")) {
+            return eventDao.getEventPostList(eventStatus);
+        }
         return eventDao.getEventList(eventStatus);
     }
 
     @Override
     public EventVO getEvent(String eventStatus, int ev_no) {
+        if (eventStatus.equals("resUser")) {
+            return eventDao.getEventPost(ev_no);
+        }
         return eventDao.getEvent(eventStatus, ev_no);
     }
 
@@ -71,6 +77,11 @@ public class EventServiceImp implements EventService {
     public boolean updateEventDateAndStatus() {
 
         return eventDao.updateEventDateAndStatus();
+    }
+
+    @Override
+    public boolean deleteEventPost(int ev_no) {
+        return eventDao.deleteEventPost(ev_no);
     }
 
     
