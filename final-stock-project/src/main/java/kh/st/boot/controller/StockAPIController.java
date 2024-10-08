@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,7 +24,6 @@ import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
-import kh.st.boot.pagination.StockCriteria;
 import kh.st.boot.service.StockService;
 
 
