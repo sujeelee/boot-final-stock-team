@@ -9,5 +9,28 @@
         where fi_type = "event" and ev_status = #{eventStatus}
     </select>
 
-	
+    <select id="getEvent" resultType="EventVO">
+        select event.* , fi_path from event left join file on ev_no = fi_reg_no where fi_type = "event" and ev_no = #{ev_no} and ev_status = #{eventStatus}
+    </select>
+
+    <insert id="setEvent">
+        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status)
+        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status})
+    </insert>
+
+    <select id="getEventToImportAFile" resultType="EventVO">
+        SELECT * FROM event order by ev_no desc limit 1
+    </select>
+
+    <insert id="setEventFile">
+		INSERT INTO FILE(FI_ORG_NAME, FI_PATH, FI_REG_NO, FI_TYPE) VALUES
+		(#{fi_org_name}, #{fi_path}, #{fi_reg_no}, #{fi_type})
+	</insert>
+
+    <update id="updateEventDateAndStatus">
+    update event
+    set ev_status = "Ending"
+    where now() > ev_end
+    </update>
+
 </mapper>

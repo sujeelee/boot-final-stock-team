@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
+import kh.st.boot.model.util.CustomUtil;
 import kh.st.boot.model.vo.MemberVO;
 import lombok.AllArgsConstructor;
 
@@ -124,9 +125,28 @@ public class MemberServiceImp implements MemberService{
         New_User.setMb_fail(0);
         New_User.setMb_level(1);
         New_User.setMb_point(50);
+        
 
-        return memberDao.join(New_User);
+        boolean res = memberDao.join(New_User);
+        if(!res) {
+        	return false;
+        }
+        else {
+        	checkAccountNum(New_User.getMb_id());
+        	return true;
+        }
+
     }
+    
+    private void checkAccountNum(String mb_id) {
+    	int result = 0;
+    	do {
+    		String mb_account = createAccountNum();
+    		if(!memberDao.updateUserAccount(mb_account, mb_id)) {
+    			result++;
+    		}
+    	}while(result != 0);
+    } // 회원가입이 된 유저에 계좌 번호를 추가하는 메소드입니다.
 
     //regex해주는 메소드 (str은 문자열, regex는 규칙입니다.)
     private boolean Check_Regex(String str, String regex){
@@ -137,11 +157,32 @@ public class MemberServiceImp implements MemberService{
         return false;
     }
 
-    
     @Override
     public MemberVO findIdByCookie(String sid) {
         return memberDao.findIdByCookie(sid);
     }
-
-
+    
+	private String createAccountNum() {
+		CustomUtil cu = new CustomUtil();
+		
+		int firstNum = cu.getCustomNumber(2);
+		int secondNum = cu.getCustomNumber(6);
+		
+		String first = String.valueOf(firstNum);
+		String second = String.valueOf(secondNum);
+		
+		if(first.length() < 2) {
+			while(first.length() < 2) {
+				first = "0" + first;
+			}
+		}
+		
+		if(second.length() < 6) {
+			while(second.length() < 6) {
+				second = "0" + second;
+			}
+		}
+		return "SID-" + first + "-" + second;
+	} // 계좌번호 생성 메소드입니다.
+	
 }

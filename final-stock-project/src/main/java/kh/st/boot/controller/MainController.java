@@ -17,4 +17,5 @@ public class MainController {
 		mo.addAttribute("user", user);
 		return "home";
 	}
+
 }

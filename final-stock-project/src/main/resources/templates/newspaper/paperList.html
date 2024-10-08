@@ -5,12 +5,8 @@
 	layout:decorate="~{layout/layout.html}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>시드키 : 뉴스 리스트</title>
 	<style type="text/css">
-		body {
-	        background-color: #f4f6f8;
-	    }
-	
 	    .main_wrap {
 	        flex-direction: column;
 	        align-items: center;
@@ -20,7 +16,7 @@
 	        width: 100%;
 	        height: 65px;
 	        background-color: #fff;
-	        border: 1px solid #ddd;
+	        border: 1px solid #ccc;
 	        border-radius: 15px 15px 0 0;
 	        padding: 17px 0 15px;
 	        font-size: 1.2rem;
@@ -33,7 +29,7 @@
 	    	width: 100%;
 	        height: 65px;
 	        background-color: #fff;
-	        border: 1px solid #ddd;
+	        border: 1px solid #ccc;
 	        border-radius: 0 0 15px 15px;
 	        border-top-style: none;
 			padding: 15px;
@@ -57,6 +53,21 @@
 	    .news-container {
 	        width: 100%;
 	    }
+	    
+	    .undata-box{
+	    	width: 1110px;
+	    	height: 340px;
+	    	background-color: #fff;
+	        border: 1px solid #ccc;
+	        border-radius: 15px;
+	    }
+	    
+	    .undata-box p{
+	    	color: #777;
+	    	text-align: center;
+	    	padding: 140px;
+	    	font-size: 20px;
+	    }
 	
 	    /* 기본 2열 그리드 레이아웃 */
 	    .news-list {
@@ -75,7 +86,7 @@
 	
 	    .news-item {
 	        background-color: #fff;
-	        border: 1px solid #ddd;
+	        border: 1px solid #ccc;
 	        border-radius: 15px;
 	        height: 220px;
 	    }
@@ -253,6 +264,11 @@
 					buttonStatus();
 				} // 날짜, 기사, 버튼 활성화/비활성화를 업데이트 하는 함수
 				
+				function deleteTag(content) {
+				    // HTML을 삭제하고 텍스트만 반환
+				    return $('<div>').html(content).text();
+				} // 디비에 있는 태그들을 제거하고 순수 텍스트만 가져오는 함수
+				
 				function fetchNews(date){
 					let ne_datetime = formatDate(date);
 					let news = {
@@ -276,13 +292,20 @@
 				
 				function displayNewsList(list){
 					if(list == null || list.length == 0){
-						$('.news-list').html('<li class="news-item text-center"><b>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</b></li>');
+						let tmp = `
+							<div class="undata-box">
+								<p>발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</p>
+							</div>
+						`;
+						$('.news-container').html(tmp);
 						return;
 					}
-					let str = '';
+					let str1 = '';
+					let str2 = '';
 					for(news of list){
 						var ne_datetime = formatDate(new Date(news.ne_datetime));
-						str += `
+						var ne_content = deleteTag(news.ne_content);
+						str1 += `
 							<li class="news-item" draggable="true">
 			                	<div class="news-box">
 				                    <div class="news-heading-box">
@@ -294,7 +317,7 @@
 					                    		<a href="/newspaper/detail/${news.ne_no}" style="font-size: 20px;">${news.ne_title}</a>
 					                    	</div>
 					                    	<div class="news-content">
-						                        <a href="/newspaper/detail/${news.ne_no}">${news.ne_content}</a>                   		
+						                        <a href="/newspaper/detail/${news.ne_no}">${ne_content}</a>                   		
 					                    	</div>
 					                    </div>
 					                    ${news.fi_path ? `
@@ -306,8 +329,12 @@
 			                    </div>
 			                </li>
 						`;
+					str2 = `
+						<ul class="news-list">${str1}</ul>
+					`;
+		                
 					}
-					$('.news-list').html(str);
+					$('.news-container').html(str2);
 					displayDrag();
 				} // 서버에서 가져온 데이터로 html을 새로 생성하는 함수
 				

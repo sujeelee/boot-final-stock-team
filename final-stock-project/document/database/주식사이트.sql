@@ -30,7 +30,7 @@ ex) 19960908',
 	`mb_fail` int DEFAULT 0,
 	`mb_point`	int(11)	NULL,
 	`mb_emailing`	tinyint(4)	NULL,
-	`mb_account`	varchar(255)	NULL
+	`mb_account`	varchar(255)	NULL UNIQUE
 );
 
 
@@ -304,10 +304,5 @@ REFERENCES `member` (
 	`mb_no`
 );
 
-ALTER TABLE `file` ADD CONSTRAINT `FK_news_TO_file` FOREIGN KEY (
-	`fi_reg_no`
-)
-REFERENCES `news` (
-	`ne_no`
-)
-ON DELETE CASCADE;
+-- Group By 에러 해결 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
