@@ -55,7 +55,7 @@ public class StockService {
 	
 	public void updateCompanyType(String st_code, String st_type, String st_status) {
 		StockVO stock = getCompanyOne(st_code);
-		
+		 
 		if(stock == null) return;
 		
 		stockDao.companyType(st_code, st_type, st_status);
