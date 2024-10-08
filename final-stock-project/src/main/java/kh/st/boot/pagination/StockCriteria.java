@@ -1,7 +1,6 @@
 package kh.st.boot.pagination;
 
 import java.util.List;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
