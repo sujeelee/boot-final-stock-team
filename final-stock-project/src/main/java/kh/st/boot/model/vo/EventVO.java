@@ -24,6 +24,9 @@ public class EventVO {
     private Date ev_end;
     private String ev_status;
     private int ev_cnt;
+
+    //이벤트 DB에는 fi_path가 없습니다.
+    private String fi_path; // 파일경로가 저장될 위치
     
 
 }
