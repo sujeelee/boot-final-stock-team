@@ -29,10 +29,13 @@ public class newspaperServiceImp implements newspaperService {
 		return newspaperDAO.insertNewspaper(np_name, np_use);
 	}
 
-	public void updateNewspaper(NewspaperDTO newspaperDTO) {
-		newspaperDAO.updateNewspaper(newspaperDTO);
+	public boolean updateNewspaper(String np_name, byte np_use) {
+		NewsPaperVO oldNews = newspaperDAO.getNewsOne(np_name);
+		if (oldNews != null) {
+			return false;
+		}
+		return newspaperDAO.insertNewspaper(np_name, np_use);
 	}
-
 	public void deleteNewspaper(NewsPaperVO NewsPaperVO) {
 		newspaperDAO.deleteNewspaper(NewsPaperVO);
 	}

@@ -21,31 +21,31 @@ import kh.st.boot.service.newspaperServiceImp;
 @AutoImplement
 @RequestMapping("/admin") // 기본 경로 설정
 public class AdminController {
-	
+
 	// 의존성 추가?
 	@Autowired
 	private AdminService adminService;
 	@Autowired
 	private newspaperServiceImp newspaperService;
-	
+
 	// adminhome에 값을 보내줄 내용
 	@GetMapping("/adminHome")
 	public String admin(Model model) {
 		// db에 저장된 값 DAO와 Service를 통해 받아온 값 리스트에 저장
 		List<AdminVO> adminList = adminService.getAdminList();
-		
-        // adminList가 null인지 확인
-        if (adminList == null || adminList.isEmpty()) {
-            System.out.println("adminList가 비어 있습니다.");
-        } else {
-            System.out.println("adminList 크기: " + adminList.size());
-        }
-        System.out.println(adminList);
-        // 리스트 값을 보내주기
+
+		// adminList가 null인지 확인
+		if (adminList == null || adminList.isEmpty()) {
+			System.out.println("adminList가 비어 있습니다.");
+		} else {
+			System.out.println("adminList 크기: " + adminList.size());
+		}
+		System.out.println(adminList);
+		// 리스트 값을 보내주기
 		model.addAttribute("adminList", adminList);
 		return "/admin/adminHome";
 	}
-	
+
 //	@PostMapping("/adminHome/update")
 //	public String adminUpdate (String cf_title, String cf_info, String cf_privacy, String cf_noemail, String cf_tel,
 //			int cf_zip, String cf_addr, String cf_addr2, String cf_fax, String cf_email, String cf_owner_name,
@@ -58,13 +58,11 @@ public class AdminController {
 //		
 //		return "redirect:/admin/adminHome";
 //	}
-	
-	
-	
-	
-	
+
 	// -------------------------------------------------------------------------------
-	// newspaper 
+	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
+	// -------------------------------------------------------------------------------
+	// newspaper 뉴스
 	@GetMapping("/admNews/news")
 	public String newsPage(Model model) {
 		List<NewsPaperVO> newspapers = newspaperService.getAllNewspapers();
@@ -73,43 +71,42 @@ public class AdminController {
 		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
 
-	// 수정
+	// 뉴스수정
 	@PostMapping("/admNews/newspapers/edit")
-	public String updateNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
-			@RequestParam("np_use") int np_use) {
-		NewspaperDTO newNewspaper = new NewspaperDTO();
-		newNewspaper.setNp_no(np_no);
-		newNewspaper.setNp_name(np_name);
-		newNewspaper.setNp_use(np_use);
+	public String updateNewspaper(@RequestParam(required = false) String np_name,
+			@RequestParam(required = false) byte np_use, Model model) {
+	
 
-		newspaperService.updateNewspaper(newNewspaper);
+		boolean res = newspaperService.updateNewspaper(np_name, np_use);
+		if (res == false) {
+			model.addAttribute("msg", "기존 신문사 이름과 동일합니다.");
+			model.addAttribute("url", "/admin/admNews/news");
+			return "util/msg";
+		}
+
 		return "redirect:/admin/admNews/news";
 	}
 
-	// 등록
+	// 뉴스등록
 	@PostMapping("/admNews/newspapers/register")
 	public String registerNewspaper(@RequestParam(required = false) String np_name,
 			@RequestParam(required = false) String np_use, Model model) {
-		
+
 		// np_use를 byte로 변환 (1 또는 0)
 		byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 1 : (byte) 0;
-		
+
 		boolean res = newspaperService.addNewspaper(np_name, useByte);
-		
-		if(res == false) {
+
+		if (res == false) {
 			model.addAttribute("msg", "이미 존재하는 신문사 입니다.");
 			model.addAttribute("url", "/admin/admNews/news");
 			return "util/msg";
 		}
-		
+
 		return "redirect:/admin/admNews/news";
 	}
 
-
-	
-	
-	
-	// 삭제
+	// 뉴스삭제
 	@PostMapping("/admNews/newspapers/delete")
 	public String deleteNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
 			@RequestParam("np_use") byte np_use) {
@@ -117,12 +114,12 @@ public class AdminController {
 		newNewspaper.setNp_no(np_no); //
 		newNewspaper.setNp_name(np_name);
 		newNewspaper.setNp_use(np_use);
-	
+
 		newspaperService.deleteNewspaper(newNewspaper);
 		return "redirect:/admin/admNews/news";
 	}
 
-	// 검색
+	// 뉴스검색
 	@PostMapping("/admNews/newspapers/search")
 	public String searchNewspapers(@RequestParam(required = false) String np_name,
 			@RequestParam(required = false) String np_use, @RequestParam(required = false) Integer np_no, Model model) {
@@ -138,9 +135,5 @@ public class AdminController {
 		System.out.println("컨트롤러2");
 		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
-	
-	
+
 }
-	
-
-
