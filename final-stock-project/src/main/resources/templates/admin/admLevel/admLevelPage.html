@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Level Page</title>
+</head>
+<body>
+    <h1>Admin Level Page</h1>
+    <p>이곳은 관리자 레벨 페이지입니다.</p>
+    <!-- 다른 페이지로 이동할 수 있는 링크 -->
+    <div>
+        <a href="/someOtherPage">다른 페이지로 이동</a> <!-- 필요에 따라 링크 수정 -->
+    </div>
+
+    <!-- 레벨 테이블 -->
+    <table>
+        <thead>
+            <tr>
+                <th>등급</th>    
+                <th>레벨</th>
+                <th>등급 혜택</th>
+                <th>승급 심사 여부</th> <!-- 0,1 로 == 자동승급 / 관리자 승인 필요 -->
+                <th>레벨업 기준</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="list : ${list}">
+                <td th:text="${list.lv_name}"></td>
+                <td th:text="${list.lv_num}"></td>
+                <td th:text="${list.lv_alpha}"></td>
+                <td th:text="${list.lv_auto_use == 0 ? '자동 승급' : '관리자 승인 필요'}"></td>
+                <td th:text="${list.lv_up_limit}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

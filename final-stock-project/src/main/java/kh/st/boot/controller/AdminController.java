@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import groovy.transform.AutoImplement;
-import kh.st.boot.model.dto.NewspaperDTO;
+import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.service.AdminService;
+import kh.st.boot.service.SltAdmLevelPageService;
 import kh.st.boot.service.newspaperServiceImp;
 
 @Controller
@@ -75,7 +76,6 @@ public class AdminController {
 	@PostMapping("/admNews/newspapers/edit")
 	public String updateNewspaper(@RequestParam(required = false) String np_name,
 			@RequestParam(required = false) byte np_use, Model model) {
-	
 
 		boolean res = newspaperService.updateNewspaper(np_name, np_use);
 		if (res == false) {
@@ -136,4 +136,52 @@ public class AdminController {
 		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
 
+	// -------------------------------------------------------------------------------
+	// -------------------------- LV 관리 컨트롤러 -------------------------------
+	// -------------------------------------------------------------------------------
+
+	@Autowired
+	private SltAdmLevelPageService sltAdmLevelPageService;
+	 
+	@GetMapping("/admLevel")
+	public String sltAdmLevelPage(Model model) {
+		List<AdminLevelPageVO> ssltAdminLevelPage = sltAdmLevelPageService.getAllssltAdminLevelPage();
+		model.addAttribute("list", ssltAdminLevelPage);
+		return "admin/admLevel/admLevelPage"; // admin/news.html로 이동
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
