@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
-import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.StockCriteria;
 
 public interface StockDAO {
