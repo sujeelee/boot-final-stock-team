@@ -76,7 +76,7 @@ public class NewsController {
 		return map;
 	}
 	
-	@GetMapping("/detail/{ne_no}")
+	@GetMapping("/newsDetail/{ne_no}")
 	public String detail(Model model, @PathVariable int ne_no) {
 		NewsVO news = newsService.getNews(ne_no);
 		NewsPaperVO newspaper = newsService.getNewsPaper(news.getNp_no());
@@ -90,7 +90,7 @@ public class NewsController {
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("file", file);
 		model.addAttribute("ne_datetime", ne_datetime);
-		return "newspaper/detail";
+		return "newspaper/newsDetail";
 	}
 	
 	@ResponseBody
@@ -131,12 +131,12 @@ public class NewsController {
 		return map;
 	}
 	
-	@GetMapping("/insert/{np_no}")
+	@GetMapping("/newsInsert/{np_no}")
 	public String insert(Model model, @PathVariable int np_no) {
-		return "newspaper/insert";
+		return "newspaper/newsInsert";
 	}
 	
-	@PostMapping("/insert/{np_no}")
+	@PostMapping("/newsInsert/{np_no}")
 	public String insertPost(Model model, @PathVariable int np_no ,NewsVO news, Principal principal, MultipartFile file) {
 		String mb_id = principal.getName();
 		boolean res = newsService.insertNews(news, mb_id, file);
@@ -145,13 +145,13 @@ public class NewsController {
 			model.addAttribute("url" , "/newspaper");
 		}else {
 			model.addAttribute("msg" , "뉴스 등록 실패");
-			model.addAttribute("url" , "/newspaper/insert/" + np_no);
+			model.addAttribute("url" , "/newspaper/newsInsert/" + np_no);
 		}
 		
 		return "util/msg";
 	}
 	
-	@GetMapping("/update/{ne_no}")
+	@GetMapping("/newsUpdate/{ne_no}")
 	public String update(Model model, @PathVariable int ne_no) {
 		// 게시글을 가져옴
 		NewsVO news = newsService.getNews(ne_no);
@@ -159,25 +159,25 @@ public class NewsController {
 		FileVO file = newsService.getFile(ne_no);
 		model.addAttribute("news", news);
 		model.addAttribute("file", file);
-		return "newspaper/update";
+		return "newspaper/newsUpdate";
 	}
 	
 
-	@PostMapping("/update/{ne_no}")
+	@PostMapping("/newsUpdate/{ne_no}")
 	public String updatePost(Model model, @PathVariable int ne_no ,NewsVO news, Principal principal, MultipartFile file,@RequestParam(required = false) Integer num) {
 		String mb_id = principal.getName();
 		boolean res = newsService.updateNews(news, mb_id, file, num);
 		if(res) {
 			model.addAttribute("msg" , "뉴스 수정 성공");
-			model.addAttribute("url" , "/newspaper/detail/" + ne_no);
+			model.addAttribute("url" , "/newspaper/newsDetail/" + ne_no);
 		}else {
 			model.addAttribute("msg" , "뉴스 수정 실패");
-			model.addAttribute("url" , "/newspaper/detail/" + ne_no);
+			model.addAttribute("url" , "/newspaper/newsDetail/" + ne_no);
 		}
 		return "util/msg";
 	}
 	
-	@GetMapping("/delete/{ne_no}")
+	@GetMapping("/newsDelete/{ne_no}")
 	public String delete(Model model, @PathVariable int ne_no, Principal principal) {
 		String mb_id = principal.getName();
 		boolean res = newsService.deleteNews(ne_no, mb_id);
@@ -186,7 +186,7 @@ public class NewsController {
 			model.addAttribute("url", "/newspaper");
 		}else {
 			model.addAttribute("msg", "뉴스 삭제 실패");
-			model.addAttribute("url", "/newspaper/detail/" + ne_no);
+			model.addAttribute("url", "/newspaper/newsDetail/" + ne_no);
 		}
 		return "util/msg";
 	}
