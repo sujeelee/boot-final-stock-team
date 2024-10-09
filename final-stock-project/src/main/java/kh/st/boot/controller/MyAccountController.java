@@ -13,7 +13,7 @@ public class MyAccountController {
 
 	@GetMapping("/asset")
 	public String asset() {
-		
+
 		return "myaccount/asset";
 	}
 	
@@ -21,5 +21,29 @@ public class MyAccountController {
 	public String transactions() {
 		
 		return "myaccount/transactions";
+	}
+	
+	@GetMapping("/orders")
+	public String orders() {
+		
+		return "myaccount/orders";
+	}
+	
+	@GetMapping("/profit")
+	public String profit() {
+		
+		return "myaccount/profit";
+	}
+	
+	@GetMapping("/point")
+	public String point() {
+		
+		return "myaccount/point";
+	}
+	
+	@GetMapping("/settings")
+	public String settings() {
+		
+		return "myaccount/settings";
 	}
 }
