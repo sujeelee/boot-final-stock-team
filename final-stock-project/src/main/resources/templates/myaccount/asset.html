@@ -297,7 +297,7 @@
 	            	<!-- 자산 섹션 -->
 	            	<section class="asset-section">
 	                	<div class="account-info">
-                    		<span class="account-text mr-auto" th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
+                    		<span class="account-text" th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
 	                    	<div class="balance-info">
 	                        	<span class="balance-text1">0원</span>
 	                        	<span class="balance-text2">지난주보다 0원 (0%)</span>
@@ -361,22 +361,39 @@
 					        </div>
 					    </section>
 					</section>
-		
-		            <!-- 수익 섹션 -->
-		            <section class="profit-section">
-		                <div class="profit-info">
-		                    <span class="order-text">10월 수익</span>
-		                    <div class="profit-balance">
-		                        <span class="balance-text1">0원</span>
-		                    </div>
-		                </div>
-		                <!-- 판매 수익 -->
-		                <div class="profit-item">
-		                    <span class="investment-text1">판매 수익</span>
-		                    <div class="profit-details">
-		                        <span class="investment-text2">0원</span>
-		                    </div>
-		                </div>
+					<section class="order-investment-wrapper">
+			            <!-- 수익 섹션 -->
+			            <section class="profit-section">
+			                <div class="profit-info">
+			                    <span class="order-text">10월 수익</span>
+			                    <div class="profit-balance">
+			                        <span class="balance-text1">0원</span>
+			                    </div>
+			                </div>
+			                <!-- 판매 수익 -->
+			                <div class="profit-item">
+			                    <span class="investment-text1">판매 수익</span>
+			                    <div class="profit-details">
+			                        <span class="investment-text2">0원</span>
+			                    </div>
+			                </div>
+			            </section>
+			             <!-- 수익 섹션 -->
+			            <section class="profit-section">
+			                <div class="profit-info">
+			                    <span class="order-text">보유 포인트</span>
+			                    <div class="profit-balance">
+			                        <span class="balance-text1">0원</span>
+			                    </div>
+			                </div>
+			                <!-- 판매 수익 -->
+			                <div class="profit-item">
+			                    <span class="investment-text1">포인트</span>
+			                    <div class="profit-details">
+			                        <span class="investment-text2">0원</span>
+			                    </div>
+			                </div>
+			            </section>
 		            </section>
 		        </div>
 		    </div>
