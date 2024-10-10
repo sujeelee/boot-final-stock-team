@@ -1,5 +1,6 @@
 package kh.st.boot.service;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,23 @@ public class EventServiceImp implements EventService {
         }
 
         return up;
+    }
+
+    @Override
+    public boolean CalenderEvent(String mb_id, int[] checkList) {
+        if (mb_id == null) {
+            return false;
+        }
+        int sum = 0;
+        for(int i = 0; i < checkList.length ; i ++){
+            sum += checkList[i];
+        }
+        
+        if (sum == 0) {
+            return eventDao.setNewCalenderEvent(mb_id, checkList);
+        }
+
+        return eventDao.setCalenderEvent(mb_id, checkList);
     }
 
     

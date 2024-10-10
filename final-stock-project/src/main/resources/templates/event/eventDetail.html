@@ -25,7 +25,7 @@
 			
 
 			<div class="event-container">
-				<div class="container" style="position: relative;">
+				<div class="" style="position: relative;">
 					
 					<div class="tab" style="margin-top: 10px; position: relative;">
 						<span style="font-size: 30px;">
@@ -42,7 +42,7 @@
 					<div th:utext="${event.ev_content}"></div>
 
 					<!--/* 로그인을 했고 + 아이디 권한이 9 이상이면 보임 */-->
-					<div sec:authorize="isAuthenticated()" th:if="${#authentication.Principal.member.mb_level} >= 9">
+					<div class="form-group" sec:authorize="isAuthenticated()" th:if="${#authentication.Principal.member.mb_level} >= 9">
 						<a class="btn btn-outline-secondary" style="position: absolute; right: 1%;"
 						th:href="@{/event/eventUpdate/{eventStatus}/{ev_no}(ev_no = ${event.ev_no}, eventStatus = ${eventStatus})}">수정</a>
 						<button class="btn btn-outline-danger" style="position: absolute; right: 7%;" th:onclick="deleteEventPost()">삭제</button>

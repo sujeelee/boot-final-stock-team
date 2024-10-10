@@ -62,5 +62,7 @@
     <delete id="deleteEventThumbnailFile">
         delete from file where fi_reg_no = #{ev_no} and fi_type = 'event'
     </delete>
+    
+
 
 </mapper>
