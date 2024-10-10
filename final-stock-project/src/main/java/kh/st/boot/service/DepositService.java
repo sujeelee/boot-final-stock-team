@@ -75,6 +75,7 @@ public class DepositService {
 		deposit.setDe_content("예치금 충전 : " + chk.getDo_price() + "원");
 		deposit.setDe_num(chk.getDo_price());
 		deposit.setMb_id(mb.getMb_id());
+		deposit.setDe_before_num(0);
 		
 		if(ac == null) {
 			AccountVO newaAc = new AccountVO();
@@ -83,6 +84,7 @@ public class DepositService {
 			depositDao.insertAccountDeposit(newaAc);
 		} else {
 			int newPrice = ac.getAc_deposit() + chk.getDo_price();
+			deposit.setDe_before_num(ac.getAc_deposit());
 			ac.setAc_deposit(newPrice);
 			depositDao.updateAccountDeposit(ac);
 		}
