@@ -191,6 +191,7 @@ CREATE TABLE `day_check` (
 	`dc_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
 	`dc_datetime`	DATETIME	NULL,
 	`mb_id`	varchar(255)	NULL,
+	`dc_days` VARCHAR(70) null,
 	`po_num`	int(11)	NULL
 );
 
