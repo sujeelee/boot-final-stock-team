@@ -1,39 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Level Page</title>
+<meta charset="UTF-8">
+<title>Admin Level Page</title>
+<link th:href="@{/css/admnews.css}" rel="stylesheet" />     <!--  스타일 적용 했음  -->
 </head>
-<body>
-    <h1>Admin Level Page</h1>
-    <p>이곳은 관리자 레벨 페이지입니다.</p>
-    <!-- 다른 페이지로 이동할 수 있는 링크 -->
-    <div>
-        <a href="/someOtherPage">다른 페이지로 이동</a> <!-- 필요에 따라 링크 수정 -->
-    </div>
+<style>
 
-    <!-- 레벨 테이블 -->
-    <table>
-        <thead>
-            <tr>
-                <th>등급</th>    
-                <th>레벨</th>
-                <th>등급 혜택</th>
-                <th>승급 심사 여부</th> <!-- 0,1 로 == 자동승급 / 관리자 승인 필요 -->
-                <th>레벨업 기준</th>                    
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="list : ${list}">
-                <td th:text="${list.lv_name}"></td>
-                <td th:text="${list.lv_num}"></td>
-                <td th:text="${list.lv_alpha}"></td>
-                <td th:text="${list.lv_auto_use == 0 ? '자동 승급' : '관리자 승인 필요'}"></td>
-                <td th:text="${list.lv_up_limit}"></td>
-            </tr>
-        </tbody>
-    </table>
+</style>
+<body>
+<div class="content">			<!--  이거 추가하니까 사이드바랑 곂치던거 해결됨 wht?>???>??<>>?>?>?>?>?>>? -->
+	<h1>레벨정보 관리 페이지</h1>
+	<div class="form-container">
+		<div class="search-form"> <!--  레이아웃 나눈거 -->
+			<form action="/admin/admNews/newspapers/search" method="post">								<!--  수정안함 -->
+				<input type="text" name="np_name" placeholder="신문사 이름" required>					<!--  수정안함 -->
+				<select name="np_use" required>																<!--  수정안함 -->
+					<option value="1">사용 중</option>														<!--  수정안함 -->
+					<option value="0">사용 안 함</option>													<!--  수정안함 -->
+				</select>
+				<button type="submit">검색</button>														<!--  수정안함 -->					
+			</form>
+		</div>
+
+		<div class="register-form">   <!-- insert 레이아웃 나눈거 -->
+			<form action="/admin/admLevel/admLevelPage/insert" method="post">
+
+				<input type="text" name="list.lv_name" placeholder="등급" required>
+				<input type="text" name="list.lv_num" placeholder="레벨" required>
+				<input type="text" name="list.lv_alpha" placeholder="등급 혜택" required>
+				<input type="text" name="np_name" placeholder="승급 심사 여부" required>
+				<select name="list.lv_auto_use" required>
+					<option value="1">자동 승급</option>
+					<option value="0">관리자 승인 필요</option>
+				</select>
+				<input type="text" name="list.lv_up_limit" placeholder="레벨업 기준" required>
+				<button type="submit">등록</button>
+			</form>
+		</div>
+	</div>
+	<!-- 레벨 테이블 -->
+	<table>
+		<thead>
+			<tr>
+				<div></div>
+				<th>등급</th>
+				<th>레벨</th>
+				<th>등급 혜택</th>
+				<th>승급 심사 여부</th>
+				<!-- 0,1 로 == 자동승급 / 관리자 승인 필요 -->
+				<th>레벨업 기준</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="list : ${list}">
+				<td th:text="${list.lv_name}"></td>
+				<td th:text="${list.lv_num}"></td>
+				<td th:text="${list.lv_alpha}"></td>
+				<td th:text="${list.lv_auto_use == 0 ? '자동 승급' : '관리자 승인 필요'}"></td>
+				<td th:text="${list.lv_up_limit}"></td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>
