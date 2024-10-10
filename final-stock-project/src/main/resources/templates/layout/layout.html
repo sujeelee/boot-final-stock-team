@@ -35,5 +35,32 @@
 		<main layout:fragment="content"></main>
 	</div> 
 
+	<script th:inline="javascript">
+		<!-- URL에 따라 container 클래스 제거하는 스크립트 -->
+		$(document).ready(function() {
+			// 현재 URL 가져오기
+			let currentUrl = window.location.href;
+			// container 없애고 싶은 url 아래에 추가 하시면 됩니다.
+			let urlNames = ['myaccount'];
+			// URL에 'myaccount'가 포함되어 있는지 확인
+			for(item of urlNames) {
+				if(currentUrl.includes(item)) {
+					// 'container' 클래스를 가진 div 요소에서 클래스 제거
+					$('.home-section').removeClass('container');
+				}
+			}
+		}); // 특정 url에 container를 삭제하는 함수
+		
+		$('.myaccount').on('click', function(e){
+			let mb_id = /*[[${#authentication.getName()}]]*/ '';
+			if(mb_id != 'anonymousUser'){
+				return;
+			}
+			e.preventDefault();
+			if(confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하겠습니까?')){
+				location.href = "/member/login";
+			}
+		}); // 내 계좌를 들어가기 위해서 로그인 정보를 확인하는 함수
+	</script>
 </body>
 </html>
