@@ -23,7 +23,7 @@ import kh.st.boot.service.MemberService;
 
 @Controller
 @RequestMapping("/deposit")
-public class depositController {
+public class DepositController {
 	@Autowired
 	DepositService depositService;
 	
