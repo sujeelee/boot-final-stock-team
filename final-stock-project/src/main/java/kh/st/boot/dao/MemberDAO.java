@@ -19,4 +19,6 @@ public interface MemberDAO {
 	MemberVO findIdByCookie(@Param("sid")String sid);
 
 	boolean updateUserAccount(@Param("account")String mb_account, @Param("id")String mb_id);
+
+	void insertAccount(int mb_no);
 }
