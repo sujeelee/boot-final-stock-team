@@ -1,5 +1,6 @@
 package kh.st.boot.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,9 +101,11 @@ public class EventController {
 
     // 이벤트 페이지로 이동 및 구현
     @GetMapping("/calendar_event")
-    public String calendar_event(Model mo){
+    public String calendar_event(Model mo, Principal principal){
         // 31칸짜리 배열 생성 (0: 출석 안 함, 1: 출석 완료)
-        int[] checkList = new int[31];
+        String storedValue = eventService.getCalenderEventValue(principal.getName());
+        String[] parts = storedValue.split(",");
+        int[] checkList = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
         mo.addAttribute("checkList", Arrays.toString(checkList));
         return "/eventSeason2024/event202410Cevent";
     }
@@ -110,9 +113,7 @@ public class EventController {
     @PostMapping("/ajax/calendar_event")
     public @ResponseBody boolean calendar_event_ajax(@RequestParam("mb_id") String mb_id, @RequestParam("checkList")int[] checkList){
         boolean res = eventService.CalenderEvent(mb_id, checkList);
-        System.out.println(mb_id);
-        System.out.println(Arrays.toString(checkList));
-        return true;
+        return res;
     }
 
 }

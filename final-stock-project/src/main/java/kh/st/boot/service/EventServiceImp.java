@@ -1,6 +1,7 @@
 package kh.st.boot.service;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import groovyjarjarantlr4.v4.parse.ANTLRParser.range_return;
 import kh.st.boot.dao.EventDAO;
 import kh.st.boot.model.dto.EventDTO;
 import kh.st.boot.model.vo.EventVO;
@@ -117,16 +119,24 @@ public class EventServiceImp implements EventService {
         if (mb_id == null) {
             return false;
         }
-        int sum = 0;
-        for(int i = 0; i < checkList.length ; i ++){
-            sum += checkList[i];
+
+        String arrayAsString = Arrays.toString(checkList).replaceAll("[\\[\\] ]", "");
+
+
+        if (eventDao.setCalenderEvent_add50point(mb_id)) {
+            eventDao.setPointByCalenderEvent(mb_id);
+            return eventDao.setNewCalenderEvent(mb_id, arrayAsString);
         }
         
-        if (sum == 0) {
-            return eventDao.setNewCalenderEvent(mb_id, checkList);
-        }
+        return false;
+    }
 
-        return eventDao.setCalenderEvent(mb_id, checkList);
+    @Override
+    public String getCalenderEventValue(String name) {
+        if (name == null || name.trim().length() == 0) {
+            return null;
+        }
+        return eventDao.getCalenderEventValue(name);
     }
 
     

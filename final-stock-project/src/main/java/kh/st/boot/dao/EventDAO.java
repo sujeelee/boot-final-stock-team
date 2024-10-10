@@ -32,8 +32,12 @@ public interface EventDAO {
 
     boolean deleteEventThumbnailFile(int ev_no);
 
-    boolean setNewCalenderEvent(String mb_id, int[] checkList);
-    
-    boolean setCalenderEvent(String mb_id, int[] checkList);
+    boolean setNewCalenderEvent(String mb_id, String checkList);
+
+    boolean setCalenderEvent_add50point(String mb_id);
+
+    void setPointByCalenderEvent(String mb_id);
+
+    String getCalenderEventValue(String name);
     
 }
