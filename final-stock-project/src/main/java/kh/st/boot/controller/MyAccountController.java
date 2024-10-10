@@ -1,10 +1,6 @@
 package kh.st.boot.controller;
 
 import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -46,15 +42,6 @@ public class MyAccountController {
 		model.addAttribute("money", money);
 		model.addAttribute("rateOfReturn", rateOfReturn);
 		return "myaccount/asset";
-	}
-	
-	@GetMapping("/transactions")
-	public String transactions(Model model, Principal principal) {
-		String mb_id = principal.getName();
-		// 거래내역을 가져오는 코드
-		List<DepositVO> list = myAccountService.getDepositList(mb_id);
-		model.addAttribute(list);
-		return "myaccount/transactions";
 	}
 	
 	@GetMapping("/orders")

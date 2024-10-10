@@ -49,7 +49,7 @@ public class MailController {
     //MailSend
     public boolean mailSend(String to, String title, String content) {
 
-    String setfrom = "stajun@naver.com";
+    String setfrom = "s2dkey.company@gmail.com";
     try{
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
