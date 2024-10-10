@@ -143,17 +143,17 @@ public class AdminController {
 	@Autowired
 	private SltAdmLevelPageService sltAdmLevelPageService;
 	 
-	@GetMapping("/admLevel")
+	@GetMapping("/admLevel/admLevelPage")
 	public String sltAdmLevelPage(Model model) {
 		List<AdminLevelPageVO> ssltAdminLevelPage = sltAdmLevelPageService.getAllssltAdminLevelPage();
 		model.addAttribute("list", ssltAdminLevelPage);
-		return "admin/admLevel/admLevelPage"; // admin/news.html로 이동
+		return "/admin/admLevel/admLevelPage"; 
 	}
 	
 	
 	
 	
-	
+
 	
 	
 	

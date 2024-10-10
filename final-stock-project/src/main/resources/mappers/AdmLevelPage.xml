@@ -3,7 +3,7 @@
 <mapper namespace="kh.st.boot.dao.SltAdmLevelPageDAO">
 
     <select id="getAllssltAdminLevelPage" resultType="AdminLevelPageVO">
-        SELECT * FROM newspaper
+        SELECT * FROM member_lv
     </select>
 
 
