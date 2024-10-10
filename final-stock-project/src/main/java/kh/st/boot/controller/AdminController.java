@@ -140,9 +140,14 @@ public class AdminController {
 	// -------------------------- LV 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
 
+	
+	
+	
 	@Autowired
 	private SltAdmLevelPageService sltAdmLevelPageService;
-	 
+	
+	
+		// 접속시 불러오기 
 	@GetMapping("/admLevel/admLevelPage")
 	public String sltAdmLevelPage(Model model) {
 		List<AdminLevelPageVO> ssltAdminLevelPage = sltAdmLevelPageService.getAllssltAdminLevelPage();
@@ -151,15 +156,25 @@ public class AdminController {
 	}
 	
 	
+		// 등록하기     
+		@PostMapping("/admLevel/admLevelPage/insert")
+		public String istAdmLv(@RequestParam String lv_name,
+								@RequestParam int lv_num,
+								@RequestParam String lv_alpha,
+								@RequestParam String lv_auto_use,
+								@RequestParam int lv_up_limit, Model model) {
+			boolean res = sltAdmLevelPageService.addSltAdmLevel(lv_name, lv_num,lv_alpha,lv_auto_use,lv_up_limit);
+			if (res == false) {
+				model.addAttribute("msg"," 이미 존제하는 Lv 정보 입니다 ");
+				model.addAttribute("url", "/admin/admLevel/admLevelPage");
+				return "util/msg";
+			}
+			return "redirect:/admin/admLevel/admLevelPage";
+		}
 	
 	
-
 	
-	
-	
-	
-	
-	
+		
 	
 	
 	

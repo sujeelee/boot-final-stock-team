@@ -7,6 +7,15 @@
     </select>
 
 
+	<select id="getLvOne" resultType="AdminLevelPageVO">
+		SELECT * FROM member_lv WHERE lv_num = #{lv_num} limit 1
+	</select>
+
+
+	<insert id="insertAdmLv">
+        INSERT INTO member_lv (lv_name, lv_num,lv_alpha,lv_auto_use,lv_up_limit)
+        VALUES (#{lv_name},#{lv_num},#{lv_alpha},#{lv_auto_use},#{lv_up_limit})
+    </insert>
 
 
 
