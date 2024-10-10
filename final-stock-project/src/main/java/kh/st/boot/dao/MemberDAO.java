@@ -20,5 +20,5 @@ public interface MemberDAO {
 
 	boolean updateUserAccount(@Param("account")String mb_account, @Param("id")String mb_id);
 
-	void insertAccount(int mb_no);
+	void insertAccount(String mb_id);
 }
