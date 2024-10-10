@@ -30,6 +30,7 @@ public class TransactionsController {
 		String mb_id = principal.getName();
 		// 거래내역을 가져오는 코드
 		List<DepositVO> list = myAccountService.getDepositList(mb_id);
+		System.out.println(list);
 		model.addAttribute(list);
 		return "myaccount/transactions";
 	}
