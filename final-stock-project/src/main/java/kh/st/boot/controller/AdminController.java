@@ -193,8 +193,24 @@ public class AdminController {
 			return "redirect:/admin/admLevel/admLevelPage";
 		}
 	
-	
-	
+		// 수정하기
+		@PostMapping("/admLevel/admLevelPage/update")
+		public String udtAdmLv(
+				@RequestParam String lv_name,
+				@RequestParam int lv_num,
+				@RequestParam String lv_alpha,
+				@RequestParam String lv_auto_use,
+				@RequestParam int lv_up_limit) {
+			AdminLevelPageVO dltAdm = new AdminLevelPageVO();
+			dltAdm.setLv_name(lv_name); //
+			dltAdm.setLv_num(lv_num);
+			dltAdm.setLv_alpha(lv_alpha);
+			dltAdm.setLv_auto_use(lv_auto_use);
+			dltAdm.setLv_up_limit(lv_up_limit);
+
+			sltAdmLevelPageService.udtAdmLvService(dltAdm);
+			return "redirect:/admin/admLevel/admLevelPage";
+		}
 	
 	
 	

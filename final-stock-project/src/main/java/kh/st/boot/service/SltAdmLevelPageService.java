@@ -31,6 +31,15 @@ public class SltAdmLevelPageService {
 	public void dltAdmLvService(AdminLevelPageVO AdminLevelPageVO) {
 		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO );
 	}
+
+	public void udtAdmLvService(AdminLevelPageVO AdminLevelPageVO) {
+		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO );
+		여기서 특정값으로 데이터 조회 해보고 
+		
+		다시 넣는거 
+	
+		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO );
+	}
 	
 	
 }
