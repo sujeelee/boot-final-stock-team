@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.SltAdmLevelPageDAO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
-import kh.st.boot.model.vo.NewsPaperVO;
 
 @Service
 public class SltAdmLevelPageService {
@@ -29,6 +28,10 @@ public class SltAdmLevelPageService {
 		return sltAdmLevelPageDAO.insertAdmLv(lv_name, lv_num,lv_alpha,lv_auto_use,lv_up_limit);
 	}
 
+	public void dltAdmLvService(AdminLevelPageVO AdminLevelPageVO) {
+		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO );
+	}
+	
 	
 }
 

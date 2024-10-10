@@ -20,6 +20,8 @@ public interface SltAdmLevelPageDAO {
 						@Param("lv_alpha")String lv_alpha,
 						@Param("lv_auto_use")String lv_auto_use,
 						@Param("lv_up_limit") int lv_up_limit);
+
+	void dltAdmLvdao(AdminLevelPageVO adminLevelPageVO);
 	
 
 	
