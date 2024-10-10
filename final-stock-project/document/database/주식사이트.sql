@@ -188,10 +188,11 @@ CREATE TABLE `event_list` (
 );
 
 CREATE TABLE `day_check` (
-	`출석 기본키`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
-	`출석체크일`	DATETIME	NULL,
-	`출석체크 회원 아이디`	varchar(255)	NULL,
-	`지급된 출석 체크 포인트`	int(11)	NULL
+	`dc_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
+	`dc_datetime`	DATETIME	NULL,
+	`mb_id`	varchar(255)	NULL,
+	`dc_days` VARCHAR(70) null,
+	`po_num`	int(11)	NULL
 );
 
 CREATE TABLE `stock_add` (
@@ -251,6 +252,7 @@ CREATE TABLE `deposit_order` (
 
 CREATE TABLE `deposit` (
 	`de_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
+	`de_num` INT(11) NULL,
 	`de_content`	varchar(255)	NULL,
 	`de_datetime`	DATETIME	NULL,
 	`de_stock_code`	varchar(255)	NULL,

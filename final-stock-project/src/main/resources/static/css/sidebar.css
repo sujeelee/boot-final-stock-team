@@ -219,20 +219,15 @@
 	top: 0;
 	left: 0px;
 	width: calc(100% - 78px);
-	transition: all 0.5s ease;
+  	transition: left 0.5s ease, transform 0.5s ease; /* left와 transform 속성에 대한 전환 효과 */
 	z-index: 2;
-}
-
-.sidebar.open ~ .home-section {
-	right: 250px;
-	width: calc(100% - 250px);
 }
 
 .home-section .text {
 	display: inline-block;
 	color: #11101d;
 	font-size: 25px;
-	font-weight: 500;
+	font-weight: 400;
 	margin: 18px;
 }
 

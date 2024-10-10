@@ -1,5 +1,6 @@
 package kh.st.boot.service;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,17 @@ public class EventServiceImp implements EventService {
 
     @Override
     public List<EventDTO> getEventList(String eventStatus) {
+        if (eventStatus.equals("resUser")) {
+            return eventDao.getEventPostList(eventStatus);
+        }
         return eventDao.getEventList(eventStatus);
     }
 
     @Override
     public EventVO getEvent(String eventStatus, int ev_no) {
+        if (eventStatus.equals("resUser")) {
+            return eventDao.getEventPost(ev_no);
+        }
         return eventDao.getEvent(eventStatus, ev_no);
     }
 
@@ -72,6 +79,57 @@ public class EventServiceImp implements EventService {
 
         return eventDao.updateEventDateAndStatus();
     }
+
+    @Override
+    public boolean deleteEventPost(int ev_no) {
+        return eventDao.deleteEventPost(ev_no);
+    }
+
+    @Override
+    public FileVO getFile(int ev_no) {
+        return eventDao.getFileByEventNumber(ev_no);
+    }
+
+    @Override
+    public boolean updateEvent_withFile(EventVO event, MultipartFile file) {
+        
+        if (event == null) {
+            return false;
+        }
+
+        if (event.getEv_title() == null || event.getEv_title().trim().length() == 0) {
+            return false;
+        }
+
+        boolean up = eventDao.updateEvent(event);
+
+        if (up && !file.isEmpty()) {
+            up = eventDao.deleteEventThumbnailFile(event.getEv_no());
+            UploadFileUtils.delteFile(uploadPath, event.getFi_path());
+            uploadFile(file, event.getEv_no());
+        }
+
+        return up;
+    }
+
+    @Override
+    public boolean CalenderEvent(String mb_id, int[] checkList) {
+        if (mb_id == null) {
+            return false;
+        }
+        int sum = 0;
+        for(int i = 0; i < checkList.length ; i ++){
+            sum += checkList[i];
+        }
+        
+        if (sum == 0) {
+            return eventDao.setNewCalenderEvent(mb_id, checkList);
+        }
+
+        return eventDao.setCalenderEvent(mb_id, checkList);
+    }
+
+    
 
     
 }

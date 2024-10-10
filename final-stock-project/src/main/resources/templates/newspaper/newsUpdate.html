@@ -13,7 +13,7 @@
 	<main layout:fragment="content">
 		<h1 class="text-center mt-4 mb-4">뉴스 수정</h1>
 		<div class="mt-5">
-			<form th:action="@{/newspaper/update/{ne_no}(ne_no=${ne_no})}" method="post" enctype="multipart/form-data">
+			<form th:action="@{/newspaper/newsUpdate/{ne_no}(ne_no=${ne_no})}" method="post" enctype="multipart/form-data">
 				<div class="form-group">
 					<label for="ne_title">제목:</label>
 					<input type="text" class="form-control" th:field="${news.ne_title}" readonly>
@@ -42,14 +42,14 @@
 			})
 		</script>
 		<script th:inline="javascript">
-		$('.btn-del').click(function(){
-    		var fi_no = $(this).data('num');
-    		var str1 = `<input type="hidden" name="num" value="`+fi_no+`">`;
-    		var str2 = `<input type="file" name="file"/>`
-    		$('.box-att').append(str1);
-    		$('.box-att').append(str2);
-    		$(this).parent().remove();
-    	});
+			$('.btn-del').click(function(){
+	    		var fi_no = $(this).data('num');
+	    		var str1 = `<input type="hidden" name="num" value="`+fi_no+`">`;
+	    		var str2 = `<input type="file" name="file"/>`
+	    		$('.box-att').append(str1);
+	    		$('.box-att').append(str2);
+	    		$(this).parent().remove();
+	    	});
 		</script>
 	</main>
 </body>

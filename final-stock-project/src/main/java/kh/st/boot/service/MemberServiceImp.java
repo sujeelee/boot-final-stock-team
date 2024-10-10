@@ -133,6 +133,7 @@ public class MemberServiceImp implements MemberService{
         	return false;
         } else {
         	checkAccountNum(New_User.getMb_id());
+        	memberDao.insertAccount(New_User.getMb_id());
         	return true;
         }
 

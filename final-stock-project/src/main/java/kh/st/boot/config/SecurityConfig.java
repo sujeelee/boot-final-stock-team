@@ -41,7 +41,7 @@ public class SecurityConfig{
 //                .usernameParameter("userId") //아이디 파라미터 명
 //                .passwordParameter("password") // 비밀번호 파라미터 명
                 .successHandler(new LoginSuccessHandler())
-                .failureHandler(new LoginFailHandler())
+                // .failureHandler(new LoginFailHandler())
             )
 
             .rememberMe((rm)->rm
