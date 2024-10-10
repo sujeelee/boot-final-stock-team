@@ -34,9 +34,11 @@ public class MyAccountController {
 		String lastWeek = DateUtil.getLastWeek(); // 지난주 날짜 정보
 		// 일주일 전까지의 거래 내역을 가져옴
 		List<DepositVO> depositList = myAccountService.getDepositListByDate(mb_id, lastWeek);
+		System.out.println(depositList);
 		int money = 0;
 		for(DepositVO deposit : depositList) {
 			money += deposit.getDe_num();
+
 		}
 		// 수익률
 		int rateOfReturn = (account.getAc_deposit() - (account.getAc_deposit() - money)) / (account.getAc_deposit() - money) * 100;
