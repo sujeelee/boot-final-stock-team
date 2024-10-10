@@ -52,8 +52,7 @@
             transition: background-color 0.2s;
             width: 100%;
         }
-        
-        /* li 태그에 호버 효과 추가 */
+
         .my-list li:hover {
 		    border-radius: 20px;
 		    background-color: #f9fafb;
@@ -82,23 +81,8 @@
 		    gap: 4px;
 		}
 		
-		.balance-text1 {
-		    font-size: 24px;
-		    font-weight: bold;
-		    color: #333d4b;
-		}
-
-		.balance-text2 {
-			font-size: 17px;
-		    color: #888;
-		}
-		
 		/* 기간 선택 섹션 */
-		.period-selection {
-		    display: flex;
-		    flex-direction: column;
-		    gap: 16px;
-		}
+	
 		
 		.graph-container {
 		    height: 200px;
@@ -133,33 +117,8 @@
 			color: black;
 		}
 		
-		/* 주문 가능 금액 섹션 */
-		.order-section{
-			display: flex;
-		    flex-direction: column;
-		    gap: 16px;
-		}
-		
-		.order-text {
-			font-size: 15px;
-			color: #888;
-		}
-		
-		.investment-text1 {
-			font-size: 15px; 
-			color: #333d4b; 
-			font-weight: bold;
-		}
-		
-		.investment-text2 {
-			font-size: 19px; 
-			color: #333d4b;
-		}
-		
-		.investment-text3 {
-			font-size: 15px; 
-			color: #333d4b;
-		}
+
+
 			
 		.order-buttons {
 		    display: flex;
@@ -182,15 +141,36 @@
 			color: black;
 		}
 		
-		/* 투자 중 섹션 */
-		.investment-section {
+		/* 클래스이름 맞추는 중 */
+		.my-section-wrapper {
 		    display: flex;
+		    gap: 30px;
+		}
+
+		.my-section {
+			display: flex;
 		    flex-direction: column;
 		    gap: 16px;
 		}
 		
-		.investment-item {
-		    display: flex;
+		.my-header-text {
+			font-size: 15px;
+			color: #888;
+		}
+		
+		.my-balance-text1 {
+			font-size: 24px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		.my-balance-text2 {
+			font-size: 17px;
+		    color: #888;
+		}
+		
+		.my-item-box {
+			display: flex;
 		    flex-direction: column;
 		    padding: 20px 24px;
 		    border-radius: 15px;
@@ -200,46 +180,25 @@
 		    height: 130px;
 		}
 		
-		.investment-details {
-		    display: flex;
-		    flex-direction: column;
+		.my-item-text1 {
+			font-size: 15px; 
+			color: #333d4b; 
+			font-weight: bold;
 		}
 		
-		/* 수익 섹션 */
-		.profit-section {
-		    display: flex;
-		    flex-direction: column;
-		    gap: 16px;
+		.my-item-text2 {
+			font-size: 19px; 
+			color: #333d4b;
 		}
 		
-		.profit-balance {
-		    font-size: 24px;
-		    font-weight: bold;
+		.my-item-text3 {
+			font-size: 15px; 
+			color: #333d4b;
 		}
 		
-		.profit-item {
+		.my-details {
 			display: flex;
-			flex-direction: column;
-		    background-color: #f9fafb;;
-		    padding: 20px 24px;
-		    gap: 12px;
-		    border-radius: 8px;
-		    width: 500px;
-		    height: 100px;
-		}
-		
-		.profit-details {
-		    display: flex;
 		    flex-direction: column;
-		}
-		
-		.order-investment-wrapper {
-		    display: flex;
-		    gap: 20px; /* 섹션 사이 간격을 줌 */
-		}
-		
-		.order-section, .investment-section {
-		    flex: 1; /* 두 섹션을 동일한 너비로 설정 */
 		}
 	</style>
 </head>
@@ -302,42 +261,47 @@
                     		<span  class="account-text" 
                     			   th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
 	                    	<div class="balance-info">
-	                        	<span class="balance-text1" 
-	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 3, 'COMMA')} + '원'"></span>
-	                        	<span class="balance-text2">지난주보다 0원 (0%)</span>
+	                        	<span class="my-balance-text1" 
+	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 1, 'COMMA')} + '원'"></span>
+	                        	<div class="balance-box">
+		                        	<span class="my-balance-text2"
+		                        		  th:text="'지난주보다 ' + ${money} + '원'"></span>
+		                        	<span class="my-balance-text2"
+		                        		  th:text="'(' + ${rateOfReturn} + '%)'"></span>		
+	                        	</div>
 	                    	</div>
 	                	</div>
 	            	</section>
 	
 		            <!-- 기간 선택 섹션 -->
-		            <section class="period-selection">
+		            <section class="my-section period">
 		                <div class="graph-container">
 		                
 		                </div>
 		                <div class="period-buttons">
-		                    <button class="period-button">1주</button>
-		                    <button class="period-button">1달</button>
-		                    <button class="period-button">3달</button>
-		                    <button class="period-button">1년</button>
+		                    <button class="period-button" onclick="loadPeriodData(this)" value="1week">1주</button>
+		                    <button class="period-button" onclick="loadPeriodData()" value="1month">1달</button>
+		                    <button class="period-button" onclick="loadPeriodData()" value="3month">3달</button>
+		                    <button class="period-button" onclick="loadPeriodData()" value="1year">1년</button>
 		                </div>
 		            </section>
 		
 		            <!-- 주문 가능 금액과 투자 중인 금액을 나란히 배치하는 섹션 -->
-					<section class="order-investment-wrapper">
+					<section class="my-section-wrapper">
 					    <!-- 주문 가능 금액 섹션 -->
-					    <section class="order-section">
-					        <div class="order-info">
-					            <span class="order-text">주문 가능 금액</span>
-					            <div class="order-balance">
-					                <span class="balance-text1">0원</span>
+					    <section class="my-section order">
+					        <div class="my-info">
+					            <span class="my-header-text">주문 가능 금액</span>
+					            <div>
+					                <span class="my-balance-text1">0원</span>
 					            </div>
 					        </div>
 					        <!-- 원화  -->
-					        <div class="investment-item">
-					            <span class="investment-text1">원화</span>
-					            <div class="investment-details">
-					                <span class="investment-text2">0원</span>
-					                <span class="investment-text3">0원 출금가능</span>
+					        <div class="my-item-box">
+					            <span class="my-item-text1">원화</span>
+					            <div class="my-details">
+					                <span class="my-item-text2">0원</span>
+					                <span class="my-item-text3">0원 출금가능</span>
 					            </div>
 					        </div>
 					        <div class="order-buttons">
@@ -348,53 +312,53 @@
 					    </section>
 					
 					    <!-- 투자 중 섹션 -->
-					    <section class="investment-section">
-					        <div class="investment-info">
-					            <span class="order-text">투자 중인 금액</span>
-					            <div class="investment-balance">
-					                <span class="balance-text1">0원</span>
+					    <section class="my-section investment">
+					        <div class="my-info">
+					            <span class="my-header-text">투자 중인 금액</span>
+					            <div>
+					                <span class="my-balance-text1">0원</span>
 					            </div>
 					        </div>
 					        <!-- 국내 주식 -->
-					        <div class="investment-item">
-					            <span class="investment-text1">국내주식</span>
-					            <div class="investment-details">
-					                <span class="investment-text2">0원</span>
-					                <span class="investment-text3">0원 (0.0%)</span>
+					        <div class="my-item-box">
+					            <span class="my-item-text1">국내주식</span>
+					            <div class="my-details">
+					                <span class="my-item-text2">0원</span>
+					                <span class="my-item-text3">0원 (0.0%)</span>
 					            </div>
 					        </div>
 					    </section>
 					</section>
-					<section class="order-investment-wrapper">
+					<section class="my-section-wrapper">
 			            <!-- 수익 섹션 -->
-			            <section class="profit-section">
-			                <div class="profit-info">
-			                    <span class="order-text">10월 수익</span>
-			                    <div class="profit-balance">
-			                        <span class="balance-text1">0원</span>
+			            <section class="my-section profit">
+			                <div class="my-info">
+			                    <span class="my-header-text">10월 수익</span>
+			                    <div>
+			                        <span class="my-balance-text1">0원</span>
 			                    </div>
 			                </div>
 			                <!-- 판매 수익 -->
-			                <div class="profit-item">
-			                    <span class="investment-text1">판매 수익</span>
-			                    <div class="profit-details">
-			                        <span class="investment-text2">0원</span>
+			                <div class="my-item-box">
+			                    <span class="my-item-text1">판매 수익</span>
+			                    <div class="my-details">
+			                        <span class="my-item-text2">0원</span>
 			                    </div>
 			                </div>
 			            </section>
 			             <!-- 수익 섹션 -->
-			            <section class="profit-section">
-			                <div class="profit-info">
-			                    <span class="order-text">보유 포인트</span>
-			                    <div class="profit-balance">
-			                        <span class="balance-text1">0원</span>
+			            <section class="my-section point">
+			                <div class="my-info">
+			                    <span class="my-header-text">보유 포인트</span>
+			                    <div>
+			                        <span class="my-balance-text1">0원</span>
 			                    </div>
 			                </div>
 			                <!-- 판매 수익 -->
-			                <div class="profit-item">
+			                <div class="my-item-box">
 			                    <span class="investment-text1">포인트</span>
-			                    <div class="profit-details">
-			                        <span class="investment-text2">0원</span>
+			                    <div class="my-details">
+			                        <span class="investment-text2">0pt</span>
 			                    </div>
 			                </div>
 			            </section>
@@ -402,6 +366,24 @@
 		        </div>
 		    </div>
 	    </div>
+		<script th:inline="javascript">
+			function loadPeriodData(obj) {
+				const period = obj.value;
+				console.log(period);
+				/* $.ajax({
+					async : true,
+					url : '/myaccount/asset/period', 
+					type : 'post', 
+					data : {period : period}, 
+					success : function (data){
+						console.log(data);
+					}, 
+					error : function(jqXHR, textStatus, errorThrown){
+						console.log(jqXHR);
+					}
+				}); */
+			}
+		</script>
 	</main>
 </body>
 </html>
