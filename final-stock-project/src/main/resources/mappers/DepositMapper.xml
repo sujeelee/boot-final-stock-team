@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.DepositDAO"> 
+	<select id="findMaxOrderId" resultType="String">
+		select do_od_id from deposit_order where do_od_id LIKE CONCAT(#{date}, '%') order by do_od_id DESC limit 1
+	</select>
+	<select id="getOrderCheck" resultType="DepositOrderVO">
+		select * from deposit_order where do_od_id = #{od_id}
+	</select>
+	<insert id="insertOrderData">
+		insert into deposit_order
+		set	do_od_id = #{do.do_od_id},
+			do_name = #{do.do_name},
+			do_tel = #{do.do_tel},
+			do_email = #{do.do_email},
+			do_price = #{do.do_price},
+			do_date = NOW(),
+			do_status = #{do.do_status},
+			mb_id = #{do.mb_id}
+	</insert>
+	<update id="updateOrder">
+		update deposit_order
+		set do_auth = #{do.do_auth},
+			do_tno = #{do.do_tno},
+			do_status = #{do.do_status},
+			do_date = NOW()
+		where do_od_id = #{do.do_od_id}
+	</update>
+	<select id="getAccount" resultType="AccountVO">
+		select * from account where mb_no = #{mb_no}
+	</select>
+	<insert id="insertAccountDeposit">
+		insert into account
+		set mb_no = #{ac.mb_no},
+			ac_deposit = #{ac.ac_deposit}
+	</insert>
+	<update id="updateAccountDeposit">
+		update account
+		set ac_deposit =  #{ac.ac_deposit}
+		where mb_no = #{ac.mb_no}
+	</update>
+	<insert id="insertDepositLog">
+		insert into deposit
+		set de_content = #{de.de_content},
+			mb_id = #{de.mb_id},
+			de_num = #{de.de_num},
+			de_datetime = NOW()
+	</insert>
+</mapper>

@@ -128,10 +128,10 @@ public class MemberServiceImp implements MemberService{
         
 
         boolean res = memberDao.join(New_User);
+        System.out.println(res);
         if(!res) {
         	return false;
-        }
-        else {
+        } else {
         	checkAccountNum(New_User.getMb_id());
         	return true;
         }
