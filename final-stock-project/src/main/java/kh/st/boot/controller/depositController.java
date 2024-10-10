@@ -1,6 +1,7 @@
 package kh.st.boot.controller;
 
 import java.lang.reflect.Field;
+import java.security.Principal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.DepositService;
+import kh.st.boot.service.MemberService;
 
 
 @Controller
@@ -30,12 +31,10 @@ public class depositController {
     private final String SECRET_KEY = "e80d068e400649a6ada66777fa350d40";
 	
     @GetMapping("")
-	public String home(HttpSession session, Model model) {
-    	//세션에서 user 가져옵니다.
-        MemberVO user = (MemberVO)session.getAttribute("user");
+	public String home(Model model, Principal principal) {
         
     	//로그인상태가 아닐 시
-        if (user == null) {
+        if (principal == null) {
         	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
         	
@@ -87,7 +86,7 @@ public class depositController {
     
     @PostMapping("/insertOrder")
     @ResponseBody
-    public String insertOrder(@RequestParam Map<String, Object> params, Model model, HttpSession session, HttpServletRequest req, HttpServletResponse res){ 
+    public String insertOrder(@RequestParam Map<String, Object> params, Model model, Principal principal, HttpServletRequest req, HttpServletResponse res){ 
     	String id = depositService.getOrderId();
     	DepositOrderVO newOrder = new DepositOrderVO();
     	// VO 클래스의 필드 목록을 가져옴
@@ -112,13 +111,11 @@ public class depositController {
 			    }
 			}
         }
-        //세션에서 user 가져옵니다.
-        MemberVO user = (MemberVO)session.getAttribute("user");
         
         newOrder.setDo_od_id(id);
 		newOrder.setDo_status("대기");
-		newOrder.setMb_id(user.getMb_id()); //테스트 아이디 지금 회원가입 안됨 ㅅㅂ 20241010
-		
+		//newOrder.setMb_id(user.getMb_id()); //테스트 아이디 지금 회원가입 안됨 ㅅㅂ 20241010
+		newOrder.setMb_id(principal.getName());
 		id = depositService.insertOrder(newOrder);
 		return id;
     }
