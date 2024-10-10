@@ -17,7 +17,6 @@
 		    min-width: 940px;
 		    max-width: 1280px;
 		    margin: 0 auto;
-		    height: 1800px;
 		}
 		
 		/* Sidebar */
@@ -288,7 +287,7 @@
 						<li class="my-item">
 							<a href="/myaccount/settings">
 								<button class="my-btn">
-									<span class="my-text">계좌 관리</span>
+									<span class="my-text">계좌 관리</span>								
 								</button>
 							</a>
 						</li>
@@ -300,9 +299,11 @@
 	            	<!-- 자산 섹션 -->
 	            	<section class="asset-section">
 	                	<div class="account-info">
-                    		<span class="account-text" th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
+                    		<span  class="account-text" 
+                    			   th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
 	                    	<div class="balance-info">
-	                        	<span class="balance-text1">0원</span>
+	                        	<span class="balance-text1" 
+	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 3, 'COMMA')} + '원'"></span>
 	                        	<span class="balance-text2">지난주보다 0원 (0%)</span>
 	                    	</div>
 	                	</div>
