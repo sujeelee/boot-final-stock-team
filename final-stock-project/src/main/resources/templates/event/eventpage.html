@@ -7,7 +7,7 @@
 	
 <head>
 <meta charset="UTF-8">
-<title>Event Page</title>
+<title>시드키 : 이벤트</title>
 </head>
 <body>
 
@@ -38,7 +38,7 @@
         <ul class="event-list" th:if="${#lists.size(list) != 0}">
           <!--/* th:each로 list 돌려줄 예정 */-->
             <li class="event-item" th:each="event : ${list}">
-                <a th:href="@{/event/eventhome/${eventStatus}/${event.ev_no}}">
+                <a th:href="@{/event/eventhome/{eventStatus}/{ev_no}(ev_no = ${event.ev_no}, eventStatus = ${eventStatus})}">
                     <img th:src="@{'/uploads' + ${event.fi_path}}" alt="Event Image" style="height: 200px;">
                     <h4>[[${event.ev_title}]]</h4>
                     <p style="font-size: 16px;"><i class="fa-solid fa-clock"></i>[[${#dates.format(event.ev_start, 'yyyy년 MM월 dd일 ')}]] ~ [[${#dates.format(event.ev_end, 'yyyy년 MM월 dd일')}]]</p>

@@ -10,10 +10,7 @@
     </select>
 
     <select id="getEvent" resultType="EventVO">
-        select *, fi_path
-        from event
-        left join file on ev_on = fi_reg_no
-        where fi_type = "event" and ev_status = #{eventStatus} and ev_no = #{ev_no} 
+        select event.* , fi_path from event left join file on ev_no = fi_reg_no where fi_type = "event" and ev_no = #{ev_no} and ev_status = #{eventStatus}
     </select>
 
     <insert id="setEvent">
