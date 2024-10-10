@@ -21,7 +21,7 @@
 </th:block>
 
 
-<h2 class="event-title">이벤트</h2>
+<h2 class="event-title"  style="color: dodgerblue;">이벤트</h2>
     
 
 <div class="event-container">
@@ -34,14 +34,14 @@
         <li><a class="tablinks" style="text-decoration-line: none;" th:classappend="${eventStatus} == 'resUser' ? 'active' : '' " th:href="@{/event/eventhome/resUser}" >당첨자 발표</a></li>
     </ul>        
 
-    <div id="ongoing" class="tabcontent">
+    <div id="ongoing" class="tabcontent" th:if="${eventStatus} == 'Opening' or ${eventStatus} == 'Ending'">
         <ul class="event-list" th:if="${#lists.size(list) != 0}">
           <!--/* th:each로 list 돌려줄 예정 */-->
             <li class="event-item" th:each="event : ${list}">
                 <a th:href="@{/event/eventhome/{eventStatus}/{ev_no}(ev_no = ${event.ev_no}, eventStatus = ${eventStatus})}">
                     <img th:src="@{'/uploads' + ${event.fi_path}}" alt="Event Image" style="height: 200px;">
-                    <h4>[[${event.ev_title}]]</h4>
-                    <p style="font-size: 16px;"><i class="fa-solid fa-clock"></i>[[${#dates.format(event.ev_start, 'yyyy년 MM월 dd일 ')}]] ~ [[${#dates.format(event.ev_end, 'yyyy년 MM월 dd일')}]]</p>
+                    <h4 class="mt-3">[[${event.ev_title}]]</h4>
+                    <p style="font-size: 16px;"><i class="fa-solid fa-calendar"></i>&nbsp;[[${#dates.format(event.ev_start, 'yyyy년 MM월 dd일 ')}]] ~ [[${#dates.format(event.ev_end, 'yyyy년 MM월 dd일')}]]</p>
                 </a>
             </li>
         </ul>
@@ -53,6 +53,24 @@
             </li>
         </ul>
     </div>
+
+
+    <div id="ongoing" class="container" th:if="${eventStatus} == 'resUser'">
+
+        <table class="table table-hover" th:if="${#lists.size(list) != 0}" th:each="event : ${list}">
+            <tr th:onclick="|location.href='@{/event/eventhome/{eventStatus}/{ev_no}(ev_no = ${event.ev_no}, eventStatus = ${eventStatus})}'|">
+                <td style="text-align: left;">[[${event.ev_title}]]</td>
+                <td style="text-align: right;"><i class="fa-solid fa-calendar"></i>&nbsp;[[${#dates.format(event.ev_end, 'yyyy-MM-dd')}]]</td>
+            </tr>
+        </table>
+
+        <div th:if="${#lists.size(list) == 0}">
+            <p style= " text-align: center; width: 100%;" >아무런 게시글이 없어요! 다음에 찾아주세요.</p>
+        </div>
+
+
+    </div>
+
 
      
 </div>

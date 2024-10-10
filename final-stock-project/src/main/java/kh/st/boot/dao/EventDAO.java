@@ -19,5 +19,21 @@ public interface EventDAO {
     void setEventFile(FileVO fileVo);
 
     boolean updateEventDateAndStatus();
+
+    List<EventDTO> getEventPostList(String eventStatus);
+
+    EventVO getEventPost(int ev_no);
+
+    boolean deleteEventPost(int ev_no);
+
+    FileVO getFileByEventNumber(int ev_no);
+
+    boolean updateEvent(EventVO event);
+
+    boolean deleteEventThumbnailFile(int ev_no);
+
+    boolean setNewCalenderEvent(String mb_id, int[] checkList);
+    
+    boolean setCalenderEvent(String mb_id, int[] checkList);
     
 }

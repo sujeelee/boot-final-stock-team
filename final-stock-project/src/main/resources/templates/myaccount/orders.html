@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+	<style type="text/css">
+		/* Container */
+		.my-container {
+		    display: grid;
+		    grid-template-columns: 184px minmax(10px, 1fr);
+		    grid-column-gap: 40px;
+		    column-gap: 40px;
+		    padding: 0 40px 40px 24px;
+		    min-width: 940px;
+		    max-width: 1280px;
+		    margin: 0 auto;
+		}
+		
+		/* Sidebar */
+	 	.my-sidebar {
+            position: sticky;
+            top: 60px;
+            padding-top: 30px;
+            border-radius: 50px;
+            background-color: #fff;
+        }
+
+        .my-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .my-list li {
+            margin-bottom: 10px;
+        }
+        
+        .my-item {
+        	list-style: none;
+        }
+
+        .my-btn {
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        
+        /* li 태그에 호버 효과 추가 */
+        .my-list li:hover {
+            border-radius: 20px;
+		    background-color: #f9fafb;
+        }
+        .my-text {
+            font-size: 17px;
+            color: #888;
+            transition: color 0.2s; /* 글자 색상 변화에 애니메이션 추가 */
+        }
+		
+		/* Header */
+		.mypage-header {
+		    margin-bottom: 20px;
+		}
+		
+		.header-title {
+		    font-size: 24px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		/* Balance Section */
+		.balance-text {
+		   	color: #888;
+		    font-size: 17px;
+		}
+
+		
+		 /* 컨테이너 */
+		.transaction-box {
+			min-height: 882px;
+		}
+		
+        .transaction-container {
+            display: flex;
+            padding: 16px;
+            margin: 8px;
+            background-color: white;
+            border-radius: 12px;
+        }
+
+        /* 날짜 및 시간 정보 */
+        .date-info {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a4a4a;
+            margin-right: 16px;
+        }
+
+        /* 거래 내역 */
+        .transaction-details {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 사용자 정보 */
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .transaction-type {
+            color: #6c6c6c;
+            font-size: 14px;
+        }
+
+        /* 금액 정보 */
+        .amount-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .amount {
+            font-weight: bold;
+            color: #096c8a;
+            font-size: 16px;
+        }
+
+        .balance {
+            font-weight: 500;
+            color: #6c6c6c;
+            font-size: 14px;
+        }
+	</style>
+</head>
+ <body>
+	<main layout:fragment="content">
+		<div class="my-container mt-5">
+			<nav>
+	            <div class="my-sidebar">
+	                <ul class="my-list">
+						<li class="my-item">
+							<a href="/myaccount/asset">
+								<button class="my-btn">
+									<span class="my-text">자산</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/transactions">
+								<button class="my-btn">
+									<span class="my-text">거래 내역</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/orders">
+								<button class="my-btn">
+									<span class="my-text">주문 내역</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/profit">
+								<button class="my-btn">
+									<span class="my-text">판매 수익</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/point">
+								<button class="my-btn">
+									<span class="my-text">포인트 내역</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/settings">
+								<button class="my-btn">
+									<span class="my-text">계좌 관리</span>
+								</button>
+							</a>
+						</li>
+					</ul>
+	            </div>
+			</nav>
+			<div>
+				<!-- Header -->
+				<div class="mypage-header">
+					<h1 class="header-title">주문 내역</h1>
+				</div>		
+				<!-- Balance Section -->
+				<div class="balance-section">
+					<div class="balance-info">
+						<p class="balance-text">주문 가능 원화 · 0원</p>
+					</div>
+				</div>
+				<div class="transaction-box">
+				    <div class="transaction-container">
+				        <!-- 날짜 및 시간 정보 -->
+				        <span class="date-info">10.8</span>
+				        <!-- 거래 내역 -->
+				        <div class="transaction-details">
+				            <!-- 사용자 정보 -->
+				            <div class="user-info">
+				                <span class="user-name">테스트</span>
+				                <span class="transaction-type">16:02 ㅣ 이체입금</span>
+				            </div>
+				
+				            <!-- 금액 정보 -->
+				            <div class="amount-info">
+				                <span class="amount">562원</span>
+				                <span class="balance">562원</span>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+				<!-- 페이지 네이션 적용할 것임 -->
+				<p>페이지 네이션</p>
+		    </div>
+		</div>
+	</main>
+</body>
+</html>

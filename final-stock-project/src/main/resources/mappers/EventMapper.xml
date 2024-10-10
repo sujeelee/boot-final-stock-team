@@ -7,15 +7,27 @@
         from event 
         left join file on  ev_no = fi_reg_no 
         where fi_type = "event" and ev_status = #{eventStatus}
+        order by ev_start desc
+    </select>
+
+    <select id="getEventPostList" resultType="kh.st.boot.model.dto.EventDTO">
+        select ev_no, ev_title, ev_start, ev_end, ev_status
+        from event 
+        where ev_status = #{eventStatus}
+        order by ev_end desc
     </select>
 
     <select id="getEvent" resultType="EventVO">
         select event.* , fi_path from event left join file on ev_no = fi_reg_no where fi_type = "event" and ev_no = #{ev_no} and ev_status = #{eventStatus}
     </select>
 
+    <select id="getEventPost" resultType="EventVO">
+        select * from event where ev_no = ${ev_no} limit 1
+    </select>
+
     <insert id="setEvent">
-        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status)
-        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status})
+        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status, ev_datetime)
+        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status}, now())
     </insert>
 
     <select id="getEventToImportAFile" resultType="EventVO">
@@ -28,9 +40,29 @@
 	</insert>
 
     <update id="updateEventDateAndStatus">
-    update event
-    set ev_status = "Ending"
-    where now() > ev_end
+        update event
+        set ev_status = "Ending"
+        where now() > ev_end
     </update>
+
+    <delete id="deleteEventPost">
+        delete from event where ev_no = ${ev_no}
+    </delete>
+    
+    <select id="getFileByEventNumber" resultType="FileVO">
+        select * from file where fi_reg_no = #{ev_no} and fi_type = 'event'
+    </select>
+
+    <update id="updateEvent">
+        update event
+        set ev_title = #{ev_title}, ev_content = #{ev_content}, ev_start = #{ev_start}, ev_end = #{ev_end}, ev_status = #{ev_status}
+        where ev_no = #{ev_no}
+    </update>
+
+    <delete id="deleteEventThumbnailFile">
+        delete from file where fi_reg_no = #{ev_no} and fi_type = 'event'
+    </delete>
+    
+
 
 </mapper>
