@@ -44,6 +44,7 @@
 		set de_content = #{de.de_content},
 			mb_id = #{de.mb_id},
 			de_num = #{de.de_num},
+			de_before_num = #{de.de_before_num},
 			de_datetime = NOW()
 	</insert>
 </mapper>
