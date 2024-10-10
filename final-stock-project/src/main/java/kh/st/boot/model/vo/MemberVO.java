@@ -36,10 +36,8 @@ public class MemberVO {
     private Date mb_cookie_limit; // 쿠키 만료기간
     private boolean auto_login; // autoLogin, DB에는 없습니다. (re 가 on 일 경우 true 값이 들어옵니다.)
     
-    // news_member 테이블
+    // 뉴스회원 테이블
     private String mb_news; // 회원 신문사명
-    
-    
     
 	public String getMb_auth() {
 		String auth = "GUEST";
