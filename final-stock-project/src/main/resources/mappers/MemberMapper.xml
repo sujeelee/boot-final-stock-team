@@ -47,5 +47,9 @@
     	WHERE
     		MB_ID = #{id}
     </update>
-
+	
+	<insert id="insertAccount">
+		INSERT INTO ACCOUNT(MB_NO, AC_DEPOSIT) VALUES
+		(#{mb_no}, 0)
+	</insert>
 </mapper>
