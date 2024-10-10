@@ -156,7 +156,7 @@ CREATE TABLE `point` (
 	`po_num`	int(11)	NULL,
 	`po_content`	varchar(255)	NULL,
 	`po_datetime`	DATETIME	NULL,
-	`po_end_date`	int(11)	NULL,
+	`po_end_date`	DATETIME NULL,
 	`mb_id`	varchar(255)	NULL
 );
 

@@ -157,8 +157,12 @@
                         checkList: checkList
                     },
                     success: function(data) {
-                        console.log('Success:', data);
-                        // 추가적인 성공 처리 로직
+                        if(date){
+                            alert("Point +50")
+                        } else {
+                            alert("이미 출석을 하셨어요!")
+                        }
+                        
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
