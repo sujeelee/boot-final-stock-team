@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.MyAccountDAO"> 
+	
+	<select id="selectAccountById" resultType="AccountVO">
+		SELECT *
+		FROM
+			ACCOUNT
+		JOIN
+			MEMBER ON MEMBER.MB_NO = ACCOUNT.MB_NO
+		WHERE
+			MB_ID = #{mb_id}
+	</select>
+	
+	<select id="selectDepositListByDate" resultType="DepositVO">
+		SELECT *
+		FROM
+			DEPOSIT
+		WHERE
+			MB_ID = #{mb_id} AND
+			DE_DATETIME >= #{date}
+	</select>
+
+	<select id="selectDepositList" resultType="DepositVO">
+		SELECT *
+		FROM
+			DEPOSIT
+		WHERE MB_ID = #{mb_id}
+	</select>
+</mapper>
