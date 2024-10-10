@@ -7,11 +7,63 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<style type="text/css">
+		/* Container */
 		.my-container {
+		    display: grid;
+		    grid-template-columns: 184px minmax(10px, 1fr);
+		    grid-column-gap: 40px;
+		    column-gap: 40px;
+		    padding: 0 40px 40px 24px;
+		    min-width: 940px;
 		    max-width: 1280px;
 		    margin: 0 auto;
-		    padding: 40px 24px;
+		    height: 1800px;
 		}
+		
+		/* Sidebar */
+	 	.my-sidebar {
+            position: sticky;
+            top: 60px;
+            padding-top: 30px;
+            border-radius: 50px;
+            background-color: #fff;
+        }
+
+        .my-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .my-list li {
+            margin-bottom: 10px;
+        }
+        
+        .my-item {
+        	list-style: none;
+        }
+
+        .my-btn {
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        
+        /* li 태그에 호버 효과 추가 */
+        .my-list li:hover {
+		    border-radius: 20px;
+		    background-color: #f9fafb;
+        }
+        .my-text {
+        	font-weight: 500;
+            font-size: 17px;
+            color: #888;
+        }
 		
 		.main-content {
 		    display: flex;
@@ -194,103 +246,160 @@
 </head>
 <body>
 	<main layout:fragment="content">
-		<div class="my-container">
-        	<div class="main-content">
-            	<!-- 자산 섹션 -->
-            	<section class="asset-section">
-                	<div class="account-info">
-                		<div class="d-flex">
-                    		<span class="account-text mr-auto">S2D KEY 000-00-000000</span>
-                    		<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-			      				페이지 이동
-							</button>
-							<div class="dropdown-menu">
-								<h5 class="dropdown-header">페이지 목록</h5>
-								<a class="dropdown-item" th:href="@{/myaccount/asset}" >자산</a>
-								<a class="dropdown-item" th:href="@{/myaccount/transactions}" >거래내역</a>
-							</div>
-                    	</div>
-                    	<div class="balance-info">
-                        	<span class="balance-text1">0원</span>
-                        	<span class="balance-text2">지난주보다 0원 (0%)</span>
-                    	</div>
-                	</div>
-            	</section>
-
-	            <!-- 기간 선택 섹션 -->
-	            <section class="period-selection">
-	                <div class="graph-container">
-	                
-	                </div>
-	                <div class="period-buttons">
-	                    <button class="period-button">1주</button>
-	                    <button class="period-button">1달</button>
-	                    <button class="period-button">3달</button>
-	                    <button class="period-button">1년</button>
-	                </div>
-	            </section>
+		<div class="my-container mt-5">
+			<nav>
+				<div class="my-sidebar">
+	                <ul class="my-list">
+						<li class="my-item">
+							<a href="/myaccount/asset">
+								<button class="my-btn">
+									<span class="my-text">자산</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/transactions">
+								<button class="my-btn">
+									<span class="my-text">거래 내역</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/orders">
+								<button class="my-btn">
+									<span class="my-text">주문 내역</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/profit">
+								<button class="my-btn">
+									<span class="my-text">판매 수익</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/point">
+								<button class="my-btn">
+									<span class="my-text">포인트 내역</span>
+								</button>
+							</a>
+						</li>
+						<li class="my-item">
+							<a href="/myaccount/settings">
+								<button class="my-btn">
+									<span class="my-text">계좌 관리</span>
+								</button>
+							</a>
+						</li>
+					</ul>
+	            </div>
+			</nav>
+            <div>
+	        	<div class="main-content">
+	            	<!-- 자산 섹션 -->
+	            	<section class="asset-section">
+	                	<div class="account-info">
+                    		<span class="account-text" th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
+	                    	<div class="balance-info">
+	                        	<span class="balance-text1">0원</span>
+	                        	<span class="balance-text2">지난주보다 0원 (0%)</span>
+	                    	</div>
+	                	</div>
+	            	</section>
 	
-	            <!-- 주문 가능 금액과 투자 중인 금액을 나란히 배치하는 섹션 -->
-				<section class="order-investment-wrapper">
-				    <!-- 주문 가능 금액 섹션 -->
-				    <section class="order-section">
-				        <div class="order-info">
-				            <span class="order-text">주문 가능 금액</span>
-				            <div class="order-balance">
-				                <span class="balance-text1">0원</span>
-				            </div>
-				        </div>
-				        <!-- 원화  -->
-				        <div class="investment-item">
-				            <span class="investment-text1">원화</span>
-				            <div class="investment-details">
-				                <span class="investment-text2">0원</span>
-				                <span class="investment-text3">0원 출금가능</span>
-				            </div>
-				        </div>
-				        <div class="order-buttons">
-				            <button class="action-button">채우기</button>
-				            <button class="action-button">보내기</button>
-				            <button class="action-button">환전</button>
-				        </div>
-				    </section>
-				
-				    <!-- 투자 중 섹션 -->
-				    <section class="investment-section">
-				        <div class="investment-info">
-				            <span class="order-text">투자 중인 금액</span>
-				            <div class="investment-balance">
-				                <span class="balance-text1">0원</span>
-				            </div>
-				        </div>
-				        <!-- 국내 주식 -->
-				        <div class="investment-item">
-				            <span class="investment-text1">국내주식</span>
-				            <div class="investment-details">
-				                <span class="investment-text2">0원</span>
-				                <span class="investment-text3">0원 (0.0%)</span>
-				            </div>
-				        </div>
-				    </section>
-				</section>
-	
-	            <!-- 수익 섹션 -->
-	            <section class="profit-section">
-	                <div class="profit-info">
-	                    <span class="order-text">10월 수익</span>
-	                    <div class="profit-balance">
-	                        <span class="balance-text1">0원</span>
-	                    </div>
-	                </div>
-	                <!-- 판매 수익 -->
-	                <div class="profit-item">
-	                    <span class="investment-text1">판매 수익</span>
-	                    <div class="profit-details">
-	                        <span class="investment-text2">0원</span>
-	                    </div>
-	                </div>
-	            </section>
-	        </div>
+		            <!-- 기간 선택 섹션 -->
+		            <section class="period-selection">
+		                <div class="graph-container">
+		                
+		                </div>
+		                <div class="period-buttons">
+		                    <button class="period-button">1주</button>
+		                    <button class="period-button">1달</button>
+		                    <button class="period-button">3달</button>
+		                    <button class="period-button">1년</button>
+		                </div>
+		            </section>
+		
+		            <!-- 주문 가능 금액과 투자 중인 금액을 나란히 배치하는 섹션 -->
+					<section class="order-investment-wrapper">
+					    <!-- 주문 가능 금액 섹션 -->
+					    <section class="order-section">
+					        <div class="order-info">
+					            <span class="order-text">주문 가능 금액</span>
+					            <div class="order-balance">
+					                <span class="balance-text1">0원</span>
+					            </div>
+					        </div>
+					        <!-- 원화  -->
+					        <div class="investment-item">
+					            <span class="investment-text1">원화</span>
+					            <div class="investment-details">
+					                <span class="investment-text2">0원</span>
+					                <span class="investment-text3">0원 출금가능</span>
+					            </div>
+					        </div>
+					        <div class="order-buttons">
+					            <button class="action-button">채우기</button>
+					            <button class="action-button">보내기</button>
+					            <button class="action-button">환전</button>
+					        </div>
+					    </section>
+					
+					    <!-- 투자 중 섹션 -->
+					    <section class="investment-section">
+					        <div class="investment-info">
+					            <span class="order-text">투자 중인 금액</span>
+					            <div class="investment-balance">
+					                <span class="balance-text1">0원</span>
+					            </div>
+					        </div>
+					        <!-- 국내 주식 -->
+					        <div class="investment-item">
+					            <span class="investment-text1">국내주식</span>
+					            <div class="investment-details">
+					                <span class="investment-text2">0원</span>
+					                <span class="investment-text3">0원 (0.0%)</span>
+					            </div>
+					        </div>
+					    </section>
+					</section>
+					<section class="order-investment-wrapper">
+			            <!-- 수익 섹션 -->
+			            <section class="profit-section">
+			                <div class="profit-info">
+			                    <span class="order-text">10월 수익</span>
+			                    <div class="profit-balance">
+			                        <span class="balance-text1">0원</span>
+			                    </div>
+			                </div>
+			                <!-- 판매 수익 -->
+			                <div class="profit-item">
+			                    <span class="investment-text1">판매 수익</span>
+			                    <div class="profit-details">
+			                        <span class="investment-text2">0원</span>
+			                    </div>
+			                </div>
+			            </section>
+			             <!-- 수익 섹션 -->
+			            <section class="profit-section">
+			                <div class="profit-info">
+			                    <span class="order-text">보유 포인트</span>
+			                    <div class="profit-balance">
+			                        <span class="balance-text1">0원</span>
+			                    </div>
+			                </div>
+			                <!-- 판매 수익 -->
+			                <div class="profit-item">
+			                    <span class="investment-text1">포인트</span>
+			                    <div class="profit-details">
+			                        <span class="investment-text2">0원</span>
+			                    </div>
+			                </div>
+			            </section>
+		            </section>
+		        </div>
+		    </div>
 	    </div>
 	</main>
 </body>
