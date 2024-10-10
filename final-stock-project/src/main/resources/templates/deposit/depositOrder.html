@@ -66,19 +66,19 @@
 						<div class="order_info form-group row">
 							<label for="do_name" class="col-sm-4 text-sm-right">구매자 성함</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="do_name" id="do_name" value="test1">
+								<input type="text" class="form-control" name="do_name" id="do_name" th:value="${#authentication.Principal.member.mb_name}">
 							</div>
 						</div>
 						<div class="order_info form-group row">
 							<label for="do_tel" class="col-sm-4 text-sm-right">구매자 연락처</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="do_tel" id="do_tel" value="test2">
+								<input type="text" class="form-control" name="do_tel" id="do_tel" th:value="${#authentication.Principal.member.mb_ph}">
 							</div>
 						</div>
 						<div class="order_info form-group row">
 							<label for="do_email" class="col-sm-4 text-sm-right">구매자 이메일</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="do_email" id="do_email" value="test3">
+								<input type="text" class="form-control" name="do_email" id="do_email" th:value="${#authentication.Principal.member.mb_email}">
 							</div>
 						</div>
 					</div>
