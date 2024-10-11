@@ -38,9 +38,10 @@ public class MemberController {
         MemberVO user = memberService.login(user_);
 
         if (user == null) {
-            //실패
-
-            return "redirect:/member/login"; //다시 로그인 하세용
+             //실패
+        	 mo.addAttribute("msg", "로그인에 실패했습니다.\n다시 로그인하세요.");
+             mo.addAttribute("url", "/member/login");//다시 로그인 하세용
+             return "util/msg";
         } else {
             // 성공
             //user_가 on 값을 가져온 경우 *(null일때 오류가 난다면 수정해 주어야 할)
@@ -52,6 +53,7 @@ public class MemberController {
             
             //postHandle에서 사용하기 위해 mo에 user 저장 (자동로그인을 위한 re값이 처리되어 있습니다.)
             mo.addAttribute("user", user);
+            //성공
             return "redirect:/";
         }
     }
@@ -65,7 +67,6 @@ public class MemberController {
 
         //로그인상태가 아닐 시
         if (user == null) {
-
             mo.addAttribute("msg", "로그인 상태가 아닙니다.");
             mo.addAttribute("url", "/");
             return "util/msg";
@@ -84,7 +85,9 @@ public class MemberController {
 
         //서버의 세션에서 user정보를 삭제
         session.removeAttribute("user");
-        return "home";
+        mo.addAttribute("msg", "로그아웃 되었습니다.");
+        mo.addAttribute("url", "/");
+        return "util/msg";
     }
 
     //회원가입
@@ -106,11 +109,15 @@ public class MemberController {
         }
 
         if (res) {
-            //회원가입이 성공일 시
-            return "redirect:/";
+             //회원가입이 성공일 시
+        	 mo.addAttribute("msg", user_.getNick() + "님, 회원이 되신것을 축하합니다\n로그인 페이지로 이동합니다.");
+             mo.addAttribute("url", "/member/login");
+             return "util/msg";
         } else {
             //회원가입이 실패일 시
-            return "redirect:/member/join";
+        	mo.addAttribute("msg", "회원가입에 실패했습니다\n다시 시도해주세요.");
+            mo.addAttribute("url", "/member/join");
+            return "util/msg";
         }
 
     }

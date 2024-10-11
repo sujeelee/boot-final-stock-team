@@ -26,5 +26,6 @@
 		FROM
 			DEPOSIT
 		WHERE MB_ID = #{mb_id}
+		order by de_no DESC
 	</select>
 </mapper>
