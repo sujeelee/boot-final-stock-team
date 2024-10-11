@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout.html}">
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 참여 페이지</title>
+    <style>
+        .container-event-Participatory-type {
+            display: flex;
+            flex-wrap: nowrap; /* 좌우로 나열 */
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            overflow-x: auto; /* 좌우 스크롤 추가 */
+        }
+
+        .event-participation {
+            text-align: center;
+            padding: 20px; /* 카드의 내부 여백을 늘려서 더 크고 여유 있게 */
+            background-color: #fff;
+            margin: 15px; /* 카드 사이 간격을 더 크게 */
+            flex: 0 0 250px; /* 카드 크기를 키움 */
+            border-radius: 20px; /* 둥근 모서리 설정 */
+            border: 5px solid;
+            border-image: linear-gradient(45deg, #ff4d4d, #ffadad, #ff4d4d);
+            border-image-slice: 1;
+            box-shadow: 0 8px 20px rgba(255, 77, 77, 0.3); /* 그림자 크기와 강도를 더 키움 */
+            transition: transform 0.3s ease;
+        }
+
+        .event-participation:hover {
+            transform: scale(1.07); /* 마우스를 올렸을 때 좀 더 확대되도록 */
+        }
+
+        .event-image {
+            width: 180px; /* 이미지 크기 조정 */
+            height: auto;
+            margin-bottom: 15px; /* 이미지 아래 간격을 더 키움 */
+        }
+
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 10px; /* 버튼도 둥근 모서리로 설정 */
+            cursor: pointer;
+            font-size: 14px; /* 버튼의 폰트 크기 증가 */
+        }
+
+        .points-required {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff4d4d;
+            margin-top: 10px;
+        }
+
+        #confirmationMessage {
+            margin-top: 10px;
+        }
+
+        .loader {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #ff4d4d;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            animation: spin 2s linear infinite;
+            display: none;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="container-event-Participatory-type">
+            <div class="event-participation">
+                <h2>이벤트 1</h2>
+                <div class="image-container">
+                    <img src="product1-image-url.jpg" alt="이벤트 이미지 1" class="event-image">
+                </div>
+                <p>아래의 버튼을 클릭하여 이벤트에 참여하세요!</p>
+                <button id="participateButton1" class="submit-button">참여하기</button>
+                <div id="loader1" class="loader"></div>
+                <div id="confirmationMessage1" style="display: none;"></div>
+                <p class="points-required">소모 포인트: 50 포인트</p> <!-- 소모되는 포인트 표기 -->
+                <p>현재 참여 인원: <span id="participantCount1">0</span>명</p>
+            </div>
+            <!-- 다른 이벤트 카드들은 동일한 구조로 추가 -->
+        </div>
+
+        <script th:inline="javascript">
+            function participate(eventId, buttonId, loaderId, confirmationMessageId, participantCountId) {
+                const loader = document.getElementById(loaderId);
+                const mb_id = /*[[${#authentication.Principal.member.mb_id}]]*/ ''; // 사용자 ID 가져오기
+
+                loader.style.display = "block"; // 로딩 스피너 표시
+
+                $.ajax({
+                    url: '/event/participate',
+                    type: 'POST',
+                    data: {
+                        mb_id: mb_id,
+                        eventId: eventId
+                    },
+                    success: function(response) {
+                        loader.style.display = "none";
+                        const confirmationMessage = document.getElementById(confirmationMessageId);
+                        confirmationMessage.textContent = "참여가 완료되었습니다! 감사합니다.";
+                        confirmationMessage.style.display = "block";
+                        const participantCount = document.getElementById(participantCountId);
+                        participantCount.textContent = response.newParticipantCount;
+                    },
+                    error: function(xhr, status, error) {
+                        loader.style.display = "none";
+                        console.error('Error:', error);
+                        alert('참여에 실패했습니다. 다시 시도해 주세요.');
+                    }
+                });
+            }
+
+            document.getElementById("participateButton1").addEventListener("click", function() {
+                participate(1, "participateButton1", "loader1", "confirmationMessage1", "participantCount1");
+            });
+        </script>
+    </main>
+</body>
+</html>
