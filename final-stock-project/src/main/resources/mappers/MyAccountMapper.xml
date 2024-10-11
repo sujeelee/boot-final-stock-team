@@ -20,4 +20,13 @@
 			MB_ID = #{mb_id} AND
 			DE_DATETIME >= #{date}
 	</select>
+
+	<select id="selectPointList">
+		SELECT *
+		FROM
+			POINT
+		WHERE
+			MB_ID = #{mb_id}
+	</select>
+
 </mapper>

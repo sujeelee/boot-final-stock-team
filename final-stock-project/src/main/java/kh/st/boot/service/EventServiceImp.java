@@ -14,6 +14,7 @@ import kh.st.boot.dao.EventDAO;
 import kh.st.boot.model.dto.EventDTO;
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.FileVO;
+import kh.st.boot.model.vo.PrizeVO;
 import kh.st.boot.utils.UploadFileUtils;
 
 @Service
@@ -137,6 +138,12 @@ public class EventServiceImp implements EventService {
             return null;
         }
         return eventDao.getCalenderEventValue(name);
+    }
+
+    @Override
+    public boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize, MultipartFile file) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setPrizeToBeUsedFromTheEvent'");
     }
 
     

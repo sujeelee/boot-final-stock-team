@@ -8,7 +8,8 @@ import kh.st.boot.dao.MyAccountDAO;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberVO;
-import kh.st.boot.pagination.TransCriteria;
+import kh.st.boot.model.vo.PointVO;
+
 import lombok.AllArgsConstructor;
 
 @Service
@@ -32,5 +33,12 @@ public class MyAccountServiceImp implements MyAccountService {
 		}
 		return myAccountDao.selectDepositListByDate(mb_id, date);
 	}
-	
+
+	@Override
+	public List<PointVO> getPointList(String mb_id) {
+		if(mb_id == null) {
+			return null;
+		}
+		return myAccountDao.selectPointList(mb_id);
+	}
 }
