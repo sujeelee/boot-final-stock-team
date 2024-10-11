@@ -214,10 +214,10 @@
                     			   th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
 	                    	<div class="balance-info">
 	                        	<span class="my-balance-text1" 
-	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 1, 'COMMA')} + '원'"></span>
+	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 0, 'COMMA')} + '원'"></span>
 	                        	<div class="balance-box">
 		                        	<span class="my-balance-text2"
-		                        		  th:text="'지난주보다 ' + ${money} + '원'"></span>
+		                        		  th:text="'지난주보다 ' + ${#numbers.formatInteger(money, 0, 'COMMA')} + '원'"></span>
 		                        	<span class="my-balance-text2"
 		                        		  th:text="'(' + ${rateOfReturn} + '%)'"></span>		
 	                        	</div>
