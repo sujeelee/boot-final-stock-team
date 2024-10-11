@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 참여 페이지</title>
+    <style>
+        .container-event-Participatory-type {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 전체 높이를 설정 */
+            background-color: #fff3f3; /* 연한 붉은 배경색 */
+        }
+        .event-participation {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ff4d4d; /* 붉은색 테두리 */
+            border-radius: 10px;
+            background-color: #fff; /* 흰색 배경 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .event-image {
+            width: 300px; /* 원하는 이미지 크기로 조절 */
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .submit-button {
+            padding: 10px 30px;
+            background-color: #ff4d4d; /* 붉은색 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #confirmationMessage {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-event-Participatory-type">
+        <div class="event-participation">
+            <h2>이벤트 제목</h2>
+            <div class="image-container">
+                <img src="your-image-url.jpg" alt="이벤트 이미지" class="event-image"> <!-- 상품 이미지 -->
+            </div>
+            <p>아래의 버튼을 클릭하여 이벤트에 참여하세요!</p>
+            <button id="participateButton" class="submit-button">참여하기</button>
+            <div id="confirmationMessage" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        document.getElementById("participateButton").addEventListener("click", function() {
+            const mb_id = /*[[${#authentication.Principal.member.mb_id}]]*/ ''; // 사용자 ID 가져오기
+            
+            $.ajax({
+                url: '/event/participate', // 서버의 엔드포인트
+                type: 'POST',
+                data: {
+                    mb_id: mb_id
+                },
+                success: function(response) {
+                    // 성공 메시지 처리
+                    const confirmationMessage = document.getElementById("confirmationMessage");
+                    confirmationMessage.textContent = "참여가 완료되었습니다! 감사합니다.";
+                    confirmationMessage.style.display = "block";
+                },
+                error: function(xhr, status, error) {
+                    // 오류 처리
+                    console.error('Error:', error);
+                    alert('참여에 실패했습니다. 다시 시도해 주세요.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

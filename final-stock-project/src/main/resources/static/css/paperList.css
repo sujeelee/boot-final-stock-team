@@ -46,7 +46,7 @@
 }
 
 .undata-box{
-	width: 1110px;
+	width: 1080px;
 	height: 340px;
 	background-color: #fff;
     border: 1px solid #ccc;
@@ -62,7 +62,7 @@
 
 /* 기본 2열 그리드 레이아웃 */
 .news-list {
-    width: 1110px;
+    width: 1080px;
     list-style: none;
     padding: 0;
     margin: 0 -14px -15px 0;

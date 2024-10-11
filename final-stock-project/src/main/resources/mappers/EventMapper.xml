@@ -63,6 +63,23 @@
         delete from file where fi_reg_no = #{ev_no} and fi_type = 'event'
     </delete>
     
+    <insert id="setNewCalenderEvent">
+        insert into day_check(dc_datetime, mb_id, dc_days, po_num)
+        value (now(), #{mb_id}, #{checkList}, 50)
+    </insert>
 
+    <update id="setCalenderEvent_add50point">
+        update member
+        set mb_point = mb_point + 30
+        where mb_id = #{mb_id}
+    </update>
 
+    <insert id="setPointByCalenderEvent">
+        insert into point(po_num, po_content, po_datetime, po_end_date, mb_id)
+        values (50, "출석 체크 이벤트", now(), now(), #{mb_id})
+    </insert>
+
+    <select id="getCalenderEventValue" resultType="String">
+        select dc_days FROM day_check where mb_id = #{name} order by dc_datetime desc LIMIT 1
+    </select>
 </mapper>

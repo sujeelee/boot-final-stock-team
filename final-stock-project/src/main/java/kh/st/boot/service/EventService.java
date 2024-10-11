@@ -25,5 +25,7 @@ public interface EventService {
     boolean updateEvent_withFile(EventVO event, MultipartFile file);
 
     boolean CalenderEvent(String mb_id, int[] checkList);
+
+    String getCalenderEventValue(String name);
     
 }
