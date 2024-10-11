@@ -114,18 +114,18 @@ background-color: #f9fafb;
 }
  /* 컨테이너 */
 .transaction-box {
-	min-height: 882px;
+	min-height: 50%;
 }
 
-      .transaction-container {
-          display: flex;
-          padding: 16px;
-          margin: 8px;
-          background-color: white;
-          border-radius: 12px;
-      }
+.transaction-container {
+    display: flex;
+    padding: 16px;
+    margin: 8px;
+    background-color: white;
+    border-radius: 12px;
+}
 
-      /* 날짜 및 시간 정보 */
+/* 날짜 및 시간 정보 */
 .date-info {
     font-size: 14px;
     font-weight: 500;
@@ -177,3 +177,12 @@ background-color: #f9fafb;
     color: #6c6c6c;
     font-size: 14px;
 }
+
+li{cursor:pointer; color:#0c5460 !important;}
+.list-group-item{border:none !important;padding: .3rem 0.25rem !important;}
+.dropdown-item > .on{color:#0c5460 !important;}
+.dropdown-item > .on:after {content: " ν";}
+.dropdown-menu{min-width: 1em !important;}
+.dropdown-item{padding: 1px !important;}
+.btn{width: 100% !important; text-align: left; border-radius: 20px;}
+.page_div{margin-top: 5%;}

@@ -20,7 +20,7 @@
 			MB_ID = #{mb_id} AND
 			DE_DATETIME >= #{date}
 	</select>
-	
+
 	<select id="selectPointList">
 		SELECT *
 		FROM
@@ -36,4 +36,5 @@
 		WHERE MB_ID = #{mb_id}
 		order by de_no DESC
 	</select>
+
 </mapper>

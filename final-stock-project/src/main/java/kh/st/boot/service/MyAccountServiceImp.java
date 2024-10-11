@@ -9,6 +9,7 @@ import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
+
 import lombok.AllArgsConstructor;
 
 @Service
@@ -32,7 +33,7 @@ public class MyAccountServiceImp implements MyAccountService {
 		}
 		return myAccountDao.selectDepositListByDate(mb_id, date);
 	}
-	
+
 	@Override
 	public List<PointVO> getPointList(String mb_id) {
 		if(mb_id == null) {
@@ -49,4 +50,5 @@ public class MyAccountServiceImp implements MyAccountService {
 		}
 		return myAccountDao.selectDepositList(mb_id);
 	}
+  
 }
