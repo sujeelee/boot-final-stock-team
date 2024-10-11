@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
+import kh.st.boot.model.vo.PointVO;
 
 public interface MyAccountService {
 	
@@ -12,5 +13,7 @@ public interface MyAccountService {
 	List<DepositVO> getDepositListByDate(String mb_id, String date);
 	
 	List<DepositVO> getDepositList(String mb_id);
+
+	List<PointVO> getPointList(String mb_id);
 
 }

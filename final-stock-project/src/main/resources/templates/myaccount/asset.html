@@ -84,9 +84,10 @@
 		
 		/* 기간 선택 섹션 */
 	
-		
 		.graph-container {
 		    height: 350px;
+		    width: 100%; 		/* 컨테이너의 너비를 100%로 고정 */
+		    overflow: hidden; 	/* 불필요한 크기 변화를 방지 */
 		}
 		
 		.period-buttons {
@@ -244,15 +245,18 @@
 					        <div class="my-info">
 					            <span class="my-header-text">주문 가능 금액</span>
 					            <div>
-					                <span class="my-balance-text1">0원</span>
+					                <span class="my-balance-text1" 
+					                	  th:text="${#numbers.formatInteger(orderMoney, 1, 'COMMA')} + '원'"></span>
 					            </div>
 					        </div>
 					        <!-- 원화  -->
 					        <div class="my-item-box">
 					            <span class="my-item-text1">원화</span>
 					            <div class="my-details">
-					                <span class="my-item-text2">0원</span>
-					                <span class="my-item-text3">0원 출금가능</span>
+					                <span class="my-item-text2" 
+					                	  th:text="${#numbers.formatInteger(orderMoney, 1, 'COMMA')} + '원'"></span>
+					                <span class="my-item-text3" 
+					                	  th:text="${#numbers.formatInteger(orderMoney, 1, 'COMMA')} + '원'"></span>
 					            </div>
 					        </div>
 					        <div class="order-buttons">
@@ -267,15 +271,18 @@
 					        <div class="my-info">
 					            <span class="my-header-text">투자 중인 금액</span>
 					            <div>
-					                <span class="my-balance-text1">0원</span>
+					                <span class="my-balance-text1" 
+					                	  th:text="${#numbers.formatInteger(stockMoney, 1, 'COMMA')} + '원'"></span>
 					            </div>
 					        </div>
 					        <!-- 국내 주식 -->
 					        <div class="my-item-box">
 					            <span class="my-item-text1">국내주식</span>
 					            <div class="my-details">
-					                <span class="my-item-text2">0원</span>
-					                <span class="my-item-text3">0원 (0.0%)</span>
+					                <span class="my-item-text2" 
+					                	  th:text="${#numbers.formatInteger(stockMoney, 1, 'COMMA')} + '원'"></span>
+					                <span class="my-item-text3" 
+					                	  th:text="${#numbers.formatInteger(stockMoney, 1, 'COMMA')} + '원'">0원 (0.0%)</span>
 					            </div>
 					        </div>
 					    </section>
@@ -286,14 +293,16 @@
 			                <div class="my-info">
 			                    <span class="my-header-text">10월 수익</span>
 			                    <div>
-			                        <span class="my-balance-text1">0원</span>
+			                        <span class="my-balance-text1"
+			                        	  th:text="${#numbers.formatInteger(monthMoney, 1, 'COMMA')} + '원'"></span>
 			                    </div>
 			                </div>
 			                <!-- 판매 수익 -->
 			                <div class="my-item-box">
 			                    <span class="my-item-text1">판매 수익</span>
 			                    <div class="my-details">
-			                        <span class="my-item-text2">0원</span>
+			                        <span class="my-item-text2"
+			                        	  th:text="${#numbers.formatInteger(monthMoney, 1, 'COMMA')} + '원'"></span>
 			                    </div>
 			                </div>
 			            </section>
@@ -302,14 +311,16 @@
 			                <div class="my-info">
 			                    <span class="my-header-text">보유 포인트</span>
 			                    <div>
-			                        <span class="my-balance-text1">0원</span>
+			                        <span class="my-balance-text1"
+			                        	  th:text="${#numbers.formatInteger(pointMoney, 1, 'COMMA')} + '포인트'"></span>
 			                    </div>
 			                </div>
 			                <!-- 판매 수익 -->
 			                <div class="my-item-box">
 			                    <span class="investment-text1">포인트</span>
 			                    <div class="my-details">
-			                        <span class="investment-text2">0pt</span>
+			                        <span class="investment-text2"
+			                        	  th:text="${#numbers.formatInteger(pointMoney, 1, 'COMMA')} + 'pt'"></span>
 			                    </div>
 			                </div>
 			            </section>
@@ -366,11 +377,15 @@
 		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
 
 		        var options = {
-		            width: '100%', // 그래프의 너비를 컨테이너에 맞게 설정
-		            height: 350,   // 높이를 적절하게 설정
+		            width: 920, 					// 그래프의 너비를 컨테이너에 맞게 설정
+		            height: 350,   					// 높이를 적절하게 설정
 		            legend: { position: 'bottom' }, // 범례 위치 설정
-		            curveType: 'function', // 곡선형 선 그래프
-		            pointSize: 0 // 데이터 포인트를 표시하지 않음
+		            curveType: 'function', 			// 곡선형 선 그래프
+		            pointSize: 0, 					// 데이터 포인트를 표시하지 않음
+		            hAxis: {
+		                format: 'MM-dd',  			// 날짜 형식을 MM-dd로 지정
+		                gridlines: { count: -1 } 	// 그리드 라인 설정
+		            }
 		        };
 
 		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
@@ -387,11 +402,15 @@
 		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
 
 		        var options = {
-		            width: '100%',
+		            width: 920,
 		            height: 350,
 		            legend: { position: 'bottom' },
 		            curveType: 'function',
-		            pointSize: 0
+		            pointSize: 0,
+		            hAxis: {
+		                format: 'MM-dd',  			// 날짜 형식을 MM-dd로 지정
+		                gridlines: { count: -1 } 	// 그리드 라인 설정
+		            }
 		        };
 
 		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
