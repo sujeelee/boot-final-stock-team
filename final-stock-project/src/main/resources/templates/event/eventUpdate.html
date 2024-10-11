@@ -33,7 +33,16 @@
 					<option value="Opening" th:selected="${event.ev_status} == 'Opening'">Opening</option>
 					<option value="Ending" th:selected="${event.ev_status} == 'Ending'">Ending</option>
 					<option value="resUser" th:selected="${event.ev_status} == 'resUser'">resUser</option>
+					<option value="Hidden" th:selected="${event.ev_status} == 'Hidden'">Hidden</option>
 				</select>
+
+				<label>이벤트 폼 종류:</label>
+				<select name="ev_form" class="custom-select mb-3" th:value="${event.ev_form}">
+					<option value="Post" th:selected="${event.ev_form} == 'Post'">Post (기본값)</option>
+					<option value="Participatory" th:selected="${event.ev_form} == 'Participatory'">Participatory event(참여형)</option>
+					<option value="none">새로 추가해 주세요</option>
+				</select>
+
 
 				<div class="mt-3">
 					<label>이벤트 시작일, 종료일(게시물 게시일):</label>

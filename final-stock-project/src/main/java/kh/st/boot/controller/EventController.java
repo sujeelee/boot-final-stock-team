@@ -30,7 +30,7 @@ public class EventController {
 
     private EventService eventService;
 
-    // eventStatus : Opening, Ending, resUser
+    // eventStatus : Opening, Ending, resUser, Hidden
     @GetMapping("/eventhome/{eventStatus}") // principal
     public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus) {
         List<EventDTO> list = eventService.getEventList(eventStatus);
@@ -98,7 +98,9 @@ public class EventController {
 
     @GetMapping("/eventATypeWrite")
     public String eventATypeWrite(Model mo){
-        
+
+        List<EventVO> eventList = eventService.getEventListByEventForm("Participatory");
+        mo.addAttribute("eventList", eventList);
         return "/event/eventATypeWrite";
     }
 
@@ -136,15 +138,13 @@ public class EventController {
     }
 
     //참여형 이벤트 (A event)
-    @GetMapping("/Aevent/{pr_link}")
-    public String Aevent(Model mo, @PathVariable("pr_link") String pr_link){
-        //보내야 할 것
-        //상품
-        //
+    @GetMapping("/Aevent/{ev_no}")
+    public String Aevent(Model mo, @PathVariable("ev_no") int ev_no){
+
         return "/eventSeason2024/event202410Aevent";
     }
 
-    //참여형 이벤트 (A event)
+    //참여형 이벤트 (A event) 삭제요망
     @GetMapping("/Aevent")
     public String Aevent(){
         //보내야 할 것

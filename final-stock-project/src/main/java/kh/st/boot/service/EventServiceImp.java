@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import groovyjarjarantlr4.v4.parse.ANTLRParser.range_return;
 import kh.st.boot.dao.EventDAO;
 import kh.st.boot.model.dto.EventDTO;
 import kh.st.boot.model.vo.EventVO;
@@ -144,6 +143,15 @@ public class EventServiceImp implements EventService {
     public boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize, MultipartFile file) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setPrizeToBeUsedFromTheEvent'");
+    }
+
+    @Override
+    public List<EventVO> getEventListByEventForm(String form) {
+        if (form == null || form.trim().length() == 0) {
+            return null;
+        }
+
+        return eventDao.getEventListByEventForm(form);
     }
 
     

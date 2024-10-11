@@ -239,6 +239,7 @@ CREATE TABLE `prize` (
 	`pr_point`	int(11)	NULL,
 	`pr_startLevel`	CHAR(1)	NULL,
 	`pr_endLevel`	CHAR(1)	NULL,
+	`ev_no` INT(11) NULL,
 	`ep_rank`	int(11)	NULL
 );
 

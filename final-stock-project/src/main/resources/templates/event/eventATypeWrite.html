@@ -36,6 +36,16 @@
 					<input type="text" class="form-control" id="pr_link" name="pr_link" placeholder="이벤트 주소">
 				</div>
 
+                
+                
+
+                <div class="form-group">
+                    <label for="ev_no">연동될 Event Post 주소</label>
+                    <select class="form-control" id="ev_no" name="ev_no">
+                        <option th:each="event : ${eventList}" th:value="${event.ev_no}">[[${event.ev_title}]]</option> 
+                    </select>
+                </div>
+
 
                 <div class="form-group">
                     <label for="pr_startLevel">레벨(start Line)</label>

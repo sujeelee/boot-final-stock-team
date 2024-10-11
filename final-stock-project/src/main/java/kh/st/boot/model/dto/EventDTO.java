@@ -17,7 +17,7 @@ public class EventDTO {
     private Date ev_start;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ev_end;
-    private String ev_status;// Opening, Ending, resUser
+    private String ev_status;// Opening, Ending, resUser, Hidden
     private String fi_path; // 파일경로가 저장될 위치
 
 }

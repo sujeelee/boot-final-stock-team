@@ -39,5 +39,7 @@ public interface EventDAO {
     void setPointByCalenderEvent(String mb_id);
 
     String getCalenderEventValue(String name);
+
+    List<EventVO> getEventListByEventForm(String form);
     
 }
