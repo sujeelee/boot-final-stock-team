@@ -1,15 +1,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
     <footer th:fragment="footer">
-    <style>
-		
+    <style>		
 		  footer {
-            min-height: 10%; /* 최소 높이를 화면 전체 높이로 설정 */
+            min-height: 30%; /* 최소 높이를 화면 전체 높이로 설정 */
             position: absolute;
-            bottom: 0;
             left: 0;
+            bottom: -20%;
             width: 100%;
-            height: 10px; /* 푸터의 높이 */
+            height: 40px; /* 푸터의 높이 */
             background-color: white; /* 배경색 설정 */
             color: #888888;; /* 텍스트 색상 */
             text-align: center;
@@ -19,7 +18,7 @@
             justify-content: center; /* 세로 중앙 정렬 */
             padding: 10px; /* 패딩 추가 */
             font-size: 14px; /* 글자 크기 조정 */
-            margin-bottom: 60px;
+            z-index: 5;
 		  }
 		  
 	        .footer-info {
