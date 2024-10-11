@@ -30,12 +30,12 @@
 	<!-- 사이드바 불러오기 -->
     <div th:replace="~{layout/sidebar.html :: sidebar}"></div>
     <!--/* 고정 푸터 */-->
-    <div th:replace="~{layout/footer.html :: footer}"></div> <!-- 푸터 불러오기 -->
-    <!-- 컨텐츠 영역 (각 페이지에서 변경될 부분) -->
+
 	<div class="home-section container">
 		<main layout:fragment="content"></main>
 	</div> 
-
+    <div th:replace="~{layout/footer.html :: footer}"></div> <!-- 푸터 불러오기 -->
+    <!-- 컨텐츠 영역 (각 페이지에서 변경될 부분) -->
 	<script th:inline="javascript">
 		<!-- URL에 따라 container 클래스 제거하는 스크립트 -->
 		$(document).ready(function() {
