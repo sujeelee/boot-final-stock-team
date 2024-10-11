@@ -4,12 +4,12 @@ function showDash(icon) {
         $(".test").css("display", "block");
         
         // 패딩 값 늘리기
-        $(".navbar").css("padding", "15px 210px"); // 패딩을 15px 40px로 변경
+        $(".navbar").css("padding", "15px 110px"); // 패딩을 15px 40px로 변경
         
         setTimeout(function() {
             $(".test").css("width", "200px"); // 사이드바 너비 설정
-            $(".home-section").css("left", "-170px"); // home 요소를 오른쪽으로 밀기
-        }, 10); // 자연스러운 애니메이션을 위한 짧은 지연
+            $(".home-section").css("left", "-100px"); // home 요소를 오른쪽으로 밀기
+        }, 50); // 자연스러운 애니메이션을 위한 짧은 지연
 
         $(".side_icon").removeClass("active");
         $(icon).addClass("active");
