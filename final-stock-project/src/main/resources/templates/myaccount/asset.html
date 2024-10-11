@@ -86,7 +86,7 @@
 	
 		
 		.graph-container {
-		    height: 200px;
+		    height: 350px;
 		}
 		
 		.period-buttons {
@@ -318,6 +318,9 @@
 		    </div>
 	    </div>
 		<script th:inline="javascript">
+		    /* 서버에서 전달된 graphData를 JSON으로 변환 */
+		    let graphData = /*[[${graphData}]]*/ [];
+		    
 			function loadPeriodData(obj){
 				const period = obj.value;
 			    // 모든 버튼에서 active 클래스를 제거
@@ -334,6 +337,7 @@
 					dataType : "json",
 					success : function (data){
 						displayBalance(data);
+						updateChart(graphData);
 					}, 
 					error : function(jqXHR, textStatus, errorThrown){
 						console.log(jqXHR);
@@ -348,42 +352,51 @@
 				$('.balance-box').html(str);
 			}
 			
-			// Google Charts 로드
-			google.charts.load('current', { packages: ['corechart'] });
-			google.charts.setOnLoadCallback(drawChart);
+		    // Google Charts 로드
+		    google.charts.load('current', { packages: ['corechart'] });
+		    google.charts.setOnLoadCallback(drawChart);
 
-			// Chart를 그리는 함수
-			function drawChart() {
-				var data = new google.visualization.DataTable();
-				data.addColumn('date', 'Date');
-				data.addColumn('number', 'Kepler-22b mission');
-				data.addColumn('number', 'Gliese 163 mission');
+		    // 초기 차트 그리기
+		    function drawChart() {
+		        var data = new google.visualization.DataTable();
+		        data.addColumn('date', 'Date');
+		        data.addColumn('number', 'Deposit');
+				
+		        // 초기 데이터
+		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
 
-				 // 데이터 추가
-				 data.addRows([
-					[new Date(2314, 2, 15), 12400, 10645],
-					[new Date(2314, 2, 16), 24045, 12374],
-					[new Date(2314, 2, 17), 35022, 15766],
-					[new Date(2314, 2, 18), 12284, 34334],
-					[new Date(2314, 2, 19), 8476, 66467],
-					[new Date(2314, 2, 20), 0, 79463]
-				 ]);
+		        var options = {
+		            width: '100%', // 그래프의 너비를 컨테이너에 맞게 설정
+		            height: 350,   // 높이를 적절하게 설정
+		            legend: { position: 'bottom' }, // 범례 위치 설정
+		            curveType: 'function', // 곡선형 선 그래프
+		            pointSize: 0 // 데이터 포인트를 표시하지 않음
+		        };
 
-			    // Chart를 위한 옵션 설정
-			    var options = {
-					width: '100%', // 그래프의 너비를 컨테이너에 맞게 설정
-					height: 200,   // 높이를 적절하게 설정
-					legend: { position: 'bottom' }, // 범례 위치 설정
-					curveType: 'function', // 곡선형 선 그래프
-					pointSize: 0 // 데이터 포인트를 표시하지 않음
-			    };
+		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
+		        chart.draw(data, options);
+		    }
 
-			    // 그래프를 그릴 div 선택
-			    var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
+		    // 차트를 업데이트하는 함수
+		    function updateChart(graphData) {
+		        var data = new google.visualization.DataTable();
+		        data.addColumn('date', 'Date');
+		        data.addColumn('number', 'Deposit');
 
-			    // Chart 그리기
-			    chart.draw(data, options);
-			  }
+		        // 서버에서 받은 데이터를 사용하여 차트를 업데이트
+		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
+
+		        var options = {
+		            width: '100%',
+		            height: 350,
+		            legend: { position: 'bottom' },
+		            curveType: 'function',
+		            pointSize: 0
+		        };
+
+		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
+		        chart.draw(data, options);
+		    }
 		</script>
 	</main>
 </body>

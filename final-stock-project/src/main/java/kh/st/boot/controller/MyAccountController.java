@@ -1,6 +1,7 @@
 package kh.st.boot.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +35,15 @@ public class MyAccountController {
 		String lastWeek = DateUtil.getLastWeek(); // 지난주 날짜 정보
 		// 일주일 전까지의 거래 내역을 가져옴
 		List<DepositVO> depositList = myAccountService.getDepositListByDate(mb_id, lastWeek);
-		System.out.println(depositList);
 		int money = 0;
+		List<Map<String, Object>> graphData = new ArrayList<>();
 		for(DepositVO deposit : depositList) {
 			money += deposit.getDe_num();
+			// 각 거래의 날짜와 금액을 graphData에 추가
+	        Map<String, Object> graphItem = new HashMap<>();
+	        graphItem.put("date", deposit.getDe_datetime());  // 거래 날짜
+	        graphItem.put("amount", deposit.getDe_num());  // 거래 금액
+	        graphData.add(graphItem);
 
 		}
 		// 수익률
@@ -46,6 +52,7 @@ public class MyAccountController {
 		model.addAttribute("account", account);
 		model.addAttribute("money", money);
 		model.addAttribute("rateOfReturn", rateOfReturn);
+		model.addAttribute("graphData", graphData);
 		return "myaccount/asset";
 	}
 	
@@ -83,8 +90,14 @@ public class MyAccountController {
 		// 해당 기간들의 거래내역들을 가져옴
 		List<DepositVO> depositList = myAccountService.getDepositListByDate(mb_id, date);
 		int money = 0;
+		List<Map<String, Object>> graphData = new ArrayList<>();
 		for(DepositVO deposit : depositList) {
 			money += deposit.getDe_num();
+	        // 각 거래의 날짜와 금액을 graphData에 추가
+	        Map<String, Object> graphItem = new HashMap<>();
+	        graphItem.put("date", deposit.getDe_datetime());  // 거래 날짜
+	        graphItem.put("amount", deposit.getDe_num());  // 거래 금액
+	        graphData.add(graphItem);
 		}
 		// 수익률
 		int rateOfReturn = (account.getAc_deposit() - (account.getAc_deposit() - money)) / (account.getAc_deposit() - money) * 100;
@@ -92,6 +105,7 @@ public class MyAccountController {
 		map.put("text", text);
 		map.put("money", money);
 		map.put("rateOfReturn", rateOfReturn);
+		map.put("graphData", graphData);  // 그래프에 사용할 데이터 추가
 		return map;
 	}
 	/*
