@@ -76,7 +76,9 @@
 </div>
 <!--/* 로그인을 했고 + 아이디 권한이 9 이상이면 보임 */-->
 <div class="container" sec:authorize="isAuthenticated()" th:if="${#authentication.Principal.member.mb_level} >= 9">
-    <a th:href="@{/event/write}" class="btn btn-outline-secondary" >어드민용 이벤트 작성</a>
+    <p>운영자 전용 이벤트 작성 페이지</p>
+    <a th:href="@{/event/write}" class="btn btn-outline-secondary" >이벤트 post 작성</a>
+    <a th:href="@{/event/eventATypeWrite}" class="btn btn-outline-secondary" >참여형 이벤트 작성</a>
 </div>
 
     <script th:inline="javascript">
