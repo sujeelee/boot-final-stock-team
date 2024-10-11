@@ -29,6 +29,15 @@ public class MyAccountController {
 	
 	@GetMapping("/asset")
 	public String asset(Model model, Principal principal) {
+		
+		//로그인상태가 아닐 시
+        if (principal == null) {
+        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+        	
+            return "util/msg";
+        }
+        
 		String mb_id = principal.getName();
 		// 회원 아이디로 예치금 잔액을 가져오는 코드
 		AccountVO account = myAccountService.getAccountById(mb_id);
@@ -36,19 +45,23 @@ public class MyAccountController {
 		// 일주일 전까지의 거래 내역을 가져옴
 		List<DepositVO> depositList = myAccountService.getDepositListByDate(mb_id, lastWeek);
 		int money = 0;
-		List<Map<String, Object>> graphData = new ArrayList<>();
-		for(DepositVO deposit : depositList) {
-			money += deposit.getDe_num();
-			// 각 거래의 날짜와 금액을 graphData에 추가
-	        Map<String, Object> graphItem = new HashMap<>();
-	        graphItem.put("date", deposit.getDe_datetime());  // 거래 날짜
-	        graphItem.put("amount", deposit.getDe_num());  // 거래 금액
-	        graphData.add(graphItem);
-
-		}
 		// 수익률
-		int rateOfReturn = (account.getAc_deposit() - (account.getAc_deposit() - money)) / (account.getAc_deposit() - money) * 100;
+		int rateOfReturn = 0;
 		
+		List<Map<String, Object>> graphData = new ArrayList<>();
+		if(depositList != null) {
+			for(DepositVO deposit : depositList) {
+				money += deposit.getDe_num();
+				// 각 거래의 날짜와 금액을 graphData에 추가
+		        Map<String, Object> graphItem = new HashMap<>();
+		        graphItem.put("date", deposit.getDe_datetime());  // 거래 날짜
+		        graphItem.put("amount", deposit.getDe_num());  // 거래 금액
+		        graphData.add(graphItem);
+	
+			}
+			// 수익률
+			rateOfReturn = (account.getAc_deposit() - money) / money * 100;
+		}
 		model.addAttribute("account", account);
 		model.addAttribute("money", money);
 		model.addAttribute("rateOfReturn", rateOfReturn);
