@@ -26,13 +26,13 @@
 				<div class="transaction-box">
 				    <div class="transaction-container" th:each="list:${list}">
 				        <!-- 날짜 및 시간 정보 -->
-				        <span class="date-info">10.8</span>
+				        <span class="date-info" th:text="${#strings.replace(#strings.substring(list.de_datetime, 5, 10), '-', '.')}"></span>
 				        <!-- 거래 내역 -->
 				        <div class="transaction-details">
 				            <!-- 사용자 정보 -->
 				            <div class="user-info">
 				                <span class="user-name" th:text="${#strings.substring(list.de_content, 0, #strings.indexOf(list.de_content, ' :'))}"></span>
-				                <span class="transaction-type">16:02 ㅣ <span th:if="${list.de_stock_code == null and list.de_num > 0}">예치금 충전</span></span>
+				                <span class="transaction-type"><span th:text="${#strings.substring(list.de_datetime, 11, 16)}"></span> ㅣ <span th:if="${list.de_stock_code == null and list.de_num > 0}">예치금 충전</span></span>
 				            </div>
 				
 				            <!-- 금액 정보 -->

@@ -24,4 +24,6 @@ public interface DepositDAO {
 	
 	void insertDepositLog(@Param("de")DepositVO deposit);
 
+	void deleteStatusStay(@Param("mb_id")String mb_id);
+
 }

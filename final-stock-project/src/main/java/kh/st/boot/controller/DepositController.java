@@ -41,6 +41,8 @@ public class DepositController {
             return "util/msg";
         }
         
+        depositService.deleteStatusStay(principal.getName());
+        
         model.addAttribute("clientId", CLIENT_ID);
         
 		return "deposit/depositOrder";

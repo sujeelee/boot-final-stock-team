@@ -72,7 +72,7 @@ public class DepositService {
 		
 		DepositVO deposit = new DepositVO();
 		
-		deposit.setDe_content("예치금 충전 : " + chk.getDo_price() + "원");
+		deposit.setDe_content("예치금 충전 : " + chk.getDo_price() + "원 주문번호 : " + upOrder.getDo_od_id());
 		deposit.setDe_num(chk.getDo_price());
 		deposit.setMb_id(mb.getMb_id());
 		deposit.setDe_before_num(0);
@@ -92,5 +92,9 @@ public class DepositService {
 		depositDao.insertDepositLog(deposit);
 		
 		return depositDao.updateOrder(upOrder);
+	}
+
+	public void deleteStatusStay(String mb_id) {
+		depositDao.deleteStatusStay(mb_id);
 	}
 }
