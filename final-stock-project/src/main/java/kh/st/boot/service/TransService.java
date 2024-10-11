@@ -29,5 +29,8 @@ public class TransService {
 		
 		return ac;
 	}
+	public DepositOrderVO getDepositOrder(String od_id) {
+		return depositDao.getOrderCheck(od_id);
+	}
 	
 }

@@ -13,4 +13,6 @@ public class DepositVO {
 	private String mb_id; //회원아이디
 	private int de_num; //사용/충전된 예치금가
 	private int de_before_num; //거래전에 얼마 있으셧어여?
+	
+	private String content_view; //거래내역에서 조회할때 써볼게용
 }
