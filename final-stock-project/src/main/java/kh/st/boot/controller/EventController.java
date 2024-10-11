@@ -100,6 +100,7 @@ public class EventController {
 
 
     // 이벤트 페이지로 이동 및 구현
+    //출석체크 이벤트 (C event)
     @GetMapping("/calendar_event")
     public String calendar_event(Model mo, Principal principal){
         // 31칸짜리 배열 생성 (0: 출석 안 함, 1: 출석 완료)
@@ -116,4 +117,10 @@ public class EventController {
         return res;
     }
 
+    //참여형 이벤트 (A event)
+    @GetMapping("/Aevent")
+    public String Aevent(){
+        
+        return "/eventSeason2024/event202410Aevent";
+    }
 }
