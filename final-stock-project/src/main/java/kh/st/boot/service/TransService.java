@@ -39,7 +39,7 @@ public class TransService {
 	
 	public PageMaker getPageMaker(TransCriteria cri, String mb_id) {
 		int count = depositDao.getCount(cri, mb_id);
-		return new PageMaker(2, cri, count);
+		return new PageMaker(5, cri, count);
 	}
 	
 	public List<DepositVO> getDepositList(String mb_id, TransCriteria cri) {
