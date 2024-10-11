@@ -23,26 +23,60 @@
 						<p class="balance-text">주문 가능 예치금 · <span th:text="${#numbers.formatInteger(account.ac_deposit,3,'COMMA')}"></span>원</p>
 					</div>
 				</div>
-				<div class="transaction-box">
-				    <div class="transaction-container" th:each="list:${list}">
-				        <!-- 날짜 및 시간 정보 -->
-				        <span class="date-info" th:text="${#strings.replace(#strings.substring(list.de_datetime, 5, 10), '-', '.')}"></span>
-				        <!-- 거래 내역 -->
-				        <div class="transaction-details">
-				            <!-- 사용자 정보 -->
-				            <div class="user-info">
-				                <span class="user-name" th:text="${#strings.substring(list.de_content, 0, #strings.indexOf(list.de_content, ' :'))}"></span>
-				                <span class="transaction-type"><span th:text="${#strings.substring(list.de_datetime, 11, 16)}"></span> ㅣ <span th:if="${list.de_stock_code == null and list.de_num > 0}">예치금 충전</span></span>
-				            </div>
-				
-				            <!-- 금액 정보 -->
-				            <div class="amount-info">
-				                <span class="amount"><span th:text="${#numbers.formatInteger(list.de_num,0,'COMMA')}"></span>원</span>
-				                <span class="balance"><span th:text="${#numbers.formatInteger(list.de_before_num + list.de_num,0,'COMMA')}"></span>원</span>
-				            </div>
-				        </div>
-				    </div> <!-- transaction-container end -->
-				</div>
+				<section>
+					<div class="btn-list">
+						<ul class="list-group list-group-horizontal">
+							<li class="list-group-item list-group-item-light">
+								<div class="dropdown">
+									<button class="dropdown-toggle btn btn-light" data-toggle="dropdown" th:text="${type == 'all'} ? '전체':'주식'"></button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" th:href="@{/myaccount/transactions/all}">
+											<button type="button" th:class="${type == 'all'} ? 'btn on':'btn'">전체</button>
+										</a>
+										<a class="dropdown-item" th:href="@{/myaccount/transactions/stock}">
+											<button type="button" th:class="${type == 'stock'} ? 'btn on':'btn'">주식</button>
+										</a>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<a th:href="@{/myaccount/transactions/{type}/sell(type=${type})}">
+									<button type="button" th:class="${detail == 'sell'} ? 'btn btn-info on':'btn btn-light'">주식</button>
+								</a>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<a th:href="@{/myaccount/transactions/{type}/account(type=${type})}">
+									<button type="button" th:class="${detail == 'account'} ? 'btn btn-info on':'btn btn-light'">입출금</button>
+								</a>
+							</li>
+							<li class="list-group-item list-group-item-light">
+								<a th:href="@{/myaccount/transactions/{type}/stocks(type=${type})}">
+									<button type="button" th:class="${detail == 'stocks'} ? 'btn btn-info on':'btn btn-light'">입출고</button>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="transaction-box">
+					    <div class="transaction-container" th:each="list:${list}">
+					        <!-- 날짜 및 시간 정보 -->
+					        <span class="date-info" th:text="${#strings.replace(#strings.substring(list.de_datetime, 5, 10), '-', '.')}"></span>
+					        <!-- 거래 내역 -->
+					        <div class="transaction-details">
+					            <!-- 사용자 정보 -->
+					            <div class="user-info">
+					                <span class="user-name" th:text="${list.content_view}"></span>
+					                <span class="transaction-type"><span th:text="${#strings.substring(list.de_datetime, 11, 16)}"></span> ㅣ <span th:text="${list.de_content}"></span></span>
+					            </div>
+					
+					            <!-- 금액 정보 -->
+					            <div class="amount-info">
+					                <span class="amount"><span th:text="${#numbers.formatInteger(list.de_num,0,'COMMA')}"></span>원</span>
+					                <span class="balance"><span th:text="${#numbers.formatInteger(list.de_before_num + list.de_num,0,'COMMA')}"></span>원</span>
+					            </div>
+					        </div>
+					    </div> <!-- transaction-container end -->
+					</div> <!-- transaction-box end -->
+				</section>
 			</div>
 		</div>
 	</main>
