@@ -39,6 +39,7 @@ public class TransactionsController {
 		
 		model.addAttribute("account", ac);
 		model.addAttribute("list", list);
+		System.out.println(list);
 		return "myaccount/transactions";
 	}
 }

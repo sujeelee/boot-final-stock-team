@@ -47,4 +47,7 @@
 			de_before_num = #{de.de_before_num},
 			de_datetime = NOW()
 	</insert>
+	<delete id="deleteStatusStay">
+		delete from deposit_order where do_status = '대기' and mb_id = #{mb_id}
+	</delete>
 </mapper>
