@@ -31,9 +31,15 @@
 					<option value="Opening">Opening</option>
 					<option value="Ending">Ending</option>
 					<option value="resUser">resUser</option>
+					<option value="Hidden">Hidden</option>
 				</select>
 
-				
+				<label>이벤트 폼 종류:</label>
+				<select name="ev_form" class="custom-select mb-3">
+					<option value="Post" checked>Post (기본값)</option>
+					<option value="Participatory">Participatory event(참여형)</option>
+					<option value="none">새로 추가해 주세요</option>
+				</select>
 
 				<div class="mt-3">
 					<label>이벤트 시작일, 종료일:</label>
@@ -67,6 +73,9 @@
 				tabsize: 2,
 				height: 400
 			})
+
+
+			
 		</script>
 
 	</main>

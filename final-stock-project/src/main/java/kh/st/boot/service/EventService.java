@@ -30,5 +30,7 @@ public interface EventService {
     String getCalenderEventValue(String name);
 
     boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize, MultipartFile file);
+
+    List<EventVO> getEventListByEventForm(String form);
     
 }
