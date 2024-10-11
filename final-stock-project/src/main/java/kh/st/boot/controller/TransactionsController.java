@@ -30,15 +30,14 @@ public class TransactionsController {
 	
 	@GetMapping("/{type}")
 	public String transactions(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
-		/*if(principal == null) {
+		if(principal == null) {
 			model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
         	
             return "util/msg";
 		}
-		String mb_id = principal.getName();*/
-		String mb_id = "zelda1234";
-		cri.setPerPageNum(2); //여기서는 한번에 n개까지 보여줄게요
+		String mb_id = principal.getName();
+		cri.setPerPageNum(10); //여기서는 한번에 n개까지 보여줄게요
 		// 거래내역을 가져오는 코드
 		List<DepositVO> list = transService.getDepositList(mb_id, cri);
 		//페이지를 넣게 되
@@ -71,15 +70,14 @@ public class TransactionsController {
 	
 	@GetMapping("/{type}/{detail}")
 	public String transactionsAlpha(Model model, Principal principal, TransCriteria cri, @PathVariable String type, @PathVariable String detail) {
-		/*if(principal == null) {
+		if(principal == null) {
 			model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
         	
             return "util/msg";
 		}
-		String mb_id = principal.getName();*/
-		String mb_id = "zelda1234";
-		cri.setPerPageNum(2); //여기서는 한번에 n개까지 보여줄게요
+		String mb_id = principal.getName();
+		cri.setPerPageNum(10); //여기서는 한번에 n개까지 보여줄게요
 		// 거래내역을 가져오는 코드
 		List<DepositVO> list = transService.getDepositList(mb_id, cri);
 		//페이지를 넣게 되
