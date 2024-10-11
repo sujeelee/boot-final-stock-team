@@ -83,16 +83,17 @@
 <body>
     <main layout:fragment="content">
         <div class="container-event-Participatory-type">
-            <div class="event-participation">
-                <h2>이벤트 1</h2>
+            
+            <div class="event-participation" th:each="prize : ${list}">    
+                <h2>[[${prize.pr_name}]]</h2>
                 <div class="image-container">
-                    <img src="product1-image-url.jpg" alt="이벤트 이미지 1" class="event-image">
+                    <img th:src="@{'/uploads' + ${prize.fi_path}}" alt="Event Image" class="event-image" style="height: 200px;">
                 </div>
                 <p>아래의 버튼을 클릭하여 이벤트에 참여하세요!</p>
-                <button id="participateButton1" class="submit-button">참여하기</button>
+                <button id="participateButton1" class="submit-button" onclick="">참여하기</button>
                 <div id="loader1" class="loader"></div>
                 <div id="confirmationMessage1" style="display: none;"></div>
-                <p class="points-required">소모 포인트: 50 포인트</p> <!-- 소모되는 포인트 표기 -->
+                <p class="points-required">소모 포인트: [[${prize.pr_point}]] 포인트</p> <!-- 소모되는 포인트 표기 -->
                 <p>현재 참여 인원: <span id="participantCount1">0</span>명</p>
             </div>
             <!-- 다른 이벤트 카드들은 동일한 구조로 추가 -->

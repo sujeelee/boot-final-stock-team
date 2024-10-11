@@ -55,12 +55,13 @@ public class EventServiceImp implements EventService {
 
         if (res) {
             EventVO tmpEv = eventDao.getEventToImportAFile();//방금 set한 event를 가져온다.
-            uploadFile(file, tmpEv.getEv_no());
+            uploadFile(file, tmpEv.getEv_no(), "event");
         }
         return false;
     }
 
-	private void uploadFile(MultipartFile file, int ev_no) {
+    //파일
+	private void uploadFile(MultipartFile file, int ev_no, String fi_type) {
 		if(file == null || file.getOriginalFilename().trim().length() == 0) {
 			return;
 		}
@@ -69,7 +70,7 @@ public class EventServiceImp implements EventService {
 		try {
 			String fi_path = UploadFileUtils.uploadFile(uploadPath, fi_org_name, file.getBytes());
 			// 업로드한 정보를 DB에 추가
-			FileVO fileVo = new FileVO(fi_path, fi_org_name, ev_no, "event");
+			FileVO fileVo = new FileVO(fi_path, fi_org_name, ev_no, fi_type);
 			eventDao.setEventFile(fileVo);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -108,7 +109,7 @@ public class EventServiceImp implements EventService {
         if (up && !file.isEmpty()) {
             up = eventDao.deleteEventThumbnailFile(event.getEv_no());
             UploadFileUtils.delteFile(uploadPath, event.getFi_path());
-            uploadFile(file, event.getEv_no());
+            uploadFile(file, event.getEv_no(), "event");
         }
 
         return up;
@@ -141,8 +142,17 @@ public class EventServiceImp implements EventService {
 
     @Override
     public boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize, MultipartFile file) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setPrizeToBeUsedFromTheEvent'");
+        if (prize == null || prize.getPr_name().trim().length() == 0) {
+            return false;
+        }
+
+        boolean res = eventDao.setPrizeToBeUsedFromTheEvent(prize);
+
+        if (res) {
+            PrizeVO tmpPrize = eventDao.getPrizeLastOne();
+            uploadFile(file, tmpPrize.getPr_no(), "prize");
+        }
+        return res;
     }
 
     @Override
@@ -153,6 +163,13 @@ public class EventServiceImp implements EventService {
 
         return eventDao.getEventListByEventForm(form);
     }
+
+    @Override
+    public List<PrizeVO> getPrizeListByEv_no(int ev_no) {
+
+        return eventDao.getPrizeListByEv_no(ev_no);
+    }
+
 
     
 

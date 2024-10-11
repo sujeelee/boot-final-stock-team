@@ -10,6 +10,9 @@ public class PrizeVO {
     private String pr_link;
     private String pr_name;
     private int pr_point;
+    private String pr_startLevel;
+    private String pr_endLevel;
+    private int ev_no;
     private int ep_rank;
 
     //DB에 없습니다.
