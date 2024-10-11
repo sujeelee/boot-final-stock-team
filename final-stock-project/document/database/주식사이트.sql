@@ -2,6 +2,7 @@
 
 create database if not exists stockAndFund;
 
+
 use stockAndFund;
 
 CREATE TABLE `member` (
@@ -177,6 +178,7 @@ CREATE TABLE `event` (
 	`ev_start`	DATETIME	NULL,
 	`ev_end`	DATETIME	NULL,
 	`ev_status`	char(7)	DEFAULT "Ending",
+	`ev_form`	varchar(30)	null,
 	`ev_cnt`	int(11)	NULL
 );
 
@@ -225,6 +227,19 @@ CREATE TABLE `event_prize` (
 	`ev_no`	INT(11) NOT NULL,
 	`ep_prize`	varchar(255)	NULL,
 	`ep_mb_id`	varchar(255)	NULL,
+	`ep_rank`	int(11)	NULL
+);
+
+
+
+CREATE TABLE `prize` (
+	`pr_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
+	`pr_link` VARCHAR(255) NOT NULL,
+	`pr_name` VARCHAR(255) not null, 
+	`pr_point`	int(11)	NULL,
+	`pr_startLevel`	CHAR(1)	NULL,
+	`pr_endLevel`	CHAR(1)	NULL,
+	`ev_no` INT(11) NULL,
 	`ep_rank`	int(11)	NULL
 );
 

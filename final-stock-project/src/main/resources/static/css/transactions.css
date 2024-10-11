@@ -186,3 +186,7 @@ li{cursor:pointer; color:#0c5460 !important;}
 .dropdown-item{padding: 1px !important;}
 .btn{width: 100% !important; text-align: left; border-radius: 20px;}
 .page_div{margin-top: 5%;}
+.none-list{margin-top: 18%;}
+.none-content{text-align: center;}
+.fa-color{color: rgba(9, 108, 138, 0.3);}
+.no-title{margin-top: 2%; font-weight: bold; color: #888; font-size: 0.9em;}
