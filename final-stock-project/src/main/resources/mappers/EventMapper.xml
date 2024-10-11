@@ -70,7 +70,7 @@
 
     <update id="setCalenderEvent_add50point">
         update member
-        set mb_point = mb_point + 30
+        set mb_point = mb_point + 50
         where mb_id = #{mb_id}
     </update>
 
