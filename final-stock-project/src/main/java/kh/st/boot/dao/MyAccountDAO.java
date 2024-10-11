@@ -14,6 +14,4 @@ public interface MyAccountDAO {
 	
 	List<PointVO> selectPointList(String mb_id);
 
-	List<DepositVO> selectDepositList(String mb_id);
-
 }

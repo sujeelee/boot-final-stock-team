@@ -160,16 +160,6 @@ public class MyAccountController {
 		map.put("graphData", graphData);  // 그래프에 사용할 데이터 추가
 		return map;
 	}
-	/*
-	@GetMapping("/transactions")
-	public String transactions(Model model, Principal principal) {
-		String mb_id = principal.getName();
-		// 거래내역을 가져오는 코드
-		List<DepositVO> list = myAccountService.getDepositList(mb_id);
-		model.addAttribute(list);
-		return "myaccount/transactions";
-	}
-	*/
 	
 	@GetMapping("/orders")
 	public String orders() {

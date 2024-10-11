@@ -41,14 +41,4 @@ public class MyAccountServiceImp implements MyAccountService {
 		}
 		return myAccountDao.selectPointList(mb_id);
 	}
-	
-	
-	@Override
-	public List<DepositVO> getDepositList(String mb_id) {
-		if(mb_id == null) {
-			return null;
-		}
-		return myAccountDao.selectDepositList(mb_id);
-	}
-  
 }
