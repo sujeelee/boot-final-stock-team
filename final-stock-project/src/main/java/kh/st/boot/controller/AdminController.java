@@ -47,18 +47,7 @@ public class AdminController {
 		return "/admin/adminHome";
 	}
 
-//	@PostMapping("/adminHome/update")
-//	public String adminUpdate (String cf_title, String cf_info, String cf_privacy, String cf_noemail, String cf_tel,
-//			int cf_zip, String cf_addr, String cf_addr2, String cf_fax, String cf_email, String cf_owner_name,
-//			String cf_day_point, String cf_check_use, String cf_od_point, String cf_percent, Model model) {
-//		List<AdminVO> adminUpdateList = adminService.getAdminUpdateList();
-//		System.out.println(adminUpdateList);
-//		List<AdminVO> adminList = adminService.getAdminList();
-//		
-//		model.addAttribute("adminList", adminList);
-//		
-//		return "redirect:/admin/adminHome";
-//	}
+
 
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
@@ -208,8 +197,19 @@ public class AdminController {
 		}
 	
 	
+
+		// -------------------------------------------------------------------------------
+		// -------------------------- 포인트 검색 컨트롤러 -------------------------------
+		// -------------------------------------------------------------------------------
 	
-	
+		
+		// 접속시 불러오기 
+		@GetMapping("/admDaycheck/daycheckAdm")
+		public String sltAdmPointPage(Model model) {
+			List<AdminLevelPageVO> ssltAdminLevelPage = sltAdmLevelPageService.getAllssltAdminLevelPage();
+			model.addAttribute("list", ssltAdminLevelPage);
+			return "/admin/admDaycheck/daycheckAdm"; 
+		}
 	
 	
 	
