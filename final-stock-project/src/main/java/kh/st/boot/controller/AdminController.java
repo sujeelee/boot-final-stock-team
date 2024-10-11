@@ -201,14 +201,9 @@ public class AdminController {
 				@RequestParam String lv_alpha,
 				@RequestParam String lv_auto_use,
 				@RequestParam int lv_up_limit) {
-			AdminLevelPageVO dltAdm = new AdminLevelPageVO();
-			dltAdm.setLv_name(lv_name); //
-			dltAdm.setLv_num(lv_num);
-			dltAdm.setLv_alpha(lv_alpha);
-			dltAdm.setLv_auto_use(lv_auto_use);
-			dltAdm.setLv_up_limit(lv_up_limit);
+			
 
-			sltAdmLevelPageService.udtAdmLvService(dltAdm);
+			sltAdmLevelPageService.udtAdmLvService(lv_name,lv_num,lv_alpha,lv_auto_use,lv_up_limit);
 			return "redirect:/admin/admLevel/admLevelPage";
 		}
 	

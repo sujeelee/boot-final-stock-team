@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import kh.st.boot.model.vo.AdminLevelPageVO;
-import kh.st.boot.model.vo.NewsPaperVO;
 
 @Mapper
 public interface SltAdmLevelPageDAO {
@@ -22,7 +21,13 @@ public interface SltAdmLevelPageDAO {
 						@Param("lv_up_limit") int lv_up_limit);
 
 	void dltAdmLvdao(AdminLevelPageVO adminLevelPageVO);
+
+	void updateAdmLv(AdminLevelPageVO level);
+
 	
+
+
+
 
 	
 }

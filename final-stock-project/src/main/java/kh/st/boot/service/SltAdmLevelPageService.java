@@ -1,6 +1,5 @@
 package kh.st.boot.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +19,32 @@ public class SltAdmLevelPageService {
 	}
 
 	public boolean addSltAdmLevel(String lv_name, int lv_num, String lv_alpha, String lv_auto_use, int lv_up_limit) {
-		
+
 		AdminLevelPageVO oldLv = sltAdmLevelPageDAO.getLvOne(lv_num);
 		if (oldLv != null) {
 			return false;
 		}
-		return sltAdmLevelPageDAO.insertAdmLv(lv_name, lv_num,lv_alpha,lv_auto_use,lv_up_limit);
+		return sltAdmLevelPageDAO.insertAdmLv(lv_name, lv_num, lv_alpha, lv_auto_use, lv_up_limit);
 	}
 
 	public void dltAdmLvService(AdminLevelPageVO AdminLevelPageVO) {
-		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO );
+		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO);
 	}
 
-	public void udtAdmLvService(AdminLevelPageVO AdminLevelPageVO) {
-		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO );
-		여기서 특정값으로 데이터 조회 해보고 
-		
-		다시 넣는거 
-	
-		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO );
+	public void udtAdmLvService(String lv_name, int lv_num, String lv_alpha, String lv_auto_use, int lv_up_limit) {
+
+		// 전체lv 데이터 가져와서 향상된 for문 돌릴꺼임
+		List<AdminLevelPageVO> allNums = sltAdmLevelPageDAO.getAllssltAdminLevelPage();
+
+		for (AdminLevelPageVO level : allNums) {
+			if (level.getLv_num() == lv_num) { // 검색한 값이 lv_num 이면
+				level.setLv_name(lv_name);
+				level.setLv_alpha(lv_alpha);
+				level.setLv_auto_use(lv_auto_use);
+				level.setLv_up_limit(lv_up_limit);
+				sltAdmLevelPageDAO.updateAdmLv(level);
+			}
+		}
+
 	}
-	
-	
 }
-
-/// 다오에서 파라미터로 넘긴 값이랑 디비값 비교함 그거 받아야함 
