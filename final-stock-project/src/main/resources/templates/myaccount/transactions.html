@@ -77,6 +77,23 @@
 					    </div> <!-- transaction-container end -->
 					</div> <!-- transaction-box end -->
 				</section>
+				<div class="page_div">
+					<ul class="pagination justify-content-center center" 
+						th:object="${pm}" 
+						th:if="${pm.endPage != 0}">
+					    <li class="page-item" th:if="*{prev}">
+					    	<a class="page-link" th:href="@{/myaccount/transactions/{type}(type=${type}, page=*{startPage-1})}">이전</a>
+					    </li>
+					    <li class="page-item" 
+					    	th:each="i : *{#numbers.sequence(startPage, endPage)}"
+					    	th:classappend="*{cri.page} == ${i} ? 'active' : ''">
+					    	<a class="page-link" th:href="@{/myaccount/transactions/{type}(type=${type}, page=${i})}" th:text="${i}"></a>
+					    </li>
+					    <li class="page-item" th:if="*{next}">
+					    	<a class="page-link" th:href="@{/myaccount/transactions/{type}(type=${type}, page=*{endPage+1})}">다음</a>
+					    </li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</main>

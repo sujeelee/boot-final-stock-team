@@ -50,4 +50,22 @@
 	<delete id="deleteStatusStay">
 		delete from deposit_order where do_status = '대기' and mb_id = #{mb_id}
 	</delete>
+	<select id="getCount" resultType="int">
+		select count(*) from deposit 
+		where mb_id = #{mb_id}
+		<if test="cri.type == 'stock'">
+			and de_stock_code != ''
+		</if>
+	</select>
+	<select id="getDepositMember" resultType="DepositVO">
+		select * from deposit 
+		where mb_id = #{mb_id}
+		<if test="cri.type == 'stock'">
+			and de_stock_code != ''
+		</if>
+		order by de_no DESC
+		<if test="cri != null">
+			limit #{cri.pageStart}, #{cri.perPageNum}
+		</if>
+	</select>
 </mapper>

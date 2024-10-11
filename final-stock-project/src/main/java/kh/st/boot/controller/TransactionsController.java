@@ -13,6 +13,8 @@ import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.TransCriteria;
 import kh.st.boot.service.MyAccountService;
 import kh.st.boot.service.StockService;
 import kh.st.boot.service.TransService;
@@ -25,10 +27,9 @@ public class TransactionsController {
 	
 	private StockService stockService;
 	private TransService transService;
-	private MyAccountService myAccountService;
 	
 	@GetMapping("/{type}")
-	public String transactions(Model model, Principal principal, @PathVariable String type) {
+	public String transactions(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
 		if(principal == null) {
 			model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
@@ -37,7 +38,9 @@ public class TransactionsController {
 		}
 		String mb_id = principal.getName();
 		// 거래내역을 가져오는 코드
-		List<DepositVO> list = myAccountService.getDepositList(mb_id);
+		List<DepositVO> list = transService.getDepositList(mb_id, cri);
+		//페이지를 넣게 되
+		PageMaker pm = transService.getPageMaker(cri, mb_id);
 		//계좌 잔액을 가져오게 되
 		AccountVO ac = transService.getAccountAmt(mb_id);
 		
@@ -59,12 +62,13 @@ public class TransactionsController {
 		model.addAttribute("account", ac);
 		model.addAttribute("list", list);
 		model.addAttribute("type", type);
+		model.addAttribute("pm", pm); // 페이지 정보 추가
 		
 		return "myaccount/transactions";
 	}
 	
 	@GetMapping("/{type}/{detail}")
-	public String transactionsAlpha(Model model, Principal principal, @PathVariable String type, @PathVariable String detail) {
+	public String transactionsAlpha(Model model, Principal principal, TransCriteria cri, @PathVariable String type, @PathVariable String detail) {
 		System.out.println(detail);
 		if(principal == null) {
 			model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
@@ -74,7 +78,9 @@ public class TransactionsController {
 		}
 		String mb_id = principal.getName();
 		// 거래내역을 가져오는 코드
-		List<DepositVO> list = myAccountService.getDepositList(mb_id);
+		List<DepositVO> list = transService.getDepositList(mb_id, cri);
+		//페이지를 넣게 되
+		PageMaker pm = transService.getPageMaker(cri, mb_id);
 		//계좌 잔액을 가져오게 되
 		AccountVO ac = transService.getAccountAmt(mb_id);
 		
@@ -97,6 +103,7 @@ public class TransactionsController {
 		model.addAttribute("list", list);
 		model.addAttribute("type", type);
 		model.addAttribute("detail", detail);
+		model.addAttribute("pm", pm); // 페이지 정보 추가
 		
 		return "myaccount/transactions";
 	}

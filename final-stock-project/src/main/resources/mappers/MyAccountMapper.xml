@@ -20,12 +20,4 @@
 			MB_ID = #{mb_id} AND
 			DE_DATETIME >= #{date}
 	</select>
-
-	<select id="selectDepositList" resultType="DepositVO">
-		SELECT *
-		FROM
-			DEPOSIT
-		WHERE MB_ID = #{mb_id}
-		order by de_no DESC
-	</select>
 </mapper>
