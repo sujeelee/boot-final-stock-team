@@ -100,6 +100,7 @@
     <a th:href="@{/event/write}" class="btn btn-outline-secondary" >이벤트 post 작성</a>
     <a th:href="@{/event/eventATypeWrite}" class="btn btn-outline-secondary" >참여형 이벤트 작성</a>
     <a th:href="@{/event/eventhome/Hidden}" class="btn btn-outline-secondary" th:classappend="${eventStatus} == 'Hidden' ? 'active' : '' ">Hidden 이벤트 Show</a>
+    <a th:href="@{/event/eventhome/Hidden}" class="btn btn-outline-secondary" th:classappend="${eventStatus} == 'Hidden' ? 'active' : '' ">PrizeList 보기</a>
 </div>
 
     <script th:inline="javascript">

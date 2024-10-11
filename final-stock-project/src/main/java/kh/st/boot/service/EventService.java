@@ -32,5 +32,8 @@ public interface EventService {
     boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize, MultipartFile file);
 
     List<EventVO> getEventListByEventForm(String form);
+
+    List<PrizeVO> getPrizeListByEv_no(int ev_no);
+
     
 }

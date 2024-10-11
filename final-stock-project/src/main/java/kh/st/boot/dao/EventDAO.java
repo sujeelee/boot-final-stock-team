@@ -5,6 +5,7 @@ import java.util.List;
 import kh.st.boot.model.dto.EventDTO;
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.FileVO;
+import kh.st.boot.model.vo.PrizeVO;
 
 public interface EventDAO {
 
@@ -41,5 +42,11 @@ public interface EventDAO {
     String getCalenderEventValue(String name);
 
     List<EventVO> getEventListByEventForm(String form);
+
+    boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize);
+
+    List<PrizeVO> getPrizeListByEv_no(int ev_no);
+
+    PrizeVO getPrizeLastOne();
     
 }

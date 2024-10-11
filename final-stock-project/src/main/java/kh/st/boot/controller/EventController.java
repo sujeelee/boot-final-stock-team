@@ -98,7 +98,6 @@ public class EventController {
 
     @GetMapping("/eventATypeWrite")
     public String eventATypeWrite(Model mo){
-
         List<EventVO> eventList = eventService.getEventListByEventForm("Participatory");
         mo.addAttribute("eventList", eventList);
         return "/event/eventATypeWrite";
@@ -140,16 +139,9 @@ public class EventController {
     //참여형 이벤트 (A event)
     @GetMapping("/Aevent/{ev_no}")
     public String Aevent(Model mo, @PathVariable("ev_no") int ev_no){
-
+        List<PrizeVO> list = eventService.getPrizeListByEv_no(ev_no);
+        mo.addAttribute("list", list);
         return "/eventSeason2024/event202410Aevent";
     }
 
-    //참여형 이벤트 (A event) 삭제요망
-    @GetMapping("/Aevent")
-    public String Aevent(){
-        //보내야 할 것
-        //상품
-        //
-        return "/eventSeason2024/event202410Aevent";
-    }
 }
