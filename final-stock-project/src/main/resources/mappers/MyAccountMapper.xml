@@ -32,4 +32,12 @@
 	<update id="updatePw">
 		UPDATE MEMBER SET MB_PASSWORD = #{mb_password} WHERE MB_ID = #{mb_id}
 	</update>
+	
+	<delete id="deleteAccount">
+		DELETE FROM ACCOUNT WHERE MB_NO = #{mb_no}
+	</delete>
+	
+	<delete id="deleteUser">
+		DELETE FROM MEMBER WHERE MB_ID = #{mb_id}
+	</delete>
 </mapper>

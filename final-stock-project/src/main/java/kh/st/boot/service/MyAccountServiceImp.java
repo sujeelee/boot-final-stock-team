@@ -57,8 +57,16 @@ public class MyAccountServiceImp implements MyAccountService {
 	}
 
 	@Override
-	public void updatePw(String mb_id, String mb_password) {
+	public boolean updatePw(String mb_id, String mb_password) {
 		String encPw = passwordEncoder.encode(mb_password);
-		myAccountDao.updatePw(mb_id, encPw);
+		return myAccountDao.updatePw(mb_id, encPw);
+	}
+
+	@Override
+	public boolean deleteUser(MemberVO user) {
+		if(myAccountDao.deleteAccount(user.getMb_no())) {
+			return myAccountDao.deleteUser(user.getMb_id());
+		}
+		return false;
 	}
 }

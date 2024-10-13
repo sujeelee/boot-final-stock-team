@@ -17,6 +17,8 @@ public interface MyAccountService {
 
 	boolean checkPw(MemberVO user, String password);
 
-	void updatePw(String name, String mb_password);
+	boolean updatePw(String name, String mb_password);
+
+	boolean deleteUser(MemberVO user);
 
 }

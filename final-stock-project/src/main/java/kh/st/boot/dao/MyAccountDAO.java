@@ -14,6 +14,10 @@ public interface MyAccountDAO {
 	
 	List<PointVO> selectPointList(String mb_id);
 
-	void updatePw(String mb_id, String mb_password);
+	boolean updatePw(String mb_id, String mb_password);
+	
+	boolean deleteAccount(int mb_no);
+
+	boolean deleteUser(String mb_id);
 
 }

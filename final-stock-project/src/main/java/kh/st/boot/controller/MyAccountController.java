@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.util.DateUtil;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
@@ -164,6 +165,65 @@ public class MyAccountController {
 		return map;
 	}
 	
+	@GetMapping("/settings")
+	public String settings(Model model, Principal principal) {
+		//로그인상태가 아닐 시
+        if (principal == null) {
+        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+        	
+            return "util/msg";
+        }
+		return "myaccount/settings";
+	}
+	
+	@GetMapping("/password")
+	public String password() {
+		return "myaccount/password";
+	}
+	
+	@PostMapping("/password")
+	@ResponseBody
+	public Map<String, Object> passwordPost(Model model, Principal principal, String password, MemberVO member, HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		boolean res = myAccountService.checkPw(user, password);
+	    if(res) {
+	    	if(myAccountService.updatePw(principal.getName(), member.getMb_password())) {
+	    		map.put("success", true);
+	    		session.removeAttribute("user");
+	    	}else {
+	    		map.put("success", false);
+	    	}
+	    } else {
+	        map.put("success", false);
+	    }
+	    return map;
+	}
+	
+	@GetMapping("/delete")
+	public String delete() {
+		return "myaccount/delete";
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public Map<String, Object> deletePost(Model model, Principal principal, MemberVO member) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		boolean res = myAccountService.checkPw(user, member.getMb_password());
+		if(user.getMb_id().equals(member.getMb_id()) && res) {
+			if(myAccountService.deleteUser(user)) {
+				map.put("success", true);
+			}else {
+				map.put("success", false);
+			}
+		}else {
+			map.put("success", false);
+		}
+	    return map;
+	}
+	
 	@GetMapping("/orders")
 	public String orders() {
 		
@@ -182,29 +242,7 @@ public class MyAccountController {
 		return "myaccount/point";
 	}
 	
-	@GetMapping("/settings")
-	public String settings() {
-		return "myaccount/settings";
-	}
-	
-	@GetMapping("/password")
-	public String password() {
-		return "myaccount/password";
-	}
-	
-	@PostMapping("/password")
-	@ResponseBody
-	public Map<String, Object> passwordPost(Model model, Principal principal, String password, MemberVO member) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		MemberVO user = memberService.findById(principal.getName());
-		boolean res = myAccountService.checkPw(user, password);
-	    if(res) {
-	    	myAccountService.updatePw(principal.getName(), member.getMb_password());
-	    	map.put("success", true);
-	    } else {
-	        map.put("success", false);
-	    }
-	    return map;
-	}
+
+
 
 }
