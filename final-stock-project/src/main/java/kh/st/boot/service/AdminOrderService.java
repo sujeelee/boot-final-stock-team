@@ -16,9 +16,21 @@ public class AdminOrderService {
 	@Autowired
 	private AdminOrderDAO adminOrderDAO ;
 
-	
-	public List<admOrderPageVO> getAllNewspapers() {
+
+	public List<admOrderPageVO> getAllsltAdminOrder() {
 		return adminOrderDAO.selectAlladminOrder();
 	}
+
+
+	public List<admOrderPageVO> searchNameId(String od_name, String mb_id) {
+		return 	adminOrderDAO.searchIdName(od_name,mb_id );
+		
+	}
+
+
+
 	
 }
+
+
+// 근데 이름 동일한 값 전부 가져와야하면 저거 두개만 가져오면 안되잖아?

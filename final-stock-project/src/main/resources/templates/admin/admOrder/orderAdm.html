@@ -14,36 +14,23 @@
 	<div class="content">
 		<!--  이거 추가하니까 사이드바랑 곂치던거 해결됨 wht?>???>??<>>?>?>?>?>?>>? -->
 		<h1>주문 내역 조회 페이지 </h1>    <!--  아무것도 수정하지 않음     여기는 제일 마지막에 작업     -->
-		<div class="update-from">
-			<!-- insert 레이아웃 나눈거 -->
-			<form action="/admin/admLevel/admLevelPage/update" method="post">
-
-				<input type="text" name="lv_name" placeholder="등급" required>
-				<input type="text" name="lv_num" placeholder="레벨" required>
-				<input type="text" name="lv_alpha" placeholder="등급 혜택" required>
-				<select name="lv_auto_use" required>
-					<option value="1">자동 승급</option>
-					<option value="0">관리자 승인 필요</option>
-				</select> <input type="text" name="lv_up_limit" placeholder="레벨업 기준" required>
-				<button type="submit">수정</button>
+		 <div class="update-from">
+		
+			<form action="/admin/admOrder/orderAdm/search" method="post">
+				<input type="text" name="od_name" placeholder="주문자명" required>
+				<input type="text" name="mb_id" placeholder="주문 ID" required>
+				<button type="submit">사용자 검색</button>
 			</form>
 		</div>
-		<div class="register-form">
-			<!-- insert 레이아웃 나눈거 -->
-			<form action="/admin/admLevel/admLevelPage/insert" method="post">
-
-				<input type="text" name="lv_name" placeholder="등급" required>
-				<input type="text" name="lv_num" placeholder="레벨" required>
-				<input type="text" name="lv_alpha" placeholder="등급 혜택" required>
-				<select name="lv_auto_use" required>
-					<option value="1">자동 승급</option>
-					<option value="0">관리자 승인 필요</option>
-				</select> <input type="text" name="lv_up_limit" placeholder="레벨업 기준" required>
-				<button type="submit">등록</button>
+		 <div class="register-form">
+	
+			<form action="/admin/admOrder/orderAdm/ssearch" method="post">
+				<input type="text" name="od_id" placeholder="주문번호" required>
+				<button type="submit">주문번호 검색</button>
 			</form>
-		</div>
+		</div> 
 	</div>
-	<!-- 레벨 테이블 -->
+	<!-- 레벨 테이블 				페이지 꾸며야댐-->   
 	<table>
 		<thead>
 			<tr>
@@ -59,6 +46,7 @@
 				<th>주식명</th><!-- String / od_st_name-->
 				<th>해당 주</th><!-- int / od_qty-->
 				<th>주당 가격</th><!-- int / od_st_price-->
+				<th>퍼센트 가격</th><!-- int / od_percent_price-->
 			</tr>
 		</thead>
 		<tbody>
@@ -67,32 +55,34 @@
 				<td th:text="${list.od_name}"></td>
 				<td th:text="${list.mb_id}"></td>
 				<td th:text="${list.od_price}"></td>
-				<td th:text="${list.od_point"></td>
-				<td th:text="${list.od_date"></td>
-				<td th:text="${list.od_status"></td>
-				<td th:text="${list.od_st_code"></td>
-				<td th:text="${list.od_qty"></td>
-				<td th:text="${list.od_st_price"></td>
-				<td>
-					<!-- 삭제 버튼을 위한 폼 -->
+				<td th:text="${list.od_point}"></td>
+				<td th:text="${list.od_date}"></td>
+				<td th:text="${list.od_status}"></td>
+				<td th:text="${list.od_st_code}"></td>
+				<td th:text="${list.od_st_name}"></td>
+				<td th:text="${list.od_qty}"></td>
+				<td th:text="${list.od_st_price}"></td>
+				<td th:text="${list.od_percent_price}"></td>
+				
+				<!-- 	
 					<form action="/admin/admLevel/admLevelPage/delet" method="post"
 						style="display: inline;">
 						<input type="hidden" name="lv_name" th:value="${list.lv_name}" />
-						<!-- 레벨 이름 -->
+						레벨 이름
 						<input type="hidden" name="lv_num" th:value="${list.lv_num}" />
-						<!-- 레벨 번호 -->
+						레벨 번호
 						<input type="hidden" name="lv_alpha" th:value="${list.lv_alpha}" />
-						<!-- 레벨 혜택 -->
+						레벨 혜택
 						<input type="hidden" name="lv_auto_use"
 							th:value="${list.lv_auto_use}" />
-						<!-- 승급 심사 여부 -->
+						승급 심사 여부
 						<input type="hidden" name="lv_up_limit"
 							th:value="${list.lv_up_limit}" />
-						<!-- 레벨업 기준 -->
+						레벨업 기준
 						<button type="submit" style="font-size: 12px;"
 							onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
 					</form>
-				</td>
+				 </td> -->
 
 			</tr>
 		</tbody>

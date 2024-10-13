@@ -14,6 +14,8 @@ import groovy.transform.AutoImplement;
 import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
+import kh.st.boot.model.vo.admOrderPageVO;
+import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
 import kh.st.boot.service.SltAdmLevelPageService;
 import kh.st.boot.service.newspaperServiceImp;
@@ -28,6 +30,12 @@ public class AdminController {
 	private AdminService adminService;
 	@Autowired
 	private newspaperServiceImp newspaperService;
+	
+	@Autowired
+	private SltAdmLevelPageService sltAdmLevelPageService;
+	
+	@Autowired
+	private AdminOrderService adminOrderService;
 
 	// adminhome에 값을 보내줄 내용
 	@GetMapping("/adminHome")
@@ -132,8 +140,7 @@ public class AdminController {
 	
 	
 	
-	@Autowired
-	private SltAdmLevelPageService sltAdmLevelPageService;
+	
 	
 	
 		// 접속시 불러오기 
@@ -214,7 +221,6 @@ public class AdminController {
 	
 	
 	
-	
 		
 		
 		
@@ -227,14 +233,59 @@ public class AdminController {
 		// 접속시 불러오기 
 		@GetMapping("/admOrder/orderAdm")
 		public String sltOrder(Model model) {
-			List<AdminLevelPageVO> ssltAdminLevelPage = sltAdmLevelPageService.getAllssltAdminLevelPage();
-			model.addAttribute("list", ssltAdminLevelPage);
+			List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder();
+			model.addAttribute("list", sltAdminOrder);
 			return "/admin/admOrder/orderAdm"; 
 		}
 	
-	// 일단 이거 그대로 두고 디비까지 연결만 하고 페이지 불러오는거 보자 날짜 형식은 그 후에 고민   
 		
-	// 일단 불러와지긴함 
+		
+	// 이름 + 아이디로 검색
+		
+		@PostMapping("/admOrder/orderAdm/search")
+		public String searchIdName(@RequestParam String od_name,@RequestParam String mb_id , Model model) {
+			List<admOrderPageVO> searchOrder = adminOrderService.searchNameId(od_name, mb_id);
+			model.addAttribute("list", searchOrder);
+			return "/admin/admOrder/orderAdm";
+			
+		}
+		
+		/*
+		 * @PostMapping("/admDaycheck/daycheckAdm/search") public String
+		 * searchIdName @RequestParam String od_name,
+		 * 
+		 * @RequestParam String mb_id , Model model) {
+		 * 
+		 * int intNpNo = (np_no != null) ? np_no.intValue() : 0; // np_no가 null이면 기본값 0
+		 * 사용 System.out.println("컨트롤러");
+		 * 
+		 * // np_use를 byte로 변환 (1 또는 0) byte useByte = (np_use != null &&
+		 * np_use.equals("1")) ? (byte) 1 : (byte) 0; List<NewsPaperVO> newspapers =
+		 * newspaperService.searchNewspapers(np_name, useByte, intNpNo);
+		 * 
+		 * model.addAttribute("newspapers", newspapers); System.out.println("컨트롤러2");
+		 * return "/admin/admDaycheck/daycheckAdm"; // admin/news.html로 이동 }
+		 */
+
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	// 연결해보니까 데이터 타입 문제 아직 없던데 불러올떄는 그럼 진짜 첨에 받아올때 컨트롤러에서 데이터 타입으로 바꿔서 스트링으로 보내도 문제없나
+	// 더미데이터 일단 넣어놨음 
+		
+	
 	
 	
 	
