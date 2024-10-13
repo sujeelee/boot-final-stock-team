@@ -232,18 +232,18 @@
 					<hr>
 					<div class="my-details">
 						<div class="my-info-left">
-							<label class="my-text-left">뉴스 회원</label>
+							<label class="my-text-left" for="news">뉴스 회원</label>
 				        </div>
 				        <div class="my-info-right">
-				            <input type="checkbox"/>
+				            <input type="checkbox" name="mp_type" id="news" value="news" onclick="checkOnlyOne(this);"/>
 				        </div>
 					</div>
 					<div class="my-details">
 						<div class="my-info-left">
-							<label class="my-text-left">주식 회원</label>
+							<label class="my-text-left" for="stock">주식 회원</label>
 				        </div>
 				        <div class="my-info-right">
-				            <input type="checkbox"/>
+				            <input type="checkbox" name="mp_type" id="stock" value="stock" onclick="checkOnlyOne(this);"/>
 				        </div>
 					</div>
 					<div class="d-flex">
@@ -253,6 +253,15 @@
 				</section>
 		    </div>
 		</div>
+		<script th:inline="javascript">
+			function checkOnlyOne(type) {
+				const checkboxes = $("input[name='mp_type']");
+	            checkboxes.each(function() {
+	                $(this).prop('checked', false);
+	            });
+	            $(type).prop('checked', true);
+			}
+		</script>
 	</main>
 </body>
 </html>

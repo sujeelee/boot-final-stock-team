@@ -241,8 +241,5 @@ public class MyAccountController {
 		
 		return "myaccount/point";
 	}
-	
-
-
 
 }
