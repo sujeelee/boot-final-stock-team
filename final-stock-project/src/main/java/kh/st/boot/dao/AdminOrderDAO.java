@@ -13,6 +13,8 @@ public interface AdminOrderDAO {
 
 		List<admOrderPageVO> searchIdName(String od_name, String mb_id);
 
+		List<admOrderPageVO> searchNum(String od_id);
+
 		
 
 	}

@@ -3,17 +3,27 @@
 <mapper namespace="kh.st.boot.dao.AdminOrderDAO">
 
 	<select id="selectAlladminOrder" resultType="admOrderPageVO">
-		SELECT * FROM
-		`order`
+		SELECT * FROM `order`
 	</select>
 
 
-	<select id="searchIdName" resultType="admOrderPageVO">
+	<select id="searchIdName"
+		resultType="admOrderPageVO">
+		SELECT *
+		FROM `order`
+		WHERE od_name = #{od_name}
+		AND mb_id = #{mb_id}
+	</select>
+
+
+	<select id="searchNum" resultType="admOrderPageVO">
 		SELECT *
 		FROM `order`
 		WHERE
-		od_name = #{od_name}
-		AND mb_id = #{mb_id}
+		od_id = #{od_id}
 	</select>
+
+	
+
 
 </mapper>

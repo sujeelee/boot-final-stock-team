@@ -28,6 +28,11 @@ public class AdminOrderService {
 	}
 
 
+	public List<admOrderPageVO> ssearchNum(String od_id) {
+		return 	adminOrderDAO.searchNum(od_id);
+	}
+
+
 
 	
 }

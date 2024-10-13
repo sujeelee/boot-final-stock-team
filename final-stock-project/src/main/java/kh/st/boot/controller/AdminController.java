@@ -250,26 +250,18 @@ public class AdminController {
 			
 		}
 		
-		/*
-		 * @PostMapping("/admDaycheck/daycheckAdm/search") public String
-		 * searchIdName @RequestParam String od_name,
-		 * 
-		 * @RequestParam String mb_id , Model model) {
-		 * 
-		 * int intNpNo = (np_no != null) ? np_no.intValue() : 0; // np_no가 null이면 기본값 0
-		 * 사용 System.out.println("컨트롤러");
-		 * 
-		 * // np_use를 byte로 변환 (1 또는 0) byte useByte = (np_use != null &&
-		 * np_use.equals("1")) ? (byte) 1 : (byte) 0; List<NewsPaperVO> newspapers =
-		 * newspaperService.searchNewspapers(np_name, useByte, intNpNo);
-		 * 
-		 * model.addAttribute("newspapers", newspapers); System.out.println("컨트롤러2");
-		 * return "/admin/admDaycheck/daycheckAdm"; // admin/news.html로 이동 }
-		 */
-
+		
 	
+		// 주문번호로 검색
 		
-		
+		@PostMapping("/admOrder/orderAdm/ssearch")
+		public String searchNum(@RequestParam String od_id, Model model) {
+			List<admOrderPageVO> ssearchOrder = adminOrderService.ssearchNum(od_id);
+			model.addAttribute("list", ssearchOrder);
+			return "/admin/admOrder/orderAdm";
+			
+		}
+	
 		
 		
 		
