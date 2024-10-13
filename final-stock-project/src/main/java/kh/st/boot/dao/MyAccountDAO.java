@@ -14,4 +14,6 @@ public interface MyAccountDAO {
 	
 	List<PointVO> selectPointList(String mb_id);
 
+	void updatePw(String mb_id, String mb_password);
+
 }

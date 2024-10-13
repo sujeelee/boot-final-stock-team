@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kh.st.boot.model.util.DateUtil;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.service.MemberService;
 import kh.st.boot.service.MyAccountService;
 import lombok.AllArgsConstructor;
 
@@ -29,6 +31,7 @@ import lombok.AllArgsConstructor;
 public class MyAccountController {
 	
 	private MyAccountService myAccountService;
+	private MemberService memberService;
 	
 	@GetMapping("/asset")
 	public String asset(Model model, Principal principal) {
@@ -181,7 +184,27 @@ public class MyAccountController {
 	
 	@GetMapping("/settings")
 	public String settings() {
-		
 		return "myaccount/settings";
 	}
+	
+	@GetMapping("/password")
+	public String password() {
+		return "myaccount/password";
+	}
+	
+	@PostMapping("/password")
+	@ResponseBody
+	public Map<String, Object> passwordPost(Model model, Principal principal, String password, MemberVO member) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		boolean res = myAccountService.checkPw(user, password);
+	    if(res) {
+	    	myAccountService.updatePw(principal.getName(), member.getMb_password());
+	    	map.put("success", true);
+	    } else {
+	        map.put("success", false);
+	    }
+	    return map;
+	}
+
 }

@@ -28,5 +28,8 @@
 		WHERE
 			MB_ID = #{mb_id}
 	</select>
-
+	
+	<update id="updatePw">
+		UPDATE MEMBER SET MB_PASSWORD = #{mb_password} WHERE MB_ID = #{mb_id}
+	</update>
 </mapper>

@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 	<style type="text/css">
 		/* Container */
+		/* Container */
 		.my-container {
 		    display: grid;
 		    grid-template-columns: 184px minmax(10px, 1fr);
@@ -52,18 +53,16 @@
             transition: background-color 0.2s;
             width: 100%;
         }
-        
-        /* li 태그에 호버 효과 추가 */
+
         .my-list li:hover {
-            border-radius: 20px;
+		    border-radius: 20px;
 		    background-color: #f9fafb;
         }
         .my-text {
+        	font-weight: 500;
             font-size: 17px;
             color: #888;
-            transition: color 0.2s;
         }
-        
 		/* Header */
 		.my-header {
 		    margin-bottom: 30px;
@@ -96,17 +95,29 @@
 		
 		.my-info-left {
 			display: flex;
-			flex-direction: row;
+            flex-direction: column;
 		}
 		
 		.my-info-right {
 			display: flex;
-			flex-direction: row;
+            flex-direction: column;
+            align-items: flex-end;
 		}
 		
 		.my-text-left {
             color: #4e5968;
             font-size: 17px;
+		}
+		
+		.my-text-left1 {
+            color: #4e5968;
+            font-size: 17px;
+            text-align: left
+		}
+		
+		.my-text-left2 {
+            color: #4e5968;
+            font-size: 13px;
 		}
 		
 		.my-text-right {
@@ -125,7 +136,7 @@
 		}
 		
 		.my-button:hover{
-			background-color: #ddd;
+			background-color: #f9fafb;
 			border-radius: 10px;
 		}
 		
@@ -158,7 +169,8 @@
 							
 						</div>
 						<div class="my-info-right">
-							<span class="my-text-right">xxxx-xx-xx</span>
+							<span class="my-text-right"
+								  th:text="${#authentication.principal.member.mb_account}"></span>
 						</div>
 					</div>
 					<div class="my-details">
@@ -166,24 +178,28 @@
 							<span class="my-text-left">개설일</span>
 						</div>
 						<div class="my-info-right">
-							<span class="my-text-right">000</span>
+							<span class="my-text-right" 
+								  th:text="${#dates.format(#authentication.principal.member.mb_datetime, 'yyyy년 MM월 dd일')}"></span>
 						</div>
 					</div>
 				</section>
 				<section class="my-section">
 					<span class="sub-header-title">내 계정 관리</span>
 					<hr>
-					<button class="my-button">
-						<div class="my-details">
-							<div class="my-info-left">
-								<span class="my-text-left">비밀번호 변경</span>
-								
+					<a href="#" onclick="window.open('/myaccount/password', '_blank', 'width=600,height=400,left=650,top=300'); return false;">
+						<button class="my-button">
+							<div class="my-details">
+								<div class="my-info-left">
+									<span class="my-text-left">비밀번호 변경</span>
+									
+								</div>
+								<div class="my-info-right">
+									<span class="my-text-right">></span>
+								</div>
 							</div>
-							<div class="my-info-right">
-								<span class="my-text-right">></span>
-							</div>
-						</div>
-					</button>
+						</button>
+					</a>
+					<a href="#" onclick="window.open('/myaccount/delete', '_blank', 'width=600,height=400,left=650,top=300'); return false;">
 					<button class="my-button">
 						<div class="my-details">
 							<div class="my-info-left">
@@ -194,6 +210,7 @@
 							</div>
 						</div>
 					</button>
+					</a>
 				</section>
 				<section class="my-section">
 					<span class="sub-header-title">이체</span>
@@ -201,7 +218,8 @@
 					<button class="my-button">
 						<div class="my-details">
 							<div class="my-info-left">
-								<span class="my-text-left">송금 한도</span>
+								<span class="my-text-left1">송금 한도</span>
+								<span class="my-text-left2">1회 100만원, 1일 100만원</span>
 							</div>
 							<div class="my-info-right">
 								<span class="my-text-right">></span>
