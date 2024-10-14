@@ -1,6 +1,6 @@
 package kh.st.boot.service;
 
-import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import kh.st.boot.dao.EventDAO;
 import kh.st.boot.model.dto.EventDTO;
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.FileVO;
+import kh.st.boot.model.vo.PrizeVO;
 import kh.st.boot.utils.UploadFileUtils;
 
 @Service
@@ -53,12 +54,13 @@ public class EventServiceImp implements EventService {
 
         if (res) {
             EventVO tmpEv = eventDao.getEventToImportAFile();//방금 set한 event를 가져온다.
-            uploadFile(file, tmpEv.getEv_no());
+            uploadFile(file, tmpEv.getEv_no(), "event");
         }
         return false;
     }
 
-	private void uploadFile(MultipartFile file, int ev_no) {
+    //파일
+	private void uploadFile(MultipartFile file, int ev_no, String fi_type) {
 		if(file == null || file.getOriginalFilename().trim().length() == 0) {
 			return;
 		}
@@ -67,7 +69,7 @@ public class EventServiceImp implements EventService {
 		try {
 			String fi_path = UploadFileUtils.uploadFile(uploadPath, fi_org_name, file.getBytes());
 			// 업로드한 정보를 DB에 추가
-			FileVO fileVo = new FileVO(fi_path, fi_org_name, ev_no, "event");
+			FileVO fileVo = new FileVO(fi_path, fi_org_name, ev_no, fi_type);
 			eventDao.setEventFile(fileVo);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +108,7 @@ public class EventServiceImp implements EventService {
         if (up && !file.isEmpty()) {
             up = eventDao.deleteEventThumbnailFile(event.getEv_no());
             UploadFileUtils.delteFile(uploadPath, event.getFi_path());
-            uploadFile(file, event.getEv_no());
+            uploadFile(file, event.getEv_no(), "event");
         }
 
         return up;
@@ -117,17 +119,56 @@ public class EventServiceImp implements EventService {
         if (mb_id == null) {
             return false;
         }
-        int sum = 0;
-        for(int i = 0; i < checkList.length ; i ++){
-            sum += checkList[i];
+
+        String arrayAsString = Arrays.toString(checkList).replaceAll("[\\[\\] ]", "");
+
+
+        if (eventDao.setCalenderEvent_add50point(mb_id)) {
+            eventDao.setPointByCalenderEvent(mb_id);
+            return eventDao.setNewCalenderEvent(mb_id, arrayAsString);
         }
         
-        if (sum == 0) {
-            return eventDao.setNewCalenderEvent(mb_id, checkList);
+        return false;
+    }
+
+    @Override
+    public String getCalenderEventValue(String name) {
+        if (name == null || name.trim().length() == 0) {
+            return null;
+        }
+        return eventDao.getCalenderEventValue(name);
+    }
+
+    @Override
+    public boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize, MultipartFile file) {
+        if (prize == null || prize.getPr_name().trim().length() == 0) {
+            return false;
         }
 
-        return eventDao.setCalenderEvent(mb_id, checkList);
+        boolean res = eventDao.setPrizeToBeUsedFromTheEvent(prize);
+
+        if (res) {
+            PrizeVO tmpPrize = eventDao.getPrizeLastOne();
+            uploadFile(file, tmpPrize.getPr_no(), "prize");
+        }
+        return res;
     }
+
+    @Override
+    public List<EventVO> getEventListByEventForm(String form) {
+        if (form == null || form.trim().length() == 0) {
+            return null;
+        }
+
+        return eventDao.getEventListByEventForm(form);
+    }
+
+    @Override
+    public List<PrizeVO> getPrizeListByEv_no(int ev_no) {
+
+        return eventDao.getPrizeListByEv_no(ev_no);
+    }
+
 
     
 

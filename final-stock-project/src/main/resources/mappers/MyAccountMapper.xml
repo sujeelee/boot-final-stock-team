@@ -21,11 +21,12 @@
 			DE_DATETIME >= #{date}
 	</select>
 
-	<select id="selectDepositList" resultType="DepositVO">
+	<select id="selectPointList">
 		SELECT *
 		FROM
-			DEPOSIT
-		WHERE MB_ID = #{mb_id}
-		order by de_no DESC
+			POINT
+		WHERE
+			MB_ID = #{mb_id}
 	</select>
+
 </mapper>

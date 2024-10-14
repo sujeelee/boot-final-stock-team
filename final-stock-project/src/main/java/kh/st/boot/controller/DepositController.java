@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.st.boot.model.vo.DepositOrderVO;
-import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.DepositService;
-import kh.st.boot.service.MemberService;
 
 
 @Controller
@@ -40,6 +38,8 @@ public class DepositController {
         	
             return "util/msg";
         }
+        
+        depositService.deleteStatusStay(principal.getName());
         
         model.addAttribute("clientId", CLIENT_ID);
         

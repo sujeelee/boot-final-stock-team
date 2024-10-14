@@ -47,4 +47,43 @@
 			de_before_num = #{de.de_before_num},
 			de_datetime = NOW()
 	</insert>
+	<delete id="deleteStatusStay">
+		delete from deposit_order where do_status = '대기' and mb_id = #{mb_id}
+	</delete>
+	<select id="getCount" resultType="int">
+		select count(*) from deposit 
+		where mb_id = #{mb_id}
+		<if test="cri.type == 'stock'">
+			and de_stock_code != ''
+		</if>
+		<if test="cri.detail == 'sell'">
+			and de_content REGEXP('매수|매도')
+		</if>
+		<if test="cri.detail == 'account'">
+			and de_content REGEXP('예치금|송금|출금')
+		</if>
+		<if test="cri.detail == 'stocks'">
+			and de_content REGEXP('입고|출고')
+		</if>
+	</select>
+	<select id="getDepositMember" resultType="DepositVO">
+		select * from deposit 
+		where mb_id = #{mb_id}
+		<if test="cri.type == 'stock'">
+			and de_stock_code != ''
+		</if>
+		<if test="cri.detail == 'sell'">
+			and de_content REGEXP('매수|매도')
+		</if>
+		<if test="cri.detail == 'account'">
+			and de_content REGEXP('예치금|송금|출금')
+		</if>
+		<if test="cri.detail == 'stocks'">
+			and de_content REGEXP('입고|출고')
+		</if>
+		order by de_no DESC
+		<if test="cri != null">
+			limit #{cri.pageStart}, #{cri.perPageNum}
+		</if>
+	</select>
 </mapper>

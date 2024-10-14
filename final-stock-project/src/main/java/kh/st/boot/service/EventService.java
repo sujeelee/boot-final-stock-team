@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kh.st.boot.model.dto.EventDTO;
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.FileVO;
+import kh.st.boot.model.vo.PrizeVO;
 
 public interface EventService {
 
@@ -25,5 +26,14 @@ public interface EventService {
     boolean updateEvent_withFile(EventVO event, MultipartFile file);
 
     boolean CalenderEvent(String mb_id, int[] checkList);
+
+    String getCalenderEventValue(String name);
+
+    boolean setPrizeToBeUsedFromTheEvent(PrizeVO prize, MultipartFile file);
+
+    List<EventVO> getEventListByEventForm(String form);
+
+    List<PrizeVO> getPrizeListByEv_no(int ev_no);
+
     
 }
