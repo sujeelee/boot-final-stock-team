@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>Admin Level Page</title>
+<link th:href="@{/css/admnews.css}" rel="stylesheet" />
+
+<!--  스타일 적용 했음  -->
+</head>
+<style>
+     
+</style>
+<body>
+	<div class="content">
+		<!--  이거 추가하니까 사이드바랑 곂치던거 해결됨 wht?>???>??<>>?>?>?>?>?>>? -->
+		<h1>주문 내역 조회 페이지 </h1>    <!--  아무것도 수정하지 않음     여기는 제일 마지막에 작업     -->
+		 <div class="update-from">
+		
+			<form action="/admin/admPoint/admPointPage/searchId" method="post">
+				<input type="text" name="mb_id" placeholder="사용자 ID" required>
+				<button type="submit">사용자ID 검색</button>
+			</form>
+		</div>
+		 <div class="register-form">
+	
+			<form action="/admin/admOrder/orderAdm/ssearch" method="post">
+				<input type="text" name="po_no" placeholder="등록번호 검색" required>
+				<button type="submit">등록번호 검색</button>
+			</form>
+			
+		 <div class="register-form">
+	
+			<form action="/admin/admOrder/orderAdm/delet" method="post">
+				<input type="text" name="od_id" placeholder="주문번호" required>
+				<button type="submit">내역삭제</button><!-- 수정전--> 
+				
+			</form>
+			
+     	 <div class="register-form">
+	
+			<form action="/admin/admOrder/orderAdm/delet" method="post">
+				<input type="text" name="od_id" placeholder="주문번호" required>
+				<button type="submit">내역수정</button><!-- 수정전--> 
+				
+			</form>
+	
+		</div> 
+	</div>
+	 
+	<table>
+		<thead>
+			<tr>
+				<div></div>
+				<th>등록번호</th>
+				<th>포인트</th>
+				<th>지급사유</th>
+				<th>지급일</th>
+				<th>유효기간</th>
+				<th>회원 ID</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="list : ${list}">
+				<td th:text="${list.po_no}"></td>
+            	<td th:text="${list.po_nom}"></td>
+				<td th:text="${list.po_content}"></td>
+				<td th:text="${list.po_detetime}"></td>
+				<td th:text="${list.po_end_date}"></td>
+				<td th:text="${list.mb_id}"></td>
+				
+				<!-- 	
+					<form action="/admin/admLevel/admLevelPage/delet" method="post"
+						style="display: inline;">
+						<input type="hidden" name="lv_name" th:value="${list.lv_name}" />
+						레벨 이름
+						<input type="hidden" name="lv_num" th:value="${list.lv_num}" />
+						레벨 번호
+						<input type="hidden" name="lv_alpha" th:value="${list.lv_alpha}" />
+						레벨 혜택
+						<input type="hidden" name="lv_auto_use"
+							th:value="${list.lv_auto_use}" />
+						승급 심사 여부
+						<input type="hidden" name="lv_up_limit"
+							th:value="${list.lv_up_limit}" />
+						레벨업 기준
+						<button type="submit" style="font-size: 12px;"
+							onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+					</form>
+				 </td> -->
+
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
