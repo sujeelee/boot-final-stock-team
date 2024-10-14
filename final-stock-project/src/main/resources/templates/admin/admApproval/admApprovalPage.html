@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>Admin Level Page</title>
+<link th:href="@{/css/admnews.css}" rel="stylesheet" />
+<!--  스타일 적용 했음  -->
+</head>
+<style>
+</style>
+<body>
+	 <!-- <div class="content">
+		 이거 추가하니까 사이드바랑 곂치던거 해결됨 wht?>???>??<>>?>?>?>?>?>>?
+		<h1>상장사/신문사 승인관리페이지</h1>
+		<div class="update-from">
+			insert 레이아웃 나눈거
+			<form action="/admin/admLevel/admLevelPage/update" method="post">
+
+				<input type="text" name="lv_name" placeholder="등급" required>
+				<input type="text" name="lv_num" placeholder="레벨" required>
+				<input type="text" name="lv_alpha" placeholder="등급 혜택" required>
+				<select name="lv_auto_use" required>
+					<option value="1">자동 승급</option>
+					<option value="0">관리자 승인 필요</option>
+				</select> <input type="text" name="lv_up_limit" placeholder="레벨업 기준" required>
+				<button type="submit">수정</button>
+			</form>
+		</div>
+		<div class="register-form">
+			insert 레이아웃 나눈거
+			<form action="/admin/admLevel/admLevelPage/insert" method="post">
+
+				<input type="text" name="lv_name" placeholder="등급" required>
+				<input type="text" name="lv_num" placeholder="레벨" required>
+				<input type="text" name="lv_alpha" placeholder="등급 혜택" required>
+				<select name="lv_auto_use" required>
+					<option value="1">자동 승급</option>
+					<option value="0">관리자 승인 필요</option>
+				</select> <input type="text" name="lv_up_limit" placeholder="레벨업 기준" required>
+				<button type="submit">등록</button>
+			</form>
+		</div>
+	</div> --> -->
+	<!-- 레벨 테이블 -->
+	<table>
+		<thead>
+			<tr>
+				<th>고유번호</th>
+				<th>회원 고유번호</th>
+				<th>주식인지 뉴스인지 타입</th>
+				<th>뉴스사/상장사 이름</th>
+				<th>신청일자</th>
+				<th>승인/거절</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="list : ${list}">
+				<td th:text="${list.mp_no}"></td>
+				<td th:text="${list.mb_no}"></td>
+				<td th:text="${list.mp_type}"></td>
+				<td th:text="${list.mp_company}"></td>
+				<td th:text="${list.mp_datetime}"></td>
+				<td> 
+					<button value="y" th:attr="data-no=${list.mp_no}" onclick="btnYN(this)">승인</button>
+					<button value="n" th:attr="data-no=${list.mp_no}" onclick="btnYN(this)">거절</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+		
+</body>
+</html>
+
+
+

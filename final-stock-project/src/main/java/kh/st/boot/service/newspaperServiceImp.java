@@ -51,9 +51,9 @@ public class newspaperServiceImp implements newspaperService {
 			// 여기서 이름을 판별해서 matchesName 안에 넣는데
 			boolean matchesStatus = (np_use == 1 && newspaper.getNp_use() == 1)
 					|| (np_use == 0 && newspaper.getNp_use() == 0);
-
+			
 			if (matchesName && matchesStatus) {
-				filteredNewspapers.add(newspaper);
+				filteredNewspapers.add(newspaper);  
 			}
 		}
 

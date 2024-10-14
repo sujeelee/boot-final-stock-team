@@ -1,21 +1,28 @@
 package kh.st.boot.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import groovy.transform.AutoImplement;
+import kh.st.boot.model.vo.AdmApprovalVO;
 import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
+import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
 import kh.st.boot.service.PointSltIdPageService;
@@ -42,7 +49,8 @@ public class AdminController {
 	@Autowired
 	private PointSltIdPageService pointSltIdPageService;
 	
-	
+	@Autowired
+	private AdminApprovalService adminApprovalService;
 	
 	
 	// adminhome에 값을 보내줄 내용
@@ -289,6 +297,35 @@ public class AdminController {
 			
 		}
 
+		
+		
+		// -------------------------------------------------------------------------------
+		// --------------------------주식/뉴스 회원승인 ----------------------------------
+		// -------------------------------------------------------------------------------
+				
+		
+		// 접속시 신청승인여부 null 인지 확인해서 처리해야 하는것만 불러오기 
+		
+		@GetMapping("/admApproval/admApprovalPage")
+		public String nullSltApproval( Model model) {
+			List<AdmApprovalVO> nullSlt = adminApprovalService.nullSelect();
+			model.addAttribute("list", nullSlt);
+			return "/admin/admApproval/admApprovalPage"; 
+		}
+		
+		
+		// 승인 했을때 
+	
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
