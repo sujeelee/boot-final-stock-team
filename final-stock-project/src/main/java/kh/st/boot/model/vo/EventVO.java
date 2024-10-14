@@ -23,6 +23,7 @@ public class EventVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ev_end;
     private String ev_status;
+    private String ev_form;
     private int ev_cnt;
 
     //이벤트 DB에는 fi_path가 없습니다.

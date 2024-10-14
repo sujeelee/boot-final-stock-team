@@ -214,10 +214,10 @@
                     			   th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
 	                    	<div class="balance-info">
 	                        	<span class="my-balance-text1" 
-	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 0, 'COMMA')} + '원'"></span>
+	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 1, 'COMMA')} + '원'"></span>
 	                        	<div class="balance-box">
 		                        	<span class="my-balance-text2"
-		                        		  th:text="'지난주보다 ' + ${#numbers.formatInteger(money, 0, 'COMMA')} + '원'"></span>
+		                        		  th:text="'지난주보다 ' + ${#numbers.formatInteger(money, 1, 'COMMA')} + '원'"></span>
 		                        	<span class="my-balance-text2"
 		                        		  th:text="'(' + ${rateOfReturn} + '%)'"></span>		
 	                        	</div>
@@ -232,9 +232,9 @@
 		                </div>
 		                <div class="period-buttons">
 		                    <button class="period-button active" onclick="loadPeriodData(this)" value="1week">1주</button>
-		                    <button class="period-button" onclick="loadPeriodData(this)" value="1month">1달</button>
-		                    <button class="period-button" onclick="loadPeriodData(this)" value="3month">3달</button>
-		                    <button class="period-button" onclick="loadPeriodData(this)" value="1year">1년</button>
+		                    <button class="period-button" 		 onclick="loadPeriodData(this)" value="1month">1달</button>
+		                    <button class="period-button" 		 onclick="loadPeriodData(this)" value="3month">3달</button>
+		                    <button class="period-button" 		 onclick="loadPeriodData(this)" value="1year">1년</button>
 		                </div>
 		            </section>
 		
@@ -260,8 +260,12 @@
 					            </div>
 					        </div>
 					        <div class="order-buttons">
-					            <button class="action-button">채우기</button>
-					            <button class="action-button">보내기</button>
+					        	<a th:href="@{/deposit}">
+					            	<button class="action-button">채우기</button>
+					            </a>
+					            <a th:href="@{/deposit/send}">
+					            	<button class="action-button">보내기</button>
+					            </a>
 					            <button class="action-button">환전</button>
 					        </div>
 					    </section>

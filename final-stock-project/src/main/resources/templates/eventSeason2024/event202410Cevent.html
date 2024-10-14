@@ -21,20 +21,24 @@
             text-align: center;
             
         }
+        
         h1 {
             color: #333;
         }
+        
         .month-header {
             font-size: 24px;
             color: #007BFF;
             margin-bottom: 10px;
         }
+        
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 5px;
             margin-top: 20px;
         }
+        
         .day, .weekday {
             padding: 15px;
             background-color: #e0f7fa;
@@ -42,17 +46,21 @@
             text-align: center;
             font-weight: bold;
         }
+        
         .weekday {
             background-color: #b2ebf2;
         }
+        
         .day.today {
             background-color: #FFE57F; /* 연노란색 */
             color: black;
         }
+        
         .day.checked {
             background-color: #007BFF; /* 푸른색 */
             color: white;
         }
+        
         button {
             padding: 10px 20px;
             margin-top: 20px;
@@ -62,6 +70,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;

@@ -26,8 +26,8 @@
     </select>
 
     <insert id="setEvent">
-        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status, ev_datetime)
-        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status}, now())
+        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status, ev_datetime, ev_form)
+        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status}, now(), #{ev_form})
     </insert>
 
     <select id="getEventToImportAFile" resultType="EventVO">
@@ -55,7 +55,7 @@
 
     <update id="updateEvent">
         update event
-        set ev_title = #{ev_title}, ev_content = #{ev_content}, ev_start = #{ev_start}, ev_end = #{ev_end}, ev_status = #{ev_status}
+        set ev_title = #{ev_title}, ev_content = #{ev_content}, ev_start = #{ev_start}, ev_end = #{ev_end}, ev_status = #{ev_status}, ev_form = #{ev_form}
         where ev_no = #{ev_no}
     </update>
 
@@ -70,7 +70,7 @@
 
     <update id="setCalenderEvent_add50point">
         update member
-        set mb_point = mb_point + 30
+        set mb_point = mb_point + 50
         where mb_id = #{mb_id}
     </update>
 
@@ -82,4 +82,22 @@
     <select id="getCalenderEventValue" resultType="String">
         select dc_days FROM day_check where mb_id = #{name} order by dc_datetime desc LIMIT 1
     </select>
+
+    <select id="getEventListByEventForm" resultType="EventVO">
+        select * from event where ev_form = #{form}
+    </select>
+
+    <insert id="setPrizeToBeUsedFromTheEvent">
+        insert into prize(pr_link, pr_name, pr_point, pr_startLevel, pr_endLevel, ev_no, ep_rank)
+        value(#{pr_link}, #{pr_name}, #{pr_point}, #{pr_startLevel}, #{pr_endLevel}, #{ev_no}, #{ep_rank})
+    </insert>
+
+    <select id="getPrizeListByEv_no" resultType="PrizeVO">
+        select prize.*, fi_path from prize left join file on pr_no = fi_reg_no where fi_type = "prize" and ev_no = #{ev_no}
+    </select>
+
+    <select id="getPrizeLastOne" resultType="PrizeVO">
+        select * from prize order by pr_no desc limit 1
+    </select>
+
 </mapper>
