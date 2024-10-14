@@ -40,4 +40,12 @@
 	<delete id="deleteUser">
 		DELETE FROM MEMBER WHERE MB_ID = #{mb_id}
 	</delete>
+	
+	<select id="selectStockList" resultType="StockVO">
+		SELECT * FROM STOCK
+	</select>
+	
+	<select id="selectMemberApprove" resultType="MemberApproveVO">
+		SELECT * FROM MEMBER_APPROVE WHERE MB_NO = #{mb_no}
+	</select>
 </mapper>

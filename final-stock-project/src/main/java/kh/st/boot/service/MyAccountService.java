@@ -4,8 +4,10 @@ import java.util.List;
 
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
+import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.StockVO;
 
 public interface MyAccountService {
 	
@@ -20,5 +22,9 @@ public interface MyAccountService {
 	boolean updatePw(String name, String mb_password);
 
 	boolean deleteUser(MemberVO user);
+
+	List<StockVO> getStockList();
+
+	MemberApproveVO getMemberApprove(int mb_no);
 
 }

@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.MyAccountDAO;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
+import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
-
+import kh.st.boot.model.vo.StockVO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -68,5 +69,15 @@ public class MyAccountServiceImp implements MyAccountService {
 			return myAccountDao.deleteUser(user.getMb_id());
 		}
 		return false;
+	}
+
+	@Override
+	public List<StockVO> getStockList() {
+		return myAccountDao.selectStockList();
+	}
+
+	@Override
+	public MemberApproveVO getMemberApprove(int mb_no) {
+		return myAccountDao.selectMemberApprove(mb_no);
 	}
 }

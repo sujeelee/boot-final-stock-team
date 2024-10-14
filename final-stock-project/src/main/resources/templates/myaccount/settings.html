@@ -149,6 +149,23 @@
 		input[type="checkbox"]:checked {
 		    background-color: #4e5968;
 		}
+		
+		.drop-btn {
+			width: 100%;
+			border: 0;
+ 			background-color: #fff;
+		}
+		
+		.drop-btn:hover {
+			background-color: gray;
+		}
+		
+		#selected-value {
+			margin-left: 10px; 
+			font-weight: bold; 
+			color: #333d4b; 
+			font-size: 26px;
+		}
 	</style>
 </head>
  <body>
@@ -234,7 +251,7 @@
 						<div class="my-info-left">
 							<label class="my-text-left" for="news">뉴스 회원</label>
 				        </div>
-				        <div class="my-info-right">
+				        <div class="my-info-right ">
 				            <input type="checkbox" name="mp_type" id="news" value="news" onclick="checkOnlyOne(this);"/>
 				        </div>
 					</div>
@@ -247,20 +264,153 @@
 				        </div>
 					</div>
 					<div class="d-flex">
-						<div class="mr-auto"></div>
-			        	<button class="btn btn-outline-dark">신청</button>
+						<div>
+							<button type="button" class="btn btn-outline-dark dropdown-toggle" id="dropdown-toggle" style="display: none;" data-toggle="dropdown">
+			      				선택
+							</button>
+							<div class="dropdown-menu">
+								<input type="button" class="drop-btn">
+							</div>
+						</div>
+						<div class="mr-auto">
+			        		<span id="selected-value"></span>
+			        	</div>
+			        	<button class="btn btn-outline-dark" onclick="submitForm()">신청</button>
 			        </div>
 				</section>
+				<form id="submit-form" action="/myaccount/submit" method="post">
+					<input type="hidden" id="mp_type" name="mp_type">
+					<input type="hidden" id="mp_company" name="mp_company">
+					<input type="hidden" id="mb_no" name="mb_no" th:value="${#authentication.principal.member.mb_no}">
+					<input type="hidden" id="mp_datetime" name="mp_datetime" value="">
+				</form>
 		    </div>
 		</div>
 		<script th:inline="javascript">
+			$(document).ready(function(){
+				$.ajax({
+					async : true, //비동기 : true(비동기), false(동기)
+					url: '/myaccount/checkStatus',
+					type: 'post',
+					dataType: 'json',
+					success: function(data) {
+						console.log(data);
+						if(data.status == 'waiting') {
+							// 승인 요청중일 때
+							displayWaiting();
+						}
+						else if(data.status == 'success') {
+							// 승인이 성공했을 때
+						}
+						else if(data.status == 'fail') {
+							// 승인이 실패했을 때
+							displayFail();
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown){
+			    		console.log(jqXHR);
+			    	}
+				});
+				function displayWaiting() {
+				    
+				} // 승인 요청중일 때
+				
+				function displaySuccess() {
+				
+				} // 승인이 성공했을 때
+				
+				function displayFail() {
+				  
+				} // 승인이 거절 당했을 때
+			});
+		
 			function checkOnlyOne(type) {
-				const checkboxes = $("input[name='mp_type']");
-	            checkboxes.each(function() {
-	                $(this).prop('checked', false);
-	            });
-	            $(type).prop('checked', true);
-			}
+			    const checkboxes = document.querySelectorAll("input[name='mp_type']");
+			    const dropdownToggle = document.getElementById('dropdown-toggle');
+			    if (type.checked) {
+			        checkboxes.forEach((checkbox) => {
+			            checkbox.checked = false;
+			        });
+			        type.checked = true;
+			        dropdownToggle.style.display = 'block';
+			    } else {
+			        type.checked = false;
+			        dropdownToggle.style.display = 'none';
+			    }
+			    
+			    // selected-value 값을 지우기
+			    $('#selected-value').text(''); // 값 지우기
+			    
+			    let mp_type = type.value;
+			    console.log(mp_type);
+			    $.ajax({
+			    	async : true, //비동기 : true(비동기), false(동기)
+			    	url : '/myaccount/settings/list', 
+			    	type : 'post', 
+			    	data : {
+			    				mp_type : mp_type
+			    			}, 
+			    	dataType : "json", 
+			    	success : function (data){
+			    		displayList(data.list);
+			    	}, 
+			    	error : function(jqXHR, textStatus, errorThrown){
+			    		console.log(jqXHR);
+			    	}
+			    });
+			    
+			    function displayList(list) {
+			    	let str = '';
+			        if (list.length > 0) {
+			            if (list[0].hasOwnProperty('st_name')) {
+			                for (const item of list) {
+			                    str += `
+			                        <input type="button" class="drop-btn" value="${item.st_name}" onclick="setValue('${item.st_name}', '${item.st_code}')">
+			                    `;
+			                }
+			            } else if (list[0].hasOwnProperty('np_name')) {
+			                for (const item of list) {
+			                    str += `
+			                        <input type="button" class="drop-btn" value="${item.np_name}" onclick="setValue('${item.np_name}', '')">
+			                    `;
+			                }
+			            }
+			        }
+			        $('.dropdown-menu').html(str);
+			    }
+			} // 체크박스 하나만 선택 || 같은거 누르면 취소
+			
+		    function setValue(name, code) {
+				var value = name;
+				var data_text = name;
+				if(code){
+					value += "[ " + code + " ]";
+					data_text = code;
+				}
+		        $('#selected-value').text(value);
+		        $('#selected-value').data("text", data_text);
+		    }
+			
+		    function submitForm() {
+		        const mp_type = $('input[name="mp_type"]:checked');
+		        const mp_company = $('#selected-value').data("text");
+
+		        if (!mp_type.length || !mp_company) {
+		            alert("체크박스와 버튼 값을 선택하세요.");
+		            return;
+		        }
+
+		        // 폼의 hidden input에 값 설정
+		        $('#mp_type').val(mp_type.val());
+		        $('#mp_company').val(mp_company);
+		        
+		        // 현재 시간 설정
+		        const now = new Date();
+		        $('#mp_datetime').val(now);
+
+		        // 폼 제출
+		        $('#submit-form').submit();
+		    }
 		</script>
 	</main>
 </body>

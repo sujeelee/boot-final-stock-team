@@ -20,10 +20,12 @@ import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.util.DateUtil;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
+import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.service.MemberService;
 import kh.st.boot.service.MyAccountService;
+import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -33,6 +35,7 @@ public class MyAccountController {
 	
 	private MyAccountService myAccountService;
 	private MemberService memberService;
+	private NewsService newsService;
 	
 	@GetMapping("/asset")
 	public String asset(Model model, Principal principal) {
@@ -171,10 +174,27 @@ public class MyAccountController {
         if (principal == null) {
         	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
-        	
             return "util/msg";
         }
 		return "myaccount/settings";
+	}
+	
+	@ResponseBody
+	@PostMapping("/settings/list")
+	public Map<String, Object> settingsList(String mp_type){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<?> list = null;
+		switch(mp_type) {
+		case "news":
+			list = newsService.getNewsPaperList(); 
+			map.put("list", list);
+			break;
+		case "stock":
+			list = myAccountService.getStockList();
+			map.put("list", list);
+			break;
+		}
+		return map;
 	}
 	
 	@GetMapping("/password")
@@ -222,6 +242,34 @@ public class MyAccountController {
 			map.put("success", false);
 		}
 	    return map;
+	}
+	
+	@PostMapping("submit")
+	public String submit(MemberApproveVO ma) {
+		System.out.println(ma);
+		return "myaccount/settings";
+	} // 관리자에서 처리해야 될것
+	
+	@ResponseBody
+	@PostMapping("/checkStatus")
+	public Map<String, Object> checkStatus(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		MemberApproveVO ma = myAccountService.getMemberApprove(user.getMb_no());
+		System.out.println(ma);
+		if(ma == null) {
+			map.put("status", "none");
+		}
+		else if(ma.getMp_yn() == null) {
+			map.put("status", "wating");
+		}
+		else if(ma.getMp_yn().equals("y")) {
+			map.put("status", "success");
+		}
+		else if(ma.getMp_yn().equals("n")) {
+			map.put("status", "fail");
+		}
+		return map;
 	}
 	
 	@GetMapping("/orders")
