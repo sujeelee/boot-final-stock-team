@@ -82,56 +82,62 @@
 </head>
 <body>
     <main layout:fragment="content">
-        <div class="container-event-Participatory-type">
+        <div class="container-event-Participatory-type" id="prize">
             
-            <div class="event-participation" th:each="prize : ${list}">    
+            <div class="event-participation" th:each="prize, n : ${list}" th:id="'get'+${prize.pr_link}">    
                 <h2>[[${prize.pr_name}]]</h2>
                 <div class="image-container">
                     <img th:src="@{'/uploads' + ${prize.fi_path}}" alt="Event Image" class="event-image" style="height: 200px;">
                 </div>
                 <p>아래의 버튼을 클릭하여 이벤트에 참여하세요!</p>
-                <button id="participateButton1" class="submit-button" onclick="">참여하기</button>
-                <div id="loader1" class="loader"></div>
-                <div id="confirmationMessage1" style="display: none;"></div>
-                <p class="points-required">소모 포인트: [[${prize.pr_point}]] 포인트</p> <!-- 소모되는 포인트 표기 -->
-                <p>현재 참여 인원: <span id="participantCount1">0</span>명</p>
+                <button id="participateButton" class="submit-button" th:onclick="participate([[${prize.pr_link}]],[[${prize.pr_point}]])" >참여하기</button>
+                <div th:id="'loader'+${n.index}" class="loader"></div>
+                <div id="confirmationMessage" style="display: none;"></div>
+                <p class="points-required">소모 포인트: [[${prize.pr_point}]] 포인트</p>
+                <p>현재 참여 인원: <span id="participantCount">0</span>명</p>
             </div>
-            <!-- 다른 이벤트 카드들은 동일한 구조로 추가 -->
         </div>
 
         <script th:inline="javascript">
-            function participate(eventId, buttonId, loaderId, confirmationMessageId, participantCountId) {
-                const loader = document.getElementById(loaderId);
-                const mb_id = /*[[${#authentication.Principal.member.mb_id}]]*/ ''; // 사용자 ID 가져오기
+            
+            const ev_no = /*[[${ev_no}]]*/ '';
+            const mb_id = /*[[${#authentication.Principal.member.mb_id}]]*/ '';
 
-                loader.style.display = "block"; // 로딩 스피너 표시
+            function participate(pr_link, pr_point){
+                
+
+
+                var PrizeTicket = {
+                    mb_id : mb_id,
+                    ev_no : ev_no,
+                    pr_link : pr_link,
+                    pr_point : pr_point
+                };
+                console.log(PrizeTicket);
+
+                var url = '/event/ajax/participate';
+
 
                 $.ajax({
-                    url: '/event/participate',
-                    type: 'POST',
-                    data: {
-                        mb_id: mb_id,
-                        eventId: eventId
-                    },
-                    success: function(response) {
-                        loader.style.display = "none";
-                        const confirmationMessage = document.getElementById(confirmationMessageId);
-                        confirmationMessage.textContent = "참여가 완료되었습니다! 감사합니다.";
-                        confirmationMessage.style.display = "block";
-                        const participantCount = document.getElementById(participantCountId);
-                        participantCount.textContent = response.newParticipantCount;
+                    url: url,
+                    type: 'post',
+                    data: JSON.stringify(PrizeTicket),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        $('#prize').replaceWith(data);
                     },
                     error: function(xhr, status, error) {
-                        loader.style.display = "none";
                         console.error('Error:', error);
-                        alert('참여에 실패했습니다. 다시 시도해 주세요.');
+                        console.error('Error:', xhr);
+                        console.error('Error:', status);
                     }
+  
                 });
-            }
 
-            document.getElementById("participateButton1").addEventListener("click", function() {
-                participate(1, "participateButton1", "loader1", "confirmationMessage1", "participantCount1");
-            });
+
+                
+            }
+            
         </script>
     </main>
 </body>
