@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import groovy.transform.AutoImplement;
+import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
+import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
 import kh.st.boot.service.newspaperServiceImp;
 
@@ -37,6 +39,12 @@ public class AdminController {
 	@Autowired
 	private AdminOrderService adminOrderService;
 
+	@Autowired
+	private PointSltIdPageService pointSltIdPageService;
+	
+	
+	
+	
 	// adminhome에 값을 보내줄 내용
 	@GetMapping("/adminHome")
 	public String admin(Model model) {
@@ -206,30 +214,39 @@ public class AdminController {
 	
 
 		// -------------------------------------------------------------------------------
-		// -------------------------- 포인트 검색 컨트롤러 -----------------------------------
+		// -------------------------- 포인트 적립내역 검색 컨트롤러 -----------------------------------
 		// -------------------------------------------------------------------------------
 	
 		
 		// 접속시 불러오기 
 		@GetMapping("/admDaycheck/daycheckAdm")
 		public String sltAdmPointPage(Model model) {
-			List<AdminLevelPageVO> ssltAdminLevelPage = sltAdmLevelPageService.getAllssltAdminLevelPage();
-			model.addAttribute("list", ssltAdminLevelPage);
+			List<AdmDaycheckVO> sltPoint= pointSltIdPageService.sltAllPoint();
+			model.addAttribute("list", sltPoint);
 			return "/admin/admDaycheck/daycheckAdm"; 
 		}
-	
-	
-	
-	
 		
 		
 		
-		
+		 // 검색하기
+		  
+		  @PostMapping("/admDaycheck/daycheckAdm/update")
+		  public String sltIdPointPage(@RequestParam String mb_id,Model model) {
+			  List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id); 
+	  		  model.addAttribute("list",sltPointOne);
+	  		  return "/admin/admDaycheck/daycheckAdm"; 
+	  		  
+		  }
+		 
+	
+	
 		
 		// -------------------------------------------------------------------------------
 		// -------------------------- 주문내역 조회 컨트롤러 ----------------------------------
 		// -------------------------------------------------------------------------------
 			
+		  
+		  
 		// 접속시 불러오기 
 		@GetMapping("/admOrder/orderAdm")
 		public String sltOrder(Model model) {
