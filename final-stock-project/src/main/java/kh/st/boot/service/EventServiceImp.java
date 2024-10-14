@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.dao.EventDAO;
 import kh.st.boot.model.dto.EventDTO;
+import kh.st.boot.model.dto.EventPrizeCounterDTO;
+import kh.st.boot.model.vo.EventPrizeVO;
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.PrizeVO;
@@ -167,6 +169,42 @@ public class EventServiceImp implements EventService {
     public List<PrizeVO> getPrizeListByEv_no(int ev_no) {
 
         return eventDao.getPrizeListByEv_no(ev_no);
+    }
+
+    @Override
+    public Boolean setEventPrizeTicket(EventPrizeVO ep) {
+        boolean res = false;
+        
+        if (ep.getEp_mb_id() == null || ep == null || ep.getEp_mb_id().trim().length() == 0) {
+            return false;
+        }
+        EventPrizeVO oldEp = getEventPrizeTicket(ep);
+        
+        if (oldEp == null) {
+            res = eventDao.setEventPrizeTicket(ep);
+        } else {
+            res = eventDao.updateEventPrizeTicket_AddOne(ep);
+        }
+
+        return res;
+    }
+
+    @Override
+    public EventPrizeVO getEventPrizeTicket(EventPrizeVO ep) {
+        if (ep == null || ep.getEp_mb_id() == null || ep.getEp_mb_id().trim().length() == 0) {
+            return null;
+        }
+        return eventDao.getEventPrizeTicket(ep);
+    }
+
+    @Override
+    public List<EventPrizeVO> getEventPrizeTicketList(int ep_no) {
+        return eventDao.getEventPrizeTicketList(ep_no);
+    }
+
+    @Override
+    public List<EventPrizeCounterDTO> getEventPrizeTicketCounter(int ev_no) {
+        return eventDao.getEventPrizeTicketCounter(ev_no);
     }
 
 
