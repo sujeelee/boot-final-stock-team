@@ -53,6 +53,7 @@ button {
 	background-color: #003366;
 	color: white;
 	cursor: pointer;
+	
 	width: 80px; /* 버튼 너비 줄이기 */
 	transition: background-color 0.3s; /* 배경색 전환 효과 */
 }
@@ -62,9 +63,10 @@ button:hover {
 }
 
 table {
-	width: 100%;
+	width: 80%;
 	border-collapse: collapse;
 	margin-top: 20px;
+	margin-left: 16%;
 }
 
 th, td {

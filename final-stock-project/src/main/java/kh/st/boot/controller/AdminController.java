@@ -263,6 +263,15 @@ public class AdminController {
 		}
 	
 		
+		// 주문번호로 삭제 
+		
+		@PostMapping("/admOrder/orderAdm/delet")
+		public String orderDelet(@RequestParam String od_id, Model model) {
+			List<admOrderPageVO> deletOrder = adminOrderService.deletOrderNum(od_id);
+			return "redirect:/admin/admOrder/orderAdm";
+			
+		}
+
 		
 		
 		
@@ -270,12 +279,6 @@ public class AdminController {
 		
 		
 		
-		
-		
-		
-		
-	// 연결해보니까 데이터 타입 문제 아직 없던데 불러올떄는 그럼 진짜 첨에 받아올때 컨트롤러에서 데이터 타입으로 바꿔서 스트링으로 보내도 문제없나
-	// 더미데이터 일단 넣어놨음 
 		
 	
 	

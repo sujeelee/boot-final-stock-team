@@ -6,9 +6,11 @@
 <meta charset="UTF-8">
 <title>Admin Level Page</title>
 <link th:href="@{/css/admnews.css}" rel="stylesheet" />
+
 <!--  스타일 적용 했음  -->
 </head>
 <style>
+     
 </style>
 <body>
 	<div class="content">
@@ -27,6 +29,13 @@
 			<form action="/admin/admOrder/orderAdm/ssearch" method="post">
 				<input type="text" name="od_id" placeholder="주문번호" required>
 				<button type="submit">주문번호 검색</button>
+			</form>
+			
+		 <div class="register-form">
+	
+			<form action="/admin/admOrder/orderAdm/delet" method="post">
+				<input type="text" name="od_id" placeholder="주문번호" required>
+				<button type="submit">내역삭제</button>
 			</form>
 		</div> 
 	</div>
@@ -52,7 +61,7 @@
 		<tbody>
 			<tr th:each="list : ${list}">
 				<td th:text="${list.od_id}"></td>
-				<td th:text="${list.od_name}"></td>
+            	<td th:text="${list.od_name}"></td>
 				<td th:text="${list.mb_id}"></td>
 				<td th:text="${list.od_price}"></td>
 				<td th:text="${list.od_point}"></td>

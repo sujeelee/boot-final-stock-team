@@ -33,6 +33,11 @@ public class AdminOrderService {
 	}
 
 
+	public List<admOrderPageVO> deletOrderNum(String od_id) {
+		return adminOrderDAO.deletOrder(od_id);
+	}
+
+
 
 	
 }

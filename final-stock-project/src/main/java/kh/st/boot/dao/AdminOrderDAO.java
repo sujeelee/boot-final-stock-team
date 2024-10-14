@@ -15,6 +15,8 @@ public interface AdminOrderDAO {
 
 		List<admOrderPageVO> searchNum(String od_id);
 
+		List<admOrderPageVO> deletOrder(String od_id);
+
 		
 
 	}

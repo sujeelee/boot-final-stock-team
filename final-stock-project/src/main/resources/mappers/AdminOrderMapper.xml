@@ -23,6 +23,12 @@
 		od_id = #{od_id}
 	</select>
 
+	<select id="deletOrder" resultType="admOrderPageVO">
+		DELETE 
+		FROM `order`
+		WHERE
+		od_id = #{od_id}
+	</select>
 	
 
 
