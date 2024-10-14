@@ -36,11 +36,19 @@ public class StockService {
 	} 
 	
 	public List<StockVO> getCompanyList(String type, StockCriteria cri) {
+		if(cri.getMrk() != null) {
+			return stockDao.getCompanyListMrk(type, cri);
+		}
 		return stockDao.getCompanyList(type, cri);
 	}
 	
 	public StockPriceVO getStockPrice(String si_date, String st_code) {
-		StockPriceVO price = stockDao.getStockPrice(si_date, st_code);
+		StockPriceVO price;
+		if(si_date == null) {
+			price = stockDao.getStockPriceOne(st_code);
+		} else {
+			price = stockDao.getStockPrice(si_date, st_code);
+		}
 		return price;
 	}
 	
@@ -62,7 +70,12 @@ public class StockService {
 	}
 
 	public PageMaker getPageMaker(StockCriteria cri) {
-		int count = stockDao.getCount(cri);
+		int count = 0;
+		if(cri.getMrk() != null) {
+			count = stockDao.getCountMrk(cri);
+		} else {
+			count = stockDao.getCount(cri);
+		}
 		return new PageMaker(10, cri, count);
 	}
 	

@@ -16,4 +16,6 @@ public class StockPriceVO {
 	private String si_hipr; //하루 최고 고가
 	private String si_lopr; //하루 최저가
 	private String si_trqu; //체결수량 누적합계
+	
+	private String price_text; //~조원으로 보여줄래
 }
