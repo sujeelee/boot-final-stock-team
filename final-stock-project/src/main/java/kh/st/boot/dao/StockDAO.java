@@ -17,6 +17,8 @@ public interface StockDAO {
 	void insertStockCompany(@Param("st")StockVO newStock); 
 	 
 	List<StockVO> getCompanyList(@Param("type")String type, @Param("cri")StockCriteria cri); 
+	
+	List<StockVO> getCompanyListMrk(@Param("type")String type, @Param("cri")StockCriteria cri);
 
 	StockPriceVO getStockPrice(@Param("si_date")String si_date, @Param("st_code")String st_code); 
 
@@ -24,8 +26,12 @@ public interface StockDAO {
 
 	int getCount(@Param("cri")StockCriteria cri); 
 	
+	int getCountMrk(@Param("cri")StockCriteria cri);
+	
 	List<StockPriceVO> getStockInfoList(@Param("st_code")String st_code); 
 
 	int getCountStockPrice(@Param("st_code")String st_code); 
+	
+	StockPriceVO getStockPriceOne(@Param("st_code")String st_code);
 
 }

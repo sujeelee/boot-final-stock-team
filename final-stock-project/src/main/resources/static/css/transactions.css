@@ -180,6 +180,7 @@ background-color: #f9fafb;
 
 li{cursor:pointer; color:#0c5460 !important;}
 .list-group-item{border:none !important;padding: .3rem 0.25rem !important;}
+.dropdown-item:hover{background-color:  rgba(9, 108, 138, 0.2) !important;}
 .dropdown-item > .on{color:#0c5460 !important;}
 .dropdown-item > .on:after {content: " ν";}
 .dropdown-menu{min-width: 1em !important;}

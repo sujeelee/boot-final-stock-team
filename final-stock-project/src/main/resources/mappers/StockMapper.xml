@@ -97,4 +97,93 @@
 	<select id="getCountStockPrice" resultType="int">
 		select count(*) from stock_info where st_code = #{st_code}
 	</select>
+	<select id="getStockPriceOne" resultType="StockPriceVO">
+		select * from stock_info where st_code = #{st_code} order by si_date DESC limit 1
+	</select>
+	<select id="getCompanyListMrk" resultType="StockVO">
+		<![CDATA[  
+			SELECT a.*
+			FROM stock a
+			JOIN (
+			    SELECT si.st_code, si.si_mrkTotAmt
+			    FROM stock_info si
+			    JOIN (
+			        SELECT st_code, MAX(si_date) AS latest_date
+			        FROM stock_info
+			        GROUP BY st_code
+			    ) latest ON si.st_code = latest.st_code AND si.si_date = latest.latest_date
+			) b ON a.st_code = b.st_code
+			where (1)
+		]]>
+		<if test="cri.st_type != null and cri.st_type.size() > 0 ">
+			and a.st_type in
+			<foreach collection="cri.st_type" item="items" open="(" close=")" separator=",">
+				#{items}
+			</foreach>
+		</if>
+		<if test="cri.mrk != null and cri.mrk.length() > 0 ">
+			<choose>
+				<when test="cri.mrk == 'small'">
+					<![CDATA[  
+						and b.si_mrkTotAmt < 300000000000
+					]]> 
+				</when>
+				<when test="cri.mrk == 'medium'">
+					<![CDATA[  
+						and b.si_mrkTotAmt BETWEEN 300000000000 and 1000000000000
+					]]> 
+				</when>
+				<otherwise>
+					<![CDATA[  
+						and b.si_mrkTotAmt > 1000000000000
+					]]> 
+				</otherwise>
+			</choose>
+		</if>
+		order by a.st_name ASC
+		<if test="cri != null">
+			limit #{cri.pageStart}, #{cri.perPageNum}
+		</if>
+	</select>
+	<select id="getCountMrk" resultType="int">
+		<![CDATA[  
+			SELECT count(*)
+			FROM stock a
+			JOIN (
+			    SELECT si.st_code, si.si_mrkTotAmt
+			    FROM stock_info si
+			    JOIN (
+			        SELECT st_code, MAX(si_date) AS latest_date
+			        FROM stock_info
+			        GROUP BY st_code
+			    ) latest ON si.st_code = latest.st_code AND si.si_date = latest.latest_date
+			) b ON a.st_code = b.st_code
+			where (1)
+		]]>
+		<if test="cri.st_type != null and cri.st_type.size() > 0 ">
+			and a.st_type in
+			<foreach collection="cri.st_type" item="items" open="(" close=")" separator=",">
+				#{items}
+			</foreach>
+		</if>
+		<if test="cri.mrk != null and cri.mrk.length() > 0 ">
+			<choose>
+				<when test="cri.mrk == 'small'">
+					<![CDATA[  
+						and b.si_mrkTotAmt < 300000000000
+					]]> 
+				</when>
+				<when test="cri.mrk == 'medium'">
+					<![CDATA[  
+						and b.si_mrkTotAmt BETWEEN 300000000000 and 1000000000000
+					]]> 
+				</when>
+				<otherwise>
+					<![CDATA[  
+						and b.si_mrkTotAmt > 1000000000000
+					]]> 
+				</otherwise>
+			</choose>
+		</if>
+	</select>
 </mapper>
