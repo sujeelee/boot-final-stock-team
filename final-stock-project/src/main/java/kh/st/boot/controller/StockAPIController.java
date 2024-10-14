@@ -40,7 +40,7 @@ import kh.st.boot.service.StockService;
 
 
 @Controller
-@RequestMapping("/stock")
+@RequestMapping("/admin/stock")
 public class StockAPIController {
 	@Autowired
 	StockService stockService;
