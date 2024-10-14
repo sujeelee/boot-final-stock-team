@@ -244,11 +244,11 @@ public class MyAccountController {
 	    return map;
 	}
 	
-	@PostMapping("submit")
-	public String submit(MemberApproveVO ma) {
-		System.out.println(ma);
+	@PostMapping("/settings")
+	public String settingsPost(MemberApproveVO ma) {
+		myAccountService.insertMemberApprove(ma);
 		return "myaccount/settings";
-	} // 관리자에서 처리해야 될것
+	}
 	
 	@ResponseBody
 	@PostMapping("/checkStatus")
@@ -261,7 +261,12 @@ public class MyAccountController {
 			map.put("status", "none");
 		}
 		else if(ma.getMp_yn() == null) {
-			map.put("status", "wating");
+			if(ma.getMp_type().equals("news")) {
+				map.put("status", "news");
+			}
+			else if(ma.getMp_type().equals("stock")) {
+				map.put("status", "stock");
+			}
 		}
 		else if(ma.getMp_yn().equals("y")) {
 			map.put("status", "success");

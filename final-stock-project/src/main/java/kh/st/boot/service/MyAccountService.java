@@ -27,4 +27,6 @@ public interface MyAccountService {
 
 	MemberApproveVO getMemberApprove(int mb_no);
 
+	void insertMemberApprove(MemberApproveVO ma);
+
 }

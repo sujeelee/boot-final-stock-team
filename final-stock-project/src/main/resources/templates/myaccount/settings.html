@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 	<style type="text/css">
 		/* Container */
-		/* Container */
 		.my-container {
 		    display: grid;
 		    grid-template-columns: 184px minmax(10px, 1fr);
@@ -157,7 +156,7 @@
 		}
 		
 		.drop-btn:hover {
-			background-color: gray;
+			background-color: #f9fafb;
 		}
 		
 		#selected-value {
@@ -278,11 +277,10 @@
 			        	<button class="btn btn-outline-dark" onclick="submitForm()">신청</button>
 			        </div>
 				</section>
-				<form id="submit-form" action="/myaccount/submit" method="post">
+				<form id="submit-form" action="/myaccount/settings" method="post">
 					<input type="hidden" id="mp_type" name="mp_type">
 					<input type="hidden" id="mp_company" name="mp_company">
 					<input type="hidden" id="mb_no" name="mb_no" th:value="${#authentication.principal.member.mb_no}">
-					<input type="hidden" id="mp_datetime" name="mp_datetime" value="">
 				</form>
 		    </div>
 		</div>
@@ -295,9 +293,13 @@
 					dataType: 'json',
 					success: function(data) {
 						console.log(data);
-						if(data.status == 'waiting') {
+						if(data.status == 'news') {
 							// 승인 요청중일 때
-							displayWaiting();
+							displayNews();
+						}
+						else if(data.status == 'stock') {
+							// 승인 요청중일 때
+							displayStock();
 						}
 						else if(data.status == 'success') {
 							// 승인이 성공했을 때
@@ -311,9 +313,13 @@
 			    		console.log(jqXHR);
 			    	}
 				});
-				function displayWaiting() {
+				function displayNews() {
 				    
-				} // 승인 요청중일 때
+				} // 뉴스 회원 승인 요청중일 때
+				
+				function displayStock() {
+				    
+				} // 주식 회원 승인 요청중일 때
 				
 				function displaySuccess() {
 				
@@ -403,10 +409,6 @@
 		        // 폼의 hidden input에 값 설정
 		        $('#mp_type').val(mp_type.val());
 		        $('#mp_company').val(mp_company);
-		        
-		        // 현재 시간 설정
-		        const now = new Date();
-		        $('#mp_datetime').val(now);
 
 		        // 폼 제출
 		        $('#submit-form').submit();

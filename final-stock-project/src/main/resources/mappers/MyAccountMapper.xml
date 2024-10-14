@@ -48,4 +48,9 @@
 	<select id="selectMemberApprove" resultType="MemberApproveVO">
 		SELECT * FROM MEMBER_APPROVE WHERE MB_NO = #{mb_no}
 	</select>
+	
+	<insert id="insertMemberApprove">
+		INSERT INTO MEMBER_APPROVE (MP_TYPE, MP_COMPANY, MP_DATETIME, MB_NO) VALUES
+		(#{mp_type}, #{mp_company}, NOW(), #{mb_no})
+	</insert>
 </mapper>

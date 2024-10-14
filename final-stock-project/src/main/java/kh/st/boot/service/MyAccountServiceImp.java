@@ -80,4 +80,9 @@ public class MyAccountServiceImp implements MyAccountService {
 	public MemberApproveVO getMemberApprove(int mb_no) {
 		return myAccountDao.selectMemberApprove(mb_no);
 	}
+
+	@Override
+	public void insertMemberApprove(MemberApproveVO ma) {
+		myAccountDao.insertMemberApprove(ma);
+	}
 }

@@ -26,4 +26,6 @@ public interface MyAccountDAO {
 
 	MemberApproveVO selectMemberApprove(int mb_no);
 
+	void insertMemberApprove(MemberApproveVO ma);
+
 }
