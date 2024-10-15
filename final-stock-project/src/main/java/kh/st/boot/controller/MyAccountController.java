@@ -16,11 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.util.DateUtil;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
+import kh.st.boot.model.vo.MemberApproveVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.service.MemberService;
 import kh.st.boot.service.MyAccountService;
+import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -29,6 +34,8 @@ import lombok.AllArgsConstructor;
 public class MyAccountController {
 	
 	private MyAccountService myAccountService;
+	private MemberService memberService;
+	private NewsService newsService;
 	
 	@GetMapping("/asset")
 	public String asset(Model model, Principal principal) {
@@ -161,6 +168,140 @@ public class MyAccountController {
 		return map;
 	}
 	
+	@GetMapping("/settings")
+	public String settings(Model model, Principal principal) {
+		//로그인상태가 아닐 시
+        if (principal == null) {
+        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+            return "util/msg";
+        }
+		return "myaccount/settings";
+	}
+	
+	@ResponseBody
+	@PostMapping("/settings/list")
+	public Map<String, Object> settingsList(String mp_type){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<?> list = null;
+		switch(mp_type) {
+		case "news":
+			list = newsService.getNewsPaperList(); 
+			map.put("list", list);
+			break;
+		case "stock":
+			list = myAccountService.getStockList();
+			map.put("list", list);
+			break;
+		}
+		return map;
+	}
+	
+	@GetMapping("/password")
+	public String password() {
+		return "myaccount/password";
+	}
+	
+	@PostMapping("/password")
+	@ResponseBody
+	public Map<String, Object> passwordPost(Model model, Principal principal, String password, MemberVO member, HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		boolean res = myAccountService.checkPw(user, password);
+	    if(res) {
+	    	if(myAccountService.updatePw(principal.getName(), member.getMb_password())) {
+	    		map.put("success", true);
+	    		session.removeAttribute("user");
+	    	}else {
+	    		map.put("success", false);
+	    	}
+	    } else {
+	        map.put("success", false);
+	    }
+	    return map;
+	}
+	
+	@GetMapping("/delete")
+	public String delete() {
+		return "myaccount/delete";
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public Map<String, Object> deletePost(Model model, Principal principal, MemberVO member) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		boolean res = myAccountService.checkPw(user, member.getMb_password());
+		if(user.getMb_id().equals(member.getMb_id()) && res) {
+			if(myAccountService.deleteUser(user)) {
+				map.put("success", true);
+			}else {
+				map.put("success", false);
+			}
+		}else {
+			map.put("success", false);
+		}
+	    return map;
+	}
+	
+	@PostMapping("/settings")
+	public String settingsPost(MemberApproveVO mp) {
+		if(myAccountService.getMemberApprove(mp.getMb_no()) == null) {
+			myAccountService.insertMemberApprove(mp);
+		}else {
+			if(myAccountService.deleteMemberApprove(mp.getMb_no())) {
+				myAccountService.insertMemberApprove(mp);
+			}
+		}
+		return "myaccount/settings";
+	}
+	
+	@ResponseBody
+	@PostMapping("/checkStatus")
+	public Map<String, Object> checkStatus(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		MemberApproveVO mp = myAccountService.getMemberApprove(user.getMb_no());
+		if(mp == null) {
+			map.put("status", "none");
+		}
+		else if(mp.getMp_yn() == null) {
+			if(mp.getMp_type().equals("news")) {
+				map.put("status", "news");
+			}
+			else if(mp.getMp_type().equals("stock")) {
+				map.put("status", "stock");
+			}
+		}
+		else if(mp.getMp_yn().equals("y")) {
+			map.put("status", "success");
+			if(mp.getMp_type().equals("stock")) {
+				mp.setMp_company(myAccountService.getStockName(mp.getMp_company()));
+			}
+			map.put("mp", mp);
+			
+		}
+		else if(mp.getMp_yn().equals("n")) {
+			map.put("status", "fail");
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("/cancel")
+	public Map<String, Object> cancel(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String mb_id = principal.getName();
+		MemberVO user = memberService.findById(mb_id);
+		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
+		if(res) {
+			map.put("status", true);
+		}else {
+			map.put("status", false);
+		}
+		return map;
+	}
+	
 	@GetMapping("/orders")
 	public String orders() {
 		
@@ -178,10 +319,5 @@ public class MyAccountController {
 		
 		return "myaccount/point";
 	}
-	
-	@GetMapping("/settings")
-	public String settings() {
-		
-		return "myaccount/settings";
-	}
+
 }
