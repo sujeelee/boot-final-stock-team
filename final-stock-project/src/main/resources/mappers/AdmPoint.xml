@@ -19,5 +19,11 @@
 		
 	</insert>
 
+  	<delete id="deletPoint">
+		DELETE FROM point WHERE po_no = #{po_no};
+  	</delete>
+  
+  
+  
   
 </mapper>

@@ -349,7 +349,7 @@ public class AdminController {
 		
 		
 		
-		
+		// 포인트 적립, 차감
 		@PostMapping("/admPoint/admPointPage/point")
 		public String plusMinus(@RequestParam String mb_id,
 								@RequestParam int po_num,
@@ -360,8 +360,13 @@ public class AdminController {
 		}
 		
 		
-		
-	
+		//내역 삭제 
+		@PostMapping("admPoint/admPointPage/delete")
+		public String plusMinus(@RequestParam int po_no) {
+			 
+			admPointService.delete(po_no);
+			return "redirect:/admin/admPoint/admPointPage"; 
+		}
 	
 	
 	

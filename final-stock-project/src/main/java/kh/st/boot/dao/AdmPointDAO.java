@@ -14,5 +14,7 @@ public interface AdmPointDAO {
 
 	void updatePoint(String mb_id, int po_num, String po_content);
 
+	void deletPoint(int po_no);
+
 	
 }

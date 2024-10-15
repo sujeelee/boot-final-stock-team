@@ -31,4 +31,9 @@ public class AdmPointService {
 		admPointDAO.updatePoint(mb_id,po_num,po_content);
 	}
 
+
+	public void delete(int po_no) {
+		admPointDAO.deletPoint(po_no);
+	}
+
 }

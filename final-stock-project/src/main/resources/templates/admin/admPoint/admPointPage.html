@@ -13,9 +13,7 @@
 </style>
 <body>
 	<div class="content">
-		<!--  이거 추가하니까 사이드바랑 곂치던거 해결됨 wht?>???>??<>>?>?>?>?>?>>? -->
 		<h1>포인트 관리</h1>
-		<!--  아무것도 수정하지 않음     여기는 제일 마지막에 작업     -->
 		<div class="update-from">
 
 			<form action="/admin/admPoint/admPointPage/Id" method="post">
@@ -27,30 +25,15 @@
 			<input type="text" name="mb_id" placeholder="회원 ID" required>
 			<input type="text" name="po_num" placeholder="+ / - 포인트" required>
 			<input type="text" name="po_content" placeholder="지급사유" required>
-			<!-- 공백 제거 -->
 			<button type="submit">저장</button>
 		</form>
 
 		<div class="register-form">
 
-			<form action="/admin/admOrder/orderAdm/delet" method="post">
-				<input type="text" name="od_id" placeholder="주문번호" required>
+			<form action="/admin/admPoint/admPointPage/delete" method="post">
+				<input type="text" name="po_no" placeholder="등록번호" required>
 				<button type="submit">내역삭제</button>
-				<!-- 수정전-->
-
 			</form>
-
-			<div class="register-form">
-
-				<form action="/admin/admOrder/orderAdm/delet" method="post">
-					<input type="text" name="od_id" placeholder="주문번호" required>
-					<button type="submit">내역수정</button>
-					<!-- 수정전-->
-
-				</form>
-
-			</div>
-		</div>
 
 		<table>
 			<thead>
