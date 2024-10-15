@@ -2,13 +2,18 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.st.boot.dao.AdminApprovalDAO">
 
-    <select id="nullSelectAll" resultType="AdmApprovalVO">
-        SELECT
-         * FROM member_approve  
-        	WHERE mp_yn IS NULL
-    </select>
+	<select id="nullSelectAll" resultType="AdmApprovalVO">
+		SELECT
+		* FROM member_approve
+		WHERE mp_yn IS NULL
+	</select>
 
-   
-    
-    
+	<insert id="nyUPDATE">
+    	UPDATE member_approve
+   		 SET mp_yn = #{mp_yn}, mp_app_date = NOW()
+   		 WHERE mp_no = #{mp_no}
+	</insert>
+
+
+
 </mapper>

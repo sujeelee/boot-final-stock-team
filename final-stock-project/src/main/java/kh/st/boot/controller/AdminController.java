@@ -1,19 +1,14 @@
 package kh.st.boot.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import groovy.transform.AutoImplement;
 import kh.st.boot.model.vo.AdmApprovalVO;
@@ -314,12 +309,20 @@ public class AdminController {
 		}
 		
 		
-		// 승인 했을때 
+		// 승인/거절 했을때 (전부다 인설트  1DB 나우날짜 Y/N 
 	
-		}
+		@PostMapping("/admApproval/admApprovalPage/slt")
+		public String ySltApproval(@RequestParam int mp_no, @RequestParam String mp_type,
+								   @RequestParam String mp_company, @RequestParam String mp_yn) {
+			
+ 			adminApprovalService.ynUPDATE(mp_no,mp_type,mp_company,mp_yn);
+			
+			return "redirect:/admin/admApproval/admApprovalPage"; 
+			}
 		
 		
 		
+
 		
 		
 		

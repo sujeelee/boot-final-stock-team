@@ -13,4 +13,6 @@ public interface AdminApprovalDAO {
 
 	List<AdmApprovalVO> updateApprove(int mp_no, String mp_yn);
 
+	void nyUPDATE(int mp_no, String mp_yn);
+
 }

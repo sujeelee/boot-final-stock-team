@@ -62,10 +62,24 @@
 				<td th:text="${list.mp_type}"></td>
 				<td th:text="${list.mp_company}"></td>
 				<td th:text="${list.mp_datetime}"></td>
-				<td> 
-					<button value="y" th:attr="data-no=${list.mp_no}" onclick="btnYN(this)">승인</button>
-					<button value="n" th:attr="data-no=${list.mp_no}" onclick="btnYN(this)">거절</button>
-				</td>
+				<td>
+                <!-- 승인 버튼 폼 -->
+                <form th:action="@{/admin/admApproval/admApprovalPage/slt}" method="post">
+                    <input type="hidden" name="mp_no" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_yn" value="y" />
+                    <button type="submit">승인</button>
+                </form>
+                <!-- 거절 버튼 폼 -->
+                <form th:action="@{/admin/admApproval/admApprovalPage/slt}" method="post">
+                   <input type="hidden" name="mp_no" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_yn" value="n" />
+                    <button type="submit">거절</button>
+                </form>
+            </td>
 			</tr>
 		</tbody>
 	</table>
