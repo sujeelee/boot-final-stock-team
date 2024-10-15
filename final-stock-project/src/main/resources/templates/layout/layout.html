@@ -53,17 +53,6 @@
 				}
 			}
 		}); // 특정 url에 container를 삭제하는 함수
-		
-		$('.myaccount').on('click', function(e){
-			let mb_id = /*[[${#authentication.getName()}]]*/ '';
-			if(mb_id != 'anonymousUser'){
-				return;
-			}
-			e.preventDefault();
-			if(confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하겠습니까?')){
-				location.href = "/member/login";
-			}
-		}); // 내 계좌를 들어가기 위해서 로그인 정보를 확인하는 함수
 	</script>
 </body>
 </html>

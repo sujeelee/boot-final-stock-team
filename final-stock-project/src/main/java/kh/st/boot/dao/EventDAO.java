@@ -3,6 +3,8 @@ package kh.st.boot.dao;
 import java.util.List;
 
 import kh.st.boot.model.dto.EventDTO;
+import kh.st.boot.model.dto.EventPrizeCounterDTO;
+import kh.st.boot.model.vo.EventPrizeVO;
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.PrizeVO;
@@ -48,5 +50,15 @@ public interface EventDAO {
     List<PrizeVO> getPrizeListByEv_no(int ev_no);
 
     PrizeVO getPrizeLastOne();
+
+    EventPrizeVO getEventPrizeTicket(EventPrizeVO ep);
+
+    boolean setEventPrizeTicket(EventPrizeVO ep);
+
+    boolean updateEventPrizeTicket_AddOne(EventPrizeVO ep);
+
+    List<EventPrizeVO> getEventPrizeTicketList(int ep_no);
+
+    List<EventPrizeCounterDTO> getEventPrizeTicketCounter(int ev_no);
     
 }

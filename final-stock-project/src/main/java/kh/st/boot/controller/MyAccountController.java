@@ -11,16 +11,27 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.util.DateUtil;
 import kh.st.boot.model.vo.AccountVO;
+import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
+import kh.st.boot.model.vo.MemberApproveVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.TransCriteria;
+import kh.st.boot.service.MemberService;
 import kh.st.boot.service.MyAccountService;
+import kh.st.boot.service.NewsService;
+import kh.st.boot.service.StockService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -29,6 +40,9 @@ import lombok.AllArgsConstructor;
 public class MyAccountController {
 	
 	private MyAccountService myAccountService;
+	private MemberService memberService;
+	private NewsService newsService;
+	private StockService stockService;
 	
 	@GetMapping("/asset")
 	public String asset(Model model, Principal principal) {
@@ -161,15 +175,232 @@ public class MyAccountController {
 		return map;
 	}
 	
-	@GetMapping("/orders")
-	public String orders() {
+	@GetMapping("/settings")
+	public String settings(Model model, Principal principal) {
+		//로그인상태가 아닐 시
+        if (principal == null) {
+        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+            return "util/msg";
+        }
+		return "myaccount/settings";
+	}
+	
+	@PostMapping("/settings")
+	public String settingsPost(MemberApproveVO mp) {
+		if(myAccountService.getMemberApprove(mp.getMb_no()) == null) {
+			myAccountService.insertMemberApprove(mp);
+		}else {
+			if(myAccountService.deleteMemberApprove(mp.getMb_no())) {
+				myAccountService.insertMemberApprove(mp);
+			}
+		}
+		return "myaccount/settings";
+	}
+	
+	@ResponseBody
+	@PostMapping("/settings/list")
+	public Map<String, Object> settingsList(String mp_type){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<?> list = null;
+		switch(mp_type) {
+		case "news":
+			list = newsService.getNewsPaperList(); 
+			map.put("list", list);
+			break;
+		case "stock":
+			list = myAccountService.getStockList();
+			map.put("list", list);
+			break;
+		}
+		return map;
+	}
+	
+	@GetMapping("/password")
+	public String password() {
+		return "myaccount/password";
+	}
+	
+	@PostMapping("/password")
+	@ResponseBody
+	public Map<String, Object> passwordPost(Model model, Principal principal, String password, MemberVO member, HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		boolean res = myAccountService.checkPw(user, password);
+	    if(res) {
+	    	if(myAccountService.updatePw(principal.getName(), member.getMb_password())) {
+	    		map.put("success", true);
+	    		session.removeAttribute("user");
+	    	}else {
+	    		map.put("success", false);
+	    	}
+	    } else {
+	        map.put("success", false);
+	    }
+	    return map;
+	}
+	
+	@GetMapping("/delete")
+	public String delete() {
+		return "myaccount/delete";
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public Map<String, Object> deletePost(Model model, Principal principal, MemberVO member) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		boolean res = myAccountService.checkPw(user, member.getMb_password());
+		if(user.getMb_id().equals(member.getMb_id()) && res) {
+			if(myAccountService.deleteUser(user)) {
+				map.put("success", true);
+			}else {
+				map.put("success", false);
+			}
+		}else {
+			map.put("success", false);
+		}
+	    return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("/checkStatus")
+	public Map<String, Object> checkStatus(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		MemberVO user = memberService.findById(principal.getName());
+		MemberApproveVO mp = myAccountService.getMemberApprove(user.getMb_no());
+		if(mp == null) {
+			map.put("status", "none");
+		}
+		else if(mp.getMp_yn() == null) {
+			if(mp.getMp_type().equals("news")) {
+				map.put("status", "news");
+			}
+			else if(mp.getMp_type().equals("stock")) {
+				map.put("status", "stock");
+			}
+		}
+		else if(mp.getMp_yn().equals("y")) {
+			map.put("status", "success");
+			if(mp.getMp_type().equals("stock")) {
+				mp.setMp_company(myAccountService.getStockName(mp.getMp_company()));
+			}
+			map.put("mp", mp);
+			
+		}
+		else if(mp.getMp_yn().equals("n")) {
+			map.put("status", "fail");
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("/cancel")
+	public Map<String, Object> cancel(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String mb_id = principal.getName();
+		MemberVO user = memberService.findById(mb_id);
+		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
+		if(res) {
+			map.put("status", true);
+		}else {
+			map.put("status", false);
+		}
+		return map;
+	}
+	
+	@GetMapping("/transactions/{type}")
+	public String transactions(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
+		if(principal == null) {
+			model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+        	
+            return "util/msg";
+		}
+		String mb_id = principal.getName();
+		cri.setPerPageNum(10); //여기서는 한번에 n개까지 보여줄게요
+		// 거래내역을 가져오는 코드
+		List<DepositVO> list = myAccountService.getDepositList(mb_id, cri);
+		//페이지를 넣게 되
+		PageMaker pm = myAccountService.getPageMaker(cri, mb_id);
+		//계좌 잔액을 가져오게 되
+		AccountVO ac = myAccountService.getAccountAmt(mb_id);
 		
-		return "myaccount/orders";
+		for(DepositVO tmps : list) {
+			String content_view = "";
+			if(tmps.getDe_stock_code() == null || tmps.getDe_stock_code() == "") {
+				String od_id = tmps.getDe_content().trim().split("주문번호 : ")[1];
+				DepositOrderVO dov = myAccountService.getDepositOrder(od_id); 
+				content_view = dov.getDo_name();
+			} else {
+				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
+				content_view = stock.getSt_name();
+				content_view += tmps.getDe_content().trim().split("매수 :")[1];
+			}
+			tmps.setContent_view(content_view);
+			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
+		}
+		
+		model.addAttribute("account", ac);
+		model.addAttribute("list", list);
+		model.addAttribute("type", type);
+		model.addAttribute("pm", pm); // 페이지 정보 추가
+		
+		return "myaccount/transactions";
+	}
+	
+	@GetMapping("/transactions/{type}/{detail}")
+	public String transactionsAlpha(Model model, Principal principal, TransCriteria cri, @PathVariable String type, @PathVariable String detail) {
+		if(principal == null) {
+			model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+        	
+            return "util/msg";
+		}
+		String mb_id = principal.getName();
+		cri.setPerPageNum(10); //여기서는 한번에 n개까지 보여줄게요
+		// 거래내역을 가져오는 코드
+		List<DepositVO> list = myAccountService.getDepositList(mb_id, cri);
+		//페이지를 넣게 되
+		PageMaker pm = myAccountService.getPageMaker(cri, mb_id);
+		//계좌 잔액을 가져오게 되
+		AccountVO ac = myAccountService.getAccountAmt(mb_id);
+		
+		for(DepositVO tmps : list) {
+			String content_view = "";
+			if(tmps.getDe_stock_code() == null || tmps.getDe_stock_code() == "") {
+				String od_id = tmps.getDe_content().trim().split("주문번호 : ")[1];
+				DepositOrderVO dov = myAccountService.getDepositOrder(od_id); 
+				content_view = dov.getDo_name();
+			} else {
+				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
+				content_view = stock.getSt_name();
+				content_view += tmps.getDe_content().trim().split("매수 :")[1];
+			}
+			tmps.setContent_view(content_view);
+			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
+		}
+		
+		model.addAttribute("account", ac);
+		model.addAttribute("list", list);
+		model.addAttribute("type", type);
+		model.addAttribute("detail", detail);
+		model.addAttribute("pm", pm); // 페이지 정보 추가
+		
+		return "myaccount/transactions";
 	}
 	
 	@GetMapping("/profit")
-	public String profit() {
-		
+	public String profit(Model model, Principal principal) {
+		//로그인상태가 아닐 시
+        if (principal == null) {
+        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+        	
+            return "util/msg";
+        }
+        String mb_id = principal.getName();
+        
 		return "myaccount/profit";
 	}
 	
@@ -178,10 +409,5 @@ public class MyAccountController {
 		
 		return "myaccount/point";
 	}
-	
-	@GetMapping("/settings")
-	public String settings() {
-		
-		return "myaccount/settings";
-	}
+
 }

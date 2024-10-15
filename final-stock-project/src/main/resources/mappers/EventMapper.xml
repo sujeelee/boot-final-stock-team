@@ -100,4 +100,27 @@
         select * from prize order by pr_no desc limit 1
     </select>
 
+    <select id="getEventPrizeTicket" resultType="EventPrizeVO">
+        select * from event_prize where pr_no = #{pr_no} and ep_mb_id = #{ep_mb_id} and ev_no = #{ev_no}
+    </select>
+
+    <insert id="setEventPrizeTicket">
+        insert into event_prize(ev_no, pr_no, ep_count, ep_prize, ep_mb_id, ep_rank)
+        value(#{ev_no}, #{pr_no}, 1, #{ep_prize}, #{ep_mb_id}, #{ep_rank})
+    </insert>
+
+    <update id="updateEventPrizeTicket_AddOne">
+        update event_prize
+        set ep_count = ep_count + 1
+        where ev_no = #{ev_no} and ep_mb_id = #{ep_mb_id} and pr_no = #{pr_no}
+    </update>
+
+    <select id="getEventPrizeTicketList" resultType="EventPrizeVO">
+        select * from event_prize where ev_no = #{ep_no} order by pr_no 
+    </select>
+
+    <select id="getEventPrizeTicketCounter" resultType="kh.st.boot.model.dto.EventPrizeCounterDTO">
+        select ev_no, pr_no ,sum(ep_count) 'sumCount' from event_prize  where ev_no = #{ev_no} group by pr_no order by pr_no 
+    </select>
+
 </mapper>

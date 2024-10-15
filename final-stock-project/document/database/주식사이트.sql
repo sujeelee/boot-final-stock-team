@@ -44,6 +44,8 @@ create table `email_Verification`(
 
 
 
+
+
 CREATE TABLE `config` (
 	`cf_title`	varchar(255)	NULL,
 	`cf_info`	longtext	NULL,
@@ -222,9 +224,13 @@ CREATE TABLE `file` (
 	`fi_type`	varchar(255)	NULL
 );
 
+
+
 CREATE TABLE `event_prize` (
 	`ep_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
 	`ev_no`	INT(11) NOT NULL,
+	`pr_no`	INT(11) NOT NULL,
+	`ep_count` INT(11) null,
 	`ep_prize`	varchar(255)	NULL,
 	`ep_mb_id`	varchar(255)	NULL,
 	`ep_rank`	int(11)	NULL

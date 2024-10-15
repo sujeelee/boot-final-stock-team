@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
-import kh.st.boot.pagination.Criteria;
+import kh.st.boot.model.vo.WishVO;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.StockCriteria;
 import kh.st.boot.service.StockService;
+import kh.st.boot.service.StocksHeaderService;
 import lombok.AllArgsConstructor;
+
 
 @Controller
 @AllArgsConstructor
@@ -24,14 +26,19 @@ import lombok.AllArgsConstructor;
 public class StockController {
 	
 	private StockService stockService;
+	private StocksHeaderService stocksHeaderService;//v
 	
 	@GetMapping(value = {"/stockList/{type}", "/stockList/{type}/{mrk}", "/stockList"})
-	public String transactions(Model model, Principal principal, StockCriteria cri, @PathVariable(required = false) String type, @PathVariable(required = false) String mrk) {
+	public String stockList(Model model, Principal principal, StockCriteria cri, @PathVariable(required = false) String type, @PathVariable(required = false) String mrk) {
+		
+		String mb_id = null;
+		
 		if(principal != null) {
-			String mb_id = principal.getName();
+			mb_id = principal.getName();
 		}
 
 		String typeText = null;
+		
 		if(type != null && !type.equals("all")) {
 			List<String> types = new ArrayList<String>();
 			types.add(type);
@@ -67,22 +74,20 @@ public class StockController {
 		List<StockPriceVO> priceList = new ArrayList<StockPriceVO>();
 		String price_text = "";
 		for(StockVO tmp : list) {
+			tmp.setWish("N");
 			StockPriceVO price = stockService.getStockPrice(null, tmp.getSt_code());
 			double amount = Double.parseDouble(price.getSi_mrkTotAmt()); // 문자열을 Double로 변환
-			if (amount >= 1_000_000_000_000L) { // 1조 이상
-			    double trillion = amount / 1_000_000_000_000L; // 조 단위로 변환
-			    price_text = String.format("%.1f조원", trillion); // 소수점 첫째 자리까지 표시
-			} else if (amount >= 1_000_000_000) { // 1억 이상
-			    double hundredMillion = amount / 1_000_000_000; // 억 단위로 변환
-			    price_text = String.format("%.1f억원", hundredMillion); // 소수점 첫째 자리까지 표시
-			} else if (amount >= 1_000) { // 1천 이상
-			    double thousand = amount / 1_000; // 천 단위로 변환
-			    price_text = String.format("%.1f천원", thousand); // 소수점 첫째 자리까지 표시
-			} else { // 그 이하
-			    price_text = String.format("%.0f원", amount); // 원 단위로 표시
-			}
+			price_text = stocksHeaderService.priceTextChange(amount);
 			price.setPrice_text(price_text);
 			priceList.add(price);
+			
+			//회원일 때 주식을 찜했는지 체크해볼겟
+			if(mb_id != null || mb_id != "") {
+				WishVO wish = stocksHeaderService.wishCheck(tmp.getSt_code(), mb_id);
+				if(wish != null) {
+					tmp.setWish("Y");
+				}
+			}
 		}
 		
 		model.addAttribute("list", list);
@@ -93,7 +98,21 @@ public class StockController {
 		model.addAttribute("mrk", mrk);
 		model.addAttribute("typeText", typeText);
 		model.addAttribute("mrkText", mrkText);
+		model.addAttribute("mb_id", mb_id);
 		
 		return "stockuser/stockList";
+	}
+	
+
+	@GetMapping("/{st_code}")
+	public String stockDetail(Model model, Principal principal, @PathVariable String st_code) {
+		
+		List<StockPriceVO> list = stockService.getStockInfoList(st_code);
+		
+		model = stocksHeaderService.getModelSet(model, principal, st_code); //v
+		
+		model.addAttribute("list", list);
+		
+		return "stockuser/detail";
 	}
 }

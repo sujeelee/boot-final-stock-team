@@ -28,5 +28,41 @@
 		WHERE
 			MB_ID = #{mb_id}
 	</select>
-
+	
+	<update id="updatePw">
+		UPDATE MEMBER SET MB_PASSWORD = #{mb_password} WHERE MB_ID = #{mb_id}
+	</update>
+	
+	<delete id="deleteAccount">
+		DELETE FROM ACCOUNT WHERE MB_NO = #{mb_no}
+	</delete>
+	
+	<delete id="deleteUser">
+		DELETE FROM MEMBER WHERE MB_ID = #{mb_id}
+	</delete>
+	
+	<select id="selectStockList" resultType="StockVO">
+		SELECT * FROM STOCK
+	</select>
+	
+	<select id="selectMemberApprove" resultType="MemberApproveVO">
+		SELECT * FROM MEMBER_APPROVE WHERE MB_NO = #{mb_no}
+	</select>
+	
+	<insert id="insertMemberApprove">
+		INSERT INTO MEMBER_APPROVE (MP_TYPE, MP_COMPANY, MP_DATETIME, MB_NO) VALUES
+		(#{mp_type}, #{mp_company}, NOW(), #{mb_no})
+	</insert>
+	
+	<delete id="deleteMemberApprove">
+		DELETE FROM MEMBER_APPROVE WHERE MB_NO = #{mb_no}
+	</delete>
+	
+	<select id="getStockName" resultType="String">
+		SELECT ST_NAME
+		FROM
+			STOCK
+		WHERE
+			ST_CODE = #{mp_company}
+	</select>
 </mapper>
