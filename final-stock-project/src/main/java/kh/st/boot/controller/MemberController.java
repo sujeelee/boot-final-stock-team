@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.dto.JoinDTO;
@@ -26,7 +27,12 @@ public class MemberController {
 	
 	//로그인
     @GetMapping("/login")
-    public String login(){
+    public String login(HttpServletRequest request){
+    	
+    	String uri = request.getHeader("Referer");
+	    if (uri != null && !uri.contains("/member/login")) {
+	        request.getSession().setAttribute("prevPage", uri);
+	    }
         //화면 미구현
         return "member/login";
     }
