@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.model.dto.EventDTO;
+import kh.st.boot.model.dto.EventPrizeCounterDTO;
+import kh.st.boot.model.vo.EventPrizeVO;
 import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.PrizeVO;
@@ -34,6 +36,14 @@ public interface EventService {
     List<EventVO> getEventListByEventForm(String form);
 
     List<PrizeVO> getPrizeListByEv_no(int ev_no);
+
+    Boolean setEventPrizeTicket(EventPrizeVO ep);
+
+    EventPrizeVO getEventPrizeTicket(EventPrizeVO ep);
+
+    List<EventPrizeVO> getEventPrizeTicketList(int ep_no);
+
+    List<EventPrizeCounterDTO> getEventPrizeTicketCounter(int ev_no);
 
     
 }
