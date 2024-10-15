@@ -45,5 +45,9 @@ public interface EventService {
 
     List<EventPrizeCounterDTO> getEventPrizeTicketCounter(int ev_no);
 
+    List<EventDTO> getEventAllList();
+
+    
+
     
 }

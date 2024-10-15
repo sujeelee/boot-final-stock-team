@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -192,10 +193,19 @@ public class EventController {
     }
 
     @GetMapping("/prizeList")
-    public String prizeList(){
-        
-
+    public String prizeList(Model mo){
+        List<EventDTO> list = eventService.getEventAllList();
+        mo.addAttribute("list", list);
         return "/event/eventPrizeList";
+    }
+
+
+    @PostMapping("/ajax/prizeList")
+    public String ajax_prizeList_post(Model mo, @RequestParam("ev_no") int ev_no){
+        List<PrizeVO> prizeList = eventService.getPrizeListByEv_no(ev_no);
+        mo.addAttribute("prizeList", prizeList);
+        System.out.println(prizeList);
+        return "/event/eventPrizeList :: #prizeList";
     }
 
 }

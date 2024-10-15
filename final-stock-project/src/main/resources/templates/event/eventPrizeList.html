@@ -1,47 +1,111 @@
 <!DOCTYPE html>
-<html 
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-	layout:decorate="~{layout/layout.html}">
-    
-	
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
 <head>
-<meta charset="UTF-8">
-<title>시드키 : 이벤트 : 어드민 상품 리스트</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="이벤트 상품 관리 시스템">
+    <title>시드키 : 이벤트 : 어드민 상품 리스트</title>
+    <style>
+        .bg-gray {
+            background-color: #c5c5c5; /* 연한 회색 */
+        }
+        .event-info {
+            min-height: 150px; /* 최소 높이 설정 */
+            margin: 10px 0; /* 위아래 여백 추가 */
+            padding: 10px; /* 내부 여백 추가 */
+            position: relative; /* 버튼 위치 조정을 위한 상대적 위치 */
+            border-radius: 0.5rem; /* 둥글게 만들기 */
+            background-color: #c5c5c5; /* 배경색 추가 */
+            border: 1px solid gray;
+        }
+        .add-product-btn {
+            position: absolute; /* 절대 위치 */
+            bottom: 10px; /* 아래쪽 여백 */
+            right: 10px; /* 오른쪽 여백 */
+        }
+    </style>
 </head>
+
 <body>
-
-   
-
-    
 <main layout:fragment="content">
-
     <div class="container mt-3">
-    <h2 style="text-align: center;">이벤트 별 상품 관리 시스템</h2>
-    <p>상품관리 시스템</p>
+        <h2 class="text-center">이벤트 별 상품 관리 시스템</h2>
+        <p>상품관리 시스템</p>
+        
+        <!-- 이벤트 목록 -->
         <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                이벤트 명
-            <span class="badge badge-primary badge-pill">상품 개수 : </span>
+            <!-- 이벤트별 리스트 출력 -->
+            <th:block th:each="event : ${list}">
+                <li class="list-group-item d-flex justify-content-between align-items-center mb-1"
+                    th:data-event-id="${event.ev_no}">
+                    <!-- 이벤트 명 클릭 시 AJAX 호출 -->
+                    <a data-toggle="collapse" th:href="'#event' + ${event.ev_no}" 
+                       role="button" aria-expanded="false" th:text="${event.ev_title}" 
+                       class="event-name"></a>
+                    <span class="badge badge-primary badge-pill" th:text="'상태 : ' + ${event.ev_status}"></span>
+                </li>
 
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Link 1</a>
-                <a class="dropdown-item" href="#">Link 2</a>
-                <a class="dropdown-item" href="#">Link 3</a>
-              </div>
+                <!-- collapse 영역: 상품 리스트가 들어갈 부분 -->
+                <div class="collapse" th:id="'event' + ${event.ev_no}">
+                    <div th:id="'prizeList'+${event.ev_no}">
 
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-            Ads
-            <span class="badge badge-primary badge-pill">50</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-            Junk
-            <span class="badge badge-primary badge-pill">99</span>
-            </li>
+                        <div id="prizeList">
+                            <div class="bg-gray event-info">
+                                <strong>이벤트 정보:</strong>
+                                <p>이벤트 명 1에 대한 설명이 여기에 들어갑니다. 추가적인 정보를 기재할 수 있습니다.</p>
+                                <button class="btn btn-success add-product-btn">상품 추가(5개 까지)</button> <!-- 상품 추가 버튼 -->
+                            </div>
+                            <ul class="list-group">
+                                <!-- 상품 리스트를 렌더링 -->
+                                <th:block th:each="prize, index : ${prizeList}">
+                                    <li class="list-group-item bg-gray d-flex justify-content-between align-items-center" th:classappend="${index.last} ? 'mb-2'">
+                                        <span th:text="${prize.pr_name}"></span>
+                                        <div class="ml-auto">
+                                            <button class="btn btn-warning btn-sm">수정</button>
+                                            <button class="btn btn-danger btn-sm">삭제</button>
+                                        </div>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </th:block>
+            
         </ul>
     </div>
 
+    <script>
+    $(document).ready(function() {
+        // 이벤트 이름을 클릭하면 AJAX로 상품 리스트를 불러옴
+        $('.event-name').click(function(e) {
+            e.preventDefault(); // 기본 링크 동작 방지
+
+            const eventId = $(this).parent().data('event-id'); // 클릭한 이벤트 ID 가져오기
+
+            $.ajax({
+                url: '/event/ajax/prizeList',
+                method: 'POST',
+                data: { ev_no: eventId }, // 이벤트 번호 전송
+                success: function(data) {
+                    // 성공적으로 데이터를 가져오면 해당 이벤트의 prizeList 영역을 교체
+                    $('#prizeList' + eventId).replaceWith(data);
+                    console.log(data)
+                },
+                error: function(error) {
+                    console.log("Error:", error); // 에러 로그
+                }
+            });
+        });
+    });
+    </script>
 
 </main>
 </body>

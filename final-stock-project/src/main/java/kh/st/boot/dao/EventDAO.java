@@ -60,5 +60,9 @@ public interface EventDAO {
     List<EventPrizeVO> getEventPrizeTicketList(int ep_no);
 
     List<EventPrizeCounterDTO> getEventPrizeTicketCounter(int ev_no);
+
+    List<EventDTO> getEventAllList();
+
+
     
 }

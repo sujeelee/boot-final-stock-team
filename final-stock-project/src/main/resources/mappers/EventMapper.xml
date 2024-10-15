@@ -123,4 +123,8 @@
         select ev_no, pr_no ,sum(ep_count) 'sumCount' from event_prize  where ev_no = #{ev_no} group by pr_no order by pr_no 
     </select>
 
+    <select id="getEventAllList" resultType="kh.st.boot.model.dto.EventDTO">
+        select ev_no, ev_title, ev_start, ev_end, ev_status, ev_form  from event 
+    </select>
+
 </mapper>

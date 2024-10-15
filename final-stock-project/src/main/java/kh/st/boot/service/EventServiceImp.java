@@ -207,6 +207,13 @@ public class EventServiceImp implements EventService {
         return eventDao.getEventPrizeTicketCounter(ev_no);
     }
 
+    @Override
+    public List<EventDTO> getEventAllList() {
+
+        return eventDao.getEventAllList();
+    }
+
+
 
     
 
