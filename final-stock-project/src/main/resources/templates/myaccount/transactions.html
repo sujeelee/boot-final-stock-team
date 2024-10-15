@@ -20,7 +20,7 @@
 				<!-- Balance Section -->
 				<div class="balance-section">
 					<div class="balance-info">
-						<p class="balance-text">거래 가능 예치금 · <span th:text="${#numbers.formatInteger(account.ac_deposit,3,'COMMA')}"></span>원</p>
+						<p class="balance-text">거래 가능 예치금 · <span th:text="${#numbers.formatInteger(account.ac_deposit,0,'COMMA')}"></span>원</p>
 					</div>
 				</div>
 				<section>
