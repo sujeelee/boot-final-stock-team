@@ -243,7 +243,7 @@
 						</div>
 					</button>
 				</section>
-				<section class="my-section">
+				<section class="my-section member-success">
 					<span class="sub-header-title">회원 신청</span>
 					<hr>
 					<div class="my-details">
@@ -303,6 +303,7 @@
 						}
 						else if(data.status == 'success') {
 							// 승인이 성공했을 때
+							displaySuccess(data.mp);
 						}
 						else if(data.status == 'fail') {
 							// 승인이 실패했을 때
@@ -314,21 +315,90 @@
 			    	}
 				});
 				function displayNews() {
-				    
+					// 뉴스 회원 체크박스를 버튼으로 변경
+					$('#news').replaceWith('<button class="btn btn-outline-dark" id="news" onclick="cancel();">요청 중</button>');
+					// 주식 회원 체크박스를 비활성화
+					$('#stock').attr('disabled', true);
+					$('button[onclick="submitForm()"]').hide();
 				} // 뉴스 회원 승인 요청중일 때
 				
 				function displayStock() {
-				    
+					// 주식 회원 체크박스를 버튼으로 변경
+					$('#stock').replaceWith('<button class="btn btn-outline-dark" id="stock" onclick="cancel();">요청 중</button>');
+					// 뉴스 회원 체크박스를 비활성화
+					$('#news').attr('disabled', true);
+					$('button[onclick="submitForm()"]').hide();
 				} // 주식 회원 승인 요청중일 때
 				
-				function displaySuccess() {
-				
+				function displaySuccess(mp) {
+					let mp_app_date = new Date(mp.mp_app_date).toLocaleString('ko-KR', {
+					    year: 'numeric',
+					    month: 'long',
+					    day: 'numeric'
+					});
+					let mp_type = (mp.mp_type === 'news') ? '뉴스' : '주식';
+					let str = `
+						<span class="sub-header-title">${mp_type} 회원</span>
+						<hr>
+						<div class="my-details">
+							<div class="my-info-left">
+								<span class="my-text-left">회사명</span>
+							</div>
+							<div class="my-info-right">
+								<span class="my-text-right">${mp.mp_company}</span>
+							</div>
+						</div>
+						<div class="my-details">
+							<div class="my-info-left">
+								<span class="my-text-left">승인 날짜</span>
+								
+							</div>
+							<div class="my-info-right">
+								<span class="my-text-right">${mp_app_date}</span>
+							</div>
+						</div>
+					`;
+					$('.member-success').html(str);
 				} // 승인이 성공했을 때
 				
 				function displayFail() {
-				  
+			        // 승인 거절 시, 체크박스를 다시 원래대로 복원
+			        $('#news').replaceWith('<input type="checkbox" name="mp_type" id="news" value="news" onclick="checkOnlyOne(this);"/>');
+			        $('#stock').replaceWith('<input type="checkbox" name="mp_type" id="stock" value="stock" onclick="checkOnlyOne(this);"/>');
+			        // 모든 체크박스 활성화
+			        $('#news, #stock').prop('disabled', false);
+			        // 신청 버튼 다시 보이기
+			        $('button[onclick="submitForm()"]').show();
 				} // 승인이 거절 당했을 때
 			});
+			
+			function cancel() {
+				if(confirm("요청을 취소하시겠습니까?")) {
+					$.ajax({
+						async : true, //비동기 : true(비동기), false(동기)
+						url : '/myaccount/cancel', 
+						type : 'post',  
+						dataType : "json", 
+						success : function (data){
+							if(data.status) {
+			                    alert("요청이 취소되었습니다.");
+			                 	// 승인 거절 시, 체크박스를 다시 원래대로 복원
+						        $('#news').replaceWith('<input type="checkbox" name="mp_type" id="news" value="news" onclick="checkOnlyOne(this);"/>');
+						        $('#stock').replaceWith('<input type="checkbox" name="mp_type" id="stock" value="stock" onclick="checkOnlyOne(this);"/>');
+						        // 모든 체크박스 활성화
+						        $('#news, #stock').prop('disabled', false);
+						        // 신청 버튼 다시 보이기
+						        $('button[onclick="submitForm()"]').show();
+							} else {
+								alert('요청 취소 중 문제가 발생하였습니다. 잠시 후에 다시 시도해 주세요');
+							}
+						}, 
+						error : function(jqXHR, textStatus, errorThrown){
+							console.log(jqXHR);
+						}
+					});
+				}
+			}
 		
 			function checkOnlyOne(type) {
 			    const checkboxes = document.querySelectorAll("input[name='mp_type']");
@@ -348,7 +418,6 @@
 			    $('#selected-value').text(''); // 값 지우기
 			    
 			    let mp_type = type.value;
-			    console.log(mp_type);
 			    $.ajax({
 			    	async : true, //비동기 : true(비동기), false(동기)
 			    	url : '/myaccount/settings/list', 

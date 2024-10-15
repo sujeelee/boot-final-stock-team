@@ -245,8 +245,14 @@ public class MyAccountController {
 	}
 	
 	@PostMapping("/settings")
-	public String settingsPost(MemberApproveVO ma) {
-		myAccountService.insertMemberApprove(ma);
+	public String settingsPost(MemberApproveVO mp) {
+		if(myAccountService.getMemberApprove(mp.getMb_no()) == null) {
+			myAccountService.insertMemberApprove(mp);
+		}else {
+			if(myAccountService.deleteMemberApprove(mp.getMb_no())) {
+				myAccountService.insertMemberApprove(mp);
+			}
+		}
 		return "myaccount/settings";
 	}
 	
@@ -255,24 +261,43 @@ public class MyAccountController {
 	public Map<String, Object> checkStatus(Principal principal){
 		Map<String, Object> map = new HashMap<String, Object>();
 		MemberVO user = memberService.findById(principal.getName());
-		MemberApproveVO ma = myAccountService.getMemberApprove(user.getMb_no());
-		System.out.println(ma);
-		if(ma == null) {
+		MemberApproveVO mp = myAccountService.getMemberApprove(user.getMb_no());
+		if(mp == null) {
 			map.put("status", "none");
 		}
-		else if(ma.getMp_yn() == null) {
-			if(ma.getMp_type().equals("news")) {
+		else if(mp.getMp_yn() == null) {
+			if(mp.getMp_type().equals("news")) {
 				map.put("status", "news");
 			}
-			else if(ma.getMp_type().equals("stock")) {
+			else if(mp.getMp_type().equals("stock")) {
 				map.put("status", "stock");
 			}
 		}
-		else if(ma.getMp_yn().equals("y")) {
+		else if(mp.getMp_yn().equals("y")) {
 			map.put("status", "success");
+			if(mp.getMp_type().equals("stock")) {
+				mp.setMp_company(myAccountService.getStockName(mp.getMp_company()));
+			}
+			map.put("mp", mp);
+			
 		}
-		else if(ma.getMp_yn().equals("n")) {
+		else if(mp.getMp_yn().equals("n")) {
 			map.put("status", "fail");
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("/cancel")
+	public Map<String, Object> cancel(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String mb_id = principal.getName();
+		MemberVO user = memberService.findById(mb_id);
+		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
+		if(res) {
+			map.put("status", true);
+		}else {
+			map.put("status", false);
 		}
 		return map;
 	}

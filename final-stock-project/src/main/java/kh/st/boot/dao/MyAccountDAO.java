@@ -2,6 +2,8 @@ package kh.st.boot.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
@@ -27,5 +29,9 @@ public interface MyAccountDAO {
 	MemberApproveVO selectMemberApprove(int mb_no);
 
 	void insertMemberApprove(MemberApproveVO ma);
+
+	boolean deleteMemberApprove(int mb_no);
+
+	String getStockName(@Param("mp_company")String mp_company);
 
 }

@@ -29,4 +29,8 @@ public interface MyAccountService {
 
 	void insertMemberApprove(MemberApproveVO ma);
 
+	boolean deleteMemberApprove(int mb_no);
+
+	String getStockName(String mp_company);
+
 }

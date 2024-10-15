@@ -53,4 +53,16 @@
 		INSERT INTO MEMBER_APPROVE (MP_TYPE, MP_COMPANY, MP_DATETIME, MB_NO) VALUES
 		(#{mp_type}, #{mp_company}, NOW(), #{mb_no})
 	</insert>
+	
+	<delete id="deleteMemberApprove">
+		DELETE FROM MEMBER_APPROVE WHERE MB_NO = #{mb_no}
+	</delete>
+	
+	<select id="getStockName" resultType="String">
+		SELECT ST_NAME
+		FROM
+			STOCK
+		WHERE
+			ST_CODE = #{mp_company}
+	</select>
 </mapper>

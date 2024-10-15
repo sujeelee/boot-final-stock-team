@@ -85,4 +85,14 @@ public class MyAccountServiceImp implements MyAccountService {
 	public void insertMemberApprove(MemberApproveVO ma) {
 		myAccountDao.insertMemberApprove(ma);
 	}
+
+	@Override
+	public boolean deleteMemberApprove(int mb_no) {
+		return myAccountDao.deleteMemberApprove(mb_no);
+	}
+
+	@Override
+	public String getStockName(String mp_company) {
+		return myAccountDao.getStockName(mp_company);
+	}
 }
