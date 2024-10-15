@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.model.vo.WishVO;
 import kh.st.boot.pagination.StockCriteria;
 
 public interface StockDAO {
@@ -33,5 +34,11 @@ public interface StockDAO {
 	int getCountStockPrice(@Param("st_code")String st_code); 
 	
 	StockPriceVO getStockPriceOne(@Param("st_code")String st_code);
+	
+	boolean wishStockInsert(@Param("code")String st_code, @Param("mb_id")String mb_id);
+	
+	boolean wishStockDelete(@Param("code")String st_code, @Param("mb_id")String mb_id);
+	
+	WishVO wishCheck(@Param("code")String st_code, @Param("mb_id")String mb_id);
 
 }

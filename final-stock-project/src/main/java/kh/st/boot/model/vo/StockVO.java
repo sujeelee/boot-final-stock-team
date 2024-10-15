@@ -15,4 +15,6 @@ public class StockVO {
 	private String st_issue; //청산간주등의 정보가 있는 주식발행사 명칭
 	private String st_type; //코스닥, 코스피 등 어떤 주식인지
 	private int st_price_cnt; //주식 시세 정보 개수
+	
+	private String wish; //회원일때 위시로 체크했는지 여부를 강제로 넣어줄테야(조인 3개이상은 살인)
 }

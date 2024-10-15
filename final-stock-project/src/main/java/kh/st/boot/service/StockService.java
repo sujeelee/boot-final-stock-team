@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.StockDAO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.model.vo.WishVO;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.StockCriteria;
 import lombok.AllArgsConstructor;
@@ -90,5 +91,18 @@ public class StockService {
 		if(stock == null ) return 0;
 		
 		return stockDao.getCountStockPrice(st_code);
+	}
+
+	public WishVO wishCheck(String st_code, String mb_id) {
+		
+		return stockDao.wishCheck(st_code, mb_id);
+	}
+
+	public boolean wishDelete(String st_code, String mb_id) {
+		return stockDao.wishStockDelete(st_code, mb_id);
+	}
+
+	public boolean wishInsert(String st_code, String mb_id) {
+		return stockDao.wishStockInsert(st_code, mb_id);
 	}
 }
