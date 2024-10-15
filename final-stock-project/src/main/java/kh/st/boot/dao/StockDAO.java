@@ -41,4 +41,6 @@ public interface StockDAO {
 	
 	WishVO wishCheck(@Param("code")String st_code, @Param("mb_id")String mb_id);
 
+	StockPriceVO getStockPriceLater(@Param("code")String st_code);
+
 }

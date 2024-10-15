@@ -92,17 +92,4 @@ public class StockService {
 		
 		return stockDao.getCountStockPrice(st_code);
 	}
-
-	public WishVO wishCheck(String st_code, String mb_id) {
-		
-		return stockDao.wishCheck(st_code, mb_id);
-	}
-
-	public boolean wishDelete(String st_code, String mb_id) {
-		return stockDao.wishStockDelete(st_code, mb_id);
-	}
-
-	public boolean wishInsert(String st_code, String mb_id) {
-		return stockDao.wishStockInsert(st_code, mb_id);
-	}
 }
