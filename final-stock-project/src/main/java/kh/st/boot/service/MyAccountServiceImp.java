@@ -5,13 +5,18 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import kh.st.boot.dao.DepositDAO;
+import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.dao.MyAccountDAO;
 import kh.st.boot.model.vo.AccountVO;
+import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.TransCriteria;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -20,6 +25,8 @@ public class MyAccountServiceImp implements MyAccountService {
 	
 	private MyAccountDAO myAccountDao;
 	private PasswordEncoder passwordEncoder;
+	private DepositDAO depositDao;
+	private MemberDAO memberDao;
 	
 	@Override
 	public AccountVO getAccountById(String mb_id) {
@@ -94,5 +101,32 @@ public class MyAccountServiceImp implements MyAccountService {
 	@Override
 	public String getStockName(String mp_company) {
 		return myAccountDao.getStockName(mp_company);
+	}
+	
+	@Override
+	public AccountVO getAccountAmt(String mb_id) {
+		MemberVO mb = memberDao.findById(mb_id);
+		if(mb == null) return null;
+		AccountVO ac = depositDao.getAccount(mb.getMb_no());
+		return ac;
+	}
+	
+	@Override
+	public DepositOrderVO getDepositOrder(String od_id) {
+		return depositDao.getOrderCheck(od_id);
+	}
+	
+	@Override
+	public PageMaker getPageMaker(TransCriteria cri, String mb_id) {
+		int count = depositDao.getCount(cri, mb_id);
+		return new PageMaker(2, cri, count);
+	}
+	
+	@Override
+	public List<DepositVO> getDepositList(String mb_id, TransCriteria cri) {
+		if(mb_id == null) {
+			return null;
+		}
+		return depositDao.getDepositMember(mb_id, cri);
 	}
 }
