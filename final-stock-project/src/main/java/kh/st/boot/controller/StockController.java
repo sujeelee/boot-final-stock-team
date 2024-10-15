@@ -2,21 +2,14 @@ package kh.st.boot.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.model.vo.WishVO;
@@ -113,13 +106,11 @@ public class StockController {
 
 	@GetMapping("/{st_code}")
 	public String stockDetail(Model model, Principal principal, @PathVariable String st_code) {
-		StockVO stock = stockService.getCompanyOne(st_code);
 		
 		List<StockPriceVO> list = stockService.getStockInfoList(st_code);
 		
 		model = stocksHeaderService.getModelSet(model, principal, st_code); //v
 		
-		model.addAttribute("stock", stock);
 		model.addAttribute("list", list);
 		
 		return "stockuser/detail";

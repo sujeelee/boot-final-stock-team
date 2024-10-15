@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 
 import kh.st.boot.dao.StockDAO;
 import kh.st.boot.model.vo.StockPriceVO;
+import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.model.vo.WishVO;
 import lombok.AllArgsConstructor;
 
@@ -14,6 +15,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor	
 public class StocksHeaderService {
 	private StockDAO stockDao;
+	
+	private StockService stockService;
 
 	public WishVO wishCheck(String st_code, String mb_id) {
 		return stockDao.wishCheck(st_code, mb_id);
@@ -66,6 +69,9 @@ public class StocksHeaderService {
 			wish = wishCheck(st_code, mb_id);
 		}  
 		
+		StockVO stock = stockService.getCompanyOne(st_code);
+		
+		model.addAttribute("stock", stock);
 		model.addAttribute("today", today);
 		model.addAttribute("mb_id", mb_id);
 		model.addAttribute("wish", wish);
