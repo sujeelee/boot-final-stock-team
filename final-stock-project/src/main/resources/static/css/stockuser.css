@@ -7,6 +7,7 @@ table{text-align:center;}
 .left_td{text-align: left;}
 .blue{color: blue;}
 .red{color: red;}
+.hold{color: #888;}
 .margin-left{margin-left: 50%;}
 .margin-left-big{margin-left: 68%;}
 .dropdown-item:hover{background-color:  rgba(9, 108, 138, 0.2) !important;}
@@ -25,3 +26,8 @@ li{cursor:pointer; color:#0c5460 !important;}
 thead{ border-bottom: 1px solid #888 !important; color: #6b6a6a !important;}
 table{margin-top: 3%;}
 tbody tr:hover{background-color: rgba(9, 108, 138, 0.4); color: #fff !important;}
+.fake_click{cursor: pointer;}
+.stock-name{font-size: 1.2em; font-weight: bold;}
+.stock-before, .red:before {content: '+';}
+.stock-price{font-size: 1.8em !important; font-weight: bold;}
+.stock-info-price{font-size: 0.8em;}

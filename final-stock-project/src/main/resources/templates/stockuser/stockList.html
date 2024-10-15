@@ -65,19 +65,19 @@
 					<tbody>
 						<tr th:each="list, price:${list}">
 							<td class="left_td">
-								<button type="button" class="btn heart" th:value="${list.st_code}" th:onclick="get_like(this.value);">
-									<i class="fa-solid fa-heart grey"></i>
+								<button type="button" th:class="'btn heart ' + ${list.st_code}" th:value="${list.wish}" th:onclick="get_wish([[${list.st_code}]], this.value);">
+									<i th:id="${list.st_code}" th:class="${list.wish.contains('Y')} ? 'fa-solid fa-heart pink':'fa-solid fa-heart grey'"></i>
 								</button>
-								<span th:text="${list.st_name}"></span>
+								<span class="fake_click" th:text="${list.st_name}" th:onclick="go_detail([[${list.st_code}]]);"></span>
 							</td>
 							<td>
 								<span th:text="${#numbers.formatInteger(prices[price.index].si_price, 3, 'COMMA')}"></span>원
 							</td>
 							<td>
-								<span th:class="${prices[price.index].si_fltRt == '0' ? '' : (prices[price.index].si_fltRt.contains('-') ? 'blue' : 'red')}" th:text="${#numbers.formatDecimal(prices[price.index].si_fltRt, 1, 2)} + '%'"></span>
+								<span th:class="${prices[price.index].si_fltRt == '0' ? 'hold' : (prices[price.index].si_fltRt.contains('-') ? 'blue' : 'red')}" th:text="${#numbers.formatDecimal(prices[price.index].si_fltRt, 1, 2)} + '%'"></span>
 							</td>
 							<td>
-								<span th:class="${prices[price.index].si_vs == '0' ? '' : (prices[price.index].si_vs.contains('-') ? 'blue' : 'red')}" th:text="${#numbers.formatInteger(prices[price.index].si_vs, 0, 'COMMA')}"></span>
+								<span th:class="${prices[price.index].si_vs == '0' ? 'hold' : (prices[price.index].si_vs.contains('-') ? 'blue' : 'red')}" th:text="${#numbers.formatInteger(prices[price.index].si_vs, 0, 'COMMA')}"></span>
 							</td>
 							<td>
 								<span th:text="${prices[price.index].price_text}"></span>
@@ -122,8 +122,49 @@
 			</ul>
 		</div>
 		<script th:inline="javascript">
-			function get_like(code){
-				console.log(code);
+			function get_wish(code, status){
+				
+				var userid = [[${mb_id}]];
+				if(userid == null){
+					if(confirm("회원만 이용가능합니다.\n로그인페이지로 이동하시겠습니까?")) {
+						location.href = "/member/login";
+						return false;
+					} else {
+						alert("해당 기능은 로그인 후 사용할 수 있습니다.");
+						return false;
+					}
+				}
+				
+				if(status == 'Y'){
+					if(!confirm("위시에서 삭제하시겠습니까?")){
+						alert("삭제를 취소하셨습니다.");
+						return false;
+					}
+				}
+				$.ajax({
+		            url: "/stock/wish",
+		            type: 'post',
+		            data: {st_code: code, status: status},
+		            dataType : 'json',
+		            async: false, 
+		            success: function (data) {
+		            	if(data.res == "success"){
+		            		if(status == "Y"){
+		            			$("#"+code).removeClass("pink");
+		            			$("#"+code).addClass("grey");
+		            			$("."+code).val("N");
+		            		} else {
+		            			$("#"+code).removeClass("grey");
+		            			$("#"+code).addClass("pink");
+		            			$("."+code).val("Y");
+		            		}
+		            	}
+		            	alert(data.msg);
+		            }
+		        });
+			}
+			function go_detail(code){
+				location.href = "/stock/detail/" + code;
 			}
 		</script>
 	</main>
