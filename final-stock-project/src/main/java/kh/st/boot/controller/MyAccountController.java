@@ -24,6 +24,7 @@ import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
@@ -400,7 +401,12 @@ public class MyAccountController {
             return "util/msg";
         }
         String mb_id = principal.getName();
-        
+        // 주식 판매를 한 거래 내역만 가져옴
+        List<OrderVO> list = myAccountService.getOrderListBySale(mb_id);
+        // 계좌 잔액
+        AccountVO ac = myAccountService.getAccountAmt(mb_id);
+        model.addAttribute("account", ac);
+        model.addAttribute("list", list);
 		return "myaccount/profit";
 	}
 	

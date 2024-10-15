@@ -86,4 +86,10 @@
 			limit #{cri.pageStart}, #{cri.perPageNum}
 		</if>
 	</select>
+	<select id="getOrderMemberBySale" resultType="OrderVO">
+		select * from order
+		where mb_id = #{mb_id}
+			and od_status like '%매도%'
+		order by od_date DESC
+	</select>
 </mapper>
