@@ -15,4 +15,8 @@ public interface AdminApprovalDAO {
 
 	void nyUPDATE(int mp_no, String mp_yn);
 
+	void newsInsert(int mb_no, String mp_company);
+
+	void stockInsert(int mb_no, String mp_company);
+
 }

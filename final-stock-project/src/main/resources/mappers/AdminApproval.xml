@@ -4,16 +4,25 @@
 
 	<select id="nullSelectAll" resultType="AdmApprovalVO">
 		SELECT
-		* FROM member_approve
+		* FROM
+		member_approve
 		WHERE mp_yn IS NULL
 	</select>
 
-	<insert id="nyUPDATE">
-    	UPDATE member_approve
-   		 SET mp_yn = #{mp_yn}, mp_app_date = NOW()
-   		 WHERE mp_no = #{mp_no}
+	<update id="nyUPDATE">
+		UPDATE member_approve
+		SET mp_yn = #{mp_yn}, mp_app_date = NOW()
+		WHERE mp_no = #{mp_no}
+	</update>
+
+	<insert id="newsInsert">
+		INSERT INTO news_member (mb_no, mp_company)
+		VALUES (#{mb_no}, #{mp_company})
 	</insert>
 
-
+	<insert id="stockInsert">
+		INSERT INTO stock_member (mb_no, mp_company)
+		VALUES (#{mb_no}, #{mp_company})
+	</insert>
 
 </mapper>

@@ -69,6 +69,7 @@
                     <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
                     <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
                     <input type="hidden" name="mp_yn" value="y" />
+                   <input type="hidden" name="mb_no" th:value="${list.mb_no}" />
                     <button type="submit">승인</button>
                 </form>
                 <!-- 거절 버튼 폼 -->
@@ -77,6 +78,7 @@
                     <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
                     <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
                     <input type="hidden" name="mp_yn" value="n" />
+                    <input type="hidden" name="mb_no" th:value="${list.mb_no}" />
                     <button type="submit">거절</button>
                 </form>
             </td>

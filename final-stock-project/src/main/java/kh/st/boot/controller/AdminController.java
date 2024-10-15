@@ -309,13 +309,13 @@ public class AdminController {
 		}
 		
 		
-		// 승인/거절 했을때 (전부다 인설트  1DB 나우날짜 Y/N 
+		// 승인/거절 했을때  
 	
 		@PostMapping("/admApproval/admApprovalPage/slt")
 		public String ySltApproval(@RequestParam int mp_no, @RequestParam String mp_type,
-								   @RequestParam String mp_company, @RequestParam String mp_yn) {
+								   @RequestParam String mp_company, @RequestParam String mp_yn,@RequestParam int mb_no ) {
 			
- 			adminApprovalService.ynUPDATE(mp_no,mp_type,mp_company,mp_yn);
+ 			adminApprovalService.ynUPDATE(mp_no,mp_type,mp_company,mp_yn,mb_no);
 			
 			return "redirect:/admin/admApproval/admApprovalPage"; 
 			}
