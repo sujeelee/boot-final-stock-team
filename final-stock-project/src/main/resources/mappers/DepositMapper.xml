@@ -87,9 +87,13 @@
 		</if>
 	</select>
 	<select id="getOrderMemberBySale" resultType="OrderVO">
-		select * from order
-		where mb_id = #{mb_id}
-			and od_status like '%매도%'
-		order by od_date DESC
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '매도'
+		ORDER BY
+			OD_DATE DESC
 	</select>
 </mapper>
