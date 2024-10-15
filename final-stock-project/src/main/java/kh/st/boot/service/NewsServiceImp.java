@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.NewsDAO;
@@ -16,7 +17,8 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor	
 public class NewsServiceImp implements NewsService{
-
+	
+	@Autowired
 	private NewsDAO newsDao;
 
 	@Override

@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import groovy.transform.AutoImplement;
 import kh.st.boot.model.vo.AdmApprovalVO;
 import kh.st.boot.model.vo.AdmDaycheckVO;
+import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
+import kh.st.boot.service.AdmPointService;
 import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
@@ -46,6 +48,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminApprovalService adminApprovalService;
+	
+	@Autowired
+	private AdmPointService	admPointService;
 	
 	
 	// adminhome에 값을 보내줄 내용
@@ -322,18 +327,38 @@ public class AdminController {
 		
 		
 		
-
+		// -------------------------------------------------------------------------------
+		// --------------------------사용자포인트 관리 컨트롤러 --------------------------
+		// -------------------------------------------------------------------------------
+				
+		// 페이지 이동시 리스트 당겨옴 
+		@GetMapping("/admPoint/admPointPage")
+		public String pointSelect( Model model) {
+			List<AdmPointVO> Slt = admPointService.allselect();
+			model.addAttribute("list", Slt);
+			return "/admin/admPoint/admPointPage"; 
+		}
+		
+		// 아이디로 사용자 검색
+		@PostMapping("admPoint/admPointPage/Id")
+		public String idSelect(@RequestParam String mb_id, Model model) {
+			List<AdmPointVO> idSlt = admPointService.idSelect(mb_id);
+			model.addAttribute("list", idSlt);
+			return "/admin/admPoint/admPointPage"; 
+		}
 		
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
+		@PostMapping("/admPoint/admPointPage/point")
+		public String plusMinus(@RequestParam String mb_id,
+								@RequestParam int po_num,
+								@RequestParam String po_content,
+								@RequestParam String po_end_date) {
+			 
+			admPointService.plusminus(mb_id,po_num,po_content,po_end_date);
+			return "redirect:/admin/admPoint/admPointPage"; 
+		}
 		
 		
 		

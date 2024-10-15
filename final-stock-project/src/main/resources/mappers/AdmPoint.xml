@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.AdmPointDAO">
+
+
+
+	<select id="selectAll" resultType="AdmPointVO">
+		SELECT * FROM point
+	</select>
+
+	<select id="selectId" resultType="AdmPointVO">
+		SELECT * FROM point
+		WHERE mb_id = #{mb_id}
+	</select>
+
+	<insert id="updatePoint">
+		INSERT INTO point (mb_id,po_num,po_content,po_datetime,po_end_date )
+		VALUES (#{mb_id},#{po_num},#{po_content},now(),DATE_ADD(now(), INTERVAL ${po_end_date} DAY))
+		
+	</insert>
+
+
+</mapper>
