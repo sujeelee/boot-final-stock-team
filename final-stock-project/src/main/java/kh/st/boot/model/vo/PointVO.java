@@ -15,4 +15,5 @@ public class PointVO {
 	private Date po_datetime;	// 포인트 지급일
 	private int po_end_date;	// 포인트 유효기간
 	private String mb_id;		// 회원 아이디
+	
 }
