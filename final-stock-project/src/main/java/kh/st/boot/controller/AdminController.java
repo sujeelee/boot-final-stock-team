@@ -353,10 +353,9 @@ public class AdminController {
 		@PostMapping("/admPoint/admPointPage/point")
 		public String plusMinus(@RequestParam String mb_id,
 								@RequestParam int po_num,
-								@RequestParam String po_content,
-								@RequestParam String po_end_date) {
+								@RequestParam String po_content) {
 			 
-			admPointService.plusminus(mb_id,po_num,po_content,po_end_date);
+			admPointService.plusminus(mb_id,po_num,po_content);
 			return "redirect:/admin/admPoint/admPointPage"; 
 		}
 		

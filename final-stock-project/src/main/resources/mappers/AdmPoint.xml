@@ -14,10 +14,10 @@
 	</select>
 
 	<insert id="updatePoint">
-		INSERT INTO point (mb_id,po_num,po_content,po_datetime,po_end_date )
-		VALUES (#{mb_id},#{po_num},#{po_content},now(),DATE_ADD(now(), INTERVAL ${po_end_date} DAY))
+		INSERT INTO point (mb_id,po_num,po_content,po_datetime )
+		VALUES (#{mb_id},#{po_num},#{po_content},now())
 		
 	</insert>
 
-
+  
 </mapper>

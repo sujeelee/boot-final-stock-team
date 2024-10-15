@@ -27,8 +27,8 @@ public class AdmPointService {
 	}
 
 
-	public void plusminus(String mb_id, int po_num, String po_content, String po_end_date) {
-		admPointDAO.updatePoint(mb_id,po_num,po_content,po_end_date);
+	public void plusminus(String mb_id, int po_num, String po_content) {
+		admPointDAO.updatePoint(mb_id,po_num,po_content);
 	}
 
 }

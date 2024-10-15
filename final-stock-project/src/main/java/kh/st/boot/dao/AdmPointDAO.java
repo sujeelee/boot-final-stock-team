@@ -12,7 +12,7 @@ public interface AdmPointDAO {
 
 	List<AdmPointVO> selectId(String mb_id);
 
-	void updatePoint(String mb_id, int po_num, String po_content, String po_end_date);
+	void updatePoint(String mb_id, int po_num, String po_content);
 
 	
 }

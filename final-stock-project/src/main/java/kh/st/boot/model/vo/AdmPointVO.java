@@ -12,7 +12,6 @@ public class AdmPointVO {
 	private int po_num ;		// 포인트
 	private String po_content ;	// 지급사유
 	private String po_datetime;	// 지급일
-	private String po_end_date;	// 유효기간
 	private String mb_id ;		// 회원아이디 
 	
 	
