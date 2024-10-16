@@ -51,6 +51,8 @@ public interface EventService {
 
     PrizeVO getPrizeByPr_no(int pr_no);
 
+    boolean updateEventPrize_withFile(PrizeVO prize, MultipartFile file);
+
     
 
     

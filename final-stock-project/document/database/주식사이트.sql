@@ -31,7 +31,10 @@ ex) 19960908',
 	`mb_fail` int DEFAULT 0,
 	`mb_point`	int(11)	NULL,
 	`mb_emailing`	tinyint(4)	NULL,
-	`mb_account`	varchar(255)	NULL UNIQUE
+	`mb_account`	varchar(255)	NULL UNIQUE,
+	`mb_oauthProvider` varchar(30)	NULL,
+	`mb_oauthId` varchar(255)	null,
+	`mb_loginMethod` varchar(50) null default 'internal'
 );
 
 

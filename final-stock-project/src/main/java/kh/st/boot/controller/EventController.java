@@ -243,6 +243,22 @@ public class EventController {
         return "/event/eventATypeUpdate";
     }
 
+    @PostMapping("/eventATypeUpdate")
+    public String eventATypeUpdate(Model mo ,PrizeVO prize, MultipartFile file){
+
+        System.out.println(prize);
+
+        System.err.println(file.isEmpty());
+
+        boolean res = eventService.updateEventPrize_withFile(prize, file);
+        if (res) {
+            System.out.println("상품 수정 완료");
+        }
+        
+        List<EventDTO> list = eventService.getEventAllList();
+        mo.addAttribute("list", list);
+        return "/event/eventPrizeList";
+    }
 
 
 }

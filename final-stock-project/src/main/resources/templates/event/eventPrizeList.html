@@ -52,8 +52,13 @@
                 <!-- collapse 영역: 상품 리스트가 들어갈 부분 -->
                 <div class="collapse" th:id="'event' + ${event.ev_no}">
                     <div class="bg-gray event-info">
-                        <strong>이벤트 정보:</strong>
-                        <p>이벤트 명 1에 대한 설명이 여기에 들어갑니다. 추가적인 정보를 기재할 수 있습니다.</p>
+                        
+                        <strong>이벤트 번호&nbsp;:&nbsp;</strong><span>[[${event.ev_no}]]</span>
+                        <br><span><strong>이벤트 작성일&nbsp;:&nbsp;</strong>[[${#dates.format(event.ev_datetime,  'yyyy년 MM월 dd일 HH시 mm분 ss초')}]]</span>
+                        <br><span><strong>이벤트 기간&nbsp;:&nbsp;</strong>[[${#dates.format(event.ev_start, 'yyyy년 MM월 dd일 ')}]] ~ [[${#dates.format(event.ev_end, 'yyyy년 MM월 dd일')}]] </span>
+                        <br><span><strong>이벤트 상태&nbsp;:&nbsp;</strong>[[${event.ev_status}]]</span>
+                        <br><span><strong>이벤트 폼 타입&nbsp;:&nbsp;</strong>[[${event.ev_form}]]</span>
+                        
                         <a th:if="${event.ev_form == 'Participatory'}" th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}" class="btn btn-success add-product-btn">상품 추가(5개 까지)</a> <!-- 상품 추가 버튼 -->
                     </div>
                     <div th:id="'prizeList'+${event.ev_no}">

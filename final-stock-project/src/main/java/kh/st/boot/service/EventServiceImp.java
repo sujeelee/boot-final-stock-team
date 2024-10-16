@@ -226,6 +226,31 @@ public class EventServiceImp implements EventService {
         return eventDao.getPrizeByPr_no(pr_no);
     }
 
+    @Override
+    public boolean updateEventPrize_withFile(PrizeVO prize, MultipartFile file) {
+        
+
+        if (prize == null) {
+            return false;
+        }
+
+        if (prize.getPr_name() == null || prize.getPr_name().trim().length() == 0) {
+            return false;   
+        }
+
+        boolean res = eventDao.updatePrize(prize);
+
+        if (res && !file.isEmpty()) {
+            res = eventDao.deletePrizeThumbnailFile(prize.getPr_no());
+            if (res) {
+                UploadFileUtils.delteFile(uploadPath, prize.getFi_path());
+                uploadFile(file, prize.getPr_no(), "prize");
+            }
+        }
+
+        return res;
+    }
+
 
 
     

@@ -67,6 +67,10 @@ public interface EventDAO {
 
     PrizeVO getPrizeByPr_no(int pr_no);
 
+    boolean updatePrize(PrizeVO prize);
+
+    boolean deletePrizeThumbnailFile(int pr_no);
+
 
     
 }
