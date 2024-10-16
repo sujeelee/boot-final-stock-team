@@ -11,12 +11,35 @@
 	<main layout:fragment="content">
 		<div th:replace="~{layout/stocksHeader.html}"></div>
 		<section class="chart-section">
-			<div class="graph">
-			</div>
+			<div id="graph"></div>
 		</section>
 		<div class="center">
 			<a class="btn btn-info heart" th:href="@{/stock/stockList}">목록으로</a>
 		</div>
+		<script th:inline="javascript">
+	      google.charts.load('current', {'packages':['corechart']});
+	      google.charts.setOnLoadCallback(drawChart);
+
+	      function drawChart() {
+	    	  // Some raw data (not necessarily accurate)
+	          var data = google.visualization.arrayToDataTable([
+	            ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+	            ['2024/06',  165,      938,         522,             998,           450,      614.6],
+	            ['2004/07',  135,      1120,        599,             1268,          288,      682],
+	            ['2024/08',  157,      1167,        587,             807,           397,      623],
+	            ['2024/09',  139,      1110,        615,             968,           215,      609.4],
+	            ['2024/10',  136,      691,         629,             1026,          366,      569.6]
+	          ]);
+
+	          var options = {
+	            title : 'Monthly Coffee Production by Country',
+	            seriesType: 'bars',
+	            series: {5: {type: 'line'}}
+	          };
+	          var chart = new google.visualization.ComboChart(document.getElementById('graph'));
+	          chart.draw(data, options);
+			}
+		</script>
 	</main>
 </body>
 </html>
