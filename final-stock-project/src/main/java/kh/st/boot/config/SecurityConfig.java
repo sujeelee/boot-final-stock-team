@@ -33,7 +33,7 @@ public class SecurityConfig{
                 .hasAnyAuthority(UserRole.USER.name(), UserRole.ADMIN.name()) //여러 권한 설정
                 .requestMatchers("/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll()  // 그 외 요청은 인증 필요
-            )                                                                                                                                                                     
+            )
             .formLogin((form) -> form
                 .loginPage("/member/login")  // 커스텀 로그인 페이지 설정
                 .permitAll()           // 로그인 페이지는 접근 허용
@@ -56,8 +56,7 @@ public class SecurityConfig{
             		.logoutSuccessUrl("/")
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
-            		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
-                    .deleteCookies("JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명
+            		.deleteCookies("AUTO_LOGIN", "JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명그아웃 성공 시 제거할 쿠키명
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
     }

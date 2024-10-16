@@ -66,6 +66,7 @@
 		    <artifactId>mybatis-spring-boot-starter</artifactId>
 		    <version>3.0.3</version>
 		</dependency>
+
 		<dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -84,11 +85,18 @@
 		    <artifactId>lombok</artifactId>
 		    <scope>provided</scope>
 		</dependency>
-		<!-- 시큐리티 의존성 추가-->
+		<!-- 시큐리티 의존성 추가 -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
+		<!-- 외부로그인 oauth2 사용 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
 		<!-- 타임리프에서 sec를 사용하여 로그인 여부를 확인하기 위해  -->
 		<dependency>
 		    <groupId>org.thymeleaf.extras</groupId>
