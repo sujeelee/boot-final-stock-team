@@ -13,8 +13,10 @@ import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
 import lombok.AllArgsConstructor;
@@ -129,4 +131,22 @@ public class MyAccountServiceImp implements MyAccountService {
 		}
 		return depositDao.getDepositMember(mb_id, cri);
 	}
+
+	@Override
+	public List<OrderVO> getOrderListBySell(String mb_id) {
+		if(mb_id == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberBySell(mb_id);
+	}
+
+	@Override
+	public List<OrderVO> getOrderListByBuy(String mb_id) {
+		if(mb_id == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberByBuy(mb_id);
+	}
+
+
 }

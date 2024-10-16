@@ -86,4 +86,24 @@
 			limit #{cri.pageStart}, #{cri.perPageNum}
 		</if>
 	</select>
+	<select id="getOrderMemberBySell" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매도%'
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberByBuy" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매수%'
+		ORDER BY
+			OD_DATE DESC
+	</select>
 </mapper>
