@@ -39,27 +39,26 @@
 					  <li class="comment">
 					    <div class="comment-header">
 					      <address class="comment-author">
-					        <span class="author-name">mb_id</span>
-					        <span class="author-badge">mb_lever</span>      
+					        <span class="author-name" th:text="${member.mb_id}"></span>
+					        <span class="author-badge" th:text="${member.mb_lever}"></span>      
 					      </address>
 					       <button class="follow-btn">팔로우</button>
 					    </div>
 					    <div class="comment-body">
-					      <p class="comment-text">
-					        본문글 가져오기
+					      <p class="comment-text" th:text="${board.wr_content}">
 					      </p>
 					    </div>
 					    <div class="comment-footer">
 					      <button class="like-btn">
 					      	<i class='bx bxs-heart'></i>
-					      	<span style="font-size: 13px">13</span>
+					      	<span style="font-size: 13px" th:text="${board.wr_good}"></span>
 					</button>
 					<button class="reply-btn" onclick="toggleInput()">
-					<i class='bx bx-comment' aria-label="댓글 남기기"></i> <!-- 댓글 남기기 아이콘 -->
+						<i class='bx bx-comment' aria-label="댓글 남기기" th:text="${board.wr_comment}"></i> <!-- 댓글 남기기 아이콘 -->
 					</button>
 					<button class="report-btn">
 						 <i class='bx bx-x-circle' aria-label="신고하기"></i> <!-- 신고하기 -->
-					<span style="font-size: 13px">wr_singo</span>
+					<span style="font-size: 13px" th:text="${board.wr_singo}"></span>
 					  </button>
 					</div>
 					<!-- 댓글 입력창 -->
