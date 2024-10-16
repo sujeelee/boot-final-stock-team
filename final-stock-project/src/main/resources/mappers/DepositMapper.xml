@@ -106,4 +106,47 @@
 		ORDER BY
 			OD_DATE DESC
 	</select>
+	<select id="getOrderMember" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND (OD_STATUS LIKE '%매도%' OR OD_STATUS LIKE '%매수%') 
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberBySellDate" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매도%'
+			AND OD_DATE >= #{now}
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberByBuyDate" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매수%'
+			AND OD_DATE >= #{now}
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberByDate" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND (OD_STATUS LIKE '%매도%' OR OD_STATUS LIKE '%매수%')
+			AND OD_DATE LIKE CONCAT(SUBSTRING(#{now},1,7), '%')
+		ORDER BY
+			OD_DATE DESC
+	</select>
 </mapper>

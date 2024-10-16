@@ -424,10 +424,179 @@ public class MyAccountController {
         if(buyAmount != 0) {
         	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
         }
+        // 주식 구매/판매 전체 리스트
+        List<OrderVO> list = myAccountService.getOrderList(mb_id);
+        // 회원가입일
+        MemberVO user = memberService.findById(mb_id);
+        String mb_datetime = new SimpleDateFormat("yyyy. MM. dd").format(user.getMb_datetime());
+        Date d = new Date();
+        String now = new SimpleDateFormat("yyyy. MM. dd").format(d); 
         model.addAttribute("proceeds", proceeds);
         model.addAttribute("rateOfReturn", rateOfReturn);
-        model.addAttribute("list", sellList);
+        model.addAttribute("list", list);
+        model.addAttribute("mb_datetime", mb_datetime);
+        model.addAttribute("now", now);
 		return "myaccount/profit";
+	}
+	
+	@ResponseBody
+	@PostMapping("/profit/date")
+	public Map<String, Object> profitDate(Principal principal, String date){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String mb_id = principal.getName();
+		MemberVO user = memberService.findById(mb_id);
+		List<OrderVO> buyList, sellList, list;
+		int buyAmount = 0, sellAmount = 0, proceeds = 0, rateOfReturn = 0;
+        String now, today;
+        Date d = new Date();
+		switch(date) {
+		case "all":
+			// 주식 구매를 한 거래 내역만 가져옴
+	        buyList = myAccountService.getOrderListByBuy(mb_id);
+	        // 주식 판매를 한 거래 내역만 가져옴
+	        sellList = myAccountService.getOrderListBySell(mb_id);
+	        if(buyList != null && buyList.size() != 0) {
+		        for(OrderVO order : buyList) {
+		        	buyAmount += order.getOd_price();
+		        }
+	        }
+	        if(sellList != null && sellList.size() != 0) {
+	        	for(OrderVO order : sellList) {
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+	        	}
+	        }
+	        proceeds = sellAmount - buyAmount;
+	        if(buyAmount != 0) {
+	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+	        }
+	        // 주식 구매/판매 전체 리스트
+	        list = myAccountService.getOrderList(mb_id);
+	        // 회원가입일
+	        String mb_datetime = new SimpleDateFormat("yyyy. MM. dd").format(user.getMb_datetime());
+	        now = new SimpleDateFormat("yyyy. MM. dd").format(d); 
+	        map.put("list", list);
+	        map.put("proceeds", proceeds);
+	        map.put("rateOfReturn", rateOfReturn);
+	        map.put("mb_datetime", mb_datetime);
+	        map.put("now", now);
+	        map.put("status", "all");
+			break;
+		case "day":
+	        now = new SimpleDateFormat("yyyy. MM. dd").format(d);
+	        today = new SimpleDateFormat("yyyy-MM-dd").format(d);
+			// 주식 구매를 한 거래 내역만 가져옴
+	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
+	        // 주식 판매를 한 거래 내역만 가져옴
+	        sellList = myAccountService.getOrderListBySellDate(mb_id, today);
+	        if(buyList != null && buyList.size() != 0) {
+		        for(OrderVO order : buyList) {
+		        	buyAmount += order.getOd_price();
+		        }
+	        }
+	        if(sellList != null && sellList.size() != 0) {
+	        	for(OrderVO order : sellList) {
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+	        	}
+	        }
+	        proceeds = sellAmount - buyAmount;
+	        if(buyAmount != 0) {
+	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+	        }
+	        // 주식 구매/판매 전체 리스트
+	        list = myAccountService.getOrderListByDate(mb_id, today);
+	        map.put("list", list);
+	        map.put("proceeds", proceeds);
+	        map.put("rateOfReturn", rateOfReturn);
+	        map.put("now", now);
+	        map.put("status", "day");
+			break;
+		case "month":
+	        now = new SimpleDateFormat("yyyy. MM").format(d); 
+	        today = new SimpleDateFormat("yyyy-MM-01").format(d);
+			// 주식 구매를 한 거래 내역만 가져옴
+	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
+	        // 주식 판매를 한 거래 내역만 가져옴
+	        sellList = myAccountService.getOrderListBySellDate(mb_id, today);
+	        if(buyList != null && buyList.size() != 0) {
+		        for(OrderVO order : buyList) {
+		        	buyAmount += order.getOd_price();
+		        }
+	        }
+	        if(sellList != null && sellList.size() != 0) {
+	        	for(OrderVO order : sellList) {
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+	        	}
+	        }
+	        proceeds = sellAmount - buyAmount;
+	        if(buyAmount != 0) {
+	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+	        }
+	        // 주식 구매/판매 전체 리스트
+	        list = myAccountService.getOrderListByDate(mb_id, today);
+	        map.put("list", list);
+	        map.put("proceeds", proceeds);
+	        map.put("rateOfReturn", rateOfReturn);
+	        map.put("now", now);
+	        map.put("status", "month");
+			break;
+		case "year":
+	        now = new SimpleDateFormat("yyyy").format(d);
+	        today = new SimpleDateFormat("yyyy-01-01").format(d);
+			// 주식 구매를 한 거래 내역만 가져옴
+	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
+	        // 주식 판매를 한 거래 내역만 가져옴
+	        sellList = myAccountService.getOrderListBySellDate(mb_id, today);
+	        if(buyList != null && buyList.size() != 0) {
+		        for(OrderVO order : buyList) {
+		        	buyAmount += order.getOd_price();
+		        }
+	        }
+	        if(sellList != null && sellList.size() != 0) {
+	        	for(OrderVO order : sellList) {
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+	        	}
+	        }
+	        proceeds = sellAmount - buyAmount;
+	        if(buyAmount != 0) {
+	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+	        }
+	        // 주식 구매/판매 전체 리스트
+	        list = myAccountService.getOrderListByDate(mb_id, today);
+	        map.put("list", list);
+	        map.put("proceeds", proceeds);
+	        map.put("rateOfReturn", rateOfReturn);
+	        map.put("now", now);
+	        map.put("status", "year");
+			break;
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("/profit/today")
+	public Map<String, Object> profitToday(Date today, String status, Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String mb_id = principal.getName();
+		List<OrderVO> list;
+		String date;
+		switch(status) {
+		case "day":
+			date = new SimpleDateFormat("yyyy-MM-dd").format(today);
+			list = myAccountService.getOrderListByDate(mb_id, date);
+			map.put("list", list);
+			break;
+		case "month":
+			date = new SimpleDateFormat("yyyy-MM-01").format(today);
+			list = myAccountService.getOrderListByDate(mb_id, date);
+			map.put("list", list);
+			break;
+		case "year":
+			date = new SimpleDateFormat("yyyy-01-01").format(today);
+			list = myAccountService.getOrderListByDate(mb_id, date);
+			map.put("list", list);
+			break;
+		}
+		return map;
 	}
 	
 	@GetMapping("/point")

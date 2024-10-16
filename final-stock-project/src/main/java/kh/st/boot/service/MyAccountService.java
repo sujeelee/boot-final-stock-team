@@ -50,4 +50,12 @@ public interface MyAccountService {
 
 	List<OrderVO> getOrderListByBuy(String mb_id);
 
+	List<OrderVO> getOrderList(String mb_id);
+
+	List<OrderVO> getOrderListBySellDate(String mb_id, String now);
+	
+	List<OrderVO> getOrderListByBuyDate(String mb_id, String now);
+
+	List<OrderVO> getOrderListByDate(String mb_id, String now);
+
 }
