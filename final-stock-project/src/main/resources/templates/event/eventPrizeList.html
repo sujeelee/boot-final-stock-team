@@ -59,13 +59,27 @@
                         <br><span><strong>이벤트 상태&nbsp;:&nbsp;</strong>[[${event.ev_status}]]</span>
                         <br><span><strong>이벤트 폼 타입&nbsp;:&nbsp;</strong>[[${event.ev_form}]]</span>
                         
-                        <a th:if="${event.ev_form == 'Participatory'}" th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}" class="btn btn-success add-product-btn">상품 추가(5개 까지)</a> <!-- 상품 추가 버튼 -->
+                        <a 
+                        th:id="'addPrize' + ${event.ev_no}"
+                        th:if="${event.ev_form == 'Participatory'}"
+                        th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}"
+                        class="btn btn-success add-product-btn"
+                        
+                        >상품 추가(5개 까지)</a> <!-- 상품 추가 버튼 -->
                     </div>
                     <div th:id="'prizeList'+${event.ev_no}">
                         <div id="prizeList">
                             <ul class="list-group">
                                 <!-- 상품 리스트를 렌더링 -->
                                 <th:block th:each="prize, index : ${prizeList}">
+                                    <p th:text="${#lists.size(prizeList)}?:_"></p>
+
+                                    <script th:inline="javascript">
+                                        
+                                        const listSize = /*[[${#lists.size(prizeList)}?:_]]*/ '';
+                                        console.log(listSize);
+                                    </script>
+
                                     <li class="list-group-item bg-gray d-flex justify-content-between align-items-center" th:classappend="${index.last} ? 'mb-2'">
                                         <span th:text="${prize.pr_name}"></span>
                                         <div class="ml-auto">
