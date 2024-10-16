@@ -338,61 +338,62 @@
 						console.log(jqXHR);
 	            	}
 	            });
-	            function displayUpdateMain(data) {
-	                // 수익 금액 업데이트 (숫자 포맷)
-	                $('#profitText').text(`${formatNumber(data.proceeds)}원`);
-	                // 수익률 업데이트
-	                $('#profitRate').text(`(${data.rateOfReturn}%)`);
-	                let str = '';
-	                if (data.list && data.list.length > 0) {
-	                	for(item of data.list) {
-	                		str += `
-	                            <div class="transaction-container">
-		                            <span class="date-info">${formatDate(item.od_date)}</span>
-		                            <div class="transaction-details">
-		                                <div class="user-info">
-		                                    <span class="user-name">${item.od_st_name} ${item.od_qty}주</span>
-		                                    <span class="transaction-type">${item.od_date.substring(11, 16)} ㅣ ${item.od_status}</span>
-		                                </div>
-		                                <div class="amount-info">
-		                                    <span class="amount">${formatNumber(item.od_price)}원</span>
-		                                    <span class="balance">${formatNumber(item.od_st_price)}원</span>
-		                                </div>
-		                            </div>
-		                        </div>
-	                		`;
-	                	}
-	                }else{
-	                	str = `
-	    				    <div class="none-list">
-						    	<div class="none-content">
-									<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
-						    		<p class="no-title">내역이 없어요</p>
-						    	</div>
-						    </div>
-	                	`;
-	                }
-	                $('.transaction-box').html(str);
-	            }
-	            function displayUpdateDate(data) {
-	            	let str = '';
-	            	if(data.mb_datetime != null) {
-	            		str = `
-	            			<div class="date-text">${data.mb_datetime} ~ ${data.now}</div>
-	            		`;
-	            	}else{
-	            		str = `
-	            			<div class="date-text">
-		            			<button class="date-btn" id="prev" value="${data.status}" onclick="clickDate(this)"><</button>
-		        	            <span>${data.now}</span>
-		        	            <button class="date-btn" id="next" value="${data.status}" onclick="clickDate(this)">></button>
-	            			</div>
-	            		`;
-	            		
-	            	}
-	            	$('.date-box').html(str);
-	            }
 	        }
+            function displayUpdateMain(data) {
+                // 수익 금액 업데이트 (숫자 포맷)
+                $('#profit-text').text(`${formatNumber(data.proceeds)}원`);
+                // 수익률 업데이트
+                $('#profit-rate').text(`(${data.rateOfReturn}%)`);
+                let str = '';
+                if (data.list && data.list.length > 0) {
+                	for(item of data.list) {
+                		str += `
+                            <div class="transaction-container">
+	                            <span class="date-info">${formatDate(item.od_date)}</span>
+	                            <div class="transaction-details">
+	                                <div class="user-info">
+	                                    <span class="user-name">${item.od_st_name} ${item.od_qty}주</span>
+	                                    <span class="transaction-type">${item.od_date.substring(11, 16)} ㅣ ${item.od_status}</span>
+	                                </div>
+	                                <div class="amount-info">
+	                                    <span class="amount">${formatNumber(item.od_price)}원</span>
+	                                    <span class="balance">${formatNumber(item.od_st_price)}원</span>
+	                                </div>
+	                            </div>
+	                        </div>
+                		`;
+                	}
+                }else{
+                	str = `
+    				    <div class="none-list">
+					    	<div class="none-content">
+								<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
+					    		<p class="no-title">내역이 없어요</p>
+					    	</div>
+					    </div>
+                	`;
+                }
+                $('.transaction-box').html(str);
+            }
+            function displayUpdateDate(data) {
+            	let str = '';
+            	if(data.mb_datetime != null) {
+            		str = `
+            			<div class="date-text">${data.mb_datetime} ~ ${data.now}</div>
+            		`;
+            	}else{
+            		str = `
+            			<div class="date-text">
+	            			<button class="date-btn" id="prev" value="${data.status}" onclick="clickDate(this)"><</button>
+	        	            <span>${data.now}</span>
+	        	            <button class="date-btn" id="next" value="${data.status}" onclick="clickDate(this)">></button>
+            			</div>
+            		`;
+            		
+            	}
+            	$('.date-box').html(str);
+            }
+            
          	// 숫자 포맷 함수 (천단위 콤마)
             function formatNumber(number) {
                 return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -441,49 +442,15 @@
 	            		}, 
 	            	dataType : "json", 
 	            	success : function (data){
-	            		
+	            		console.log(data);
+	            		displayUpdateMain(data);
 	            	}, 
 	            	error : function(jqXHR, textStatus, errorThrown){
 
 	            	}
 	            });
 	        }
-	        function displayUpdateDetail(list){
-                let str = '';
-                if (list && list.length > 0) {
-                	for(item of list) {
-                		str += `
-                            <div class="transaction-container">
-
-                            <span class="date-info">${formatDate(item.od_date)}</span>
-  
-                            <div class="transaction-details">
-
-                                <div class="user-info">
-                                    <span class="user-name">${item.od_st_name} ${item.od_qty}주</span>
-                                    <span class="transaction-type">${item.od_date.substring(11, 16)} ㅣ ${item.od_status}</span>
-                                </div>
-
-                                <div class="amount-info">
-                                    <span class="amount">${formatNumber(item.od_price)}원</span>
-                                    <span class="balance">${formatNumber(item.od_st_price)}원</span>
-                                </div>
-                            </div>
-                        </div>
-                		`;
-                	}
-                }else{
-                	str = `
-    				    <div class="none-list">
-					    	<div class="none-content">
-								<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
-					    		<p class="no-title">내역이 없어요</p>
-					    	</div>
-					    </div>
-                	`;
-                }
-                $('.transaction-box').html(str);
-	        }
+	        
 	        function formatDate2(date, status) {
 	            const year = date.getFullYear();
 	            const month = String(date.getMonth() + 1).padStart(2, '0');

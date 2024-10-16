@@ -123,7 +123,17 @@
 		WHERE
 			MB_ID = #{mb_id}
 			AND OD_STATUS LIKE '%매도%'
-			AND OD_DATE >= #{now}
+			<choose>
+				<when test="now.length() == 10">
+		            AND DATE_FORMAT(OD_DATE, '%Y-%m-%d') = #{now}
+		        </when>
+		        <when test="now.length() == 7">
+		            AND OD_DATE LIKE CONCAT(#{now}, '%')
+		        </when>
+		        <when test="now.length() == 4">
+		            AND OD_DATE LIKE CONCAT(#{now}, '%')
+		        </when>
+			</choose>
 		ORDER BY
 			OD_DATE DESC
 	</select>
@@ -134,7 +144,17 @@
 		WHERE
 			MB_ID = #{mb_id}
 			AND OD_STATUS LIKE '%매수%'
-			AND OD_DATE >= #{now}
+			<choose>
+				<when test="now.length() == 10">
+		            AND DATE_FORMAT(OD_DATE, '%Y-%m-%d') = #{now}
+		        </when>
+		        <when test="now.length() == 7">
+		            AND OD_DATE LIKE CONCAT(#{now}, '%')
+		        </when>
+		        <when test="now.length() == 4">
+		            AND OD_DATE LIKE CONCAT(#{now}, '%')
+		        </when>
+			</choose>
 		ORDER BY
 			OD_DATE DESC
 	</select>
@@ -145,7 +165,17 @@
 		WHERE
 			MB_ID = #{mb_id}
 			AND (OD_STATUS LIKE '%매도%' OR OD_STATUS LIKE '%매수%')
-			AND OD_DATE LIKE CONCAT(SUBSTRING(#{now},1,7), '%')
+			<choose>
+				<when test="now.length() == 10">
+		            AND DATE_FORMAT(OD_DATE, '%Y-%m-%d') = #{now}
+		        </when>
+		        <when test="now.length() == 7">
+		            AND OD_DATE LIKE CONCAT(#{now}, '%')
+		        </when>
+		        <when test="now.length() == 4">
+		            AND OD_DATE LIKE CONCAT(#{now}, '%')
+		        </when>
+			</choose>
 		ORDER BY
 			OD_DATE DESC
 	</select>

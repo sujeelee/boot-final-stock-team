@@ -512,7 +512,7 @@ public class MyAccountController {
 			break;
 		case "month":
 	        now = new SimpleDateFormat("yyyy. MM").format(d); 
-	        today = new SimpleDateFormat("yyyy-MM-01").format(d);
+	        today = new SimpleDateFormat("yyyy-MM").format(d);
 			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
 	        // 주식 판매를 한 거래 내역만 가져옴
@@ -541,7 +541,7 @@ public class MyAccountController {
 			break;
 		case "year":
 	        now = new SimpleDateFormat("yyyy").format(d);
-	        today = new SimpleDateFormat("yyyy-01-01").format(d);
+	        today = new SimpleDateFormat("yyyy").format(d);
 			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
 	        // 주식 판매를 한 거래 내역만 가져옴
@@ -577,23 +577,84 @@ public class MyAccountController {
 	public Map<String, Object> profitToday(Date today, String status, Principal principal){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String mb_id = principal.getName();
-		List<OrderVO> list;
+		List<OrderVO> buyList, sellList, list;
+		int buyAmount = 0, sellAmount = 0, proceeds = 0, rateOfReturn = 0;
 		String date;
 		switch(status) {
 		case "day":
 			date = new SimpleDateFormat("yyyy-MM-dd").format(today);
 			list = myAccountService.getOrderListByDate(mb_id, date);
+			// 주식 구매를 한 거래 내역만 가져옴
+	        buyList = myAccountService.getOrderListByBuyDate(mb_id, date);
+	        // 주식 판매를 한 거래 내역만 가져옴
+	        sellList = myAccountService.getOrderListBySellDate(mb_id, date);
+	        if(buyList != null && buyList.size() != 0) {
+		        for(OrderVO order : buyList) {
+		        	buyAmount += order.getOd_price();
+		        }
+	        }
+	        if(sellList != null && sellList.size() != 0) {
+	        	for(OrderVO order : sellList) {
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+	        	}
+	        }
+	        proceeds = sellAmount - buyAmount;
+	        if(buyAmount != 0) {
+	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+	        }
 			map.put("list", list);
+			map.put("proceeds", proceeds);
+		    map.put("rateOfReturn", rateOfReturn);
 			break;
 		case "month":
-			date = new SimpleDateFormat("yyyy-MM-01").format(today);
+			date = new SimpleDateFormat("yyyy-MM").format(today);
 			list = myAccountService.getOrderListByDate(mb_id, date);
-			map.put("list", list);
+			// 주식 구매를 한 거래 내역만 가져옴
+	        buyList = myAccountService.getOrderListByBuyDate(mb_id, date);
+	        // 주식 판매를 한 거래 내역만 가져옴
+	        sellList = myAccountService.getOrderListBySellDate(mb_id, date);
+	        if(buyList != null && buyList.size() != 0) {
+		        for(OrderVO order : buyList) {
+		        	buyAmount += order.getOd_price();
+		        }
+	        }
+	        if(sellList != null && sellList.size() != 0) {
+	        	for(OrderVO order : sellList) {
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+	        	}
+	        }
+	        proceeds = sellAmount - buyAmount;
+	        if(buyAmount != 0) {
+	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+	        }
+	        map.put("list", list);
+			map.put("proceeds", proceeds);
+		    map.put("rateOfReturn", rateOfReturn);
 			break;
 		case "year":
-			date = new SimpleDateFormat("yyyy-01-01").format(today);
+			date = new SimpleDateFormat("yyyy").format(today);
 			list = myAccountService.getOrderListByDate(mb_id, date);
-			map.put("list", list);
+			// 주식 구매를 한 거래 내역만 가져옴
+	        buyList = myAccountService.getOrderListByBuyDate(mb_id, date);
+	        // 주식 판매를 한 거래 내역만 가져옴
+	        sellList = myAccountService.getOrderListBySellDate(mb_id, date);
+	        if(buyList != null && buyList.size() != 0) {
+		        for(OrderVO order : buyList) {
+		        	buyAmount += order.getOd_price();
+		        }
+	        }
+	        if(sellList != null && sellList.size() != 0) {
+	        	for(OrderVO order : sellList) {
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+	        	}
+	        }
+	        proceeds = sellAmount - buyAmount;
+	        if(buyAmount != 0) {
+	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+	        }
+	        map.put("list", list);
+			map.put("proceeds", proceeds);
+		    map.put("rateOfReturn", rateOfReturn);
 			break;
 		}
 		return map;
