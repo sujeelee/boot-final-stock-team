@@ -23,26 +23,26 @@
                     상품을 여러번 등록하시면 여러게 표기됩니다.</p>
 				<div class="form-group">
 					<label for="pr_name">상품명:</label>
-					<input type="text" class="form-control" id="pr_name" name="pr_name" placeholder="상품명">
+					<input type="text" class="form-control" id="pr_name" name="pr_name" placeholder="상품명" th:value="${prize.pr_name}">
 				</div>
 
 				<div class="form-group">
 					<label for="pr_point">소모될 포인트:</label>
-					<input type="text" class="form-control" id="pr_point" name="pr_point" placeholder="포인트">
+					<input type="text" class="form-control" id="pr_point" name="pr_point" placeholder="포인트" th:value="${prize.pr_point}">
 				</div>
 
 				<div class="form-group">
 					<label for="pr_link">(이벤트 포스트 작성시 가게될 주소)저장될 이벤트 주소:</label>
-					<input type="text" class="form-control" id="pr_link" name="pr_link" placeholder="이벤트 주소">
+					<input type="text" class="form-control" id="pr_link" name="pr_link" placeholder="이벤트 주소" th:value="${prize.pr_link}">
 				</div>
 
 
                 
                 <div class="form-group">
                     <label for="ev_no">연동될 Event Post 주소</label>
-                    <select class="form-control" id="ev_no" name="ev_no">
+                    <select class="form-control" id="ev_no" name="ev_no" disabled>
                         <option th:each="event : ${eventList}" th:value="${event.ev_no}"
-                        th:selected="${event.ev_no == evNum}" th:text="${event.ev_title}" ></option> 
+                        th:selected="${event.ev_no == prize.ev_no}" th:text="${event.ev_title}" ></option> 
                     </select>
                 </div>
 

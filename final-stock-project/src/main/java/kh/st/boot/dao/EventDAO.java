@@ -57,11 +57,15 @@ public interface EventDAO {
 
     boolean updateEventPrizeTicket_AddOne(EventPrizeVO ep);
 
-    List<EventPrizeVO> getEventPrizeTicketList(int ep_no);
+    List<EventPrizeVO> getEventPrizeTicketList(int ep_no, String mb_id);
 
     List<EventPrizeCounterDTO> getEventPrizeTicketCounter(int ev_no);
 
     List<EventDTO> getEventAllList();
+
+    boolean deletePrize(int pr_no);
+
+    PrizeVO getPrizeByPr_no(int pr_no);
 
 
     

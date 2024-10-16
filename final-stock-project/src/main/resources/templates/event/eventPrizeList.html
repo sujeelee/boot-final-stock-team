@@ -51,22 +51,23 @@
 
                 <!-- collapse 영역: 상품 리스트가 들어갈 부분 -->
                 <div class="collapse" th:id="'event' + ${event.ev_no}">
+                    <div class="bg-gray event-info">
+                        <strong>이벤트 정보:</strong>
+                        <p>이벤트 명 1에 대한 설명이 여기에 들어갑니다. 추가적인 정보를 기재할 수 있습니다.</p>
+                        <a th:if="${event.ev_form == 'Participatory'}" th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}" class="btn btn-success add-product-btn">상품 추가(5개 까지)</a> <!-- 상품 추가 버튼 -->
+                    </div>
                     <div th:id="'prizeList'+${event.ev_no}">
-
                         <div id="prizeList">
-                            <div class="bg-gray event-info">
-                                <strong>이벤트 정보:</strong>
-                                <p>이벤트 명 1에 대한 설명이 여기에 들어갑니다. 추가적인 정보를 기재할 수 있습니다.</p>
-                                <button class="btn btn-success add-product-btn">상품 추가(5개 까지)</button> <!-- 상품 추가 버튼 -->
-                            </div>
                             <ul class="list-group">
                                 <!-- 상품 리스트를 렌더링 -->
                                 <th:block th:each="prize, index : ${prizeList}">
                                     <li class="list-group-item bg-gray d-flex justify-content-between align-items-center" th:classappend="${index.last} ? 'mb-2'">
                                         <span th:text="${prize.pr_name}"></span>
                                         <div class="ml-auto">
-                                            <button class="btn btn-warning btn-sm">수정</button>
-                                            <button class="btn btn-danger btn-sm">삭제</button>
+                                            <a class="btn btn-warning btn-sm"
+                                            th:href="@{/event/eventATypeUpdate(prNum=${prize.pr_no})}">수정</a>
+                                            <button class="btn btn-danger btn-sm" 
+                                            th:onclick="'confirm(\'삭제하시겠습니까?\') ? deletePrize(' + ${prize.pr_no} + ', this) : void(0)'">삭제</button>
                                         </div>
                                     </li>
                                 </th:block>
@@ -82,7 +83,7 @@
         </ul>
     </div>
 
-    <script>
+<script>
     $(document).ready(function() {
         // 이벤트 이름을 클릭하면 AJAX로 상품 리스트를 불러옴
         $('.event-name').click(function(e) {
@@ -97,7 +98,6 @@
                 success: function(data) {
                     // 성공적으로 데이터를 가져오면 해당 이벤트의 prizeList 영역을 교체
                     $('#prizeList' + eventId).replaceWith(data);
-                    console.log(data)
                 },
                 error: function(error) {
                     console.log("Error:", error); // 에러 로그
@@ -105,7 +105,31 @@
             });
         });
     });
-    </script>
+
+
+    function deletePrize(prizeNo, button) {
+        $.ajax({
+            url: '/event/ajax/deletePrize', // 서버에서 상품을 삭제할 엔드포인트
+            method: 'POST',
+            data: { pr_no: prizeNo }, // 상품 번호 전달
+            success: function(response) {
+                if (response) { // 서버 응답이 true이면
+                    const $li = $(button).closest('li');
+                    $li.fadeOut(500, function() {
+                        $li.remove(); // DOM에서 완전히 제거
+                    });
+                    console.log(response)
+                } else {
+                    alert('상품 삭제에 실패했습니다.');
+                }
+            },
+            error: function(error) {
+                console.log("Error:", error); // 에러 로그
+                alert('서버 오류가 발생했습니다.');
+            }
+        });
+    }   
+</script>
 
 </main>
 </body>

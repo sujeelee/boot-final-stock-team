@@ -198,8 +198,8 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public List<EventPrizeVO> getEventPrizeTicketList(int ep_no) {
-        return eventDao.getEventPrizeTicketList(ep_no);
+    public List<EventPrizeVO> getEventPrizeTicketList(int ep_no, String mb_id) {
+        return eventDao.getEventPrizeTicketList(ep_no, mb_id);
     }
 
     @Override
@@ -211,6 +211,19 @@ public class EventServiceImp implements EventService {
     public List<EventDTO> getEventAllList() {
 
         return eventDao.getEventAllList();
+    }
+
+    @Override
+    public boolean deletePrize(int pr_no) {
+        PrizeVO pr = eventDao.getPrizeByPr_no(pr_no);
+        System.out.println(pr);
+        UploadFileUtils.delteFile(uploadPath, pr.getFi_path());
+        return eventDao.deletePrize(pr_no);
+    }
+
+    @Override
+    public PrizeVO getPrizeByPr_no(int pr_no) {
+        return eventDao.getPrizeByPr_no(pr_no);
     }
 
 
