@@ -31,3 +31,4 @@ tbody tr:hover{background-color: rgba(9, 108, 138, 0.4); color: #fff !important;
 .stock-before, .red:before {content: '+';}
 .stock-price{font-size: 1.8em !important; font-weight: bold;}
 .stock-info-price{font-size: 0.8em;}
+.chart-section{margin-top: 2%;}
