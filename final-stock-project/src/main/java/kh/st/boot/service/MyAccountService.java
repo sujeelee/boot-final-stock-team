@@ -46,6 +46,8 @@ public interface MyAccountService {
 
 	DepositOrderVO getDepositOrder(String od_id);
 
-	List<OrderVO> getOrderListBySale(String mb_id);
+	List<OrderVO> getOrderListBySell(String mb_id);
+
+	List<OrderVO> getOrderListByBuy(String mb_id);
 
 }

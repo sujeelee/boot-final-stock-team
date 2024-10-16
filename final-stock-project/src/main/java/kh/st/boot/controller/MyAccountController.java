@@ -401,12 +401,32 @@ public class MyAccountController {
             return "util/msg";
         }
         String mb_id = principal.getName();
+        // 주식 구매를 한 거래 내역만 가져옴
+        List<OrderVO> buyList = myAccountService.getOrderListByBuy(mb_id);
         // 주식 판매를 한 거래 내역만 가져옴
-        List<OrderVO> list = myAccountService.getOrderListBySale(mb_id);
-        // 계좌 잔액
-        AccountVO ac = myAccountService.getAccountAmt(mb_id);
-        model.addAttribute("account", ac);
-        model.addAttribute("list", list);
+        List<OrderVO> sellList = myAccountService.getOrderListBySell(mb_id);
+        int buyAmount = 0; // 주식 구매의 총 금액
+        int sellAmount = 0; // (주식 판매 - 수수료)의 총 금액
+        if(buyList != null && buyList.size() != 0) {
+	        for(OrderVO order : buyList) {
+	        	buyAmount += order.getOd_price();
+	        }
+        }
+        if(sellList != null && sellList.size() != 0) {
+        	for(OrderVO order : sellList) {
+        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+        	}
+        }
+        // 수익 금액
+        int proceeds = sellAmount - buyAmount;
+        // 수익률
+        int rateOfReturn = 0;
+        if(buyAmount != 0) {
+        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
+        }
+        model.addAttribute("proceeds", proceeds);
+        model.addAttribute("rateOfReturn", rateOfReturn);
+        model.addAttribute("list", sellList);
 		return "myaccount/profit";
 	}
 	

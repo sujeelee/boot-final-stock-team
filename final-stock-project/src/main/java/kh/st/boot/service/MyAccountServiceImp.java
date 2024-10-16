@@ -133,11 +133,19 @@ public class MyAccountServiceImp implements MyAccountService {
 	}
 
 	@Override
-	public List<OrderVO> getOrderListBySale(String mb_id) {
+	public List<OrderVO> getOrderListBySell(String mb_id) {
 		if(mb_id == null) {
 			return null;
 		}
-		return depositDao.getOrderMemberBySale(mb_id);
+		return depositDao.getOrderMemberBySell(mb_id);
+	}
+
+	@Override
+	public List<OrderVO> getOrderListByBuy(String mb_id) {
+		if(mb_id == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberByBuy(mb_id);
 	}
 
 

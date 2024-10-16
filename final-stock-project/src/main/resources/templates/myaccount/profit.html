@@ -187,7 +187,7 @@
 		.dropdown-item:hover{background-color:  rgba(9, 108, 138, 0.2) !important;}
 		.dropdown-item > .on{color:#0c5460 !important;}
 		.dropdown-item > .on:after {content: " ν";}
-		.dropdown-menu{min-width: 1em !important;}
+		.dropdown-menu{min-width: 1em !important; width:120px;}
 		.dropdown-item{padding: 1px !important;}
 		.btn{width: 100% !important; text-align: left; border-radius: 20px;}
 		.page_div{margin-top: 5%;}
@@ -195,6 +195,22 @@
 		.none-content{text-align: center;}
 		.fa-color{color: rgba(9, 108, 138, 0.3);}
 		.no-title{margin-top: 2%; font-weight: bold; color: #888; font-size: 0.9em;}
+		
+		.profit-section {
+			display: flex; 
+			flex-direction: row; 
+			gap: 0px; 
+			justify-content: normal; 
+			align-items: center;
+		}
+		.profit-box {
+		    padding: 4px 8px;
+		}
+		.profit-text {
+			color: #6b7684;
+			line-height: 1.6;
+			font-size: 22px;
+		}
 	</style>
 </head>
  <body>
@@ -206,12 +222,37 @@
 				<div class="mypage-header">
 					<h1 class="header-title">판매 수익</h1>
 				</div>		
-				<!-- Balance Section -->
-				<div class="balance-section">
-					<div class="balance-info">
-						<p class="balance-text">주문 가능 원화 · 0원</p>
+				<section>
+					<div class="btn-list">
+						<ul class="list-group list-group-horizontal">
+							<li class="list-group-item list-group-item-light">
+								<div class="dropdown">
+									<button class="dropdown-toggle btn btn-light" data-toggle="dropdown">전체</button>
+									<div class="dropdown-menu">
+										<div class="dropdown-item">
+											<button class="btn on" type="button">전체</button>
+										</div>
+										<div class="dropdown-item">
+											<button class="btn" type="button">일별</button>
+										</div>
+										<div class="dropdown-item">
+											<button class="btn" type="button">월별</button>
+										</div>
+										<div class="dropdown-item">
+											<button class="btn" type="button">연도별</button>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
 					</div>
-				</div>
+				</section>
+				<section class="profit-section">
+					<div class="profit-box">
+						<span class="profit-text" th:text="${#numbers.formatInteger(proceeds,0,'COMMA')} + '원'"></span>
+						<span class="profit-text" th:text="'(' + ${rateOfReturn} + '%)'"></span>
+					</div>
+				</section>
 				<div class="transaction-box">
 				    <div class="transaction-container" th:each="list:${list}">
 				        <!-- 날짜 및 시간 정보 -->
@@ -227,7 +268,7 @@
 				            <!-- 금액 정보 -->
 				            <div class="amount-info">
 				                <span class="amount"><span th:text="${#numbers.formatInteger(list.od_price,0,'COMMA')}"></span>원</span>
-				                <span class="balance">좀 더 생각해서 해볼게요 ㅠ.ㅠ</span>
+				                <span class="balance"><span th:text="${#numbers.formatInteger(list.od_st_price,0,'COMMA')}"></span>원</span>
 				            </div>
 				        </div>
 				    </div>

@@ -35,6 +35,8 @@ public interface DepositDAO {
 
 	List<DepositVO> getDepositMember(@Param("mb_id")String mb_id, @Param("cri")TransCriteria cri);
 
-	List<OrderVO> getOrderMemberBySale(@Param("mb_id")String mb_id);
+	List<OrderVO> getOrderMemberBySell(@Param("mb_id")String mb_id);
+
+	List<OrderVO> getOrderMemberByBuy(@Param("mb_id")String mb_id);
 
 }
