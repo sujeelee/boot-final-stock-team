@@ -186,4 +186,18 @@
 			</choose>
 		</if>
 	</select>
+	<insert id="wishStockInsert" useGeneratedKeys="true" keyColumn="wi_id">
+		insert into wish_stock 
+		set	st_code = #{code},
+			mb_id = #{mb_id}
+	</insert>
+	<delete id="wishStockDelete">
+		delete from wish_stock where st_code = #{code} and mb_id = #{mb_id}
+	</delete>
+	<select id="wishCheck" resultType="WishVO">
+		select * from wish_stock where st_code = #{code} and mb_id = #{mb_id}
+	</select>
+	<select id="getStockPriceLater" resultType="StockPriceVO">
+		select * from stock_info where st_code = #{code} order by si_date DESC limit 1
+	</select>
 </mapper>
