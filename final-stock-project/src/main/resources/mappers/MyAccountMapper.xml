@@ -33,6 +33,8 @@
 			<if test="cri.type == 'get'">
 				AND PO_NUM > 0
 			</if>
+		ORDER BY PO_NO DESC
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}
 	</select>
 	
 	<update id="updatePw">
