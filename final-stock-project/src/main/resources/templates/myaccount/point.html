@@ -230,7 +230,7 @@
 					<div class="transaction-box">
 					    <div class="transaction-container" th:each="list:${list}">
 					        <!-- 날짜 및 시간 정보 -->
-					        <span class="date-info" th:text="${#strings.replace(#strings.substring(list.po_datetime, 5, 10), '-', '.')}"></span>
+					        <span class="date-info" th:text="${#dates.format(list.po_datetime, 'MM.dd')}"></span>
 					        <!-- 거래 내역 -->
 					        <div class="transaction-details">
 					            <!-- 사용자 정보 -->
