@@ -660,9 +660,15 @@ public class MyAccountController {
 		return map;
 	}
 	
-	@GetMapping("/point")
-	public String point() {
-		
+	@GetMapping("/point/{type}")
+	public String point(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
+		//로그인상태가 아닐 시
+        if (principal == null) {
+        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+            return "util/msg";
+        }
+        cri.setPerPageNum(10);
 		return "myaccount/point";
 	}
 
