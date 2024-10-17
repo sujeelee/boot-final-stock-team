@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.NewspaperDAO;
-import kh.st.boot.model.dto.NewspaperDTO;
 import kh.st.boot.model.vo.NewsPaperVO;
 
 @Service
-public class newspaperServiceImp implements newspaperService {
+public class newspaperService {
 	
 	@Autowired
 	private NewspaperDAO newspaperDAO;

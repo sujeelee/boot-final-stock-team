@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import kh.st.boot.model.dto.NewspaperDTO;
 import kh.st.boot.model.vo.NewsPaperVO;
 
 @Mapper
@@ -15,7 +14,7 @@ public interface NewspaperDAO {
 
 	boolean insertNewspaper(@Param("np_name")String np_name, @Param("np_use") byte np_use); // 신문사 등록
 
-	void updateNewspaper(NewspaperDTO newspaperDTO);
+	void updateNewspaper(NewsPaperVO NewsPaperVO);
 
 	void deleteNewspaper(NewsPaperVO newspaperVO); // 신문사 삭제
 

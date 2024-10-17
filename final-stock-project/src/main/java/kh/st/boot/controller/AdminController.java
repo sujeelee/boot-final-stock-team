@@ -24,7 +24,7 @@ import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
-import kh.st.boot.service.newspaperServiceImp;
+import kh.st.boot.service.newspaperService;
 
 @Controller
 @AutoImplement
@@ -35,7 +35,7 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	@Autowired
-	private newspaperServiceImp newspaperService;
+	private newspaperService newspaperService;
 
 	@Autowired
 	private SltAdmLevelPageService sltAdmLevelPageService;
