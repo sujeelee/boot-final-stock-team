@@ -128,7 +128,11 @@ public class EventController {
     @GetMapping("/calendar_event")
     public String calendar_event(Model mo, Principal principal) {
         // 31칸짜리 배열 생성 (0: 출석 안 함, 1: 출석 완료)
-        String storedValue = eventService.getCalenderEventValue(principal.getName());
+        String storedValue = eventService.getCalenderEventValue(principal.getName()); // null
+        System.out.println(storedValue);
+        if (storedValue == null) {
+            storedValue = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+        }
         String[] parts = storedValue.split(",");
         int[] checkList = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
         mo.addAttribute("checkList", Arrays.toString(checkList));
