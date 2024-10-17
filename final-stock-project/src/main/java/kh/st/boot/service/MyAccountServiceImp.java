@@ -13,6 +13,7 @@ import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
@@ -45,11 +46,11 @@ public class MyAccountServiceImp implements MyAccountService {
 	}
 
 	@Override
-	public List<PointVO> getPointList(String mb_id) {
+	public List<PointVO> getPointList(TransCriteria cri, String mb_id) {
 		if(mb_id == null) {
 			return null;
 		}
-		return myAccountDao.selectPointList(mb_id);
+		return myAccountDao.selectPointList(cri, mb_id);
 	}
 
 	@Override
@@ -129,4 +130,59 @@ public class MyAccountServiceImp implements MyAccountService {
 		}
 		return depositDao.getDepositMember(mb_id, cri);
 	}
+
+	@Override
+	public List<OrderVO> getOrderListBySell(String mb_id) {
+		if(mb_id == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberBySell(mb_id);
+	}
+
+	@Override
+	public List<OrderVO> getOrderListByBuy(String mb_id) {
+		if(mb_id == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberByBuy(mb_id);
+	}
+
+	@Override
+	public List<OrderVO> getOrderList(String mb_id) {
+		if(mb_id == null) {
+			return null;
+		}
+		return depositDao.getOrderMember(mb_id);
+	}
+
+	@Override
+	public List<OrderVO> getOrderListBySellDate(String mb_id, String now) {
+		if(mb_id == null || now == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberBySellDate(mb_id, now);
+	}
+	
+	@Override
+	public List<OrderVO> getOrderListByBuyDate(String mb_id, String now) {
+		if(mb_id == null || now == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberByBuyDate(mb_id, now);
+	}
+
+	@Override
+	public List<OrderVO> getOrderListByDate(String mb_id, String now) {
+		if(mb_id == null || now == null) {
+			return null;
+		}
+		return depositDao.getOrderMemberByDate(mb_id, now);
+	}
+
+	@Override
+	public PageMaker getPageMakerByPoint(TransCriteria cri, String mb_id) {
+		int count = depositDao.getCountByPoint(cri, mb_id);
+		return new PageMaker(2, cri, count);
+	}
+
 }

@@ -7,6 +7,7 @@ import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
@@ -18,7 +19,7 @@ public interface MyAccountService {
 	
 	List<DepositVO> getDepositListByDate(String mb_id, String date);
 
-	List<PointVO> getPointList(String mb_id);
+	List<PointVO> getPointList(TransCriteria cri, String mb_id);
 
 	boolean checkPw(MemberVO user, String password);
 
@@ -43,5 +44,19 @@ public interface MyAccountService {
 	AccountVO getAccountAmt(String mb_id);
 
 	DepositOrderVO getDepositOrder(String od_id);
+
+	List<OrderVO> getOrderListBySell(String mb_id);
+
+	List<OrderVO> getOrderListByBuy(String mb_id);
+
+	List<OrderVO> getOrderList(String mb_id);
+
+	List<OrderVO> getOrderListBySellDate(String mb_id, String now);
+	
+	List<OrderVO> getOrderListByBuyDate(String mb_id, String now);
+
+	List<OrderVO> getOrderListByDate(String mb_id, String now);
+
+	PageMaker getPageMakerByPoint(TransCriteria cri, String mb_id);
 
 }

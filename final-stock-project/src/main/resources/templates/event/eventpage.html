@@ -98,7 +98,6 @@
 <div class="container" sec:authorize="isAuthenticated()" th:if="${#authentication.Principal.member.mb_level} >= 9">
     <p>★운영자 전용 이벤트 작성 페이지</p>
     <a th:href="@{/event/write}" class="btn btn-outline-secondary" >이벤트 post 작성</a>
-    <a th:href="@{/event/eventATypeWrite}" class="btn btn-outline-secondary" >참여형 이벤트 작성</a>
     <a th:href="@{/event/eventhome/Hidden}" class="btn btn-outline-secondary" th:classappend="${eventStatus} == 'Hidden' ? 'active' : '' ">Hidden 이벤트 Show</a>
     <a th:href="@{/event/prizeList}" class="btn btn-outline-secondary">PrizeList 보기</a>
 </div>

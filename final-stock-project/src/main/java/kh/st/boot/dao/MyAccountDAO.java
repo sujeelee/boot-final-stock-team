@@ -9,6 +9,7 @@ import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.TransCriteria;
 
 public interface MyAccountDAO {
 	
@@ -16,7 +17,7 @@ public interface MyAccountDAO {
 	
 	List<DepositVO> selectDepositListByDate(String mb_id, String date);
 	
-	List<PointVO> selectPointList(String mb_id);
+	List<PointVO> selectPointList(@Param("cri")TransCriteria cri, @Param("mb_id")String mb_id);
 
 	boolean updatePw(String mb_id, String mb_password);
 	
