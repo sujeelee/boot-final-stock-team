@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+
+<link href="/css/admhome.css" rel='stylesheet'>
+
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
+</head>
+<body>
+
+	<div id="wrapper">
+		<div id="container" class="content">
+			<h1 id="container_title">관리자 메인</h1>
+			<div id="container_main">
+				<form action="/admin/adminHome/update" method="post">
+					<section>
+						<h2 id="main_h2">홈페이지 기본환경 설정</h2>
+						<div class="tbl_main">
+							<table>
+								<colgroup>
+									<col class="grid_4">
+									<col>
+									<col class="grid_4">
+									<col>
+								</colgroup>
+								<tbody>
+									<tr>
+										<th><label>홈페이지 제목</label></th>
+										<td><input type="text" name="cf_title"
+											th:value="${adminH.cf_title}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>대표 번호</label></th>
+										<td><input type="text" name="cf_tel"
+											th:value="${adminH.cf_info}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회사 주소</label></th>
+										<!-- 우편번호와 기본주소 사이 간격 조정 가능한지~~? -->
+										<td><input type="text" name="cf_zip"
+											th:value="${adminH.cf_zip}" required class="menu_input"
+											size="40" style="margin-bottom: 4px"> <input
+											type="text" name="cf_addr2" th:value="${adminH.cf_addr2}"
+											required class="menu_input" size="40"
+											style="margin-bottom: 4px"> <input type="text"
+											name="cf_addr" th:value="${adminH.cf_addr}" required
+											class="menu_input" size="87"></td>
+									</tr>
+									<tr>
+										<th><label>팩스 번호</label></th>
+										<td><input type="text" name="cf_fax"
+											th:value="${adminH.cf_fax}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>이메일 주소</label></th>
+										<td><input type="text" name="cf_email"
+											th:value="${adminH.cf_email}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>출첵 기능?</label></th>
+										<td><input type="checkbox" name="cf_day_point"
+											th:value="${adminH.cf_check_use}" checked class="menu_input"
+											size="1">사용 여부</td>
+									</tr>
+									<tr>
+										<th><label>포인트</label></th>
+										<td><input type="text" name="cf_day_point"
+											th:value="${adminH.cf_day_point}" required class="menu_input"
+											size="1"> 점</td>
+									</tr>
+									<tr>
+										<th><label>포인트 지급률</label></th>
+										<td><input type="text" name="cf_od_point"
+											th:value="${adminH.cf_od_point}" required class="menu_input"
+											size="1"> %</td>
+									</tr>
+									<tr>
+										<th><label>구매 수수료</label></th>
+										<td><input type="text" name="cf_percent"
+											th:value="${adminH.cf_percent}" required class="menu_input"
+											size="1"> %</td>
+									</tr>
+									<tr>
+										<th><label>홈페이지 기본약관</label></th>
+										<td><textarea name="cf_info" required
+												th:text="${adminH.cf_info}"></textarea></td>
+									</tr>
+									<tr>
+										<th><label>개인정보 처리약관</label></th>
+										<td><textarea name="cf_privacy" required
+												th:text="${adminH.cf_privacy}"></textarea></td>
+									</tr>
+									<tr>
+										<th><label>이메일 무단수집 거부</label></th>
+										<td><textarea name=cf_noemail required
+												th:text="${adminH.cf_noemail}"></textarea></td>
+									</tr>
+									<tr>
+										<th><label>대표자명</label></th>
+										<td><input type="text" name="cf_owner_name"
+											th:value="${adminH.cf_owner_name}" required
+											class="menu_input" size="40"></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+
+					</section>
+					<div class="btn_fixed_top btn_confirm">
+					<input type="submit" value="확인" class="btn_submit btn" accesskey="5">
+					</div>
+				</form>
+			</div>
+			<footer id="ft">
+				<p>Copyright © demo.sir.kr. All rights reserved.</p>
+				<br>
+			</footer>
+		</div>
+	</div>
+
+</body>
+</html>

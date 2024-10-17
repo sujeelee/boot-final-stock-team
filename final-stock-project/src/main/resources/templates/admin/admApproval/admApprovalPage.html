@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>Admin Level Page</title>
+<link th:href="@{/css/admnews.css}" rel="stylesheet" />
+<!--  스타일 적용 했음  -->
+</head>
+<style>
+</style>
+<body>
+	 
+	<table>
+		<thead>
+			<tr>
+				<th>고유번호</th>
+				<th>회원 고유번호</th>
+				<th>주식인지 뉴스인지 타입</th>
+				<th>뉴스사/상장사 이름</th>
+				<th>신청일자</th>
+				<th>승인/거절</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="list : ${list}">
+				<td th:text="${list.mp_no}"></td>
+				<td th:text="${list.mb_no}"></td>
+				<td th:text="${list.mp_type}"></td>
+				<td th:text="${list.mp_company}"></td>
+				<td th:text="${list.mp_datetime}"></td>
+				<td>
+                <!-- 승인 버튼 폼 -->
+                <form th:action="@{/admin/admApproval/admApprovalPage/slt}" method="post">
+                    <input type="hidden" name="mp_no" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_yn" value="y" />
+                   <input type="hidden" name="mb_no" th:value="${list.mb_no}" />
+                    <button type="submit">승인</button>
+                </form>
+                <!-- 거절 버튼 폼 -->
+                <form th:action="@{/admin/admApproval/admApprovalPage/slt}" method="post">
+                   <input type="hidden" name="mp_no" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_yn" value="n" />
+                    <input type="hidden" name="mb_no" th:value="${list.mb_no}" />
+                    <button type="submit">거절</button>
+                </form>
+            </td>
+			</tr>
+		</tbody>
+	</table>
+		
+</body>
+</html>
+
+
+

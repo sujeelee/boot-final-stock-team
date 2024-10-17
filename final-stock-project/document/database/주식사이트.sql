@@ -1,7 +1,6 @@
-﻿drop database if exists stockAndFund;
+drop database if exists stockAndFund;
 
 create database if not exists stockAndFund;
-
 
 use stockAndFund;
 
