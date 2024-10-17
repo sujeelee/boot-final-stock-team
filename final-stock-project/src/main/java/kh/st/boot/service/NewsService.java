@@ -3,11 +3,16 @@ package kh.st.boot.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 
 public interface NewsService {
+	
+	List<NewsPaperVO> getNewsPaperList();
 
 	List<NewsVO> getNewsList(Date ne_datetime);
 
@@ -19,11 +24,21 @@ public interface NewsService {
 
 	NewsEmojiVO getNewsEmoji(NewsEmojiVO emoji);
 
-	boolean insertNewsEmoji(NewsEmojiVO emoji);
+	void insertNewsEmoji(NewsEmojiVO emoji);
 
 	void updateNewsEmojiCount(NewsEmojiVO newEmoji, int i);
 
 	void updateNewsEmoji(NewsEmojiVO emoji);
+
+	void deleteNewsEmoji(NewsEmojiVO emoji);
+	
+	boolean insertNews(NewsVO news, String mb_id, MultipartFile file);
+
+	boolean updateNews(NewsVO news, String mb_id, MultipartFile file, Integer num);
+
+	boolean deleteNews(int ne_no, String mb_id);
+
+	FileVO getFile(int ne_no);
 
 }
 

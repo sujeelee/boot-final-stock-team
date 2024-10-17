@@ -1,23 +1,29 @@
 
-	<header>
-		<nav class="navbar">
-		  <!-- 왼쪽 로고 -->
-		  <div class="logo">
-			<a href="#">Toss Securities</a>
-		  </div>         
-		  <!-- 가운데 메뉴 -->
-		  <div class="menu">
-			<a href="#">홈</a>
-			<a href="#">뉴스</a>
-			<a href="#">주식 골라보기</a>
-			<a href="#">내 계좌</a>
-			<a href="/admin/adminHome">관리자</a>
-		  </div>        
-		  <!-- 오른쪽 로그인 -->
-		  <div class="login">
-			<a href="#">로그인</a>
-		  </div>
-		</nav>
-	  </header>
+<header class="home-section">
+	<th:block layout:fragment="css">
+    	<link rel="stylesheet" th:href="@{/css/header.css}" >
+	</th:block>
+	<nav class="navbar">
+		<!-- 왼쪽 로고 -->
+		<div class="logo">
+			<a th:href="@{/}">S2D KEY</a>
+		</div>         
+		<!--/* 가운데 메뉴 */-->
+		<div class="menu">
+			<a th:href="@{/}">홈</a>
+			<a th:href="@{/newspaper}">뉴스</a>
+			<a th:href="@{/stock/stockList}">주식 골라보기</a>
+			<a th:href="@{/myaccount/asset}" class="myaccount">내 계좌</a>
+		
+			<a th:href="@{/event/eventhome/Opening}">이벤트</a>
+			<a th:href="@{/admin/stock}">주식 리스트</a>
+			<a th:href="@{/deposit}">예치금결제</a>
+			<a th:href="@{/community}">커뮤니티</a>
+		</div>        
+		  <!--/* 메뉴를 가운데로 고정하기 위한 p 테그 */-->
+		<div>
+			<a th:href="@{/event/calendar_event}">출석도장</a>
+		</div>
 
-</html>
+	</nav>
+</header>

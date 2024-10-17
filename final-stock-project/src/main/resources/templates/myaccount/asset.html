@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<style type="text/css">
+		/* Container */
+		.my-container {
+		    display: grid;
+		    grid-template-columns: 184px minmax(10px, 1fr);
+		    grid-column-gap: 40px;
+		    column-gap: 40px;
+		    padding: 0 40px 40px 24px;
+		    min-width: 940px;
+		    max-width: 1280px;
+		    margin: 0 auto;
+		}
+		
+		/* Sidebar */
+	 	.my-sidebar {
+            position: sticky;
+            top: 60px;
+            padding-top: 30px;
+            border-radius: 50px;
+            background-color: #fff;
+        }
+
+        .my-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .my-list li {
+            margin-bottom: 10px;
+        }
+        
+        .my-item {
+        	list-style: none;
+        }
+
+        .my-btn {
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50px;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .my-list li:hover {
+		    border-radius: 20px;
+		    background-color: #f9fafb;
+        }
+        .my-text {
+        	font-weight: 500;
+            font-size: 17px;
+            color: #888;
+        }
+		
+		.main-content {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 40px;
+		}
+		
+		/* 자산 섹션 */
+		.account-text {
+			font-size: 19px; 
+			color: #888;
+		}
+		
+		.balance-info {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 4px;
+		}
+		
+		/* 기간 선택 섹션 */
+	
+		.graph-container {
+		    height: 350px;
+		    width: 100%; 		/* 컨테이너의 너비를 100%로 고정 */
+		    overflow: hidden; 	/* 불필요한 크기 변화를 방지 */
+		}
+		
+		.period-buttons {
+		    display: flex;
+		    gap: 8px;
+		}
+		
+		.period-button {
+		    padding: 4px 16px;
+		    border: 1px solid white;
+		    border-radius: 20px;
+		    background-color: white;
+		    color: #888;
+		}
+		
+		.period-button.active { 
+		    padding: 4px 16px;
+		    border: 1px solid #ddd;
+		    border-radius: 20px;
+		    background-color: #f9fafb;
+			color: black;
+		} /* 버튼 선택시 */
+		
+		.period-button:hover{
+			padding: 4px 16px;
+		    border: 1px solid #ddd;
+		    border-radius: 20px;
+		    background-color: #f9fafb;
+			color: black;
+		}
+		
+		.order-buttons {
+		    display: flex;
+		    gap: 8px;
+		}
+		
+		.action-button {
+		    padding: 4px 16px;
+		    border: 1px solid white;
+		    border-radius: 20px;
+		    background-color: white;
+		    color: #888;
+		}
+		
+		.action-button:hover{
+			padding: 4px 16px;
+		    border: 1px solid #ddd;
+		    border-radius: 20px;
+		    background-color: #f9fafb;
+			color: black;
+		}
+		
+		/* 클래스이름 맞추는 중 */
+		.my-section-wrapper {
+		    display: flex;
+		    gap: 30px;
+		}
+
+		.my-section {
+			display: flex;
+		    flex-direction: column;
+		    gap: 16px;
+		}
+		
+		.my-header-text {
+			font-size: 15px;
+			color: #888;
+		}
+		
+		.my-balance-text1 {
+			font-size: 24px;
+		    font-weight: bold;
+		    color: #333d4b;
+		}
+		
+		.my-balance-text2 {
+			font-size: 17px;
+		    color: #888;
+		}
+		
+		.my-item-box {
+			display: flex;
+		    flex-direction: column;
+		    padding: 20px 24px;
+		    border-radius: 15px;
+		    gap: 12px;
+		    background-color: #f9fafb;
+		    width: 500px;
+		    height: 130px;
+		}
+		
+		.my-item-text1 {
+			font-size: 15px; 
+			color: #333d4b; 
+			font-weight: bold;
+		}
+		
+		.my-item-text2 {
+			font-size: 19px; 
+			color: #333d4b;
+		}
+		
+		.my-item-text3 {
+			font-size: 15px; 
+			color: #333d4b;
+		}
+		
+		.my-details {
+			display: flex;
+		    flex-direction: column;
+		}
+	</style>
+</head>
+<body>
+	<main layout:fragment="content">
+		<div class="my-container mt-5">
+			<div th:replace="~{layout/mySide.html}"></div>
+            <div>
+	        	<div class="main-content">
+	            	<!-- 자산 섹션 -->
+	            	<section class="asset-section">
+	                	<div class="account-info">
+                    		<span  class="account-text" 
+                    			   th:text="'S2D KEY ' + ${#authentication.principal.member.mb_account}"></span>
+	                    	<div class="balance-info">
+	                        	<span class="my-balance-text1" 
+	                        		  th:text="${#numbers.formatInteger(account.ac_deposit, 1, 'COMMA')} + '원'"></span>
+	                        	<div class="balance-box">
+		                        	<span class="my-balance-text2"
+		                        		  th:text="'지난주보다 ' + ${#numbers.formatInteger(money, 1, 'COMMA')} + '원'"></span>
+		                        	<span class="my-balance-text2"
+		                        		  th:text="'(' + ${rateOfReturn} + '%)'"></span>		
+	                        	</div>
+	                    	</div>
+	                	</div>
+	            	</section>
+	
+		            <!-- 기간 선택 섹션 -->
+		            <section class="my-section period">
+		                <div class="graph-container" id="graph-container">
+		                
+		                </div>
+		                <div class="period-buttons">
+		                    <button class="period-button active" onclick="loadPeriodData(this)" value="1week">1주</button>
+		                    <button class="period-button" 		 onclick="loadPeriodData(this)" value="1month">1달</button>
+		                    <button class="period-button" 		 onclick="loadPeriodData(this)" value="3month">3달</button>
+		                    <button class="period-button" 		 onclick="loadPeriodData(this)" value="1year">1년</button>
+		                </div>
+		            </section>
+		
+		            <!-- 주문 가능 금액과 투자 중인 금액을 나란히 배치하는 섹션 -->
+					<section class="my-section-wrapper">
+					    <!-- 주문 가능 금액 섹션 -->
+					    <section class="my-section order">
+					        <div class="my-info">
+					            <span class="my-header-text">주문 가능 금액</span>
+					            <div>
+					                <span class="my-balance-text1" 
+					                	  th:text="${#numbers.formatInteger(orderMoney, 1, 'COMMA')} + '원'"></span>
+					            </div>
+					        </div>
+					        <!-- 원화  -->
+					        <div class="my-item-box">
+					            <span class="my-item-text1">원화</span>
+					            <div class="my-details">
+					                <span class="my-item-text2" 
+					                	  th:text="${#numbers.formatInteger(orderMoney, 1, 'COMMA')} + '원'"></span>
+					                <span class="my-item-text3" 
+					                	  th:text="${#numbers.formatInteger(orderMoney, 1, 'COMMA')} + '원'"></span>
+					            </div>
+					        </div>
+					        <div class="order-buttons">
+					        	<a th:href="@{/deposit}">
+					            	<button class="action-button">채우기</button>
+					            </a>
+					            <a th:href="@{/deposit/send}">
+					            	<button class="action-button">보내기</button>
+					            </a>
+					            <button class="action-button">환전</button>
+					        </div>
+					    </section>
+					
+					    <!-- 투자 중 섹션 -->
+					    <section class="my-section investment">
+					        <div class="my-info">
+					            <span class="my-header-text">투자 중인 금액</span>
+					            <div>
+					                <span class="my-balance-text1" 
+					                	  th:text="${#numbers.formatInteger(stockMoney, 1, 'COMMA')} + '원'"></span>
+					            </div>
+					        </div>
+					        <!-- 국내 주식 -->
+					        <div class="my-item-box">
+					            <span class="my-item-text1">국내주식</span>
+					            <div class="my-details">
+					                <span class="my-item-text2" 
+					                	  th:text="${#numbers.formatInteger(stockMoney, 1, 'COMMA')} + '원'"></span>
+					                <span class="my-item-text3" 
+					                	  th:text="${#numbers.formatInteger(stockMoney, 1, 'COMMA')} + '원'">0원 (0.0%)</span>
+					            </div>
+					        </div>
+					    </section>
+					</section>
+					<section class="my-section-wrapper">
+			            <!-- 수익 섹션 -->
+			            <section class="my-section profit">
+			                <div class="my-info">
+			                    <span class="my-header-text">10월 수익</span>
+			                    <div>
+			                        <span class="my-balance-text1"
+			                        	  th:text="${#numbers.formatInteger(monthMoney, 1, 'COMMA')} + '원'"></span>
+			                    </div>
+			                </div>
+			                <!-- 판매 수익 -->
+			                <div class="my-item-box">
+			                    <span class="my-item-text1">판매 수익</span>
+			                    <div class="my-details">
+			                        <span class="my-item-text2"
+			                        	  th:text="${#numbers.formatInteger(monthMoney, 1, 'COMMA')} + '원'"></span>
+			                    </div>
+			                </div>
+			            </section>
+			             <!-- 수익 섹션 -->
+			            <section class="my-section point">
+			                <div class="my-info">
+			                    <span class="my-header-text">보유 포인트</span>
+			                    <div>
+			                        <span class="my-balance-text1"
+			                        	  th:text="${#numbers.formatInteger(#authentication.principal.member.mb_point, 1, 'COMMA')} + '포인트'"></span>
+			                    </div>
+			                </div>
+			                <!-- 판매 수익 -->
+			                <div class="my-item-box">
+			                    <span class="investment-text1">포인트</span>
+			                    <div class="my-details">
+			                        <span class="investment-text2"
+			                        	  th:text="${#numbers.formatInteger(#authentication.principal.member.mb_point, 1, 'COMMA')} + 'pt'"></span>
+			                    </div>
+			                </div>
+			            </section>
+		            </section>
+		        </div>
+		    </div>
+	    </div>
+		<script th:inline="javascript">
+		    /* 서버에서 전달된 graphData를 JSON으로 변환 */
+		    let graphData = /*[[${graphData}]]*/ [];
+		    
+			function loadPeriodData(obj){
+				const period = obj.value;
+			    // 모든 버튼에서 active 클래스를 제거
+			    $('.period-button').removeClass('active');
+			    // 클릭된 버튼에 active 클래스 추가
+			    $(obj).addClass('active');
+				$.ajax({
+					async : true,
+					url : '/myaccount/asset/period', 
+					type : 'post', 
+					data : {
+						period : period
+					}, 
+					dataType : "json",
+					success : function (data){
+						displayBalance(data);
+						updateChart(graphData);
+					}, 
+					error : function(jqXHR, textStatus, errorThrown){
+						console.log(jqXHR);
+					}
+				});
+			}
+			function displayBalance(data){
+				str = `
+                	<span class="my-balance-text2">${data.text}보다 ${data.money}원</span>
+		          	<span class="my-balance-text2">(${data.rateOfReturn}%)</span>
+				`;
+				$('.balance-box').html(str);
+			}
+			
+		    // Google Charts 로드
+		    google.charts.load('current', { packages: ['corechart'] });
+		    google.charts.setOnLoadCallback(drawChart);
+
+		    // 초기 차트 그리기
+		    function drawChart() {
+		        var data = new google.visualization.DataTable();
+		        data.addColumn('date', 'Date');
+		        data.addColumn('number', 'Deposit');
+				
+		        // 초기 데이터
+		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
+
+		        var options = {
+		            width: 920, 					// 그래프의 너비를 컨테이너에 맞게 설정
+		            height: 350,   					// 높이를 적절하게 설정
+		            legend: { position: 'bottom' }, // 범례 위치 설정
+		            curveType: 'function', 			// 곡선형 선 그래프
+		            pointSize: 0, 					// 데이터 포인트를 표시하지 않음
+		            hAxis: {
+		                format: 'MM-dd',  			// 날짜 형식을 MM-dd로 지정
+		                gridlines: { count: -1 } 	// 그리드 라인 설정
+		            }
+		        };
+
+		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
+		        chart.draw(data, options);
+		    }
+
+		    // 차트를 업데이트하는 함수
+		    function updateChart(graphData) {
+		        var data = new google.visualization.DataTable();
+		        data.addColumn('date', 'Date');
+		        data.addColumn('number', 'Deposit');
+
+		        // 서버에서 받은 데이터를 사용하여 차트를 업데이트
+		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
+
+		        var options = {
+		            width: 920,
+		            height: 350,
+		            legend: { position: 'bottom' },
+		            curveType: 'function',
+		            pointSize: 0,
+		            hAxis: {
+		                format: 'MM-dd',  			// 날짜 형식을 MM-dd로 지정
+		                gridlines: { count: -1 } 	// 그리드 라인 설정
+		            }
+		        };
+
+		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
+		        chart.draw(data, options);
+		    }
+		</script>
+	</main>
+</body>
+</html>

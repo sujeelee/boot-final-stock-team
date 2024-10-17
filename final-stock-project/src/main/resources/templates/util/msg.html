@@ -8,19 +8,19 @@
 <title>Insert title here</title>
 </head>
 <body>
-   <main layout:fragment="content">
-   <script
-      src="https://code.jquery.com/jquery-3.7.1.js"
-      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-      crossorigin="anonymous"
+	<main layout:fragment="content">
+	<script
+		src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous"
     ></script>
     <script th:inline="javascript">
-      var msg = /*[[${msg}]]*/ '';
-      if (msg != "") {
-        alert(msg);
-      }
-      let url = /*[[@{${url}}]]*/ '';
-      location.href = url;
+		var msg = /*[[${msg}]]*/ '';
+		if (msg != "") {
+		  alert(msg);
+		}
+		let url = /*[[@{${url}}]]*/ '';
+		location.href = url;
     </script>
    </main>
 </body>

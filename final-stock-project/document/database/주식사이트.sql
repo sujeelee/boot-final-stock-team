@@ -1,4 +1,4 @@
-﻿drop database if exists stockAndFund;
+drop database if exists stockAndFund;
 
 create database if not exists stockAndFund;
 
@@ -30,7 +30,10 @@ ex) 19960908',
 	`mb_fail` int DEFAULT 0,
 	`mb_point`	int(11)	NULL,
 	`mb_emailing`	tinyint(4)	NULL,
-	`mb_account`	varchar(255)	NULL
+	`mb_account`	varchar(255)	NULL UNIQUE,
+	`mb_oauthProvider` varchar(30)	NULL,
+	`mb_oauthId` varchar(255)	null,
+	`mb_loginMethod` varchar(50) null default 'internal'
 );
 
 
@@ -40,6 +43,8 @@ create table `email_Verification`(
 	`evc_email` VARCHAR(255) null,
 	`evc_code` CHAR(6)
 );
+
+
 
 
 
@@ -137,10 +142,10 @@ CREATE TABLE `news` (
 	`ne_datetime`	DATETIME	NULL,
 	`ne_edit_date`	DATETIME	NULL,
 	`ne_name`	varchar(255)	NULL,
-	`ne_happy`	int(11)	NULL,
-	`ne_angry`	int(11)	NULL,
-	`ne_absurd`	int(11)	NULL,
-	`ne_sad`	int(11)	NULL
+	`ne_happy`	int(11)	DEFAULT 0,
+	`ne_angry`	int(11)	DEFAULT 0,
+	`ne_absurd`	int(11)	DEFAULT 0,
+	`ne_sad`	int(11)	DEFAULT 0
 );
 
 CREATE TABLE `member_lv` (
@@ -156,7 +161,7 @@ CREATE TABLE `point` (
 	`po_num`	int(11)	NULL,
 	`po_content`	varchar(255)	NULL,
 	`po_datetime`	DATETIME	NULL,
-	`po_end_date`	int(11)	NULL,
+	`po_end_date`	DATETIME NULL,
 	`mb_id`	varchar(255)	NULL
 );
 
@@ -176,7 +181,8 @@ CREATE TABLE `event` (
 	`ev_datetime`	DATETIME	NULL,
 	`ev_start`	DATETIME	NULL,
 	`ev_end`	DATETIME	NULL,
-	`ev_status`	char(2)	NULL,
+	`ev_status`	char(7)	DEFAULT "Ending",
+	`ev_form`	varchar(30)	null,
 	`ev_cnt`	int(11)	NULL
 );
 
@@ -188,10 +194,11 @@ CREATE TABLE `event_list` (
 );
 
 CREATE TABLE `day_check` (
-	`출석 기본키`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
-	`출석체크일`	DATETIME	NULL,
-	`출석체크 회원 아이디`	varchar(255)	NULL,
-	`지급된 출석 체크 포인트`	int(11)	NULL
+	`dc_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
+	`dc_datetime`	DATETIME	NULL,
+	`mb_id`	varchar(255)	NULL,
+	`dc_days` VARCHAR(70) null,
+	`po_num`	int(11)	NULL
 );
 
 CREATE TABLE `stock_add` (
@@ -219,11 +226,28 @@ CREATE TABLE `file` (
 	`fi_type`	varchar(255)	NULL
 );
 
+
+
 CREATE TABLE `event_prize` (
 	`ep_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
 	`ev_no`	INT(11) NOT NULL,
+	`pr_no`	INT(11) NOT NULL,
+	`ep_count` INT(11) null,
 	`ep_prize`	varchar(255)	NULL,
 	`ep_mb_id`	varchar(255)	NULL,
+	`ep_rank`	int(11)	NULL
+);
+
+
+
+CREATE TABLE `prize` (
+	`pr_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
+	`pr_link` VARCHAR(255) NOT NULL,
+	`pr_name` VARCHAR(255) not null, 
+	`pr_point`	int(11)	NULL,
+	`pr_startLevel`	CHAR(1)	NULL,
+	`pr_endLevel`	CHAR(1)	NULL,
+	`ev_no` INT(11) NULL,
 	`ep_rank`	int(11)	NULL
 );
 
@@ -251,6 +275,7 @@ CREATE TABLE `deposit_order` (
 
 CREATE TABLE `deposit` (
 	`de_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
+	`de_num` INT(11) NULL,
 	`de_content`	varchar(255)	NULL,
 	`de_datetime`	DATETIME	NULL,
 	`de_stock_code`	varchar(255)	NULL,
@@ -303,3 +328,6 @@ ALTER TABLE `account` ADD CONSTRAINT `FK_member_TO_account_1` FOREIGN KEY (
 REFERENCES `member` (
 	`mb_no`
 );
+
+-- Group By 에러 해결 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

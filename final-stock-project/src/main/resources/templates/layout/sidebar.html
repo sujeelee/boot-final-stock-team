@@ -1,75 +1,96 @@
-
 <sidebar th:fragment="sidebar">
-    
+  <th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}" >
+</th:block>
+  <div class="sidebar">
+    <ul class="nav-list">
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-grid-alt"></i>
+          <span class="links_name">Dashboard</span>
+        </a>
+        <span class="tooltip">Dashboard</span>
+      </li>
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-user"></i>
+          <span class="links_name">User</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-chat"></i>
+          <span class="links_name">Messages</span>
+        </a>
+        <span class="tooltip">Messages</span>
+      </li>
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-pie-chart-alt-2"></i>
+          <span class="links_name">Analytics</span>
+        </a>
+        <span class="tooltip">Analytics</span>
+      </li>
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-folder"></i>
+          <span class="links_name">File Manager</span>
+        </a>
+        <span class="tooltip">Files</span>
+      </li>
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-cart-alt"></i>
+          <span class="links_name">Order</span>
+        </a>
+        <span class="tooltip">Order</span>
+      </li>
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-heart"></i>
+          <span class="links_name">Saved</span>
+        </a>
+        <span class="tooltip">Saved</span>
+      </li>
+      <li class="side_icon" onclick="showDash(this);">
+        <a href="#">
+          <i class="bx bx-cog"></i>
+          <span class="links_name">Setting</span>
+        </a>
+        <span class="tooltip">Setting</span>
+      </li>
+      <div class="login" sec:authorize="isAnonymous()">
+        <li class="side_icon">
+          <a th:href="@{/member/login}">
+            <i class="bx bx-log-in"></i>
+            <span class="links_name">Login</span>
+          </a>
+          <span class="tooltip">Login</span>
+        </li>
 
-        <div class="sidebar">
-            <div class="logo-details">
-                <i class='bx bx-menu' id="btn" ></i>
-            </div>
-            <ul class="nav-list">
-              <li>
-                <a href="#">
-                  <i class='bx bx-grid-alt'></i>
-                  <span class="links_name">Dashboard</span>
-                </a>
-                 <span class="tooltip">Dashboard</span>
-              </li>
-              <li>
-               <a href="#">
-                 <i class='bx bx-user' ></i>
-                 <span class="links_name">User</span>
-               </a>
-               <span class="tooltip">User</span>
-             </li>
-             <li>
-               <a href="#">
-                 <i class='bx bx-chat' ></i>
-                 <span class="links_name">Messages</span>
-               </a>
-               <span class="tooltip">Messages</span>
-             </li>
-             <li>
-               <a href="#">
-                 <i class='bx bx-pie-chart-alt-2' ></i>
-                 <span class="links_name">Analytics</span>
-               </a>
-               <span class="tooltip">Analytics</span>
-             </li>
-             <li>
-               <a href="#">
-                 <i class='bx bx-folder' ></i>
-                 <span class="links_name">File Manager</span>
-               </a>
-               <span class="tooltip">Files</span>
-             </li>
-             <li>
-               <a href="#">
-                 <i class='bx bx-cart-alt' ></i>
-                 <span class="links_name">Order</span>
-               </a>
-               <span class="tooltip">Order</span>
-             </li>
-             <li>
-               <a href="#">
-                 <i class='bx bx-heart' ></i>
-                 <span class="links_name">Saved</span>
-               </a>
-               <span class="tooltip">Saved</span>
-             </li>
-             <li>
-               <a href="#">
-                 <i class='bx bx-cog' ></i>
-                 <span class="links_name">Setting</span>
-               </a>
-               <span class="tooltip">Setting</span>
-             </li>
-             <li class="profile">
-                 <div class="profile-details">
-                   <div class="name_job">
-                   </div>
-                 </div>
-                 <i class='bx bx-log-out' id="log_out" ></i>
-             </li>
-            </ul>
-          </div>
+        <!-- 회원가입 -->
+        <li class="side_icon">
+          <a th:href="@{/member/join}">
+            <i class="bx bx-user-plus"></i>
+            <span class="links_name">Sign Up</span>
+          </a>
+          <span class="tooltip">Sign Up</span>
+        </li>
+      </div>
+      <!-- 로그아웃 -->
+      <div class="login" sec:authorize="isAuthenticated()">
+        <li class="side_icon">
+          <a th:href="@{/member/logout}">
+            <i class="bx bx-log-out"></i>
+            <span class="links_name">Logout</span>
+          </a>
+          <span class="tooltip">Logout</span>
+        </li>
+      </div>
+    </ul>
+  </div>
+  <div class="test" style="display: none">
+    dsk;flskdf;dlk;s sdlfk;sdlkf;s sdklfk;sldkf;slk
+  </div>
 </sidebar>

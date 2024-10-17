@@ -1,26 +1,32 @@
-$(document).ready(function() {
-  $("#btn").on("click", function() {
-    $(".sidebar").toggleClass("open");
-    menuBtnChange(); // calling the function (optional)
-    adjustLoginButton(); // 로그인 버튼 위치 조정
-  });
+function showDash(icon) {
+    if (!$(icon).hasClass("active")) {
+        // 사이드바 열기
+        $(".test").css("display", "block");
+        
+        // 패딩 값 늘리기
+        $(".navbar").css("padding", "15px 110px"); // 패딩을 15px 40px로 변경
+        
+        setTimeout(function() {
+            $(".test").css("width", "200px"); // 사이드바 너비 설정
+            $(".home-section").css("left", "-100px"); // home 요소를 오른쪽으로 밀기
+        }, 50); // 자연스러운 애니메이션을 위한 짧은 지연
 
-  // 로그인 버튼 위치 조정 함수
-  function adjustLoginButton() {
-    if ($(".sidebar").hasClass("open")) {
-      $(".login").css("padding-right", "200px"); // 사이드바 열릴 때 패딩값 줄이기
+        $(".side_icon").removeClass("active");
+        $(icon).addClass("active");
     } else {
-      $(".login").css("padding-right", "0px"); // 사이드바 닫힐 때 원래 패딩으로 돌아가기
-    }
-  }
+        // 사이드바 닫기
+        $(".test").css("width", "0px"); // 사이드바를 닫기
+        
+        // 애니메이션 완료 후 home 요소 복원
+        setTimeout(function() {
+            $(".home-section").css("left", "0px"); // home 요소 원래 위치로 복원
+            $(".test").css("display", "none"); // 애니메이션 완료 후 사이드바 숨김
+            
+            // 원래 패딩 값으로 복원
+            $(".navbar").css("padding", "15px 20px"); // 패딩을 원래대로 복원
+        }, 250); // 사이드바 애니메이션과 일치시키기 위한 지연
 
-  // following are the code to change sidebar button (optional)
-  function menuBtnChange() {
-    if ($(".sidebar").hasClass("open")) {
-      $(".sidebar").removeClass("bx-menu").addClass("bx-menu-alt-right"); // replacing the icons class
-    } else {
-      $(".sidebar").removeClass("bx-menu-alt-right").addClass("bx-menu"); // replacing the icons class
+        $(".side_icon").removeClass("active");
+        $(icon).removeClass("active");
     }
-  }
-});
-
+}

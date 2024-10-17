@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.st.boot.dao.MyAccountDAO"> 
+	
+	<select id="selectAccountById" resultType="AccountVO">
+		SELECT *
+		FROM
+			ACCOUNT
+		JOIN
+			MEMBER ON MEMBER.MB_NO = ACCOUNT.MB_NO
+		WHERE
+			MB_ID = #{mb_id}
+	</select>
+	
+	<select id="selectDepositListByDate" resultType="DepositVO">
+		SELECT *
+		FROM
+			DEPOSIT
+		WHERE
+			MB_ID = #{mb_id} AND
+			DE_DATETIME >= #{date}
+	</select>
+
+	<select id="selectPointList" resultType="PointVO">
+		SELECT *
+		FROM
+			POINT
+		WHERE
+			MB_ID = #{mb_id}
+			<if test="cri.type == 'use'">
+				AND 0 > PO_NUM
+			</if>
+			<if test="cri.type == 'get'">
+				AND PO_NUM > 0
+			</if>
+		ORDER BY PO_NO DESC
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<update id="updatePw">
+		UPDATE MEMBER SET MB_PASSWORD = #{mb_password} WHERE MB_ID = #{mb_id}
+	</update>
+	
+	<delete id="deleteAccount">
+		DELETE FROM ACCOUNT WHERE MB_NO = #{mb_no}
+	</delete>
+	
+	<delete id="deleteUser">
+		DELETE FROM MEMBER WHERE MB_ID = #{mb_id}
+	</delete>
+	
+	<select id="selectStockList" resultType="StockVO">
+		SELECT * FROM STOCK
+	</select>
+	
+	<select id="selectMemberApprove" resultType="MemberApproveVO">
+		SELECT * FROM MEMBER_APPROVE WHERE MB_NO = #{mb_no}
+	</select>
+	
+	<insert id="insertMemberApprove">
+		INSERT INTO MEMBER_APPROVE (MP_TYPE, MP_COMPANY, MP_DATETIME, MB_NO) VALUES
+		(#{mp_type}, #{mp_company}, NOW(), #{mb_no})
+	</insert>
+	
+	<delete id="deleteMemberApprove">
+		DELETE FROM MEMBER_APPROVE WHERE MB_NO = #{mb_no}
+	</delete>
+	
+	<select id="getStockName" resultType="String">
+		SELECT ST_NAME
+		FROM
+			STOCK
+		WHERE
+			ST_CODE = #{mp_company}
+	</select>
+</mapper>

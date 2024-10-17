@@ -31,8 +31,6 @@ public class MailController {
     public @ResponseBody boolean set_Email_Check(@RequestParam("evc_email") String evc_email){
         //렌덤한 6자리 숫자열
         int code = customUtil.getCustomNumber(6);
-        System.out.println(code);
-        System.out.println(evc_email);
         String str = "안녕하세요. S2D KEY 회원 인증 메일입니다. 6자리 코드를 회원가입 창에서 입력해 주세요. <p>인증 코드 :" + code + " </p>";
         boolean res = mailService.setMailCode(evc_email, code);
         if (res) res = mailSend(evc_email, "SID 인증 이메일", str);
@@ -43,10 +41,6 @@ public class MailController {
     //유저가 코드를 확인하는 일
     @PostMapping("/ajax/get_check")
     public @ResponseBody boolean get_Email_Check(@RequestParam("evc_email") String evc_email, @RequestParam("code") int code){
-
-        System.out.println(code);
-        System.out.println(evc_email);
-        
         return mailService.checkMailCode(evc_email, code);
     }
 
@@ -55,7 +49,7 @@ public class MailController {
     //MailSend
     public boolean mailSend(String to, String title, String content) {
 
-    String setfrom = "stajun@naver.com";
+    String setfrom = "s2dkey.company@gmail.com";
     try{
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");

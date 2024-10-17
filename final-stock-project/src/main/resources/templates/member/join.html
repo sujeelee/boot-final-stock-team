@@ -5,90 +5,115 @@
 	layout:decorate="~{layout/layout.html}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>시드키 : 회원가입</title>
 <style>
-    *{
-        padding: 0;
-        margin: 0;
-        border: none;
-    }
-    body{
-        font-size: 14px;
-        font-family: 'Roboto', sans-serif;
-    }
-    .login-wrapper{
-    width: 400px;
-    height: 100%;
-    padding: 40px;
-    margin: auto;
-    box-sizing: border-box;
-    }
+        .login-wrapper {
+            background-color: white;
+            border-radius: 8px; /* 모서리 둥글기 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 */
+            padding: 20px;
+            max-width: 800px; /* 최대 너비 */
+            margin: 20px auto; /* 중앙 정렬 */
+        }
+        .divider {
+            border-top: 2px solid #ccc; /* 줄 두께와 색상 */
+            margin: 20px 0; /* 위 아래 여백 */
+        }
+        h2 {
+            color: #096c8a; /* 제목 색상 */
+            text-align: justify; 
+            margin-bottom: 20px;
+        }
 
-    .login-wrapper > h2{
-        font-size: 24px;
-        color: #6A24FE;
-        margin-bottom: 20px;
-    }
-    #login-form > input{
-        width: 100%;
-        height: 48px;
-        padding: 0 10px;
-        box-sizing: border-box;
-        margin-bottom: 16px;
-        border-radius: 6px;
-        background-color: #F8F8F8;
-    }
-    #login-form > input::placeholder{
-        color: #858585;
-    }
+        form {
+            display: grid; /* 그리드 레이아웃 활성화 */
+            gap: 15px; /* 요소 간 간격 */
+        }
 
-    #login-form > input[type="date"]{
-        color: #fff;
-        font-size: 16px;
-        background-color: #6A24FE;
-        margin-top: 20px;
-    }
+        .wrapper {
+            display: grid; /* 그리드 레이아웃 */
+            grid-template-columns: 1fr 1fr; /* 두 개의 열 */
+            gap: 25px; /* 요소 간 간격 */
+        }
 
+        .name-wrapper,
+        .address-wrapper {
+            display: flex; /* 플렉스박스 레이아웃 */
+            flex-direction: column; /* 세로 정렬 */
+        }
 
-    #login-form > input[type="submit"]{
-        color: #fff;
-        font-size: 16px;
-        background-color: #6A24FE;
-        margin-top: 20px;
-    }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="date"] {
+            border: 1px solid #ccc; /* 테두리 색상 */
+            border-radius: 4px; /* 모서리 둥글기 */
+            padding: 10px; /* 내부 여백 */
+            margin-bottom: 10px; /* 아래 여백 */
+            font-size: 14px; /* 글자 크기 */
+        }
 
-    #login-form > input[type="button"]{
-        color: #fff;
-        font-size: 16px;
-        background-color: #6A24FE;
-        margin-top: 20px;
-    }
+        input[type="button"],
+        input[type="submit"] {
+            background-color: #096c8a; /* 버튼 배경 색상 */
+            color: white; /* 글자 색상 */
+            border: none; /* 테두리 제거 */
+            border-radius: 4px; /* 모서리 둥글기 */
+            padding: 10px; /* 내부 여백 */
+            margin-bottom: 30px;
+            cursor: pointer; /* 커서 변경 */
+            font-size: 16px; /* 글자 크기 */
+        }
 
-    #login-form > input[type="checkbox"]{
-        display: none;
-    }
-    #login-form > label{
-        color: #999999;
-    }
-    #login-form input[type="checkbox"] + label{
-        cursor: pointer;
-        padding-left: 26px;
-        background-image: url("checkbox.png");
-        background-repeat: no-repeat;
-        background-size: contain;
-    }
-    #login-form input[type="checkbox"]:checked + label{
-        background-image: url("checkbox-active.png");
-        background-repeat: no-repeat;
-        background-size: contain;
-    }
+        input[type="button"]:hover,
+        input[type="submit"]:hover {
+            background-color: #065c7a; /* 버튼 호버 색상 */
+        }
+
+        label {
+            font-size: 14px; /* 글자 크기 */
+            margin-bottom: 10px; /* 아래 여백 */
+        }
+
+        #login-form input[readonly] {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+        }
+
+        .input-with-button {
+            position: relative; /* 상대 위치 설정 */
+        }
+
+        .input-with-button input[type="text"] {
+            padding-right: 50px; /* 오른쪽 여백 추가 */
+        }
+
+        .input-with-button button {
+            position: absolute; /* 위치 조정 */
+            top: 50%; /* 수직 중앙 정렬 */
+            transform: translateY(-60%); /* 수직 중앙 정렬 보정 */
+            border: none; /* 테두리 제거 */
+            background-color: #096c8a; /* 배경 색상 */
+            color: white; /* 글자 색상 */
+            padding: 8px 12px; /* 내부 여백 */
+            border-radius : 8px;
+            right : 1px;
+            cursor: pointer; /* 커서 모양 변경 */
+        }
+
+        .input-with-button button:hover {
+            background-color: #065c7a; /* 버튼 호버 색상 */
+        }
 </style>
 </head>
 <body>
 	<main layout:fragment="content">
 		<div class="login-wrapper">
 	        <h2>Join</h2>
+	        <div class="divider"></div> <!-- 줄 추가 -->
 	        <form method="post" th:action="@{/member/join}" id="login-form">
+	        <div class="wrapper">
+	        <div class="name-wrapper">
 	            <input type="text" name="id" placeholder="ID">
 	            <input type="password" name="pw" placeholder="Password">
 	            <input type="password" name="pw2" placeholder="Password">
@@ -98,25 +123,29 @@
                 <input type="text" name="ph" placeholder="Phone Number">
                 <input type="email" id="email_input" name="email" placeholder="Email">
                 <input type="button" id="email" value="이메일 유효성 검사" >
-
-                <!--/* 다음 kakao를 이용한 주소 가져오기 */-->
-                <input type="button" onclick="sample3_execDaumPostcode()" value="우편번호 찾기"><br>
-                <input type="text" id="sample3_postcode" name="zip" placeholder="우편번호" readonly>
-                <input type="text" id="sample3_address" name="addr" placeholder="주소" readonly><br>
-                <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소" >
-                <input type="text" id="sample3_extraAddress" name="addr2" placeholder="참고항목" readonly>
-
-                <div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
-                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-                </div>
-
-
-                <input type="date" name="birth" placeholder="birth">
-                <input type="hidden" id="ec_checked" name="ec" value="f">
-	            <label for="remember-check">
+                <label for="remember-check">
 	                <input type="checkbox" id="remember-check" name="emailing"> <span>이메일 수신 동의 확인</span>
 	            </label>
-	            <input type="submit" value="Login">
+	            <div class="input-with-button">
+			        <input type="text"  onclick="sample3_execDaumPostcode()" id="sample3_postcode" name="zip" placeholder="우편번호 찾기">
+			        <button  type="button" class="search-button" onclick="sample3_execDaumPostcode()">우편번호 찾기</button>
+			    </div>
+			        <input type="hidden" id="sample3_extraAddress" name="addr2" placeholder="참고항목" readonly>
+			        <div id="wrap" style="display:none;border:1px solid;width:100%;height:100%;margin:5px 0;position:relative">
+			            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+			        </div>
+			        <input type="text" id="sample3_address" name="addr" placeholder="주소" readonly>
+			        <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소">
+				    <input type="date" name="birth" placeholder="birth">
+	                <input type="hidden" id="ec_checked" name="ec" value="f">
+			</div>
+                <!--/* 다음 kakao를 이용한 주소 가져오기 */-->
+			    <div class="address-wrapper">
+
+			    </div>
+			</div>
+			<div class="divider"></div> <!-- 줄 추가 -->
+	            <input type="submit" value="Join">
 	        </form>
 	    </div>
 
@@ -171,13 +200,17 @@ function checkEmailCode(){
         data : {evc_email : mail,
                 code : code},
         success: function (data) {
-            $('#code').attr("readonly", true);
-            $('#codeCheck').remove();
-            $('#ec_checked').val("t");
-            alert("Email 인증 성공");
+            if(data){
+                $('#code').attr("readonly", true);
+                $('#codeCheck').remove();
+                $('#ec_checked').val("t");
+                alert("Email 인증 성공");
+            }else{
+                alert("잘못된 코드입니다! 다시 확인해주세요!")
+            }
         },
         error: function (data, status, err) {
-            alert("잘못된 코드입니다! 다시 확인해주세요!")
+            alert("오류! 전송이 잘못되었습니다.")
         },
 
     });
