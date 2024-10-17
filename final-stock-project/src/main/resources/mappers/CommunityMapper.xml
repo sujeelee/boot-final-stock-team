@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.st.boot.dao.CommunityDAO"> 
-
+    <insert id="insertBoard">
+        INSERT INTO board (wr_category, mb_id, wr_content)
+        VALUES (#{wr_category}, #{mb_id}, #{wr_content})
+    </insert>
+    <select id="getBoardList" resultType="BoardVO">
+    	SELECT *
+    	FROM board
+    	WHERE wr_category = #{wr_category}
+    </select>
+	<select id="nuguaction" resultType="CommunityActionVO">
+		    SELECT * FROM community_action
+			WHERE cg_num = #{wr_no}
+			AND mb_id = #{mb_id}
+	</select>
 </mapper>
