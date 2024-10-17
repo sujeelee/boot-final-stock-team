@@ -4,8 +4,9 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -223,9 +224,20 @@ public class EventController {
     public String ajax_prizeList_post(Model mo, @RequestParam("ev_no") int ev_no){
         List<PrizeVO> prizeList = eventService.getPrizeListByEv_no(ev_no);
         mo.addAttribute("prizeList", prizeList);
-        System.out.println(prizeList);
         return "/event/eventPrizeList :: #prizeList";
     }
+
+    @ResponseBody
+    @GetMapping("/ajax/prizeListSize")
+    public Map<String, Integer> ajax_prizeListsize_get(@RequestParam("ev_no") int ev_no){
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        List<PrizeVO> prizeList = eventService.getPrizeListByEv_no(ev_no);
+        int prizeListSize = prizeList.size();
+        map.put("prizeListSize", prizeListSize);
+        map.put("evNum", ev_no);
+        return map;
+    }
+
 
     @ResponseBody
     @PostMapping("/ajax/deletePrize")
@@ -245,14 +257,9 @@ public class EventController {
 
     @PostMapping("/eventATypeUpdate")
     public String eventATypeUpdate(Model mo ,PrizeVO prize, MultipartFile file){
-
-        System.out.println(prize);
-
-        System.err.println(file.isEmpty());
-
         boolean res = eventService.updateEventPrize_withFile(prize, file);
         if (res) {
-            System.out.println("상품 수정 완료");
+            System.out.println(prize.getPr_name() +", 상품 수정 완료");
         }
         
         List<EventDTO> list = eventService.getEventAllList();

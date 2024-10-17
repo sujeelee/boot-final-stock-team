@@ -21,7 +21,7 @@ public class ProceedTimer {
         long st = System.currentTimeMillis(); // 시작시간
         Object proceed = joinPoint.proceed(); // 메서드 실행
         long et = System.currentTimeMillis(); // 끝나는 시간
-        //System.out.println(joinPoint.getSignature() + " :: Timer ::  " + (et - st) + "ms ::");//콘솔창이 씨끄러우면 여기 주석
+        System.out.println(joinPoint.getSignature() + " :: Timer ::  " + (et - st) + "ms ::");//콘솔창이 씨끄러우면 여기 주석
         return proceed;//null이면 오류
     }
 }
