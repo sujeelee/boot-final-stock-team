@@ -1,55 +1,39 @@
 
-body {
-	margin: 0;
-	font-family: Arial, sans-serif;
-}
 
-.sidebar {
-	width: 220px;
-	background-color: #f4f4f4;
-	height: 100vh;
+/* 사이드바 설정 */
+#menu {
 	position: fixed;
-	overflow-y: scroll; /* 세로 스크롤 가능 */
-	padding-bottom: 20px; /* 스크롤바 공간 확보 */
-	scrollbar-width: thin; /* Firefox에서 스크롤바 두께 조절 */
-	scrollbar-color: transparent transparent;
-	/* Firefox에서 스크롤바 색상 투명으로 설정 */
+	top: 0;
+	left: 0;
+	max-width: 220px;
+	height: 100%;
+	margin-top: 50px
 }
 
-/* Webkit 기반 브라우저(Chrome, Safari 등)에서 스크롤바 숨기기 */
-.sidebar::-webkit-scrollbar {
-	width: 0; /* 스크롤바 너비 0 */
-	background: transparent; /* 배경 투명 */
+#nav_icon {
+	/* 사이드바 아이콘 및 글자 크기 조정 */
+	font-size: 20px;
+	padding-left: 6px;
+	margin: 8px;
 }
 
-.menu-item {
-	padding: 15px;
-	cursor: pointer;
-	transition: background-color 0.3s; /* 배경색 전환 효과 */
+/* 헤더 탑과 사이드바 사이 간격 줄이기용 */
+ul {
+	padding: 0;
+	margin: 0;
 }
 
-.menu-item:hover {
-	background-color: #e0e0e0; /* 마우스 오버 시 색상 변경 */
+#menu_ul {
+	position: relative;
+	height: 100%;
+	background: #ebebeb;
+	width: 210px;
+	list-style: none;
 }
 
-.sub-menu {
-	display: none; /* 기본적으로 숨김 */
-	padding-left: 20px;
-	margin-bottom: 10px; /* 각 세부 메뉴 간격 */
-	background-color: #e8e8e8; /* 세부 메뉴 배경색 */
-	border-left: 3px solid #4CAF50; /* 세부 메뉴 구분선 */
-}
-
-.sub-menu-item {
-	padding: 10px;
-	cursor: pointer;
-}
-
-.sub-menu-item:hover {
-	background-color: #d0d0d0; /* 세부 메뉴 항목 마우스 오버 색상 */
-}
-
-.content {
-	margin-left: 240px; /* 사이드바 너비만큼 여백 */
-	padding: 20px;
+#menu_li {
+	padding: 1px;
+	padding-left: 17px;
+	background: #ffffff;
+	border: 1px solid #77777759;
 }

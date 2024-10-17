@@ -12,16 +12,9 @@
 		SELECT *
 		FROM `order`
 		WHERE od_name = #{od_name}
-		AND mb_id = #{mb_id}
+		AND mb_id = #{mb_id} AND od_id = #{od_id}
 	</select>
 
-
-	<select id="searchNum" resultType="admOrderPageVO">
-		SELECT *
-		FROM `order`
-		WHERE
-		od_id = #{od_id}
-	</select>
 
 	<select id="deletOrder" resultType="admOrderPageVO">
 		DELETE 

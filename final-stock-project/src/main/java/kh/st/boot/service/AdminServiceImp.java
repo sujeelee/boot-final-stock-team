@@ -1,7 +1,5 @@
 package kh.st.boot.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdminDAO;
@@ -14,11 +12,22 @@ public class AdminServiceImp implements AdminService{
 	
 	private AdminDAO adminDao;
 	
-	// 
-	public List<AdminVO> getAdminList() {
-		
-		return adminDao.selectAdminList();
+
+	@Override
+	public AdminVO getAdminH() {
+		return adminDao.selectAdmin();
 	}
+
+
+	@Override
+	public boolean admUpdate(AdminVO adminVO) {
+		adminDao.updateAdm(adminVO);
+		return true;
+	}
+
+
+
+
 
 	
 

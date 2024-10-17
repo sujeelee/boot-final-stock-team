@@ -36,42 +36,50 @@ public class AdminController {
 	private AdminService adminService;
 	@Autowired
 	private newspaperServiceImp newspaperService;
-	
+
 	@Autowired
 	private SltAdmLevelPageService sltAdmLevelPageService;
-	
+
 	@Autowired
 	private AdminOrderService adminOrderService;
 
 	@Autowired
 	private PointSltIdPageService pointSltIdPageService;
-	
+
 	@Autowired
 	private AdminApprovalService adminApprovalService;
-	
+
 	@Autowired
-	private AdmPointService	admPointService;
-	
-	
-	// adminhome에 값을 보내줄 내용
+	private AdmPointService admPointService;
+
+	// 관리자 기본 페이지
+
+	// 관리자 설정 페이지 값 전송 코드
 	@GetMapping("/adminHome")
 	public String admin(Model model) {
 		// db에 저장된 값 DAO와 Service를 통해 받아온 값 리스트에 저장
-		List<AdminVO> adminList = adminService.getAdminList();
-
-		// adminList가 null인지 확인
-		if (adminList == null || adminList.isEmpty()) {
-			System.out.println("adminList가 비어 있습니다.");
-		} else {
-			System.out.println("adminList 크기: " + adminList.size());
-		}
-		System.out.println(adminList);
-		// 리스트 값을 보내주기
-		model.addAttribute("adminList", adminList);
+		AdminVO adminH = adminService.getAdminH();
+		System.out.println("admin홈페이지 DB값 받아오기" + adminH);
+		System.out.println("admin홈페이지 DB값 받아오기" + adminH.getCf_title());
+		// 값을 보내주기
+		model.addAttribute("adminH", adminH);
 		return "/admin/adminHome";
 	}
 
+	// 관리자 설정 페이지 값 변경
+	@PostMapping("/adminHome/update")
+	public String admUpdate(AdminVO adminVO, Model model) {
+		System.out.println("페이지 값 받아오기" + adminVO);
+		boolean res = adminService.admUpdate(adminVO);
+		if (res == false) {
+			model.addAttribute("msg", "성공");
+			model.addAttribute("url", "/admin/adminHome");
+			System.out.println("dadd");
+			return "util/msg";
+		}
 
+		return "redirect:/admin/adminHome";
+	}
 
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
@@ -153,227 +161,165 @@ public class AdminController {
 	// -------------------------- LV 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
 
-	
-	
-	
-	
-	
-	
-		// 접속시 불러오기 
+	// 접속시 불러오기
 	@GetMapping("/admLevel/admLevelPage")
 	public String sltAdmLevelPage(Model model) {
 		List<AdminLevelPageVO> ssltAdminLevelPage = sltAdmLevelPageService.getAllssltAdminLevelPage();
 		model.addAttribute("list", ssltAdminLevelPage);
-		return "/admin/admLevel/admLevelPage"; 
+		return "/admin/admLevel/admLevelPage";
 	}
-	
-	
-		// 등록하기     
-		@PostMapping("/admLevel/admLevelPage/insert")
-		public String istAdmLv(@RequestParam String lv_name,
-								@RequestParam int lv_num,
-								@RequestParam String lv_alpha,
-								@RequestParam String lv_auto_use,
-								@RequestParam int lv_up_limit, Model model) {
-			boolean res = sltAdmLevelPageService.addSltAdmLevel(lv_name, lv_num,lv_alpha,lv_auto_use,lv_up_limit);
-			if (res == false) {
-				model.addAttribute("msg"," 이미 존제하는 Lv 정보 입니다 ");
-				model.addAttribute("url", "/admin/admLevel/admLevelPage");
-				return "util/msg";
-			}
-			return "redirect:/admin/admLevel/admLevelPage";
-		}
-	
-	
-	
-		// 삭제하기 
-		@PostMapping("/admLevel/admLevelPage/delet")
-		public String dltAdmLv(
-				@RequestParam String lv_name,
-				@RequestParam int lv_num,
-				@RequestParam String lv_alpha,
-				@RequestParam String lv_auto_use,
-				@RequestParam int lv_up_limit) {
-			AdminLevelPageVO dltAdm = new AdminLevelPageVO();
-			dltAdm.setLv_name(lv_name); //
-			dltAdm.setLv_num(lv_num);
-			dltAdm.setLv_alpha(lv_alpha);
-			dltAdm.setLv_auto_use(lv_auto_use);
-			dltAdm.setLv_up_limit(lv_up_limit);
 
-			sltAdmLevelPageService.dltAdmLvService(dltAdm);
-			return "redirect:/admin/admLevel/admLevelPage";
+	// 등록하기
+	@PostMapping("/admLevel/admLevelPage/insert")
+	public String istAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
+			@RequestParam String lv_auto_use, @RequestParam int lv_up_limit, Model model) {
+		boolean res = sltAdmLevelPageService.addSltAdmLevel(lv_name, lv_num, lv_alpha, lv_auto_use, lv_up_limit);
+		if (res == false) {
+			model.addAttribute("msg", " 이미 존제하는 Lv 정보 입니다 ");
+			model.addAttribute("url", "/admin/admLevel/admLevelPage");
+			return "util/msg";
 		}
-	
-		// 수정하기
-		@PostMapping("/admLevel/admLevelPage/update")
-		public String udtAdmLv(
-				@RequestParam String lv_name,
-				@RequestParam int lv_num,
-				@RequestParam String lv_alpha,
-				@RequestParam String lv_auto_use,
-				@RequestParam int lv_up_limit) {
-			
+		return "redirect:/admin/admLevel/admLevelPage";
+	}
 
-			sltAdmLevelPageService.udtAdmLvService(lv_name,lv_num,lv_alpha,lv_auto_use,lv_up_limit);
-			return "redirect:/admin/admLevel/admLevelPage";
-		}
-	
-	
+	// 삭제하기
+	@PostMapping("/admLevel/admLevelPage/delet")
+	public String dltAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
+			@RequestParam String lv_auto_use, @RequestParam int lv_up_limit) {
+		AdminLevelPageVO dltAdm = new AdminLevelPageVO();
+		dltAdm.setLv_name(lv_name); //
+		dltAdm.setLv_num(lv_num);
+		dltAdm.setLv_alpha(lv_alpha);
+		dltAdm.setLv_auto_use(lv_auto_use);
+		dltAdm.setLv_up_limit(lv_up_limit);
 
-		// -------------------------------------------------------------------------------
-		// -------------------------- 포인트 적립내역 검색 컨트롤러 -----------------------------------
-		// -------------------------------------------------------------------------------
-	
-		
-		// 접속시 불러오기 
-		@GetMapping("/admDaycheck/daycheckAdm")
-		public String sltAdmPointPage(Model model) {
-			List<AdmDaycheckVO> sltPoint= pointSltIdPageService.sltAllPoint();
-			model.addAttribute("list", sltPoint);
-			return "/admin/admDaycheck/daycheckAdm"; 
-		}
-		
-		
-		
-		 // 검색하기
-		  
-		  @PostMapping("/admDaycheck/daycheckAdm/update")
-		  public String sltIdPointPage(@RequestParam String mb_id,Model model) {
-			  List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id); 
-	  		  model.addAttribute("list",sltPointOne);
-	  		  return "/admin/admDaycheck/daycheckAdm"; 
-	  		  
-		  }
-		 
-	
-	
-		
-		// -------------------------------------------------------------------------------
-		// -------------------------- 주문내역 조회 컨트롤러 ----------------------------------
-		// -------------------------------------------------------------------------------
-			
-		  
-		  
-		// 접속시 불러오기 
-		@GetMapping("/admOrder/orderAdm")
-		public String sltOrder(Model model) {
-			List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder();
-			model.addAttribute("list", sltAdminOrder);
-			return "/admin/admOrder/orderAdm"; 
-		}
-	
-		
-		
+		sltAdmLevelPageService.dltAdmLvService(dltAdm);
+		return "redirect:/admin/admLevel/admLevelPage";
+	}
+
+	// 수정하기
+	@PostMapping("/admLevel/admLevelPage/update")
+	public String udtAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
+			@RequestParam String lv_auto_use, @RequestParam int lv_up_limit) {
+
+		sltAdmLevelPageService.udtAdmLvService(lv_name, lv_num, lv_alpha, lv_auto_use, lv_up_limit);
+		return "redirect:/admin/admLevel/admLevelPage";
+	}
+
+	// -------------------------------------------------------------------------------
+	// -------------------------- 포인트 적립내역 검색 컨트롤러
+	// -----------------------------------
+	// -------------------------------------------------------------------------------
+
+	// 접속시 불러오기
+	@GetMapping("/admDaycheck/daycheckAdm")
+	public String sltAdmPointPage(Model model) {
+		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllPoint();
+		model.addAttribute("list", sltPoint);
+		return "/admin/admDaycheck/daycheckAdm";
+	}
+
+	// 검색하기
+
+	@PostMapping("/admDaycheck/daycheckAdm/update")
+	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
+		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id);
+		model.addAttribute("list", sltPointOne);
+		return "/admin/admDaycheck/daycheckAdm";
+
+	}
+
+	// -------------------------------------------------------------------------------
+	// -------------------------- 주문내역 조회 컨트롤러 ----------------------------------
+	// -------------------------------------------------------------------------------
+
+	// 접속시 불러오기
+	@GetMapping("/admOrder/orderAdm")
+	public String sltOrder(Model model) {
+		List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder();
+		model.addAttribute("list", sltAdminOrder);
+		return "/admin/admOrder/orderAdm";
+	}
+
 	// 이름 + 아이디로 검색
-		
-		@PostMapping("/admOrder/orderAdm/search")
-		public String searchIdName(@RequestParam String od_name,@RequestParam String mb_id , Model model) {
-			List<admOrderPageVO> searchOrder = adminOrderService.searchNameId(od_name, mb_id);
-			model.addAttribute("list", searchOrder);
-			return "/admin/admOrder/orderAdm";
-			
-		}
-		
-		
-	
-		// 주문번호로 검색
-		
-		@PostMapping("/admOrder/orderAdm/ssearch")
-		public String searchNum(@RequestParam String od_id, Model model) {
-			List<admOrderPageVO> ssearchOrder = adminOrderService.ssearchNum(od_id);
-			model.addAttribute("list", ssearchOrder);
-			return "/admin/admOrder/orderAdm";
-			
-		}
-	
-		
-		// 주문번호로 삭제 
-		
-		@PostMapping("/admOrder/orderAdm/delet")
-		public String orderDelet(@RequestParam String od_id, Model model) {
-			List<admOrderPageVO> deletOrder = adminOrderService.deletOrderNum(od_id);
-			return "redirect:/admin/admOrder/orderAdm";
-			
-		}
 
+	@PostMapping("/admOrder/orderAdm/search")
+	public String searchIdName(@RequestParam String od_name, @RequestParam String mb_id, @RequestParam String od_id, Model model) {
 		
-		
-		// -------------------------------------------------------------------------------
-		// --------------------------주식/뉴스 회원승인 ----------------------------------
-		// -------------------------------------------------------------------------------
-				
-		
-		// 접속시 신청승인여부 null 인지 확인해서 처리해야 하는것만 불러오기 
-		
-		@GetMapping("/admApproval/admApprovalPage")
-		public String nullSltApproval( Model model) {
-			List<AdmApprovalVO> nullSlt = adminApprovalService.nullSelect();
-			model.addAttribute("list", nullSlt);
-			return "/admin/admApproval/admApprovalPage"; 
-		}
-		
-		
-		// 승인/거절 했을때  
-	
-		@PostMapping("/admApproval/admApprovalPage/slt")
-		public String ySltApproval(@RequestParam int mp_no, @RequestParam String mp_type,
-								   @RequestParam String mp_company, @RequestParam String mp_yn,@RequestParam int mb_no ) {
-			
- 			adminApprovalService.ynUPDATE(mp_no,mp_type,mp_company,mp_yn,mb_no);
-			
-			return "redirect:/admin/admApproval/admApprovalPage"; 
-			}
-		
-		
-		
-		// -------------------------------------------------------------------------------
-		// --------------------------사용자포인트 관리 컨트롤러 --------------------------
-		// -------------------------------------------------------------------------------
-				
-		// 페이지 이동시 리스트 당겨옴 
-		@GetMapping("/admPoint/admPointPage")
-		public String pointSelect( Model model) {
-			List<AdmPointVO> Slt = admPointService.allselect();
-			model.addAttribute("list", Slt);
-			return "/admin/admPoint/admPointPage"; 
-		}
-		
-		// 아이디로 사용자 검색
-		@PostMapping("admPoint/admPointPage/Id")
-		public String idSelect(@RequestParam String mb_id, Model model) {
-			List<AdmPointVO> idSlt = admPointService.idSelect(mb_id);
-			model.addAttribute("list", idSlt);
-			return "/admin/admPoint/admPointPage"; 
-		}
-		
-		
-		
-		// 포인트 적립, 차감
-		@PostMapping("/admPoint/admPointPage/point")
-		public String plusMinus(@RequestParam String mb_id,
-								@RequestParam int po_num,
-								@RequestParam String po_content) {
-			 
-			admPointService.plusminus(mb_id,po_num,po_content);
-			return "redirect:/admin/admPoint/admPointPage"; 
-		}
-		
-		
-		//내역 삭제 
-		@PostMapping("admPoint/admPointPage/delete")
-		public String plusMinus(@RequestParam int po_no) {
-			 
-			admPointService.delete(po_no);
-			return "redirect:/admin/admPoint/admPointPage"; 
-		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		List<admOrderPageVO> searchOrder = adminOrderService.searchNameId(od_name, mb_id, od_id);
+		model.addAttribute("list", searchOrder);
+		return "/admin/admOrder/orderAdm";
+
+	}
+
+
+	// 주문번호로 삭제
+
+	@PostMapping("/admOrder/orderAdm/delet")
+	public String orderDelet(@RequestParam String od_id, Model model) {
+		List<admOrderPageVO> deletOrder = adminOrderService.deletOrderNum(od_id);
+		return "redirect:/admin/admOrder/orderAdm";
+
+	}
+
+	// -------------------------------------------------------------------------------
+	// --------------------------주식/뉴스 회원승인 ----------------------------------
+	// -------------------------------------------------------------------------------
+
+	// 접속시 신청승인여부 null 인지 확인해서 처리해야 하는것만 불러오기
+
+	@GetMapping("/admApproval/admApprovalPage")
+	public String nullSltApproval(Model model) {
+		List<AdmApprovalVO> nullSlt = adminApprovalService.nullSelect();
+		model.addAttribute("list", nullSlt);
+		return "/admin/admApproval/admApprovalPage";
+	}
+
+	// 승인/거절 했을때
+
+	@PostMapping("/admApproval/admApprovalPage/slt")
+	public String ySltApproval(@RequestParam int mp_no, @RequestParam String mp_type, @RequestParam String mp_company,
+			@RequestParam String mp_yn, @RequestParam int mb_no) {
+
+		adminApprovalService.ynUPDATE(mp_no, mp_type, mp_company, mp_yn, mb_no);
+
+		return "redirect:/admin/admApproval/admApprovalPage";
+	}
+
+	// -------------------------------------------------------------------------------
+	// --------------------------사용자포인트 관리 컨트롤러 --------------------------
+	// -------------------------------------------------------------------------------
+
+	// 페이지 이동시 리스트 당겨옴
+	@GetMapping("/admPoint/admPointPage")
+	public String pointSelect(Model model) {
+		List<AdmPointVO> Slt = admPointService.allselect();
+		model.addAttribute("list", Slt);
+		return "/admin/admPoint/admPointPage";
+	}
+
+	// 아이디로 사용자 검색
+	@PostMapping("admPoint/admPointPage/Id")
+	public String idSelect(@RequestParam String mb_id, Model model) {
+		List<AdmPointVO> idSlt = admPointService.idSelect(mb_id);
+		model.addAttribute("list", idSlt);
+		return "/admin/admPoint/admPointPage";
+	}
+
+	// 포인트 적립, 차감
+	@PostMapping("/admPoint/admPointPage/point")
+	public String plusMinus(@RequestParam String mb_id, @RequestParam int po_num, @RequestParam String po_content) {
+
+		admPointService.plusminus(mb_id, po_num, po_content);
+		return "redirect:/admin/admPoint/admPointPage";
+	}
+
+	// 내역 삭제
+	@PostMapping("admPoint/admPointPage/delete")
+	public String plusMinus(@RequestParam int po_no) {
+
+		admPointService.delete(po_no);
+		return "redirect:/admin/admPoint/admPointPage";
+	}
+
 }

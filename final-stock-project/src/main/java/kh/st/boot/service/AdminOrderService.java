@@ -22,15 +22,11 @@ public class AdminOrderService {
 	}
 
 
-	public List<admOrderPageVO> searchNameId(String od_name, String mb_id) {
-		return 	adminOrderDAO.searchIdName(od_name,mb_id );
+	public List<admOrderPageVO> searchNameId(String od_name, String mb_id,  String od_id) {
+		return 	adminOrderDAO.searchIdName(od_name,mb_id,od_id );
 		
 	}
 
-
-	public List<admOrderPageVO> ssearchNum(String od_id) {
-		return 	adminOrderDAO.searchNum(od_id);
-	}
 
 
 	public List<admOrderPageVO> deletOrderNum(String od_id) {

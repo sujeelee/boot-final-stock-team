@@ -9,6 +9,10 @@ public interface AdminDAO {
 	// DB값 받아오기
 	List<AdminVO> selectAdminList();
 
+	AdminVO selectAdmin();
+
+	void updateAdm(AdminVO adminVO);
+
 
 
 }

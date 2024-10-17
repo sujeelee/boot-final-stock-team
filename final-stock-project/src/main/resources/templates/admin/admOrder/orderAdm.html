@@ -3,98 +3,79 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
 <head>
+<script src="https://kit.fontawesome.com/3f892a70ad.js"
+	crossorigin="anonymous">
+	
+</script>
+<script
+	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
 <meta charset="UTF-8">
-<title>Admin Level Page</title>
-<link th:href="@{/css/admnews.css}" rel="stylesheet" />
-
-<!--  스타일 적용 했음  -->
+<link th:href="@{/css/admorder.css}" rel="stylesheet" />
+<title>관리자 페이지</title>
 </head>
-<style>
-     
-</style>
 <body>
-	<div class="content">
-		<!--  이거 추가하니까 사이드바랑 곂치던거 해결됨 wht?>???>??<>>?>?>?>?>?>>? -->
-		<h1>주문 내역 조회 페이지 </h1>    <!--  아무것도 수정하지 않음     여기는 제일 마지막에 작업     -->
-		 <div class="update-from">
-		
-			<form action="/admin/admOrder/orderAdm/search" method="post">
-				<input type="text" name="od_name" placeholder="주문자명" required>
-				<input type="text" name="mb_id" placeholder="주문 ID" required>
-				<button type="submit">사용자 검색</button>
-			</form>
-		</div>
-		 <div class="register-form">
-	
-			<form action="/admin/admOrder/orderAdm/ssearch" method="post">
-				<input type="text" name="od_id" placeholder="주문번호" required>
-				<button type="submit">주문번호 검색</button>
-			</form>
-			
-		 <div class="register-form">
-	
-			<form action="/admin/admOrder/orderAdm/delet" method="post">
-				<input type="text" name="od_id" placeholder="주문번호" required>
-				<button type="submit">내역삭제</button>
-			</form>
-		</div> 
-	</div>
-	<!-- 레벨 테이블 				페이지 꾸며야댐-->   
-	<table>
-		<thead>
-			<tr>
-				<div></div>
-				<th>주문번호</th><!-- String / od_id-->
-				<th>주문자명</th><!-- String / od_name-->
-				<th>주문 ID</th><!-- String / mb_id-->
-				<th>결제금액</th><!-- int / od_price-->
-				<th>지급 포인트</th><!-- int / od_point-->
-				<th>결제일</th><!-- DATETIME / od_date-->
-				<th>주문상태</th><!-- String / od_status-->
-				<th>주식코드</th><!-- String / od_st_code-->
-				<th>주식명</th><!-- String / od_st_name-->
-				<th>해당 주</th><!-- int / od_qty-->
-				<th>주당 가격</th><!-- int / od_st_price-->
-				<th>퍼센트 가격</th><!-- int / od_percent_price-->
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="list : ${list}">
-				<td th:text="${list.od_id}"></td>
-            	<td th:text="${list.od_name}"></td>
-				<td th:text="${list.mb_id}"></td>
-				<td th:text="${list.od_price}"></td>
-				<td th:text="${list.od_point}"></td>
-				<td th:text="${list.od_date}"></td>
-				<td th:text="${list.od_status}"></td>
-				<td th:text="${list.od_st_code}"></td>
-				<td th:text="${list.od_st_name}"></td>
-				<td th:text="${list.od_qty}"></td>
-				<td th:text="${list.od_st_price}"></td>
-				<td th:text="${list.od_percent_price}"></td>
-				
-				<!-- 	
-					<form action="/admin/admLevel/admLevelPage/delet" method="post"
-						style="display: inline;">
-						<input type="hidden" name="lv_name" th:value="${list.lv_name}" />
-						레벨 이름
-						<input type="hidden" name="lv_num" th:value="${list.lv_num}" />
-						레벨 번호
-						<input type="hidden" name="lv_alpha" th:value="${list.lv_alpha}" />
-						레벨 혜택
-						<input type="hidden" name="lv_auto_use"
-							th:value="${list.lv_auto_use}" />
-						승급 심사 여부
-						<input type="hidden" name="lv_up_limit"
-							th:value="${list.lv_up_limit}" />
-						레벨업 기준
-						<button type="submit" style="font-size: 12px;"
-							onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+	<div id="wrapper" class="conent">
+		<div id="container">
+			<h1 id="container_title">주문내역</h1>
+			<div id="container_main">
+				<!-- 검색기능 form -->
+				<form action="/admin/admOrder/orderAdm/search" method="post"
+					class="local_sch">
+					<select>
+						<option value="0">회원아이디</option>
+						<option value="1">회원이름</option>
+						<option value="2">주문번호</option>
+						<option value="3">주식명</option>
+					</select> <input type="text" name="search" required class="in_sch">
+					<button type="submit">사용자 검색</button>
+				</form>
+				<div class="tbl_col">
+					<form action="/admin/admOrder/orderAdm/delet" method="post">
+						<table>
+							<thead>
+								<tr>
+									<th>주문번호</th>
+									<th style="width: 420px">회원아이디</th>
+									<th>주문자명</th>
+									<th>결제금액</th>
+									<th>결제일</th>
+									<th>주식명</th>
+									<th>주식 주 개수</th>
+									<th>주식 주당 가격</th>
+									<th>관리</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- 값 불러오기 -->
+								<tr th:each="list : ${list}">
+									<td th:text="${list.od_id}"></td>
+									<td th:text="${list.mb_id}"></td>
+									<td th:text="${list.od_name}"></td>
+									<td th:text="${list.od_price}"></td>
+									<td th:text="${list.od_date}"></td>
+									<td th:text="${list.od_st_name}"></td>
+									<td th:text="${list.od_qty}"></td>
+									<td th:text="${list.od_st_price}"></td>
+									<td class="td_upd" style="text-align: center;">
+											<input type="hidden" name="od_id" th:value="${list.od_id} " placeholder="주문번호" required>
+											<button type="submit"
+												onclick="return confirm('정말 삭제하시겠습니까?');">내역삭제</button>
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(list)}">
+									<td colspan="9" class="no-data">검색 결과가 없습니다.</td>
+								</tr>
+							</tbody>
+						</table>
 					</form>
-				 </td> -->
+				</div>
 
-			</tr>
-		</tbody>
-	</table>
+			</div>
+			<footer id="ft">
+				<p>Copyright © demo.sir.kr. All rights reserved.</p>
+			</footer>
+		</div>
+	</div>
+
 </body>
 </html>

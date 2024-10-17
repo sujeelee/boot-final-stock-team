@@ -11,9 +11,8 @@ public interface AdminOrderDAO {
 
 		List<admOrderPageVO> selectAlladminOrder();
 
-		List<admOrderPageVO> searchIdName(String od_name, String mb_id);
+		List<admOrderPageVO> searchIdName(String od_name, String mb_id, String od_id);
 
-		List<admOrderPageVO> searchNum(String od_id);
 
 		List<admOrderPageVO> deletOrder(String od_id);
 

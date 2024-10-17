@@ -40,7 +40,7 @@ public class newspaperServiceImp implements newspaperService {
 		newspaperDAO.deleteNewspaper(NewsPaperVO);
 	}
 
-	public List<NewsPaperVO> searchNewspapers(String np_name, byte np_use, int np_no) {
+	public List<NewsPaperVO> searchNewspapers(String np_name, byte useByte, int np_no) {
 		List<NewsPaperVO> allNewspapers = newspaperDAO.selectAllNewspapers(); // 모든 신문사 가져오기
 		List<NewsPaperVO> filteredNewspapers = new ArrayList<>();
 
@@ -49,8 +49,8 @@ public class newspaperServiceImp implements newspaperService {
 		for (NewsPaperVO newspaper : allNewspapers) {
 			boolean matchesName = (np_name == null || np_name.isEmpty() || newspaper.getNp_name().contains(np_name));
 			// 여기서 이름을 판별해서 matchesName 안에 넣는데
-			boolean matchesStatus = (np_use == 1 && newspaper.getNp_use() == 1)
-					|| (np_use == 0 && newspaper.getNp_use() == 0);
+			boolean matchesStatus = (useByte == 1 && newspaper.getNp_use() == 1)
+					|| (useByte == 0 && newspaper.getNp_use() == 0);
 			
 			if (matchesName && matchesStatus) {
 				filteredNewspapers.add(newspaper);  
