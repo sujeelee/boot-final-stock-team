@@ -39,4 +39,14 @@ public interface DepositDAO {
 
 	List<OrderVO> getOrderMemberByBuy(@Param("mb_id")String mb_id);
 
+	List<OrderVO> getOrderMember(@Param("mb_id")String mb_id);
+
+	List<OrderVO> getOrderMemberBySellDate(@Param("mb_id")String mb_id, @Param("now")String now);
+
+	List<OrderVO> getOrderMemberByBuyDate(@Param("mb_id")String mb_id, @Param("now")String now);
+
+	List<OrderVO> getOrderMemberByDate(@Param("mb_id")String mb_id, @Param("now")String now);
+
+	int getCountByPoint(@Param("cri")TransCriteria cri, @Param("mb_id")String mb_id);
+
 }
