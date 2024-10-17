@@ -43,6 +43,7 @@ public class MemberVO {
     private String oauthProvider; // 예: "Kakao", "Naver"
     private String oauthId; // 카카오 또는 네이버에서 제공하는 사용자 ID
     private String loginMethod; // 예: "internal" = 자체로그인, "oauth" = 외부로그인
+    private String refreshToken; // 리프레시 토큰
     
 	public String getMb_auth() {
 		String auth = "GUEST";

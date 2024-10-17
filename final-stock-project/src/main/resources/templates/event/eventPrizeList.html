@@ -123,7 +123,6 @@
                 success: function(data) {
                     // 성공적으로 데이터를 가져오면 해당 이벤트의 prizeList 영역을 교체
                     $('#prizeList' + eventId).replaceWith(data);
-
                     $.ajax({
                         url: '/event/ajax/prizeListSize',
                         method: 'get',
@@ -138,16 +137,11 @@
                         error: function(error) {
                             console.log("Error:", error); // 에러 로그
                         }
-
                     });
-
-
                 },
                 error: function(error) {
                     console.log("Error:", error); // 에러 로그
                 }
-
-
             });
         });
     });
