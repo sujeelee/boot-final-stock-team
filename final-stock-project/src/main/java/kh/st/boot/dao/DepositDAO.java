@@ -47,4 +47,6 @@ public interface DepositDAO {
 
 	List<OrderVO> getOrderMemberByDate(@Param("mb_id")String mb_id, @Param("now")String now);
 
+	int getCountByPoint(@Param("cri")TransCriteria cri, @Param("mb_id")String mb_id);
+
 }

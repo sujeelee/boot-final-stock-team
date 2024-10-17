@@ -47,11 +47,11 @@ public class MyAccountServiceImp implements MyAccountService {
 	}
 
 	@Override
-	public List<PointVO> getPointList(String mb_id) {
+	public List<PointVO> getPointList(TransCriteria cri, String mb_id) {
 		if(mb_id == null) {
 			return null;
 		}
-		return myAccountDao.selectPointList(mb_id);
+		return myAccountDao.selectPointList(cri, mb_id);
 	}
 
 	@Override
@@ -178,6 +178,12 @@ public class MyAccountServiceImp implements MyAccountService {
 			return null;
 		}
 		return depositDao.getOrderMemberByDate(mb_id, now);
+	}
+
+	@Override
+	public PageMaker getPageMakerByPoint(TransCriteria cri, String mb_id) {
+		int count = depositDao.getCountByPoint(cri, mb_id);
+		return new PageMaker(2, cri, count);
 	}
 
 }

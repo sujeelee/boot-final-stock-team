@@ -100,13 +100,6 @@ public class MyAccountController {
 				}
 			}
 		}
-		List<PointVO> pointList = myAccountService.getPointList(mb_id); // 포인트 리스트 가져와야됨
-		int pointMoney = 0;
-		if(pointList != null) {
-			for(PointVO point : pointList) {
-				pointMoney += point.getPo_num();
-			}
-		}
 		model.addAttribute("money", money);
 		model.addAttribute("account", account);
 		model.addAttribute("rateOfReturn", rateOfReturn);
@@ -114,7 +107,6 @@ public class MyAccountController {
 		model.addAttribute("stockMoney", stockMoney);	// 투자중인 금액
 		model.addAttribute("orderMoney", orderMoney);	// 주문 가능 금액
 		model.addAttribute("monthMoney", monthMoney);	// 월 수익
-		model.addAttribute("pointMoney", pointMoney);	// 포인트
 		return "myaccount/asset";
 	}
 	
@@ -341,7 +333,6 @@ public class MyAccountController {
 			tmps.setContent_view(content_view);
 			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
 		}
-		
 		model.addAttribute("account", ac);
 		model.addAttribute("list", list);
 		model.addAttribute("type", type);
@@ -668,7 +659,21 @@ public class MyAccountController {
         	model.addAttribute("url", "/member/login");
             return "util/msg";
         }
+        String mb_id = principal.getName();
         cri.setPerPageNum(10);
+        PageMaker pm = myAccountService.getPageMakerByPoint(cri, mb_id);
+        List<PointVO> list = null;
+        switch(type) {
+        case "use":
+        	list = myAccountService.getPointList(cri, mb_id);
+        	break;
+        case "get":
+        	list = myAccountService.getPointList(cri, mb_id);
+        	break;
+        }
+        model.addAttribute("type", type);
+        model.addAttribute("pm", pm);
+        model.addAttribute("list", list);
 		return "myaccount/point";
 	}
 

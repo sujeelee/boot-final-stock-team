@@ -155,4 +155,16 @@
 		ORDER BY
 			OD_DATE DESC
 	</select>
+	<select id="getCountByPoint" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			POINT
+		WHERE MB_ID = #{mb_id}
+			<if test="cri.type == 'use'">
+				AND 0 > PO_NUM
+			</if>
+			<if test="cri.detail == 'get'">
+				AND PO_NUM > 0 
+			</if>
+	</select>
 </mapper>
