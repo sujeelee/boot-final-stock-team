@@ -198,14 +198,59 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public List<EventPrizeVO> getEventPrizeTicketList(int ep_no) {
-        return eventDao.getEventPrizeTicketList(ep_no);
+    public List<EventPrizeVO> getEventPrizeTicketList(int ep_no, String mb_id) {
+        return eventDao.getEventPrizeTicketList(ep_no, mb_id);
     }
 
     @Override
     public List<EventPrizeCounterDTO> getEventPrizeTicketCounter(int ev_no) {
         return eventDao.getEventPrizeTicketCounter(ev_no);
     }
+
+    @Override
+    public List<EventDTO> getEventAllList() {
+
+        return eventDao.getEventAllList();
+    }
+
+    @Override
+    public boolean deletePrize(int pr_no) {
+        PrizeVO pr = eventDao.getPrizeByPr_no(pr_no);
+        System.out.println(pr);
+        UploadFileUtils.delteFile(uploadPath, pr.getFi_path());
+        return eventDao.deletePrize(pr_no);
+    }
+
+    @Override
+    public PrizeVO getPrizeByPr_no(int pr_no) {
+        return eventDao.getPrizeByPr_no(pr_no);
+    }
+
+    @Override
+    public boolean updateEventPrize_withFile(PrizeVO prize, MultipartFile file) {
+        
+
+        if (prize == null) {
+            return false;
+        }
+
+        if (prize.getPr_name() == null || prize.getPr_name().trim().length() == 0) {
+            return false;   
+        }
+
+        boolean res = eventDao.updatePrize(prize);
+
+        if (res && !file.isEmpty()) {
+            res = eventDao.deletePrizeThumbnailFile(prize.getPr_no());
+            if (res) {
+                UploadFileUtils.delteFile(uploadPath, prize.getFi_path());
+                uploadFile(file, prize.getPr_no(), "prize");
+            }
+        }
+
+        return res;
+    }
+
 
 
     

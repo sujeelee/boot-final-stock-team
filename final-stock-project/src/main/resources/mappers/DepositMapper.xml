@@ -86,4 +86,85 @@
 			limit #{cri.pageStart}, #{cri.perPageNum}
 		</if>
 	</select>
+	<select id="getOrderMemberBySell" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매도%'
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberByBuy" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매수%'
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMember" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND (OD_STATUS LIKE '%매도%' OR OD_STATUS LIKE '%매수%') 
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberBySellDate" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매도%'
+			<if test="now.length() > 0">
+				AND OD_DATE LIKE CONCAT(#{now}, '%')
+			</if>
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberByBuyDate" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND OD_STATUS LIKE '%매수%'
+			<if test="now.length() > 0">
+				AND OD_DATE LIKE CONCAT(#{now}, '%')
+			</if>
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getOrderMemberByDate" resultType="OrderVO">
+		SELECT *
+		FROM
+			`ORDER`
+		WHERE
+			MB_ID = #{mb_id}
+			AND (OD_STATUS LIKE '%매도%' OR OD_STATUS LIKE '%매수%')
+			<if test="now.length() > 0">
+				AND OD_DATE LIKE CONCAT(#{now}, '%')
+			</if>
+		ORDER BY
+			OD_DATE DESC
+	</select>
+	<select id="getCountByPoint" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			POINT
+		WHERE MB_ID = #{mb_id}
+			<if test="cri.type == 'use'">
+				AND 0 > PO_NUM
+			</if>
+			<if test="cri.detail == 'get'">
+				AND PO_NUM > 0 
+			</if>
+	</select>
 </mapper>

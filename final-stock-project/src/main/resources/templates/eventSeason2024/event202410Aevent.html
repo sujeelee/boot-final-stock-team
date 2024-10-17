@@ -88,6 +88,7 @@
             <div class="event-participation" th:each="prize, n : ${list}" th:id="'get'+${prize.pr_link}">
                 
                 <div th:object="${eplist.get(n.index)}">
+                    
                     <h2>[[${prize.pr_name}]]</h2>
                     <div class="image-container">
                         <img th:src="@{'/uploads' + ${prize.fi_path}}" alt="Event Image" class="event-image" style="height: 200px;">

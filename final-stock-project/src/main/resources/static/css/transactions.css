@@ -13,47 +13,47 @@
 
 /* Sidebar */
 .my-sidebar {
-         position: sticky;
-         top: 60px;
-         padding-top: 30px;
-         border-radius: 50px;
-         background-color: #fff;
-     }
+    position: sticky;
+    top: 60px;
+    padding-top: 30px;
+    border-radius: 50px;
+    background-color: #fff;
+}
 
-     .my-list {
-         list-style: none;
-         padding: 0;
-         margin: 0;
-     }
+.my-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-     .my-list li {
-         margin-bottom: 10px;
-     }
+.my-list li {
+    margin-bottom: 10px;
+}
+
+.my-item {
+	list-style: none;
+}
+
+.my-btn {
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50px;
+    transition: background-color 0.2s;
+    width: 100%;
+}
      
-     .my-item {
-     	list-style: none;
-     }
-
-     .my-btn {
-         background-color: transparent;
-         border: none;
-         text-align: left;
-         cursor: pointer;
-         padding: 10px 15px;
-         border-radius: 50px;
-         transition: background-color 0.2s;
-         width: 100%;
-     }
-     
-     /* li 태그에 호버 효과 추가 */
-  .my-list li:hover {
-      border-radius: 20px;
-background-color: #f9fafb;
-  }
-  .my-text {
-      font-size: 17px;
-      color: #888;
-      transition: color 0.2s; /* 글자 색상 변화에 애니메이션 추가 */
+/* li 태그에 호버 효과 추가 */
+.my-list li:hover {
+	border-radius: 20px;
+	background-color: #f9fafb;
+}
+.my-text {
+    font-size: 17px;
+    color: #888;
+    transition: color 0.2s; /* 글자 색상 변화에 애니메이션 추가 */
 }
 
 /* Header */
@@ -76,7 +76,6 @@ background-color: #f9fafb;
 
 /* Transactions Section */
 .transactions {
-
     flex-direction: column;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -85,16 +84,13 @@ background-color: #f9fafb;
 }
 
 .transaction-item {
-
     justify-content: space-between;
     padding: 16px;
     
 }
 
 .transaction-info {
-
     flex-direction: column;
-    
 }
 
 .transaction-title {
