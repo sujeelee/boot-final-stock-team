@@ -38,6 +38,12 @@ public class MemberVO {
     
     // 뉴스회원 테이블
     private String mb_news; // 회원 신문사명
+
+    // OAuth 관련 필드
+    private String oauthProvider; // 예: "Kakao", "Naver"
+    private String oauthId; // 카카오 또는 네이버에서 제공하는 사용자 ID
+    private String loginMethod; // 예: "internal" = 자체로그인, "oauth" = 외부로그인
+    private String refreshToken; // 리프레시 토큰
     
 	public String getMb_auth() {
 		String auth = "GUEST";
@@ -50,4 +56,7 @@ public class MemberVO {
 		return auth;
 	}
     
+    //
+    //https://ksh-coding.tistory.com/57
+    //https://blog.naver.com/hj_kim97/223031615864
 }

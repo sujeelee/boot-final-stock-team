@@ -1,0 +1,39 @@
+
+
+/* 사이드바 설정 */
+#menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	max-width: 220px;
+	height: 100%;
+	margin-top: 50px
+}
+
+#nav_icon {
+	/* 사이드바 아이콘 및 글자 크기 조정 */
+	font-size: 20px;
+	padding-left: 6px;
+	margin: 8px;
+}
+
+/* 헤더 탑과 사이드바 사이 간격 줄이기용 */
+ul {
+	padding: 0;
+	margin: 0;
+}
+
+#menu_ul {
+	position: relative;
+	height: 100%;
+	background: #ebebeb;
+	width: 210px;
+	list-style: none;
+}
+
+#menu_li {
+	padding: 1px;
+	padding-left: 17px;
+	background: #ffffff;
+	border: 1px solid #77777759;
+}

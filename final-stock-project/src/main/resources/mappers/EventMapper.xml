@@ -3,7 +3,7 @@
 <mapper namespace="kh.st.boot.dao.EventDAO">
 
     <select id="getEventList" resultType="kh.st.boot.model.dto.EventDTO">
-        select ev_no, ev_title, ev_start, ev_end, ev_status, fi_path 
+        select ev_no, ev_title, ev_start, ev_end, ev_status, ev_datetime, fi_path 
         from event 
         left join file on  ev_no = fi_reg_no 
         where fi_type = "event" and ev_status = #{eventStatus}
@@ -11,7 +11,7 @@
     </select>
 
     <select id="getEventPostList" resultType="kh.st.boot.model.dto.EventDTO">
-        select ev_no, ev_title, ev_start, ev_end, ev_status
+        select ev_no, ev_title, ev_start, ev_end, ev_status, ev_datetime
         from event 
         where ev_status = #{eventStatus}
         order by ev_end desc
@@ -100,13 +100,17 @@
         select * from prize order by pr_no desc limit 1
     </select>
 
+    <select id="getPrizeByPr_no" resultType="PrizeVO">
+           select prize.*, fi_path from prize left join file on pr_no = fi_reg_no where fi_type = "prize" and pr_no = #{pr_no}
+    </select>
+
     <select id="getEventPrizeTicket" resultType="EventPrizeVO">
         select * from event_prize where pr_no = #{pr_no} and ep_mb_id = #{ep_mb_id} and ev_no = #{ev_no}
     </select>
 
     <insert id="setEventPrizeTicket">
         insert into event_prize(ev_no, pr_no, ep_count, ep_prize, ep_mb_id, ep_rank)
-        value(#{ev_no}, #{pr_no}, 1, #{ep_prize}, #{ep_mb_id}, #{ep_rank})
+        value(#{ev_no}, #{pr_no}, 0, #{ep_prize}, #{ep_mb_id}, #{ep_rank})
     </insert>
 
     <update id="updateEventPrizeTicket_AddOne">
@@ -116,11 +120,29 @@
     </update>
 
     <select id="getEventPrizeTicketList" resultType="EventPrizeVO">
-        select * from event_prize where ev_no = #{ep_no} order by pr_no 
+        select * from event_prize where ev_no = #{ep_no} and ep_mb_id = #{mb_id} order by pr_no 
     </select>
 
     <select id="getEventPrizeTicketCounter" resultType="kh.st.boot.model.dto.EventPrizeCounterDTO">
         select ev_no, pr_no ,sum(ep_count) 'sumCount' from event_prize  where ev_no = #{ev_no} group by pr_no order by pr_no 
     </select>
+
+    <select id="getEventAllList" resultType="kh.st.boot.model.dto.EventDTO">
+        select ev_no, ev_title, ev_start, ev_end, ev_status, ev_form, ev_datetime from event 
+    </select>
+
+    <delete id="deletePrize">
+         delete from prize where pr_no = #{pr_no}
+    </delete>
+
+    <update id="updatePrize">
+        update prize
+        set pr_link = #{pr_link}, pr_name = #{pr_name}, pr_point = #{pr_point}, pr_startLevel = #{pr_startLevel}, pr_endLevel = #{pr_endLevel}, ep_rank = #{ep_rank}
+        where pr_no = #{pr_no}
+    </update>
+
+    <delete id="deletePrizeThumbnailFile">
+        delete from file where fi_reg_no = #{pr_no} and fi_type = 'prize'
+    </delete>
 
 </mapper>

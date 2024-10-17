@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+<script src="https://kit.fontawesome.com/3f892a70ad.js"
+	crossorigin="anonymous">
+	
+</script>
+<script
+	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
+<meta charset="UTF-8">
+<link th:href="@{/css/admorder.css}" rel="stylesheet" />
+<title>관리자 페이지</title>
+</head>
+<body>
+	<div id="wrapper" class="conent">
+		<div id="container">
+			<h1 id="container_title">주문내역</h1>
+			<div id="container_main">
+				<!-- 검색기능 form -->
+				<form action="/admin/admOrder/orderAdm/search" method="post"
+					class="local_sch">
+					<select>
+						<option value="0">회원아이디</option>
+						<option value="1">회원이름</option>
+						<option value="2">주문번호</option>
+						<option value="3">주식명</option>
+					</select> <input type="text" name="search" required class="in_sch">
+					<button type="submit">사용자 검색</button>
+				</form>
+				<div class="tbl_col">
+					<form action="/admin/admOrder/orderAdm/delet" method="post">
+						<table>
+							<thead>
+								<tr>
+									<th>주문번호</th>
+									<th style="width: 420px">회원아이디</th>
+									<th>주문자명</th>
+									<th>결제금액</th>
+									<th>결제일</th>
+									<th>주식명</th>
+									<th>주식 주 개수</th>
+									<th>주식 주당 가격</th>
+									<th>관리</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- 값 불러오기 -->
+								<tr th:each="list : ${list}">
+									<td th:text="${list.od_id}"></td>
+									<td th:text="${list.mb_id}"></td>
+									<td th:text="${list.od_name}"></td>
+									<td th:text="${list.od_price}"></td>
+									<td th:text="${list.od_date}"></td>
+									<td th:text="${list.od_st_name}"></td>
+									<td th:text="${list.od_qty}"></td>
+									<td th:text="${list.od_st_price}"></td>
+									<td class="td_upd" style="text-align: center;">
+											<input type="hidden" name="od_id" th:value="${list.od_id} " placeholder="주문번호" required>
+											<button type="submit"
+												onclick="return confirm('정말 삭제하시겠습니까?');">내역삭제</button>
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(list)}">
+									<td colspan="9" class="no-data">검색 결과가 없습니다.</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+
+			</div>
+			<footer id="ft">
+				<p>Copyright © demo.sir.kr. All rights reserved.</p>
+			</footer>
+		</div>
+	</div>
+
+</body>
+</html>

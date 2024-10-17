@@ -25,7 +25,7 @@ public class SecurityConfig{
 		//URL에 접근 권한을 설정. MemberInterceptor, AdminInterceptor를 합친 기능이라고 생각하면 됨
         http.csrf(csrf ->csrf.disable())
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/post/insert/*", "/newspaper/insert")//<<로그인 되기전에는 접근할 수 없어요
+                .requestMatchers("/post/insert/*", "/newspaper/insert", "/event/calendar_event")//<<로그인 되기전에는 접근할 수 없어요
                 //.hasAuthority(UserRole.USER.name())
                 //위 URL을 권한이 "USER"인 회원만 접근하도록 설정
                 //.hasRole(UserRole.USER.name())
@@ -33,7 +33,7 @@ public class SecurityConfig{
                 .hasAnyAuthority(UserRole.USER.name(), UserRole.ADMIN.name()) //여러 권한 설정
                 .requestMatchers("/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll()  // 그 외 요청은 인증 필요
-            )                                                                                                                                                                     
+            )
             .formLogin((form) -> form
                 .loginPage("/member/login")  // 커스텀 로그인 페이지 설정
                 .permitAll()           // 로그인 페이지는 접근 허용
@@ -56,8 +56,7 @@ public class SecurityConfig{
             		.logoutSuccessUrl("/")
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
-            		.deleteCookies("AUTO_LOGIN") // 로그아웃 성공 시 제거할 쿠키명
-                    .deleteCookies("JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명
+            		.deleteCookies("AUTO_LOGIN", "JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명그아웃 성공 시 제거할 쿠키명
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
     }

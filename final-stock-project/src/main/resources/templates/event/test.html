@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="이벤트 상품 관리 시스템">
+    <title>시드키 : 이벤트 : 어드민 상품 리스트</title>
+    <style>
+        .bg-gray {
+            background-color: #c5c5c5; /* 연한 회색 */
+        }
+        .event-info {
+            min-height: 150px; /* 최소 높이 설정 */
+            margin: 10px 0; /* 위아래 여백 추가 */
+            padding: 10px; /* 내부 여백 추가 */
+            position: relative; /* 버튼 위치 조정을 위한 상대적 위치 */
+            border-radius: 0.5rem; /* 둥글게 만들기 */
+            background-color: #c5c5c5; /* 배경색 추가 */
+            border: 1px solid gray;
+        }
+        .add-product-btn {
+            position: absolute; /* 절대 위치 */
+            bottom: 10px; /* 아래쪽 여백 */
+            right: 10px; /* 오른쪽 여백 */
+        }
+    </style>
+</head>
+
+<body>
+<main layout:fragment="content">
+    <div class="container mt-3">
+        <h2 class="text-center">이벤트 별 상품 관리 시스템</h2>
+        <p>상품관리 시스템</p>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center mb-1">
+                <a data-toggle="collapse" href="#event1" role="button" aria-expanded="false" aria-controls="event1">
+                    이벤트 명 1
+                </a>
+                
+            </li>
+            <div class="collapse" id="event1">
+                <div class="bg-gray event-info">
+                    <strong>이벤트 정보:</strong>
+                    <p>이벤트 명 1에 대한 설명이 여기에 들어갑니다. 추가적인 정보를 기재할 수 있습니다.</p>
+                    <button class="btn btn-success add-product-btn">상품 추가</button> <!-- 상품 추가 버튼 -->
+                </div>
+                <ul class="list-group mt-0">
+                    <li class="list-group-item bg-gray d-flex justify-content-between align-items-center">
+                        상품 1
+                        <div class="ml-auto">
+                            <button class="btn btn-warning btn-sm">수정</button>
+                            <button class="btn btn-danger btn-sm">삭제</button>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-gray d-flex justify-content-between align-items-center">
+                        상품 2
+                        <div class="ml-auto">
+                            <button class="btn btn-warning btn-sm">수정</button>
+                            <button class="btn btn-danger btn-sm">삭제</button>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-gray d-flex justify-content-between align-items-center mb-2">
+                        상품 3
+                        <div class="ml-auto">
+                            <button class="btn btn-warning btn-sm">수정</button>
+                            <button class="btn btn-danger btn-sm">삭제</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </ul>
+    </div>
+</main>
+</body>
+</html>

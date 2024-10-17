@@ -18,7 +18,7 @@ public class PointServiceImp implements PointService {
         }
 
         if (pointDao.spandPoint(userName, (int)point)) {
-            return pointDao.usePoint(userName, (int)point, reason);
+            return pointDao.usePoint(userName, -(int)point, reason);
         } else {
             return false;
         }       
