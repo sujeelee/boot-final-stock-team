@@ -190,7 +190,7 @@ public class EventController {
             res = eventService.setEventPrizeTicket(ep); // 처음이면 생성, 있으면 + 1해주면 되용
             // usePoint ("누가", "얼마나", "왜")
             res = pointService.usePoint((String) PrizeTicket.get("mb_id"), (Integer) PrizeTicket.get("pr_point"),
-                    "spend event");
+                    "이벤트 참여로 인한 소비");
 
             mo.addAttribute("res", res);
         } else {
