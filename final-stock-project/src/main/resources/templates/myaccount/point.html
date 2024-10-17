@@ -209,7 +209,7 @@
 				<!-- Balance Section -->
 				<div class="balance-section">
 					<div class="balance-info">
-						<p class="balance-text">사용 가능 포인트 · <span th:text="${#authentication.principal.member.mb_point}"></span></p>
+						<p class="balance-text">사용 가능 포인트 · <span th:text="${#authentication.principal.member.mb_point}"></span>포인트</p>
 					</div>
 				</div>
 				<section>
@@ -241,7 +241,7 @@
 					
 					            <!-- 금액 정보 -->
 					            <div class="amount-info">
-					                <span class="amount"><span th:text="${#numbers.formatInteger(list.po_num,0,'COMMA')}"></span>포인트</span>
+					                <span class="amount"><span th:text="${#numbers.formatInteger(list.po_num,0,'COMMA')}"></span>P</span>
 					            </div>
 					        </div>
 					    </div>
