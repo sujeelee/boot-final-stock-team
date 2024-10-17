@@ -58,7 +58,7 @@
 						    <div class="board-footer">
 						        <!-- 좋아요 버튼 -->
                                  
-						        <button class="like-btn" type="button" th:with="fo = 'like'"
+						        <button class="like-btn action" type="button" th:with="fo = 'like'"
                                     th:onclick="handleAction( [[${board.wr_no}]] , [[${fo}]])">
 						            <i class='bx bxs-heart'></i>
 						            <span style="font-size: 13px"></span>
@@ -145,7 +145,7 @@
                         console.log("댓글 등록 성공:", data);
                         // 댓글 목록 갱신 또는 UI 업데이트 로직 추가
                     }*/
-                    displayPost(data.newBoard);
+                    // displayPost(data.newBoard);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("AJAX 오류:", textStatus, errorThrown);
@@ -153,8 +153,12 @@
                 }
             });
             function displayPost(newBoard) {
+            	console.log(newBoard); // newBoard 확인
+                const wrNo = /*[[${board.wr_no}]]?:_*/ 0;
                 const foLike = 'like'; // 좋아요 문자열
                 const foReport = 'report'; // 신고 문자열   
+
+                console.log(wrNo)
 
             	str = `
 					<li class="board">
@@ -202,7 +206,7 @@
                 cg_action: cg_action,
                 mb_id: $mb_id
             };
-            
+
             console.log(cg);
 
             let url = "/stock/" + /*[[${stock.st_code}]]*/ ''; // 주식 코드 추가

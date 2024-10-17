@@ -10,6 +10,10 @@
 <body> 
 	<main layout:fragment="content">
 		<div th:replace="~{layout/stocksHeader.html}"></div>
+		<section class="chart-section">
+			<div class="graph">
+			</div>
+		</section>
 		<div class="center">
 			<a class="btn btn-info heart" th:href="@{/stock/stockList}">목록으로</a>
 		</div>

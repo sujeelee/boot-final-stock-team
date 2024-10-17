@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -144,8 +145,27 @@ public class EventController {
     @GetMapping("/Aevent/{ev_no}")
     public String Aevent(Model mo, @PathVariable("ev_no") int ev_no, Principal principal) {
         List<PrizeVO> list = eventService.getPrizeListByEv_no(ev_no);
-        List<EventPrizeVO> eplist = eventService.getEventPrizeTicketList(ev_no);
+        List<EventPrizeVO> eplist = eventService.getEventPrizeTicketList(ev_no, principal.getName());
         List<EventPrizeCounterDTO> epcDtoList = eventService.getEventPrizeTicketCounter(ev_no);
+
+        boolean res = false;
+
+        if (eplist.size() == 0) {
+            for(int i = 0 ; i < list.size() ; i++){
+                EventPrizeVO ep = new EventPrizeVO();
+                ep.setEv_no(ev_no);
+                ep.setPr_no(list.get(i).getPr_no());
+                ep.setEp_mb_id(principal.getName());
+                ep.setEp_prize(list.get(i).getPr_link());
+                res = eventService.setEventPrizeTicket(ep); 
+            }
+        }
+
+        if (res) {
+            eplist = eventService.getEventPrizeTicketList(ev_no, principal.getName());
+            epcDtoList = eventService.getEventPrizeTicketCounter(ev_no);
+        }
+
         mo.addAttribute("epcDtoList", epcDtoList);
         mo.addAttribute("eplist", eplist);
         mo.addAttribute("list", list);
@@ -179,7 +199,7 @@ public class EventController {
         }
 
 
-        List<EventPrizeVO> eplist = eventService.getEventPrizeTicketList(ep.getEv_no());
+        List<EventPrizeVO> eplist = eventService.getEventPrizeTicketList(ep.getEv_no(), (String) PrizeTicket.get("mb_id"));
         mo.addAttribute("eplist", eplist);
 
         // sum
@@ -192,10 +212,53 @@ public class EventController {
     }
 
     @GetMapping("/prizeList")
-    public String prizeList(){
-        
-
+    public String prizeList(Model mo){
+        List<EventDTO> list = eventService.getEventAllList();
+        mo.addAttribute("list", list);
         return "/event/eventPrizeList";
     }
+
+
+    @PostMapping("/ajax/prizeList")
+    public String ajax_prizeList_post(Model mo, @RequestParam("ev_no") int ev_no){
+        List<PrizeVO> prizeList = eventService.getPrizeListByEv_no(ev_no);
+        mo.addAttribute("prizeList", prizeList);
+        System.out.println(prizeList);
+        return "/event/eventPrizeList :: #prizeList";
+    }
+
+    @ResponseBody
+    @PostMapping("/ajax/deletePrize")
+    public boolean deletePrize(@RequestParam("pr_no") int pr_no){
+        boolean res = eventService.deletePrize(pr_no);
+        return res;
+    }
+
+    @GetMapping("/eventATypeUpdate")
+    public String eventATypeUpdate(Model mo, int prNum) {
+        List<EventVO> eventList = eventService.getEventListByEventForm("Participatory");
+        PrizeVO pr = eventService.getPrizeByPr_no(prNum);
+        mo.addAttribute("eventList", eventList);
+        mo.addAttribute("prize", pr);
+        return "/event/eventATypeUpdate";
+    }
+
+    @PostMapping("/eventATypeUpdate")
+    public String eventATypeUpdate(Model mo ,PrizeVO prize, MultipartFile file){
+
+        System.out.println(prize);
+
+        System.err.println(file.isEmpty());
+
+        boolean res = eventService.updateEventPrize_withFile(prize, file);
+        if (res) {
+            System.out.println("상품 수정 완료");
+        }
+        
+        List<EventDTO> list = eventService.getEventAllList();
+        mo.addAttribute("list", list);
+        return "/event/eventPrizeList";
+    }
+
 
 }

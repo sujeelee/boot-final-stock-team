@@ -38,17 +38,17 @@
 		<ul class="list-group list-group-horizontal">
 			<li class="list-group-item list-group-item-light">
 				<a th:href="@{/stock/{st_code}(st_code=${today.st_code})}">
-					<button type="button" th:class="'btn btn-info on'">차트·호가</button>
+					<button type="button" class="btn btn-light chart">차트·호가</button>
 				</a>
 			</li>
 			<li class="list-group-item list-group-item-light">
 				<a th:href="@{/stock/{st_code}/news(st_code=${today.st_code})}">
-					<button type="button" th:class="'btn btn-info on'">뉴스</button>
+					<button type="button" class="btn btn-light news">뉴스</button>
 				</a>
 			</li>
 			<li class="list-group-item list-group-item-light">
 				<a th:href="@{/stock/{st_code}/community(st_code=${today.st_code})}">
-					<button type="button" th:class="'btn btn-info on'">커뮤니티</button>
+					<button type="button" class="btn btn-light community">커뮤니티</button>
 				</a>
 			</li>
 		</ul>
@@ -57,6 +57,19 @@
 <script th:inline="javascript">
 	$(document).ready(function() {
 		$('.home-section').removeClass('container');
+		
+		var currentUrl = window.location.pathname;
+
+	    if (currentUrl.includes("/news")) {
+	    	$(".news").removeClass("btn-light");
+	        $(".news").addClass("btn-info");
+	    } else if (currentUrl.includes("/community")) {
+	        $(".community").removeClass("btn-light");
+	        $(".community").addClass("btn-info");
+	    } else {
+	        $(".chart").removeClass("btn-light");
+	        $(".chart").addClass("btn-info");
+	    }
 	});
 	function get_wish(code, status){
 		
