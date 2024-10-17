@@ -18,4 +18,5 @@ public class StockPriceVO {
 	private String si_trqu; //체결수량 누적합계
 	
 	private String price_text; //~조원으로 보여줄래
+	private int yesterPrice; //어제일자 시작가가 필요헤
 }
