@@ -200,4 +200,12 @@
 	<select id="getStockPriceLater" resultType="StockPriceVO">
 		select * from stock_info where st_code = #{code} order by si_date DESC limit 1
 	</select>
+	<select id="getStockInfoListDate" resultType="StockPriceVO">
+		select *, si_price - si_vs as yesterPrice from stock_info 
+		where st_code = #{code} 
+		<if test="to != null">
+			and si_date between #{to} and #{from}
+		</if>
+		order by si_date ASC
+	</select>
 </mapper>
