@@ -21,12 +21,18 @@
 			DE_DATETIME >= #{date}
 	</select>
 
-	<select id="selectPointList">
+	<select id="selectPointList" resultType="PointVO">
 		SELECT *
 		FROM
 			POINT
 		WHERE
 			MB_ID = #{mb_id}
+			<if test="cri.type == 'use'">
+				AND 0 > PO_NUM
+			</if>
+			<if test="cri.type == 'get'">
+				AND PO_NUM > 0
+			</if>
 	</select>
 	
 	<update id="updatePw">

@@ -20,7 +20,7 @@ public interface MyAccountService {
 	
 	List<DepositVO> getDepositListByDate(String mb_id, String date);
 
-	List<PointVO> getPointList(String mb_id);
+	List<PointVO> getPointList(TransCriteria cri, String mb_id);
 
 	boolean checkPw(MemberVO user, String password);
 
@@ -49,5 +49,15 @@ public interface MyAccountService {
 	List<OrderVO> getOrderListBySell(String mb_id);
 
 	List<OrderVO> getOrderListByBuy(String mb_id);
+
+	List<OrderVO> getOrderList(String mb_id);
+
+	List<OrderVO> getOrderListBySellDate(String mb_id, String now);
+	
+	List<OrderVO> getOrderListByBuyDate(String mb_id, String now);
+
+	List<OrderVO> getOrderListByDate(String mb_id, String now);
+
+	PageMaker getPageMakerByPoint(TransCriteria cri, String mb_id);
 
 }
