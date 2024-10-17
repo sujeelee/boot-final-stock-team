@@ -4,8 +4,9 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -127,7 +128,11 @@ public class EventController {
     @GetMapping("/calendar_event")
     public String calendar_event(Model mo, Principal principal) {
         // 31칸짜리 배열 생성 (0: 출석 안 함, 1: 출석 완료)
-        String storedValue = eventService.getCalenderEventValue(principal.getName());
+        String storedValue = eventService.getCalenderEventValue(principal.getName()); // null
+        System.out.println(storedValue);
+        if (storedValue == null) {
+            storedValue = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+        }
         String[] parts = storedValue.split(",");
         int[] checkList = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
         mo.addAttribute("checkList", Arrays.toString(checkList));
@@ -190,7 +195,7 @@ public class EventController {
             res = eventService.setEventPrizeTicket(ep); // 처음이면 생성, 있으면 + 1해주면 되용
             // usePoint ("누가", "얼마나", "왜")
             res = pointService.usePoint((String) PrizeTicket.get("mb_id"), (Integer) PrizeTicket.get("pr_point"),
-                    "spend event");
+                    "이벤트 참여로 인한 소비");
 
             mo.addAttribute("res", res);
         } else {
@@ -223,9 +228,20 @@ public class EventController {
     public String ajax_prizeList_post(Model mo, @RequestParam("ev_no") int ev_no){
         List<PrizeVO> prizeList = eventService.getPrizeListByEv_no(ev_no);
         mo.addAttribute("prizeList", prizeList);
-        System.out.println(prizeList);
         return "/event/eventPrizeList :: #prizeList";
     }
+
+    @ResponseBody
+    @GetMapping("/ajax/prizeListSize")
+    public Map<String, Integer> ajax_prizeListsize_get(@RequestParam("ev_no") int ev_no){
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        List<PrizeVO> prizeList = eventService.getPrizeListByEv_no(ev_no);
+        int prizeListSize = prizeList.size();
+        map.put("prizeListSize", prizeListSize);
+        map.put("evNum", ev_no);
+        return map;
+    }
+
 
     @ResponseBody
     @PostMapping("/ajax/deletePrize")
@@ -245,14 +261,9 @@ public class EventController {
 
     @PostMapping("/eventATypeUpdate")
     public String eventATypeUpdate(Model mo ,PrizeVO prize, MultipartFile file){
-
-        System.out.println(prize);
-
-        System.err.println(file.isEmpty());
-
         boolean res = eventService.updateEventPrize_withFile(prize, file);
         if (res) {
-            System.out.println("상품 수정 완료");
+            System.out.println(prize.getPr_name() +", 상품 수정 완료");
         }
         
         List<EventDTO> list = eventService.getEventAllList();

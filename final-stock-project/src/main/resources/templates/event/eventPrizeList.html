@@ -43,12 +43,13 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center mb-1"
                     th:data-event-id="${event.ev_no}">
                     <!-- 이벤트 명 클릭 시 AJAX 호출 -->
+                    
                     <a data-toggle="collapse" th:href="'#event' + ${event.ev_no}" 
                        role="button" aria-expanded="false" th:text="${event.ev_title}" 
                        class="event-name"></a>
                     <span class="badge badge-primary badge-pill" th:text="'상태 : ' + ${event.ev_status}"></span>
                 </li>
-
+                
                 <!-- collapse 영역: 상품 리스트가 들어갈 부분 -->
                 <div class="collapse" th:id="'event' + ${event.ev_no}">
                     <div class="bg-gray event-info">
@@ -59,13 +60,30 @@
                         <br><span><strong>이벤트 상태&nbsp;:&nbsp;</strong>[[${event.ev_status}]]</span>
                         <br><span><strong>이벤트 폼 타입&nbsp;:&nbsp;</strong>[[${event.ev_form}]]</span>
                         
-                        <a th:if="${event.ev_form == 'Participatory'}" th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}" class="btn btn-success add-product-btn">상품 추가(5개 까지)</a> <!-- 상품 추가 버튼 -->
+                        <a 
+                        th:id="'addPrize' + ${event.ev_no}"
+                        th:if="${event.ev_form == 'Participatory'}"
+                        th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}"
+                        class="btn btn-success add-product-btn"
+                        
+                        >상품 추가(5개 까지)</a> <!-- 상품 추가 버튼 -->
                     </div>
+
+
+
                     <div th:id="'prizeList'+${event.ev_no}">
                         <div id="prizeList">
                             <ul class="list-group">
+                                
                                 <!-- 상품 리스트를 렌더링 -->
+                                
+                                <script th:inline="javascript">
+
+
+                                </script>
+
                                 <th:block th:each="prize, index : ${prizeList}">
+
                                     <li class="list-group-item bg-gray d-flex justify-content-between align-items-center" th:classappend="${index.last} ? 'mb-2'">
                                         <span th:text="${prize.pr_name}"></span>
                                         <div class="ml-auto">
@@ -75,6 +93,8 @@
                                             th:onclick="'confirm(\'삭제하시겠습니까?\') ? deletePrize(' + ${prize.pr_no} + ', this) : void(0)'">삭제</button>
                                         </div>
                                     </li>
+
+
                                 </th:block>
                             </ul>
                         </div>
@@ -103,6 +123,21 @@
                 success: function(data) {
                     // 성공적으로 데이터를 가져오면 해당 이벤트의 prizeList 영역을 교체
                     $('#prizeList' + eventId).replaceWith(data);
+                    $.ajax({
+                        url: '/event/ajax/prizeListSize',
+                        method: 'get',
+                        data: { ev_no: eventId }, // 이벤트 번호 전송
+                        success: function(data) {
+                            if(5 <= data.prizeListSize){
+                                $('#addPrize' + data.evNum).addClass("disabled");
+                            } else {
+                                $('#addPrize' + data.evNum).removeClass("disabled");
+                            }
+                        },
+                        error: function(error) {
+                            console.log("Error:", error); // 에러 로그
+                        }
+                    });
                 },
                 error: function(error) {
                     console.log("Error:", error); // 에러 로그
@@ -134,6 +169,8 @@
             }
         });
     }   
+
+
 </script>
 
 </main>
