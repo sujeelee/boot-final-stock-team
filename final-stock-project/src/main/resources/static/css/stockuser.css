@@ -31,7 +31,7 @@ tbody tr:not(.none-list):hover{background-color: rgba(9, 108, 138, 0.4); color: 
 .stock-before, .red:before {content: '+';}
 .stock-price{font-size: 1.8em !important; font-weight: bold;}
 .stock-info-price{font-size: 0.8em;}
-.chart-section{width: 60%;}
+.chart-section{width: 80%;}
 #graph{box-sizing: border-box; overflow: auto; overflow-y: hidden;white-space: nowrap;}
 #graph, .stock-day-list, .order-div::-webkit-scrollbar{display: block !important;}
 #graph, .stock-day-list, .order-div{scrollbar-width: thin;scrollbar-color: #17a2b8 #f8f9fa;}
@@ -43,11 +43,11 @@ tbody tr:not(.none-list):hover{background-color: rgba(9, 108, 138, 0.4); color: 
 .stock-chart-graph{margin-top: 2%;margin-bottom: 2%;}
 .head-sticky{position: sticky;top: -1px;z-index: 2; background-color: #fff;}
 .stock-day-section{margin-top: 1%;}
-.order-section{width: 40%; margin-left: 3%;}
+.order-section{width:20%; margin-left: 1.5%;}
 .order-header{margin-top: 2%;margin-bottom: 3%;}
 .form-content {display: flex; justify-content: space-between;align-items: flex-start;}
-.mystock-div{margin-top: 2%;}
-.order-type{box-sizing: border-box;width: calc(96% / 3) !important;border-radius: 5px;background-color: #fff;border-color:#fff; margin-left: calc(1.5% / 3);}
+.mystock-div{margin-top: 10%;}
+.order-type{box-sizing: border-box;width: calc(93.6% / 3) !important;border-radius: 5px;background-color: #fff;border-color:#fff; margin-left: calc(1.5% / 3);}
 .btn-outline-danger.on{color: #fff;background-color: #dc3545;border-color: #dc3545;}
 .btn-outline-primary.on{color: #fff;background-color: #007bff;border-color: #007bff;}
 .btn-outline-success.on{color: #fff;background-color: #28a745;border-color: #28a745;}
