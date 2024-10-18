@@ -145,7 +145,7 @@
                         console.log("댓글 등록 성공:", data);
                         // 댓글 목록 갱신 또는 UI 업데이트 로직 추가
                     }*/
-                    // displayPost(data.newBoard);
+                    displayPost(data.newBoard);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("AJAX 오류:", textStatus, errorThrown);
@@ -154,7 +154,7 @@
             });
             function displayPost(newBoard) {
             	console.log(newBoard); // newBoard 확인
-                const wrNo = /*[[${board.wr_no}]]?:_*/ 0;
+            	const wrNo = newBoard.wr_no || 0;
                 const foLike = 'like'; // 좋아요 문자열
                 const foReport = 'report'; // 신고 문자열   
 
