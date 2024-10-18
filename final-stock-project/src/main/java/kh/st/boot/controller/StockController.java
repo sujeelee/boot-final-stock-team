@@ -125,9 +125,9 @@ public class StockController {
 	@ResponseBody
 	public Map<String, Object> stockDetailDate(@PathVariable String st_code, @RequestParam String type) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println(st_code + "  " + type);
+		
 		List<StockPriceVO> list = stockService.getStockInfoListDate(st_code, type);
-		System.out.println(list);
+		
 		map.put("list", list);
 		
 		return map;

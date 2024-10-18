@@ -6,3 +6,5 @@ table{margin-top: 0 !important;}
 main{margin-top:0 !important; margin-left: 1%; margin-right: 1%;}
 .stock-chart-graph > .btn-list > .btn {border-radius: 20px;}
 .stock-chart-graph > .btn-list {position: relative; z-index: 2;}
+.none-stock-order > .none-list {margin-bottom: 10%;}
+.none-stock-order > td > .none-list > .none-content {margin-top: 10% !important;}

@@ -19,10 +19,10 @@
 							<span class="mini-title">차트</span>
 							<button class="graph-date-btn btn btn-info" value="all" onclick="data_filter(this);">전체</button>
 							<button class="graph-date-btn btn" value="month" onclick="data_filter(this);">이번달</button>
-							<button class="graph-date-btn btn" value="3month" onclick="data_filter(this);">최근 3개월</button>
 							<button class="graph-date-btn btn" value="year" onclick="data_filter(this);">이번년도</button>
+							<button class="graph-date-btn btn" value="3month" onclick="data_filter(this);">최근 3개월</button>
 						</div>
-						<div id="graph"></div>
+						<div id="graph" class="none-stock-order"></div>
 					</div>
 					<div class="stock-day-section">
 						<span class="mini-title">일별시세</span>
@@ -125,8 +125,10 @@
 			google.charts.load('current', {'packages':['corechart']});
 			google.charts.setOnLoadCallback(drawGraph);
 
-			function drawGraph() {
-				var tmps = /*[[${list != null ? list : '[]'}]]*/;
+			function drawGraph(tmps) {
+				if(!tmps){
+					tmps = /*[[${list != null ? list : '[]'}]]*/;
+				}
 				var data_array = [];
 				for(var i=0;i<tmps.length;i++){
 					var price = parseInt(tmps[i].si_price);
@@ -194,7 +196,36 @@
 		            dataType : 'json',
 		            async: false, 
 		            success: function (data) {
-		               console.log(data);
+		            	var tableBody = $(".stock-day-table tbody"); // 테이블 tbody 선택자
+		                tableBody.empty(); // 기존 데이터 삭제
+		                
+		            	if(data.list.length < 1){
+		            		var str = '<div class="none-list">';
+		            			str += '	<div class="none-content">';
+		            			str += '		<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>';
+		            			str += '		<p class="no-title">내역이 없어요</p>';
+		            			str += '	</div>';
+		            			str += '</div>';
+		            			
+		            		$("#graph").html(str);
+		            		tableBody.append("<tr class='none-stock-order none-list'><td colspan='7'>" + str + "</td></tr>");
+		            	} else {
+			                var list = data.list;
+			                drawGraph(list);
+			                for (var i = list.length - 1; i >= 0; i--) {
+			                    var row = "<tr>" +
+			                        "<td>" + list[i].si_date.substring(4, 6) + "." + list[i].si_date.substring(6, 8) + "</td>" +
+			                        "<td>" + new Intl.NumberFormat().format(list[i].si_price) + "원</td>" +
+			                        "<td><span class='" + (list[i].si_fltRt == '0' ? 'hold' : (list[i].si_fltRt.includes('-') ? 'blue' : 'red')) + "'>" + parseFloat(list[i].si_fltRt).toFixed(2) + "%</span></td>" +
+			                        "<td>" + new Intl.NumberFormat().format(list[i].yesterPrice) + "원</td>" +
+			                        "<td>" + new Intl.NumberFormat().format(list[i].si_hipr) + "원</td>" +
+			                        "<td>" + new Intl.NumberFormat().format(list[i].si_lopr) + "원</td>" +
+			                        "<td>" + new Intl.NumberFormat().format(list[i].si_trqu) + "</td>" +
+			                        "</tr>";
+			                    
+			                    tableBody.append(row); // 새롭게 만든 행을 테이블에 추가
+			                }
+			            }
 		            }
 				});
 			}
