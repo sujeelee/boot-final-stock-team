@@ -1,5 +1,7 @@
 package kh.st.boot.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -81,6 +83,23 @@ public class StockService {
 	
 	public List<StockPriceVO> getStockInfoList(String st_code) {
 		List<StockPriceVO> list = stockDao.getStockInfoList(st_code);
+		return list;
+	}
+	
+	public List<StockPriceVO> getStockInfoListDate(String st_code, String type) {
+		String to_date = null, from_date = null;
+		
+		
+		if(type.equals("date")) {
+			// 년월 형식으로 변환 (yyyyMM)
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+		    // 2개월 전 날짜
+	        to_date = LocalDate.now().minusMonths(2).format(formatter);
+	        // 1개월 후 날짜
+	        from_date = LocalDate.now().plusMonths(1).format(formatter);
+		}
+		
+		List<StockPriceVO> list = stockDao.getStockInfoListDate(st_code, to_date, from_date);
 		return list;
 	}
 

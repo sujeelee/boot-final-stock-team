@@ -43,4 +43,6 @@ public interface StockDAO {
 
 	StockPriceVO getStockPriceLater(@Param("code")String st_code);
 
+	List<StockPriceVO> getStockInfoListDate(@Param("code")String st_code, @Param("to")String to_date, @Param("from")String from_date);
+
 }

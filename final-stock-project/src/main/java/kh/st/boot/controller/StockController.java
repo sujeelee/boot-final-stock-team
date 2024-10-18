@@ -107,7 +107,7 @@ public class StockController {
 	@GetMapping("/{st_code}")
 	public String stockDetail(Model model, Principal principal, @PathVariable String st_code) {
 		
-		List<StockPriceVO> list = stockService.getStockInfoList(st_code);
+		List<StockPriceVO> list = stockService.getStockInfoListDate(st_code, "all");
 		
 		model = stocksHeaderService.getModelSet(model, principal, st_code); //v
 		
