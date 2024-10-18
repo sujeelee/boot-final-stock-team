@@ -387,9 +387,19 @@
 		            curveType: 'function', 			// 곡선형 선 그래프
 		            pointSize: 0, 					// 데이터 포인트를 표시하지 않음
 		            hAxis: {
-		                format: 'MM-dd',  			// 날짜 형식을 MM-dd로 지정
-		                gridlines: { count: -1 } 	// 그리드 라인 설정
-		            }
+		                gridlines: { color: 'none' },  // 수평축의 눈금선 제거
+		                textPosition: 'none'           // 수평축의 라벨 제거
+		            },
+		            vAxis: {
+		                gridlines: { color: 'none' },  // 수직축의 눈금선 제거
+		                textPosition: 'none'           // 수직축의 라벨 제거
+		            },
+		            chartArea: {
+		                width: '100%',         // 차트 영역 너비 최대화
+		                height: '80%'          // 차트 영역 높이 최대화
+		            },
+		            lineWidth: 2,              // 선의 굵기
+		            backgroundColor: 'transparent'  // 배경 투명화
 		        };
 
 		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
@@ -412,9 +422,19 @@
 		            curveType: 'function',
 		            pointSize: 0,
 		            hAxis: {
-		                format: 'MM-dd',  			// 날짜 형식을 MM-dd로 지정
-		                gridlines: { count: -1 } 	// 그리드 라인 설정
-		            }
+		                gridlines: { color: 'none' },  // 수평축의 눈금선 제거
+		                textPosition: 'none'           // 수평축의 라벨 제거
+		            },
+		            vAxis: {
+		                gridlines: { color: 'none' },  // 수직축의 눈금선 제거
+		                textPosition: 'none'           // 수직축의 라벨 제거
+		            },
+		            chartArea: {
+		                width: '100%',         // 차트 영역 너비 최대화
+		                height: '80%'          // 차트 영역 높이 최대화
+		            },
+		            lineWidth: 2,              // 선의 굵기
+		            backgroundColor: 'transparent'  // 배경 투명화
 		        };
 
 		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
