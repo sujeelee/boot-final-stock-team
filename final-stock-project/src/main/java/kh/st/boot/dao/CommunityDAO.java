@@ -19,10 +19,10 @@ public interface CommunityDAO {
 
 	List<BoardVO> getBoardList(String st_code);
 
-	boolean addLike(CommunityActionVO action);
+	CommunityActionVO selectCommunityAction(int cg_num, String mb_id);
 
-	boolean report(CommunityActionVO action);
+	boolean insertCommunityAction(CommunityActionVO communityActionVO);
 
-	CommunityActionVO nuguaction(Integer wr_no, String mb_id);
+	boolean deleteAction(int cg_num, String mb_id);
 
 }

@@ -10,9 +10,16 @@
     	FROM board
     	WHERE wr_category = #{wr_category}
     </select>
-	<select id="nuguaction" resultType="CommunityActionVO">
-		    SELECT * FROM community_action
-			WHERE cg_num = #{wr_no}
-			AND mb_id = #{mb_id}
+	<select id="selectCommunityAction" resultType="CommunityActionVO">
+	    SELECT *
+	    FROM community_action
+	    WHERE cg_num = #{cg_num} AND mb_id = #{mb_id}
 	</select>
+	<insert id="insertCommunityAction">
+		INSERT INTO community_action (st_code,cg_num, mb_id, cg_action, cg_datetime)
+	    VALUES (#{st_code}, #{cg_num}, #{mb_id}, #{cg_action}, NOW())
+	</insert>
+	<delete id="deleteAction">
+		delete from community_action where cg_num = #{cg_num} and mb_id = #{mb_id}
+	</delete>
 </mapper>
