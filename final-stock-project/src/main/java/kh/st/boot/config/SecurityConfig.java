@@ -18,6 +18,7 @@ public class SecurityConfig{
 	
 	@Autowired
 	private MemberDetailService memberDetailService;
+
 	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -44,9 +45,9 @@ public class SecurityConfig{
                 // .failureHandler(new LoginFailHandler())
             )
             .oauth2Login((oauth2) -> oauth2  // OAuth2 로그인 설정 추가
-                .loginPage("/member/login")  // 동일한 로그인 페이지 사용
-                .defaultSuccessUrl("/loginSuccess")  // 로그인 성공 시 리다이렉트
-                .failureUrl("/loginFailure")  // 로그인 실패 시 리다이렉트
+                .loginPage("/member/login")  
+                .defaultSuccessUrl("/")  // 로그인 성공 시 리다이렉트
+                .failureUrl("/member/login")  // 로그인 실패 시 리다이렉트
             )
             .rememberMe((rm)->rm
             		.key("team1")

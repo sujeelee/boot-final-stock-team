@@ -1,5 +1,6 @@
 package kh.st.boot.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,12 @@ public class MemberController {
 	
 	private MemberService memberService;
 	
+    @Value("${kakao.client_id}")
+    private String client_id;
+
+    @Value("${kakao.redirect_uri}")
+    private String redirect_uri;
+
 	//로그인
     @GetMapping("/login")
     public String login(HttpServletRequest request){
