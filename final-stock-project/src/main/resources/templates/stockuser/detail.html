@@ -62,57 +62,78 @@
 					</div>
 					<div class="order-div">
 						<div class="btn-list order-btn-list">
-							<button type="button" class="btn btn-outline-danger order-type" value="buy" onclick="order_status(this);">구매</button>
+							<button type="button" class="btn btn-outline-danger order-type on" value="buy" onclick="order_status(this);">구매</button>
 							<button type="button" class="btn btn-outline-primary order-type" value="sell" onclick="order_status(this);">판매</button>
 							<button type="button" class="btn btn-outline-success order-type" value="wait" onclick="order_status(this);">대기</button>
 						</div>
-						<div class="form-order">
-							<form action="" method="POST">
-								<div class="form-group">
-								    <label for="email">Email address:</label>
-								    <input type="email" class="form-control" placeholder="Enter email" id="email">
-								  </div>
-								  <div class="form-group">
-								    <label for="pwd">Password:</label>
-								    <input type="password" class="form-control" placeholder="Enter password" id="pwd">
-								  </div>
-								  <div class="form-group form-check">
-								    <label class="form-check-label">
-								      <input class="form-check-input" type="checkbox"> Remember me
-								    </label>
-								  </div>
-								  <div class="form-group">
-								    <label for="email">Email address:</label>
-								    <input type="email" class="form-control" placeholder="Enter email" id="email">
-								  </div>
-								  <div class="form-group">
-								    <label for="pwd">Password:</label>
-								    <input type="password" class="form-control" placeholder="Enter password" id="pwd">
-								  </div>
-								  <div class="form-group form-check">
-								    <label class="form-check-label">
-								      <input class="form-check-input" type="checkbox"> Remember me
-								    </label>
-								  </div>
-								  <div class="form-group">
-								    <label for="email">Email address:</label>
-								    <input type="email" class="form-control" placeholder="Enter email" id="email">
-								  </div>
-								  <div class="form-group">
-								    <label for="pwd">Password:</label>
-								    <input type="password" class="form-control" placeholder="Enter password" id="pwd">
-								  </div>
-								  <div class="form-group form-check">
-								    <label class="form-check-label">
-								      <input class="form-check-input" type="checkbox"> Remember me
-								    </label>
-								  </div>
-								  <button type="submit" class="footer-sticky btn btn-outline-danger on width-full">구매하기</button>
+						<div class="form-order"style="display:none;">
+							<div class="select-type form-group">
+								<label for="type">주문유형</label>
+								<select class="form-control" name="type" id="type">
+									<option value="now">일반 주문</option>
+									<option value="wait">조건 주문</option>
+								</select>
+							</div>
+							<form name="forderform" class="form-tab" action="" method="POST">
+								  
+								  <button type="button" class="footer-sticky btn btn-outline-danger on width-full">구매하기</button>
 							</form>
+						</div>
+						<div class="wait-list" >
+							<div class="wait-table">
+								<div class="wait-row" th:each="num : ${#numbers.sequence(1,25)}">
+									<span class="wait-date">2024.10.18</span>
+									<span class="wait-price">8,000원</span>
+									<span class="wait-qty" th:text="${num} + '주'"></span>
+									<span class="wait-state">매도대기</span>
+									<span class="waite-delete">
+										<button type="button" class="btn" value="delete">X</button>
+									</span>
+								</div>
+								<div class="none-list" style="display:none;">
+							    	<div class="none-content">
+										<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
+							    		<p class="no-title">내역이 없어요</p>
+							    	</div>
+							    </div>
+							</div>
 						</div>
 					</div>
 					<div class="mystock-div">
-						<span class="mini-title">내 주식</span>
+						<div class="order-header">
+							<span class="mini-title">내 주식</span>
+						</div>
+						<div class="mystock-info">
+						<div class="mystock-list form-content">
+							<div class="mystock-row rigth">
+								<div class="my-price">1주 평균금액</div>
+								<div class="my-qty">보유 수량</div>
+								<div class="my-total">총 금액</div>
+								<div class="my-orign">투자원금</div>
+						    </div>
+						    <div class="mystock-row left">
+								<div class="my-price">269원</div>
+								<div class="my-qty">2주</div>
+								<div class="my-total">546원</div>
+								<div class="my-orign">538원</div>
+						   </div>
+						</div>
+						<div class="divider"></div>
+						<div class="mystock-list form-content bottom">
+							<div class="mystock-row rigth">
+								<div class="my-price">거래 수수료</div>
+						    </div>
+						    <div class="mystock-row left">
+								<div class="my-price">0원 예상</div>
+						   </div>
+						</div>
+						</div>
+					    <div class="none-list" style="display:none;">
+					    	<div class="none-content">
+								<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
+					    		<p class="no-title">내역이 없어요</p>
+					    	</div>
+					    </div>
 					</div>
 				</section>
 			</div>
@@ -182,6 +203,23 @@
 			function order_status(type){
 				$(".order-type").removeClass("on");
 				$(type).addClass("on");
+				var footer_class = $(".footer-sticky").attr("class");
+				if(type.value == 'sell'){
+					var update_class = footer_class.replace(/\bbtn-outline-\S+/g, "btn-outline-primary");
+				    $(".footer-sticky").attr("class", update_class);
+				    $(".footer-sticky").text("판매하기");
+				    $(".form-order").show();
+				    $(".wait-list").hide();
+				} else if(type.value == 'wait'){
+					$(".form-order").hide();
+					$(".wait-list").show();
+				} else {
+					var update_class = footer_class.replace(/\bbtn-outline-\S+/g, "btn-outline-danger");
+				    $(".footer-sticky").attr("class", update_class);
+				    $(".footer-sticky").text("구매하기");
+				    $(".form-order").show();
+				    $(".wait-list").hide();
+				}
 			}
 			
 			function data_filter(type){
