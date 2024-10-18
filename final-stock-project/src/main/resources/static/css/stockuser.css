@@ -25,7 +25,7 @@ li > a > .btn:not(.heart){width: 100% !important; text-align: left; border-radiu
 .no-title{margin-top: 2%; font-weight: bold; color: #888; font-size: 0.9em;}
 thead{ border-bottom: 1px solid #888 !important; color: #6b6a6a !important;}
 table{margin-top: 3%;}
-tbody tr:hover{background-color: rgba(9, 108, 138, 0.4); color: #fff !important;}
+tbody tr:not(.none-list):hover{background-color: rgba(9, 108, 138, 0.4); color: #fff !important;}
 .fake_click{cursor: pointer;}
 .stock-name{font-size: 1.2em; font-weight: bold;}
 .stock-before, .red:before {content: '+';}
