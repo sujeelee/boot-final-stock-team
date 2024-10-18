@@ -29,10 +29,10 @@ public class AdminApprovalService {
 		else if (mp_yn.equals("y")) {
 			adminApprovalDAO.nyUPDATE(mp_no, mp_yn);
 
-			if (mp_company.equals("news")) {
+			if (mp_type.equals("news")) {
 				adminApprovalDAO.newsInsert( mb_no,mp_company);
 			}
-			else if (mp_company.equals("stock")) {
+			else if (mp_type.equals("stock")) {
 				adminApprovalDAO.stockInsert(mb_no,mp_company);
 			}
 		}
