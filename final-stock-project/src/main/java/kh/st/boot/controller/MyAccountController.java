@@ -288,6 +288,21 @@ public class MyAccountController {
 	}
 	
 	@ResponseBody
+	@PostMapping("/deleteMember")
+	public Map<String, Object> deleteMember(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String mb_id = principal.getName();
+		MemberVO user = memberService.findById(mb_id);
+		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
+		if(res) {
+			map.put("status", true);
+		}else {
+			map.put("status", false);
+		}
+		return map;
+	}
+	
+	@ResponseBody
 	@PostMapping("/cancel")
 	public Map<String, Object> cancel(Principal principal){
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -378,7 +393,6 @@ public class MyAccountController {
 		model.addAttribute("type", type);
 		model.addAttribute("detail", detail);
 		model.addAttribute("pm", pm); // 페이지 정보 추가
-		
 		return "myaccount/transactions";
 	}
 	
