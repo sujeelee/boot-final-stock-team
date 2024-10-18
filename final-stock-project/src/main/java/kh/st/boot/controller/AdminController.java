@@ -282,7 +282,7 @@ public class AdminController {
 			@RequestParam String mp_yn, @RequestParam int mb_no) {
 
 		adminApprovalService.ynUPDATE(mp_no, mp_type, mp_company, mp_yn, mb_no);
-
+		System.out.println(mb_no);
 		return "redirect:/admin/admApproval/admApprovalPage";
 	}
 

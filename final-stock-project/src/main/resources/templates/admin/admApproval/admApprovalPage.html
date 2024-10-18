@@ -40,8 +40,8 @@ table {
                 <!-- 승인 버튼 폼 -->
                 <form th:action="@{/admin/admApproval/admApprovalPage/slt}" method="post">
                     <input type="hidden" name="mp_no" th:value="${list.mp_no}" />
-                    <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
-                    <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_type" th:value="${list.mp_type}" />
+                    <input type="hidden" name="mp_company" th:value="${list.mp_company}" />
                     <input type="hidden" name="mp_yn" value="y" />
                    <input type="hidden" name="mb_no" th:value="${list.mb_no}" />
                     <button type="submit">승인</button>
@@ -49,8 +49,8 @@ table {
                 <!-- 거절 버튼 폼 -->
                 <form th:action="@{/admin/admApproval/admApprovalPage/slt}" method="post">
                    <input type="hidden" name="mp_no" th:value="${list.mp_no}" />
-                    <input type="hidden" name="mp_type" th:value="${list.mp_no}" />
-                    <input type="hidden" name="mp_company" th:value="${list.mp_no}" />
+                    <input type="hidden" name="mp_type" th:value="${list.mp_type}" />
+                    <input type="hidden" name="mp_company" th:value="${list.mp_company}" />
                     <input type="hidden" name="mp_yn" value="n" />
                     <input type="hidden" name="mb_no" th:value="${list.mb_no}" />
                     <button type="submit">거절</button>
