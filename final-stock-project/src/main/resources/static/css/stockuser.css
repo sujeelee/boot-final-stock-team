@@ -54,4 +54,4 @@ tbody tr:hover{background-color: rgba(9, 108, 138, 0.4); color: #fff !important;
 .order-btn-list{background-color:rgba(212, 212, 212, 0.5);border-radius: 5px; padding: 2%;margin-bottom: 3%;}
 .order-div{height: 400px;}
 .width-full{width: 100%;}
-.footer-sticky{position: sticky;bottom: 0px;z-index: 2; background-color: #fff;}
+.footer-sticky{position: sticky;bottom: 0px;z-index: 2; background-color: #fff; height: 50px;}

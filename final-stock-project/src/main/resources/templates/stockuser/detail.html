@@ -15,7 +15,13 @@
 			<div class="form-content">
 				<section class="chart-section">
 					<div class="stock-chart-graph">
-						<span class="mini-title">차트</span>
+						<div class="btn-list">
+							<span class="mini-title">차트</span>
+							<button class="graph-date-btn btn btn-info" value="all" onclick="data_filter(this);">전체</button>
+							<button class="graph-date-btn btn" value="month" onclick="data_filter(this);">이번달</button>
+							<button class="graph-date-btn btn" value="3month" onclick="data_filter(this);">최근 3개월</button>
+							<button class="graph-date-btn btn" value="year" onclick="data_filter(this);">이번년도</button>
+						</div>
 						<div id="graph"></div>
 					</div>
 					<div class="stock-day-section">
@@ -117,9 +123,9 @@
 			}
 		 
 			google.charts.load('current', {'packages':['corechart']});
-			google.charts.setOnLoadCallback(drawChart);
+			google.charts.setOnLoadCallback(drawGraph);
 
-			function drawChart() {
+			function drawGraph() {
 				var tmps = /*[[${list != null ? list : '[]'}]]*/;
 				var data_array = [];
 				for(var i=0;i<tmps.length;i++){
@@ -163,7 +169,7 @@
 					},
 					width:2450,
 					height:400,
-					chartArea: { left : '3.5%', right : 0, top: '5%', bottom: '15%'},
+					chartArea: { left : '2%', right : 0, top: '5%', bottom: '15%'},
 					tooltip: { isHtml: true } // HTML 툴팁 사용
 				};
 				
@@ -174,6 +180,23 @@
 			function order_status(type){
 				$(".order-type").removeClass("on");
 				$(type).addClass("on");
+			}
+			
+			function data_filter(type){
+				$(".graph-date-btn").removeClass("btn-info");
+				$(type).addClass("btn-info");
+				var url = "/stock/graph/";
+				url += [[${st_code}]];
+				$.ajax({
+		            url: url,
+		            type: 'post',
+		            data: {type: type.value},
+		            dataType : 'json',
+		            async: false, 
+		            success: function (data) {
+		               console.log(data);
+		            }
+				});
 			}
 		</script>
 	</main>
