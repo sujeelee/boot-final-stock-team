@@ -295,10 +295,10 @@
 			            <!-- 수익 섹션 -->
 			            <section class="my-section profit">
 			                <div class="my-info">
-			                    <span class="my-header-text">10월 수익</span>
+			                    <span class="my-header-text">이번달 수익</span>
 			                    <div>
 			                        <span class="my-balance-text1"
-			                        	  th:text="${#numbers.formatInteger(monthMoney, 1, 'COMMA')} + '원'"></span>
+			                        	  th:text="${#numbers.formatInteger(proceeds, 1, 'COMMA')} + '원'"></span>
 			                    </div>
 			                </div>
 			                <!-- 판매 수익 -->
@@ -306,7 +306,7 @@
 			                    <span class="my-item-text1">판매 수익</span>
 			                    <div class="my-details">
 			                        <span class="my-item-text2"
-			                        	  th:text="${#numbers.formatInteger(monthMoney, 1, 'COMMA')} + '원'"></span>
+			                        	  th:text="${#numbers.formatInteger(proceeds, 1, 'COMMA')} + '원'"></span>
 			                    </div>
 			                </div>
 			            </section>
