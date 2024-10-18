@@ -1,0 +1,6 @@
+@charset "UTF-8";
+footer{display:none !important;}
+.stock-day-section{height: 250px;}
+.stock-day-list{font-size: 12px;}
+table{margin-top: 0 !important;}
+main{margin-top:0 !important; margin-left: 1%; margin-right: 1%;}

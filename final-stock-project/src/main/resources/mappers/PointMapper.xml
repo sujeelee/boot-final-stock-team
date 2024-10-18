@@ -9,8 +9,8 @@
     </update>
 
     <insert id="usePoint">
-        insert into point(po_num, po_content, po_datetime, po_end_date, mb_id)
-        value(#{point}, #{reason}, now(), now(), #{userName})
+        insert into point(po_num, po_content, po_datetime, mb_id)
+        value(#{point}, #{reason}, now(), #{userName})
     </insert>
     
 </mapper>
