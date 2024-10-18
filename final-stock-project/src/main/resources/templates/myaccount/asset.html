@@ -352,7 +352,7 @@
 					dataType : "json",
 					success : function (data){
 						displayBalance(data);
-						updateChart(graphData);
+						updateChart(data.graphData);
 					}, 
 					error : function(jqXHR, textStatus, errorThrown){
 						console.log(jqXHR);
@@ -373,19 +373,19 @@
 
 		    // 초기 차트 그리기
 		    function drawChart() {
-		        var data = new google.visualization.DataTable();
+		        let data = new google.visualization.DataTable();
 		        data.addColumn('date', 'Date');
 		        data.addColumn('number', 'Deposit');
 				
 		        // 초기 데이터
 		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
 
-		        var options = {
-		            width: 920, 					// 그래프의 너비를 컨테이너에 맞게 설정
-		            height: 350,   					// 높이를 적절하게 설정
-		            legend: { position: 'bottom' }, // 범례 위치 설정
-		            curveType: 'function', 			// 곡선형 선 그래프
-		            pointSize: 0, 					// 데이터 포인트를 표시하지 않음
+		        let options = {
+		            width: 920, 						// 그래프의 너비를 컨테이너에 맞게 설정
+		            height: 350,   						// 높이를 적절하게 설정
+		            legend: { position: 'bottom' }, 	// 범례 위치 설정
+		            curveType: 'function', 				// 곡선형 선 그래프
+		            pointSize: 0, 						// 데이터 포인트를 표시하지 않음
 		            hAxis: {
 		                gridlines: { color: 'none' },  // 수평축의 눈금선 제거
 		                textPosition: 'none'           // 수평축의 라벨 제거
@@ -395,27 +395,27 @@
 		                textPosition: 'none'           // 수직축의 라벨 제거
 		            },
 		            chartArea: {
-		                width: '100%',         // 차트 영역 너비 최대화
-		                height: '80%'          // 차트 영역 높이 최대화
+		                width: '90%',         			// 차트 영역 너비 최대화
+		                height: '80%'         			// 차트 영역 높이 최대화
 		            },
-		            lineWidth: 2,              // 선의 굵기
-		            backgroundColor: 'transparent'  // 배경 투명화
+		            lineWidth: 2,              			// 선의 굵기
+		            backgroundColor: 'transparent'  	// 배경 투명화
 		        };
 
-		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
+		        let chart = new google.visualization.LineChart(document.getElementById('graph-container'));
 		        chart.draw(data, options);
 		    }
 
 		    // 차트를 업데이트하는 함수
 		    function updateChart(graphData) {
-		        var data = new google.visualization.DataTable();
+		        let data = new google.visualization.DataTable();
 		        data.addColumn('date', 'Date');
 		        data.addColumn('number', 'Deposit');
 
 		        // 서버에서 받은 데이터를 사용하여 차트를 업데이트
 		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
 
-		        var options = {
+		        let options = {
 		            width: 920,
 		            height: 350,
 		            legend: { position: 'bottom' },
@@ -430,14 +430,14 @@
 		                textPosition: 'none'           // 수직축의 라벨 제거
 		            },
 		            chartArea: {
-		                width: '100%',         // 차트 영역 너비 최대화
-		                height: '80%'          // 차트 영역 높이 최대화
+		                width: '90%',         			// 차트 영역 너비 최대화
+		                height: '80%'          			// 차트 영역 높이 최대화
 		            },
-		            lineWidth: 2,              // 선의 굵기
-		            backgroundColor: 'transparent'  // 배경 투명화
+		            lineWidth: 2,              			// 선의 굵기
+		            backgroundColor: 'transparent'  	// 배경 투명화
 		        };
 
-		        var chart = new google.visualization.LineChart(document.getElementById('graph-container'));
+		        let chart = new google.visualization.LineChart(document.getElementById('graph-container'));
 		        chart.draw(data, options);
 		    }
 		</script>
