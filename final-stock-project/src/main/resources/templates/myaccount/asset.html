@@ -316,7 +316,7 @@
 			                    <span class="my-header-text">보유 포인트</span>
 			                    <div>
 			                        <span class="my-balance-text1"
-			                        	  th:text="${#numbers.formatInteger(#authentication.principal.member.mb_point, 1, 'COMMA')} + '포인트'"></span>
+			                        	  th:text="${#numbers.formatInteger(point, 1, 'COMMA')} + '포인트'"></span>
 			                    </div>
 			                </div>
 			                <!-- 판매 수익 -->
@@ -324,7 +324,7 @@
 			                    <span class="investment-text1">포인트</span>
 			                    <div class="my-details">
 			                        <span class="investment-text2"
-			                        	  th:text="${#numbers.formatInteger(#authentication.principal.member.mb_point, 1, 'COMMA')} + 'pt'"></span>
+			                        	  th:text="${#numbers.formatInteger(point, 1, 'COMMA')} + 'P'"></span>
 			                    </div>
 			                </div>
 			            </section>

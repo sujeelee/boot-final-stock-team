@@ -100,6 +100,8 @@ public class MyAccountController {
 				}
 			}
 		}
+		MemberVO user = memberService.findById(mb_id);
+		int point = user.getMb_point();
 		model.addAttribute("money", money);
 		model.addAttribute("account", account);
 		model.addAttribute("rateOfReturn", rateOfReturn);
@@ -107,6 +109,7 @@ public class MyAccountController {
 		model.addAttribute("stockMoney", stockMoney);	// 투자중인 금액
 		model.addAttribute("orderMoney", orderMoney);	// 주문 가능 금액
 		model.addAttribute("monthMoney", monthMoney);	// 월 수익
+		model.addAttribute("point", point);
 		return "myaccount/asset";
 	}
 	
