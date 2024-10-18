@@ -1,5 +1,6 @@
 package kh.st.boot.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +18,12 @@ import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.MemberService;
-import lombok.AllArgsConstructor;
 
 @Controller
-@AllArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
 	
+    @Autowired
 	private MemberService memberService;
 	
     @Value("${kakao.client_id}")
@@ -34,8 +34,12 @@ public class MemberController {
 
 	//로그인
     @GetMapping("/login")
-    public String login(HttpServletRequest request){
+    public String login(HttpServletRequest request, Model mo){
     	
+        String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+        mo.addAttribute("location", location);
+
+
     	String uri = request.getHeader("Referer");
 	    if (uri != null && !uri.contains("/member/login")) {
 	        request.getSession().setAttribute("prevPage", uri);

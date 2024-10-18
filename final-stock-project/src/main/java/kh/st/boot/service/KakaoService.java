@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import io.netty.handler.codec.http.HttpHeaderValues;
 import kh.st.boot.info.KakaoToken;
+import kh.st.boot.info.KakaoUserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -33,6 +34,8 @@ public class KakaoService {
 
     public String getAccessTokenFromKakao(String code) {
         
+    	System.out.println(code);
+    	
         KakaoToken kakaoToken = WebClient.create(KAUTH_TOKEN_URL_HOST).post()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
@@ -40,6 +43,7 @@ public class KakaoService {
                         .queryParam("grant_type", "authorization_code")
                         .queryParam("client_id", clientId)
                         .queryParam("code", code)
+                        .queryParam("client_secret", "Uy5RDnl2rCZxIRYh7LD3ouvYqCJOoT4T")
                         .build(true))
                 .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
                 .retrieve()
@@ -49,7 +53,6 @@ public class KakaoService {
                 .bodyToMono(KakaoToken.class)
                 .block();
 
-
         log.info(" [Kakao Service] Access Token ------> {}", kakaoToken.getAccessToken());
         log.info(" [Kakao Service] Refresh Token ------> {}", kakaoToken.getRefreshToken());
         //제공 조건: OpenID Connect가 활성화 된 앱의 토큰 발급 요청인 경우 또는 scope에 openid를 포함한 추가 항목 동의 받기 요청을 거친 토큰 발급 요청인 경우
@@ -57,6 +60,30 @@ public class KakaoService {
         log.info(" [Kakao Service] Scope ------> {}", kakaoToken.getScope());
 
         return kakaoToken.getAccessToken();
+    }
+
+    public KakaoUserInfo getUserInfo(String accessToken) {
+
+        KakaoUserInfo userInfo = WebClient.create(KAUTH_USER_URL_HOST)
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
+                        .path("/v2/user/me")
+                        .build(true))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken) // access token 인가
+                .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
+                .retrieve()
+                //TODO : Custom Exception
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+                .bodyToMono(KakaoUserInfo.class)
+                .block();
+
+        log.info("[ Kakao Service ] Auth ID ---> {} ", userInfo.getId());
+        log.info("[ Kakao Service ] NickName ---> {} ", userInfo.getKakaoAccount().getProfile().getNickName());
+        log.info("[ Kakao Service ] ProfileImageUrl ---> {} ", userInfo.getKakaoAccount().getProfile().getProfileImageUrl());
+
+        return userInfo;
     }
 
 }   
