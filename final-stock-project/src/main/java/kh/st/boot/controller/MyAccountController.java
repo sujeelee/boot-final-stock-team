@@ -255,11 +255,14 @@ public class MyAccountController {
 		boolean res = myAccountService.checkPw(user, member.getMb_password());
 		if(user.getMb_id().equals(member.getMb_id()) && res) {
 			if(myAccountService.deleteUser(user)) {
+				System.out.println(1);
 				map.put("success", true);
 			}else {
+				System.out.println(2);
 				map.put("success", false);
 			}
 		}else {
+			System.out.println(3);
 			map.put("success", false);
 		}
 	    return map;
