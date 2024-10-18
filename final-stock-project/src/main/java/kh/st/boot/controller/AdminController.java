@@ -15,6 +15,7 @@ import kh.st.boot.model.vo.AdmApprovalVO;
 import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
+import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
@@ -22,6 +23,7 @@ import kh.st.boot.service.AdmPointService;
 import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
+import kh.st.boot.service.AdminStock_addService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
 import kh.st.boot.service.newspaperService;
@@ -51,6 +53,9 @@ public class AdminController {
 
 	@Autowired
 	private AdmPointService admPointService;
+
+	@Autowired
+	private AdminStock_addService adminStock_addService;
 
 	// 관리자 기본 페이지
 
@@ -322,4 +327,45 @@ public class AdminController {
 		return "redirect:/admin/admPoint/admPointPage";
 	}
 
+
+	//-------------------------------------------------------------------------------
+	// --------------------------주식주 증/감 여부 승인  ----------------------------
+	// ------------------------------------------------------------------------------
+
+	
+	// 페이지 이동시 리스트 당겨옴
+	@GetMapping("/admStock/admStock_add")
+	public String stock_add(Model model) {
+		System.out.println("뷰에서 컨트롤러로 진입");
+		List<AdminStock_addVO> selecte = adminStock_addService.nullSelect();
+		System.out.println(" 서비스 다녀온 후 컨트롤러 진입"+selecte);
+		model.addAttribute("list", selecte); 
+		return "/admin/admStock/admStock_add";
+	}
+
+	// 상세 페이지 이동할때 
+	@GetMapping("/admStock/admStock_add/details")
+	public String detailStock_add(@RequestParam int sa_qty,
+								  @RequestParam String mb_id ) {
+	
+		AdminStock_addVO selecte = adminStock_addService.Select(sa_qty,mb_id);
+		return "/admin/admStock/admStock_addDetails";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+
+

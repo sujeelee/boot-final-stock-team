@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>Admin Level Page</title>
+<link th:href="@{/css/admnews.css}" rel="stylesheet" />
+<!--  스타일 적용 했음  -->
+</head>
+<style>
+</style>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<div></div>
+				<th>요청값</th>
+				<th>아이디</th>
+				<th>요청일</th>	
+			</tr>
+		</thead>
+		   <tbody>
+            <tr th:each="item : ${list}">
+                <td th:text="${item.sa_qty}"></td>
+                <td th:text="${item.mb_id}"></td>
+                <td th:text="${item.sa_datetime}"></td>
+                 <td>
+                    <a th:href="@{/admin/admStock/admStock_add/details(
+                   				 sa_qty=${item.sa_qty},
+		            		     mb_id=${item.mb_id} )}">
+                        <button type="button" class="navyBtn">심사페이지 </button>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+	</table>
+</body>
+</html>
+
+
