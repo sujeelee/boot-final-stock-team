@@ -4,19 +4,30 @@
 
 	<select id="nullSelectAll" resultType="AdminStock_addVO">
 		SELECT * FROM
-		stock_add 
+		stock_add
 		WHERE sa_yn IS NULL
 	</select>
- 
- 
- <select id="SelectAll" resultType="AdminStock_addVO">
+
+
+	<select id="SelectAll" resultType="AdminStock_addVO">
 		SELECT * FROM
-		stock_add 
-		WHERE sa_qty = #{sa_qty} AND  mb_id = #{mb_id} AND sa_yn IS NULL;
+		stock_add
+		WHERE
+		sa_qty = #{sa_qty} AND mb_id = #{mb_id} AND sa_yn IS NULL;
 	</select>
- 
- 
- 
+
+
+	<update id="updateAll">
+		UPDATE stock_add
+		SET
+		sa_yn = #{sa_yn},
+		sa_feedback = #{sa_feedback}
+		WHERE
+		sa_no = #{sa_no}
+	</update>
+
+
+
 </mapper>
  
  

@@ -16,17 +16,24 @@ public class AdminStock_addService {
 
 	@Autowired
 	private AdminStock_addDAO adminStock_addDAO;
-	
+
 	public List<AdminStock_addVO> nullSelect() {
 		System.out.println("서비스 진입");
 		return adminStock_addDAO.nullSelectAll();
 	}
 
-	public AdminStock_addVO Select(@RequestParam int sa_qty,
-								   @RequestParam String mb_id) {
-		return adminStock_addDAO.SelectAll(sa_qty, mb_id );
+	public AdminStock_addVO Select(@RequestParam int sa_qty, @RequestParam String mb_id) {
+		return adminStock_addDAO.SelectAll(sa_qty, mb_id);
 	}
 
-
+	public void update(int sa_no, String sa_yn, String sa_feedback) {
+		if (sa_yn == null) {
+			sa_yn = "n";
+		} else {
+			sa_yn = "y";
+		}
+		adminStock_addDAO.updateAll(sa_no, sa_yn, sa_feedback);
+		
+	}
 
 }
