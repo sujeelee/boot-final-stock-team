@@ -65,7 +65,7 @@
 									</form>
 									
 									<!-- 삭제 버튼 -->
-									<form th:action="@{/admin/admMember/admUser/update}" method="post" style="display:inline;">
+									<form th:action="@{/admin/admMember/admUser/delet}" method="post" style="display:inline;">
 										<input type="hidden" name="mb_id" th:value="${userlist.mb_id}"/>
 										<button type="submit">삭제</button>
 									</form>

@@ -118,7 +118,7 @@ public class AdminController {
 		return "redirect:/admin/admMember/admUser";
 	}
 		
-	@PostMapping("/admMember/admUser/update")
+	@PostMapping("/admMember/admUser/delet")
 	public String admUserDelet(String mb_id,String mb_name,String mb_nick,String mb_hp,String mb_datetime ) {
 		adminUserService.deletUser(mb_id,mb_name,mb_nick,mb_hp,mb_datetime);
 		return "redirect:/admin/admMember/admUser";
@@ -129,7 +129,7 @@ public class AdminController {
 	
 		
 		
-	}
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
@@ -273,11 +273,26 @@ public class AdminController {
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
 		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id);
+		// 1 갯수 새는 서비스 불러옴 
+		int onesCount = pointSltIdPageService.countOnesInDays(mb_id);
+		
+		// 모델을 하나 더 해서 갯수샌걸 보내줍니다 
 		model.addAttribute("list", sltPointOne);
+		model.addAttribute("onesCount", onesCount);  
 		return "/admin/admDaycheck/daycheckAdm";
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 주문내역 조회 컨트롤러 ----------------------------------
 	// -------------------------------------------------------------------------------
