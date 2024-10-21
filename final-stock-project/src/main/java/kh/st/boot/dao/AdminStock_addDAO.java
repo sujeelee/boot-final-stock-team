@@ -10,4 +10,7 @@ public interface AdminStock_addDAO {
 
 	AdminStock_addVO SelectAll(int sa_qty, String mb_id);
 
+	void updateAll(int sa_no, String sa_yn, String sa_feedback);
+
+
 }
