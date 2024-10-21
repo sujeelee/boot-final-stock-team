@@ -8,7 +8,8 @@ main{margin-top:0 !important; margin-left: 1%; margin-right: 1%;}
 .stock-chart-graph > .btn-list {position: relative; z-index: 2;}
 .none-stock-order > .none-list {margin-bottom: 10%;}
 .none-stock-order > td > .none-list > .none-content {margin-top: 10% !important;}
-.wait-row > span{padding-top: 2%;padding-bottom: 2%;padding-left: 3%; font-size: 15px;}
+.wait-row{text-align: left;}
+.wait-row > span{margin-top: 2%;margin-bottom: 2%; font-size: 15px;}
 .mystock-list.form-content{width: 80% !important;}
 .mystock-row > div {margin-bottom: 8px;}
 .mystock-row.rigth{text-align: left;}
