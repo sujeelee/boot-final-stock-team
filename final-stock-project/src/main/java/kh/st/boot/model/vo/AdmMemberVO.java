@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdmMemberVO {
 	// 받아올 값 변수 설정
-	private int mb_no;
-    private String mb_id;
+	private int mb_no;		// 회원 고유번호 
+    private String mb_id;	// 
     private String mb_password;
-    private String mb_name;
+    private String mb_name;	// 이름
     private String mb_nick;
     private String mb_hp;
     private String mb_email;
@@ -24,9 +24,13 @@ public class AdmMemberVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date mb_birth; //Date로 일단 변경
     private int mb_level; //(11자리)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date mb_datetime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date mb_edit_date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date mb_stop_date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date mb_out_date;
     private String mb_cookie;
     private String mb_cookie_limit;

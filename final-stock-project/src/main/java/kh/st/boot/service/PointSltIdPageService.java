@@ -24,14 +24,25 @@ public class PointSltIdPageService {
 	
 		return admDaycheckDAO.AllSelect();
 	}
-	// 아이디 검색해서 조회
-	// 아이디 일부만 검색해도 나오게 하고싶으면 여기서 처리
-	// 전체 입력할꺼여서 쿼리로 처리하려고 함 
-	public List<AdmDaycheckVO> sltOnePoint(String mb_id) {
 	
+	
+	public List<AdmDaycheckVO> sltOnePoint(String mb_id) {
 		return admDaycheckDAO.OneSelect(mb_id);
 	}
-	
+
+	// 1 갯수새는 서비스 
+	public int countOnesInDays(String mb_id) {
+	        List<AdmDaycheckVO> daycheckList = sltOnePoint(mb_id);
+	        int count = 0;
+
+	        for (AdmDaycheckVO daycheck : daycheckList) {
+	            // dc_days 값이 "1"인지 확인
+	            if ("1".equals(daycheck.getDc_days())) {
+	                count++;
+	            }
+	        }
+	        return count;  // 1의 개수 반환
+	    }
 	
 	
 	

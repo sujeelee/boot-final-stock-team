@@ -2,6 +2,7 @@ package kh.st.boot.service;
 
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +11,14 @@ import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
 import kh.st.boot.model.util.CustomUtil;
 import kh.st.boot.model.vo.MemberVO;
-import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor	
 public class MemberServiceImp implements MemberService{
-	
+
+    @Autowired
 	private MemberDAO memberDao;
 	
+    @Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@Override
