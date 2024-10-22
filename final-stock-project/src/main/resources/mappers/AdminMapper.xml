@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.st.boot.dao.AdminDAO">
-	<select id="selectAdmin" resultType="AdminVO"> select * from config
+
+	<select id="selectAdmin" resultType="AdminVO">
+		select * from config
 	</select>
+
 	<update id="updateAdm"> UPDATE config SET cf_title = #{cf_title}, cf_info =
 		#{cf_info}, cf_privacy = #{cf_privacy}, cf_noemail = #{cf_noemail},
 		cf_tel = #{cf_tel}, cf_zip = #{cf_zip}, cf_addr = #{cf_addr}, cf_addr2

@@ -144,6 +144,9 @@
                         <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소">
                         <input type="date" name="birth" placeholder="birth">
                         <input type="hidden" id="ec_checked" name="ec" value="f">
+                        <input type="hidden" id="mb_loginMethod" name="mb_loginMethod"
+                        th:value="${not #strings.isEmpty(userInfo)} ? 'kakao'"
+                        >
                 </div>
                     <!--/* 다음 kakao를 이용한 주소 가져오기 */-->
                     <div class="address-wrapper">
