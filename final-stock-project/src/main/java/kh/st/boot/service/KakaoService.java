@@ -19,10 +19,12 @@ import reactor.core.publisher.Mono;
 @Service
 public class KakaoService {
     
+
+    
     private String clientId;
     private final String KAUTH_TOKEN_URL_HOST;
     private final String KAUTH_USER_URL_HOST;
-
+    
     @Autowired
     public KakaoService(@Value("${kakao.client_id}") String clientId) {
         this.clientId = clientId;
@@ -84,6 +86,25 @@ public class KakaoService {
         log.info("[ Kakao Service ] ProfileImageUrl ---> {} ", userInfo.getKakaoAccount().getProfile().getProfileImageUrl());
 
         return userInfo;
+    }
+
+
+    public void kakaoLogout(String accessToken){
+        WebClient.create(KAUTH_USER_URL_HOST)
+            .get()
+            .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
+                        .path("v1/user/logout")
+                        .build(true))
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+            .retrieve()
+            // TODO: Custom Exception
+            .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
+            .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+            .bodyToMono(Void.class) // 응답이 없으므로 Void 사용
+            .block(); // 블록하여 결과를 기다림
+
+        log.info("[ Kakao Service ] Successfully logged out."); // 로그아웃 성공 로그
     }
 
 }   

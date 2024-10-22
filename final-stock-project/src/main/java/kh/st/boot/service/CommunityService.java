@@ -6,9 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.CommunityDAO;
-import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.vo.BoardVO;
-import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
 import lombok.AllArgsConstructor;
 
@@ -16,40 +14,72 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CommunityService {
 
-    private CommunityDAO communityDAO;
+    private CommunityDAO communityDao;
 
 	public void insertBoard(BoardVO newBoard) {
-		communityDAO.insertBoard(newBoard);		
+		communityDao.insertBoard(newBoard);		
 	}
 
 	public List<BoardVO> getBoardList(String st_code) {
 		if(st_code == null) {
 			return null;
 		}
-		return communityDAO.getBoardList(st_code);
+		return communityDao.getBoardList(st_code);
 	}
-	public CommunityActionVO chkAction(int cg_num, String mb_id) {
-		return communityDAO.selectCommunityAction(cg_num, mb_id); // DAO에서 데이터 조회
-	}
-	public boolean performAction(String st_code, String cg_action, int cg_num, Date cg_datetime, String mb_id) {
-		CommunityActionVO communityActionVO = new CommunityActionVO();
-		communityActionVO.setSt_code(st_code);
-        communityActionVO.setCg_num(cg_num);
-        communityActionVO.setMb_id(mb_id);
-        communityActionVO.setCg_action(cg_action);
-        communityActionVO.setCg_datetime(cg_datetime);
-        
-        
-        if ("like".equals(cg_action)) {
-            return communityDAO.insertCommunityAction(communityActionVO);
-        } else if ("report".equals(cg_action)) {
-            return communityDAO.insertCommunityAction(communityActionVO);
-        }
-        
-        return false;
-    }
 
-	public boolean deleteAction(int cg_num, String mb_id) {
-		return communityDAO.deleteAction(cg_num,mb_id);
+	public boolean setFeelAction(CommunityActionVO feel) {
+		if (feel == null || feel.getMb_id() == null || 
+		feel.getSt_code() == null || feel.getMb_id().trim().length() == 0) {
+			return false;
+		}
+		System.out.println("널체크 성공");
+		// 개시글 번호가 음수 이거나 0일 수 없음
+		if (feel.getCg_num() < 1) {
+			return false;
+		}
+		
+		if (feel.getCg_type().equals("board")) {
+			//보더 처리
+			boolean tmp = false;
+			System.out.println("보더처리 진입");
+			CommunityActionVO tmpCA = communityDao.findBoardByObjBoardVO(feel);
+
+			if (tmpCA == null) {
+				tmp = communityDao.createBoardOfCommunityAction(feel);
+				return tmp;
+			}
+
+			if (feel.getCg_like().equals("like")) {
+				if(tmpCA.getCg_like() == null || tmpCA.getCg_like().trim().length() == 0){
+					tmp = communityDao.updateBoardOfCommunityAction_setLike(feel);
+				} else {
+					tmp = communityDao.updateBoardOfCommunityAction_setLikeNull(feel);
+				}
+			} else if(feel.getCg_report().equals("report")) {
+				if (tmpCA.getCg_report() == null || tmpCA.getCg_report().trim().length() == 0) {
+					tmp = communityDao.updateBoardOfCommunityAction_setReport(feel);
+				} else {
+					tmp = communityDao.updateBoardOfCommunityAction_setReportNull(feel);
+				}
+				
+			}
+			return tmp;
+		}
+
+
+		if (feel.getCg_type().equals("다야 나와라")) {
+			//comment 처리 (후추)
+
+
+
+
+
+
+		}
+
+
+		return false;
 	}
+
+
 }

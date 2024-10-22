@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kh.st.boot.dao.CommunityDAO"> 
+
     <insert id="insertBoard">
         INSERT INTO board (wr_category, mb_id, wr_content)
-        VALUES (#{wr_category}, #{mb_id}, #{wr_content})
+        VALUES (#{wr_category}, #{mb_id}, #{wr_content}) 
     </insert>
+	
     <select id="getBoardList" resultType="BoardVO">
     	SELECT *
     	FROM board
     	WHERE wr_category = #{wr_category}
+		ORDER BY wr_no DESC
     </select>
-	<select id="selectCommunityAction" resultType="CommunityActionVO">
-	    SELECT *
-	    FROM community_action
-	    WHERE cg_num = #{cg_num} AND mb_id = #{mb_id}
+
+	<select id="findBoardByObjBoardVO" resultType="CommunityActionVO">
+		select * from community_action
+		where mb_id = #{mb_id} and cg_type = #{cg_type} and cg_num = #{cg_num}
 	</select>
-	<insert id="insertCommunityAction">
-		INSERT INTO community_action (st_code,cg_num, mb_id, cg_action, cg_datetime)
-	    VALUES (#{st_code}, #{cg_num}, #{mb_id}, #{cg_action}, NOW())
-	</insert>
-	<delete id="deleteAction">
-		delete from community_action where cg_num = #{cg_num} and mb_id = #{mb_id}
-	</delete>
+
+	<insert id="createBoardOfCommunityAction">
+		insert into community_action(cg_num, cg_type, st_code, mb_id, cg_datetime, cg_like, cg_report)
+		value (#{cg_num}, #{cg_type}, #{st_code},#{mb_id}, now() ,#{cg_like}, #{cg_report})
+	</insert> 
+
+	<update id="updateBoardOfCommunityAction_setLike">
+		update community_action
+		set cg_like = 'like'
+		where mb_id = #{mb_id} and cg_type = #{cg_type} and cg_num = #{cg_num}
+	</update>
+
+	<update id="updateBoardOfCommunityAction_setLikeNull">
+		update community_action
+		set cg_like = ''
+		where mb_id = #{mb_id} and cg_type = #{cg_type} and cg_num = #{cg_num}
+	</update>
+
+	<update id="updateBoardOfCommunityAction_setReport">
+		update community_action
+		set cg_report = 'report'
+		where mb_id = #{mb_id} and cg_type = #{cg_type} and cg_num = #{cg_num}
+	</update>
+
+	<update id="updateBoardOfCommunityAction_setReportNull">
+		update community_action
+		set cg_report = ''
+		where mb_id = #{mb_id} and cg_type = #{cg_type} and cg_num = #{cg_num}
+	</update>
 </mapper>
