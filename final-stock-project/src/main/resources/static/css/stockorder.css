@@ -13,6 +13,13 @@ main{margin-top:0 !important; margin-left: 1%; margin-right: 1%;}
 .mystock-list.form-content{width: 80% !important;}
 .mystock-row > div {margin-bottom: 8px;}
 .mystock-row.rigth{text-align: left;}
-.mystock-row.left{text-align: right; margin-right: -20%;}
-.divider{border: 1px solid rgba(23, 162, 184, 0.3);width: 98%;height: 1px;}
+.mystock-row.left{margin-right: -20%;}
+.divider{border: 1px solid rgba(23, 162, 184, 0.3);width: 98%;height: 1px;margin-bottom: 25px;}
 .form-content.bottom{margin-top: 15px;}
+.left{text-align: right;}
+.total-info > div {margin-bottom: 10px;}
+.price-button > div > input{width: 100%;border: 1px solid #ced4da;background-color: #fff;border-radius: .25rem;margin-right: 10px; padding: 10px;}
+.price-button.rigth > div {margin-top: 10px;margin-bottom: 40px;}
+.price-button > div > .btn-group-qty{position: absolute;left: 90px;}
+.btn-group-qty > button{margin-left: 1px;}
+.price-button.left > div{position: relative;display: flex; align-items: center;justify-content: space-between; margin-bottom: 15px;}
