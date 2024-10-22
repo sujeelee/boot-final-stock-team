@@ -45,9 +45,23 @@
 		DELETE FROM ACCOUNT WHERE MB_NO = #{mb_no}
 	</delete>
 	
-	<delete id="deleteUser">
-		DELETE FROM MEMBER WHERE MB_ID = #{mb_id}
-	</delete>
+	<update id="deleteUser">
+		UPDATE 
+			MEMBER 
+		SET
+			MB_PASSWORD = NULL,
+			MB_NAME = NULL,
+			MB_NICK = NULL,
+			MB_PH = NULL,
+			MB_EMAIL = NULL,
+			MB_BIRTH = NULL,
+			MB_ZIP = NULL,
+			MB_ADDR = NULL,
+			MB_ADDR2 = NULL,
+			MB_OUT_DATE = NOW()
+		WHERE
+			MB_ID = #{mb_id} 
+	</update>
 	
 	<select id="selectStockList" resultType="StockVO">
 		SELECT * FROM STOCK

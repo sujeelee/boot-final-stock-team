@@ -75,8 +75,8 @@
     </update>
 
     <insert id="setPointByCalenderEvent">
-        insert into point(po_num, po_content, po_datetime, po_end_date, mb_id)
-        values (50, "출석 체크 이벤트", now(), now(), #{mb_id})
+        insert into point(po_num, po_content, po_datetime, mb_id)
+        values (50, "출석 체크 이벤트", now(), #{mb_id})
     </insert>
 
     <select id="getCalenderEventValue" resultType="String">

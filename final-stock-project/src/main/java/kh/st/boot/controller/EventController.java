@@ -155,7 +155,7 @@ public class EventController {
 
         boolean res = false;
 
-        if (eplist.size() == 0) {
+        if (list.size() > eplist.size()) {
             for(int i = 0 ; i < list.size() ; i++){
                 EventPrizeVO ep = new EventPrizeVO();
                 ep.setEv_no(ev_no);
@@ -203,15 +203,14 @@ public class EventController {
             mo.addAttribute("res", res);
         }
 
-
-        List<EventPrizeVO> eplist = eventService.getEventPrizeTicketList(ep.getEv_no(), (String) PrizeTicket.get("mb_id"));
-        mo.addAttribute("eplist", eplist);
-
-        // sum
-        List<EventPrizeCounterDTO> epcDtoList = eventService.getEventPrizeTicketCounter((int) ep.getEv_no());
-        mo.addAttribute("epcDtoList", epcDtoList);
-
         List<PrizeVO> list = eventService.getPrizeListByEv_no((Integer) PrizeTicket.get("ev_no"));
+        List<EventPrizeVO> eplist = eventService.getEventPrizeTicketList(ep.getEv_no(), (String) PrizeTicket.get("mb_id"));
+        List<EventPrizeCounterDTO> epcDtoList = eventService.getEventPrizeTicketCounter((int) ep.getEv_no());
+           
+        // sum
+        
+        mo.addAttribute("epcDtoList", epcDtoList);
+        mo.addAttribute("eplist", eplist);
         mo.addAttribute("list", list);
         return "/eventSeason2024/event202410Aevent :: #prize";
     }

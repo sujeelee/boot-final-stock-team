@@ -18,6 +18,7 @@ public class SecurityConfig{
 	
 	@Autowired
 	private MemberDetailService memberDetailService;
+
 	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -25,7 +26,7 @@ public class SecurityConfig{
 		//URL에 접근 권한을 설정. MemberInterceptor, AdminInterceptor를 합친 기능이라고 생각하면 됨
         http.csrf(csrf ->csrf.disable())
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/post/insert/*", "/newspaper/insert", "/event/calendar_event")//<<로그인 되기전에는 접근할 수 없어요
+                .requestMatchers("/post/insert/*", "/newspaper/insert", "/event/calendar_event", "/event/Aevent/*")//<<로그인 되기전에는 접근할 수 없어요
                 //.hasAuthority(UserRole.USER.name())
                 //위 URL을 권한이 "USER"인 회원만 접근하도록 설정
                 //.hasRole(UserRole.USER.name())
@@ -43,7 +44,11 @@ public class SecurityConfig{
                 .successHandler(new LoginSuccessHandler())
                 // .failureHandler(new LoginFailHandler())
             )
-
+            // .oauth2Login((oauth2) -> oauth2  // OAuth2 로그인 설정 추가
+            //     .loginPage("/member/login")  
+            //     .defaultSuccessUrl("/")  // 로그인 성공 시 리다이렉트
+            //     .failureUrl("/member/login")  // 로그인 실패 시 리다이렉트
+            // )
             .rememberMe((rm)->rm
             		.key("team1")
             		.rememberMeParameter("re")
