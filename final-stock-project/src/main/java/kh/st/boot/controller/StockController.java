@@ -2,13 +2,18 @@ package kh.st.boot.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
@@ -114,5 +119,17 @@ public class StockController {
 		model.addAttribute("list", list);
 		
 		return "stockuser/detail";
+	}
+	
+	@PostMapping("/graph/{st_code}")
+	@ResponseBody
+	public Map<String, Object> stockDetailDate(@PathVariable String st_code, @RequestParam String type) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<StockPriceVO> list = stockService.getStockInfoListDate(st_code, type);
+		
+		map.put("list", list);
+		
+		return map;
 	}
 }

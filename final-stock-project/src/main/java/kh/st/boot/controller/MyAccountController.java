@@ -89,24 +89,33 @@ public class MyAccountController {
 		int orderMoney = account.getAc_deposit() - stockMoney; // 주문 가능 금액
 		
 		Date now = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
-		String isMonth = format.format(now) + "-01";
-		List<DepositVO> depositListMonth = myAccountService.getDepositListByDate(mb_id, isMonth);
-		int monthMoney = 0;
-		if(depositListMonth != null) {
-			for(DepositVO deposit : depositList) {
-				if(deposit.getDe_stock_code() != null) {
-					monthMoney += deposit.getDe_num();
-				}
-			}
-		}
+		int buyAmount = 0, sellAmount = 0;
+        String today = new SimpleDateFormat("yyyy-MM").format(now);
+		// 주식 구매를 한 거래 내역만 가져옴
+        List<OrderVO> buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
+        // 주식 판매를 한 거래 내역만 가져옴
+        List<OrderVO> sellList = myAccountService.getOrderListBySellDate(mb_id, today);
+        if(buyList != null && buyList.size() != 0) {
+	        for(OrderVO order : buyList) {
+	        	buyAmount += order.getOd_price();
+	        }
+        }
+        if(sellList != null && sellList.size() != 0) {
+        	for(OrderVO order : sellList) {
+        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
+        	}
+        }
+        int proceeds = sellAmount - buyAmount; // 월 수익
+		MemberVO user = memberService.findById(mb_id);
+		int point = user.getMb_point();
 		model.addAttribute("money", money);
 		model.addAttribute("account", account);
 		model.addAttribute("rateOfReturn", rateOfReturn);
 		model.addAttribute("graphData", graphData);
 		model.addAttribute("stockMoney", stockMoney);	// 투자중인 금액
 		model.addAttribute("orderMoney", orderMoney);	// 주문 가능 금액
-		model.addAttribute("monthMoney", monthMoney);	// 월 수익
+		model.addAttribute("proceeds", proceeds);	// 월 수익
+		model.addAttribute("point", point);
 		return "myaccount/asset";
 	}
 	
@@ -288,6 +297,21 @@ public class MyAccountController {
 	}
 	
 	@ResponseBody
+	@PostMapping("/deleteMember")
+	public Map<String, Object> deleteMember(Principal principal){
+		Map<String, Object> map = new HashMap<String, Object>();
+		String mb_id = principal.getName();
+		MemberVO user = memberService.findById(mb_id);
+		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
+		if(res) {
+			map.put("status", true);
+		}else {
+			map.put("status", false);
+		}
+		return map;
+	}
+	
+	@ResponseBody
 	@PostMapping("/cancel")
 	public Map<String, Object> cancel(Principal principal){
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -378,7 +402,6 @@ public class MyAccountController {
 		model.addAttribute("type", type);
 		model.addAttribute("detail", detail);
 		model.addAttribute("pm", pm); // 페이지 정보 추가
-		
 		return "myaccount/transactions";
 	}
 	
@@ -671,9 +694,12 @@ public class MyAccountController {
         	list = myAccountService.getPointList(cri, mb_id);
         	break;
         }
+		MemberVO user = memberService.findById(mb_id);
+		int point = user.getMb_point();
         model.addAttribute("type", type);
         model.addAttribute("pm", pm);
         model.addAttribute("list", list);
+        model.addAttribute("point", point);
 		return "myaccount/point";
 	}
 

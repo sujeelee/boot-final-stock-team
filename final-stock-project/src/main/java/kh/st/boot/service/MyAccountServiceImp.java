@@ -13,8 +13,10 @@ import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.StockMemberVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
@@ -73,10 +75,7 @@ public class MyAccountServiceImp implements MyAccountService {
 
 	@Override
 	public boolean deleteUser(MemberVO user) {
-		if(myAccountDao.deleteAccount(user.getMb_no())) {
-			return myAccountDao.deleteUser(user.getMb_id());
-		}
-		return false;
+		return myAccountDao.deleteUser(user.getMb_id());
 	}
 
 	@Override

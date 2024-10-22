@@ -45,9 +45,23 @@
 		DELETE FROM ACCOUNT WHERE MB_NO = #{mb_no}
 	</delete>
 	
-	<delete id="deleteUser">
-		DELETE FROM MEMBER WHERE MB_ID = #{mb_id}
-	</delete>
+	<update id="deleteUser">
+		UPDATE 
+			MEMBER 
+		SET
+			MB_PASSWORD = NULL,
+			MB_NAME = NULL,
+			MB_NICK = NULL,
+			MB_PH = NULL,
+			MB_EMAIL = NULL,
+			MB_BIRTH = NULL,
+			MB_ZIP = NULL,
+			MB_ADDR = NULL,
+			MB_ADDR2 = NULL,
+			MB_OUT_DATE = NOW()
+		WHERE
+			MB_ID = #{mb_id} 
+	</update>
 	
 	<select id="selectStockList" resultType="StockVO">
 		SELECT * FROM STOCK
@@ -73,4 +87,24 @@
 		WHERE
 			ST_CODE = #{mp_company}
 	</select>
+	<select id="selectNewsMember" resultType="NewsMemberVO">
+		SELECT *
+		FROM
+			NEWS_MEMBER
+		WHERE
+			MB_NO = #{mb_no}
+	</select>
+	<select id="selectStockMember" resultType="StockMemberVO">
+		SELECT *
+		FROM
+			STOCK_MEMBER
+		WHERE
+			MB_NO = #{mb_no}
+	</select>
+	<delete id="deleteNewsMember">
+		DELETE FROM NEWS_MEMBER WHERE MB_NO = #{mb_no}
+	</delete>
+	<delete id="deleteStockMember">
+		DELETE FROM STOCK_MEMBER WHERE MB_NO = #{mb_no}
+	</delete>
 </mapper>

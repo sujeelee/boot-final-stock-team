@@ -302,7 +302,6 @@ tr {
 	<table>
 		<thead>
 			<tr>
-				<div></div>
 				<th>출석 체크일</th>
 				<th>출석 체크 회원 아이디</th>
 				<th>지급된 출석체크 포인트</th>
@@ -314,7 +313,7 @@ tr {
 				<td th:text="${list.dc_datetime}"></td>
 				<td th:text="${list.mb_id}"></td>
 				<td th:text="${list.po_num}"></td>
-				<td th:text="${list.dc_days}"></td>
+				<td th:text="${onesCount}+ 일 "></td>	<!-- 1만 갯수 확인해서 가져옴  -->
 				<td>
 			</td>
 

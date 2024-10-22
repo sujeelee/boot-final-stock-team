@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import groovy.transform.AutoImplement;
 import kh.st.boot.model.vo.AdmApprovalVO;
 import kh.st.boot.model.vo.AdmDaycheckVO;
+import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
+import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
@@ -22,6 +24,8 @@ import kh.st.boot.service.AdmPointService;
 import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
+import kh.st.boot.service.AdminStock_addService;
+import kh.st.boot.service.AdminUserService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
 import kh.st.boot.service.newspaperService;
@@ -52,6 +56,13 @@ public class AdminController {
 	@Autowired
 	private AdmPointService admPointService;
 
+	@Autowired
+	private AdminStock_addService adminStock_addService;
+
+	@Autowired
+	private AdminUserService adminUserService;
+	
+	
 	// 관리자 기본 페이지
 
 	// 관리자 설정 페이지 값 전송 코드
@@ -79,8 +90,46 @@ public class AdminController {
 		}
 
 		return "redirect:/admin/adminHome";
+		
+		
+	
+		
+		
 	}
-
+	// -------------------------------------------------------------------------------
+	// -------------------------- 회원 관리 컨트롤러 -------------------------------
+	// -------------------------------------------------------------------------------
+	
+	
+	@GetMapping("/admMember/admUser")
+	public String user(Model model) {
+		List <AdmMemberVO> userlist = adminUserService.getUserSearch();
+		System.out.println(userlist);
+		model.addAttribute("userlist", userlist);
+		return "admin/admMember/admUser";
+		
+		
+	}
+	
+	
+	@PostMapping("/admMember/admUser/update")
+	public String admUserUpdate(String mb_id,String mb_name,String mb_nick,String mb_hp,String mb_stop_date ) {
+		adminUserService.updateUser(mb_id,mb_name,mb_nick,mb_hp,mb_stop_date);
+		return "redirect:/admin/admMember/admUser";
+	}
+		
+	@PostMapping("/admMember/admUser/delet")
+	public String admUserDelet(String mb_id,String mb_name,String mb_nick,String mb_hp,String mb_datetime ) {
+		adminUserService.deletUser(mb_id,mb_name,mb_nick,mb_hp,mb_datetime);
+		return "redirect:/admin/admMember/admUser";
+	}
+		
+		
+		
+	
+		
+		
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
@@ -224,11 +273,26 @@ public class AdminController {
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
 		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id);
+		// 1 갯수 새는 서비스 불러옴 
+		int onesCount = pointSltIdPageService.countOnesInDays(mb_id);
+		
+		// 모델을 하나 더 해서 갯수샌걸 보내줍니다 
 		model.addAttribute("list", sltPointOne);
+		model.addAttribute("onesCount", onesCount);  
 		return "/admin/admDaycheck/daycheckAdm";
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 주문내역 조회 컨트롤러 ----------------------------------
 	// -------------------------------------------------------------------------------
@@ -282,7 +346,7 @@ public class AdminController {
 			@RequestParam String mp_yn, @RequestParam int mb_no) {
 
 		adminApprovalService.ynUPDATE(mp_no, mp_type, mp_company, mp_yn, mb_no);
-
+		System.out.println(mb_no);
 		return "redirect:/admin/admApproval/admApprovalPage";
 	}
 
@@ -322,4 +386,46 @@ public class AdminController {
 		return "redirect:/admin/admPoint/admPointPage";
 	}
 
+
+	//-------------------------------------------------------------------------------
+	// --------------------------주식주 증/감 여부 승인  ----------------------------
+	// ------------------------------------------------------------------------------
+
+	
+	// 페이지 이동시 리스트 당겨옴
+	@GetMapping("/admStock/admStock_add")
+	public String stock_add(Model model) {
+		System.out.println("뷰에서 컨트롤러로 진입");
+		List<AdminStock_addVO> selecte = adminStock_addService.nullSelect();
+		System.out.println(" 서비스 다녀온 후 컨트롤러 진입"+selecte);
+		model.addAttribute("list", selecte); 
+		return "/admin/admStock/admStock_add";
+	}
+
+
+
+	// 상세페이지에서  승인/거절시 update 하고 리스트 페이지로 이동
+	@PostMapping("/admStock/admStock_add/choose")
+	public String chooseStock_add( int sa_no, String sa_yn, String sa_feedback) {
+//		sa_yn 체크시 : on // 아니면 "null" 		
+		System.out.println("int sa_no : " + sa_no);
+		System.out.println("String sa_yn : " + sa_yn);
+		System.out.println("String sa_feedback : " + sa_feedback);
+		adminStock_addService.update(sa_no,sa_yn,sa_feedback);
+		
+		return "redirect:/admin/admStock/admStock_add";
+	}
+	
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+
+
