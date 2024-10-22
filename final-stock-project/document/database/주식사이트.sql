@@ -33,7 +33,8 @@ ex) 19960908',
 	`mb_account`	varchar(255)	NULL UNIQUE,
 	`mb_oauthProvider` varchar(30)	NULL,
 	`mb_oauthId` varchar(255)	null,
-	`mb_loginMethod` varchar(50) null default 'internal'
+	`mb_loginMethod` varchar(50) null default 'internal',
+	`mb_followers` int(4) default 0
 );
 
 
