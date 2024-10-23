@@ -137,15 +137,20 @@
 						</div>
 						<div class="wait-list" style="display:none;">
 							<div class="wait-table">
-								<div class="wait-row" th:each="reserve : ${reservation}">
-									<span class="wait-date" th:text="${#strings.substring(reserve.re_datetime, 0, 10)}"></span>
-									<span class="wait-price" th:text="${#numbers.formatInteger(reserve.re_want_price,0,'COMMA')} + '원'"></span>
-									<span class="wait-qty" th:text="${#numbers.formatInteger(reserve.re_qty,0,'COMMA')} + '주'"></span>
-									<span class="wait-state" th:text="${reserve.re_state}"></span>
-									<span class="waite-delete custom-switch">
-										<input type="checkbox" class="custom-control-input" th:id="'switch'+${reserve.re_no}" checked>
-									    <label class="custom-control-label" th:for="'switch'+${reserve.re_no}"> </label>
-									</span>
+								<div class="wait-row" th:each="reserve : ${reservation}" th:data-num="${reserve.re_no}">
+									<div class="wait-top">
+										<i class="fa-solid fa-square-plus" th:if="${reserve.re_state.contains('매수')}" style="color:#dc3545;"></i>
+										<i class="fa-solid fa-square-minus blue" th:if="${reserve.re_state.contains('매도')}" style="color:#007bff;"></i>
+										<span class="wait-date" th:text=" ${#strings.substring(reserve.re_datetime, 5, 10)}"></span>
+										<span class="wait-state" th:text="${reserve.re_state}"></span>&nbsp;
+									</div> 
+									<div class="wait-bottom">
+										<span class="wait-price" th:text="': ' + ${#numbers.formatInteger(reserve.re_want_price,0,'COMMA')} + '원'"></span>
+										<span class="wait-qty" th:text="${#numbers.formatInteger(reserve.re_qty,0,'COMMA')} + '주'"></span>
+										<span class="waite-delete">
+											<button type="button" class="btn" th:onclick="delete_wait([[${reserve.re_no}]]);">X</button>
+										</span>
+									</div>
 								</div>
 								<div class="none-list" th:if="${reservation == null or #lists.isEmpty(reservation)}">
 							    	<div class="none-content">
@@ -436,6 +441,40 @@
 				}
 				
 				calculator_price();
+			}
+			
+			function delete_wait(num){
+				if(confirm("대기를 리스트에서 삭제하시겠습니까?")){
+					var url = "/stock/delete/";
+					url += [[${st_code}]];
+					$.ajax({
+			            url: url,
+			            type: 'post',
+			            data: {re_no: num},
+			            dataType : 'json',
+			            async: false, 
+			            success: function (data) {
+			            	$(".wait-row").each(function() {
+						        // 현재 요소의 data("num") 값이 전달된 num과 같은지 확인
+						        if (num == $(this).data("num")) {
+						            // 일치하는 요소의 내용을 비움
+						            $(this).remove();
+						            //마지막 요소이면?
+						            if ($(this).is(":last-child")) {
+						            	var str = '<div class="none-list">';
+							    			str += '<div class="none-content">';
+							    			str += '<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>';
+						    				str += '<p class="no-title">내역이 없어요</p>';
+				    						str += '</div>';
+				    						str += '</div>';
+						               $(".wait-table").append(str);
+						            }
+						            return false;
+						        }
+						    });
+			            }
+					});
+				}
 			}
 		</script>
 	</main>

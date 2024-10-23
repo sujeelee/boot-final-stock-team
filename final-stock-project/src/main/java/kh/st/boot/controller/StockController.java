@@ -179,4 +179,10 @@ public class StockController {
     	
         return "util/msg";
 	}
+	
+	@PostMapping("/delete/{st_code}")
+	@ResponseBody
+	public boolean reservationDelete(@PathVariable String st_code, @RequestParam String re_no) {
+		return orderService.deleteReservation(st_code, re_no);
+	}
 }
