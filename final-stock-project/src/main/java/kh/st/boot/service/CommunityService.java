@@ -1,6 +1,5 @@
 package kh.st.boot.service;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -32,7 +31,6 @@ public class CommunityService {
 		feel.getSt_code() == null || feel.getMb_id().trim().length() == 0) {
 			return false;
 		}
-		System.out.println("널체크 성공");
 		// 개시글 번호가 음수 이거나 0일 수 없음
 		if (feel.getCg_num() < 1) {
 			return false;
@@ -41,7 +39,6 @@ public class CommunityService {
 		if (feel.getCg_type().equals("board")) {
 			//보더 처리
 			boolean tmp = false;
-			System.out.println("보더처리 진입");
 			CommunityActionVO tmpCA = communityDao.findBoardByObjBoardVO(feel);
 
 			if (tmpCA == null) {

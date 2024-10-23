@@ -276,6 +276,7 @@
 	.board {
 	  border-bottom: 1px solid #e0e0e0;
 	  padding: 15px 0;
+	  list-style: none;
 	}
 	
 	.board-header {

@@ -72,7 +72,7 @@
                                 <button class="like-btn action" type="button"
                                     th:data-boNum="${item.wr_no}"
                                     th:data-action="like"
-                                    th:date-type="board"
+                                    th:data-type="board"
                                     th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'), this.getAttribute('data-type'))">
                                     <i class='bx bxs-heart'></i>
                                     <span style="font-size: 13px"></span>
@@ -80,22 +80,29 @@
                             
                                 <!-- 신고 버튼 -->
                                 <button class="report-btn" type="button"
-                                    th:data-boNum="${item.wr_no}"
-                                    th:data-action="report"
-                                    th:date-type="board"
-                                    th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'), this.getAttribute('data-type'))">
+                                th:data-boNum="${item.wr_no}"
+                                th:data-action="report"
+                                th:data-type="board"
+                                th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'), this.getAttribute('data-type'))">
                                     <i class='bx bx-x-circle' aria-label="신고하기"></i>
                                     <span style="font-size: 13px"></span>
                                 </button>
                         
                             </div>
-                        </form>
-                            <!-- 댓글 버튼 -->
-                            <button class="reply-btn" type="button">
-                                <i class='bx bx-comment' aria-label="댓글 남기기"></i>
-                                <span style="font-size: 13px"></span>
-                            </button>
-                            
+                        
+		                    <!-- 댓글 버튼 -->
+		                    <button class="reply-btn" type="button" th:data-boNum="${item.wr_no}">
+		                        <i class='bx bx-comment' aria-label="댓글 남기기"></i>
+		                        <span style="font-size: 13px"></span>
+		                    </button>
+		                    
+		                    <!-- 댓글 입력 폼 -->
+		                    <div class="comment-input" style="display:none;">
+		                    	<input type="hidden" name="wr_no" th:value="${item.wr_no}">
+		                        <input type="text" class="comment-text" placeholder="댓글을 입력하세요." required>
+		                        <button type="button" class="submit-comment-btn">등록</button>
+		                    </div>
+		                  </form>                           
                     </li>
                 </ul>
             </div>
@@ -182,19 +189,17 @@
             });
         }
 
-        function handleAction(cg_num, cg_action) {
+        function handleAction(cg_num, cg_action, cg_type) {
             //보드만
             let cg_like = "";
             let cg_report = "";
-
             if(cg_action == 'like'){cg_like = 'like'}
             if(cg_action == 'report'){cg_report = 'report'}
-
             const feel = {
                 cg_num: cg_num,
                 cg_like: cg_like,
                 cg_report: cg_report,
-                cg_type: cg_type
+                cg_type : cg_type
             };
 
             console.log(feel);
@@ -225,7 +230,48 @@
             });
         }
 
+        
+        $(document).on('click', '.reply-btn', function() {
+            const commentInputDiv = $(this).siblings('.comment-input');
+            commentInputDiv.toggle();  // 댓글 입력 필드 토글
+        });
+        
+        
+        $(document).on('click', '.submit-comment-btn', function() {
+        	
+        	const wrNo = $(this).siblings('input[name="wr_no"]').val(); // 숨겨진 wr_no
+        	const commentText = $(this).siblings('.comment-text').val(); // 댓글 내용
+            
+        	console.log(wrNo)
+            console.log(commentText);
+            
+            let url = "/stock/" + /*[[${stock.st_code}]]*/ ''; // 주식 코드 추가
+            url += "/community/comment";
+            if (commentText.trim() === '') {
+                alert('댓글을 입력하세요.');
+                return;
+            }
 
+            // AJAX로 댓글 전송
+            $.ajax({
+                type: 'POST',
+                url: url ,
+                data: JSON.stringify({
+                	wr_no: wrNo,          
+                    co_content: commentText 
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('댓글이 등록되었습니다:', response);
+                    // 댓글 목록 업데이트 로직 추가
+                    commentInput.val('');  // 입력 필드 초기화
+                    // 댓글 목록을 다시 가져오는 AJAX 요청을 추가할 수 있습니다.
+                },
+                error: function(error) {
+                    console.error('댓글 등록 오류:', error);
+                }
+            });
+        });
 
 
     </script>
