@@ -208,9 +208,6 @@ function checkEmailCode(){
     const mail = $('#email_input').val();
     const code = $('#code').val();
 
-    console.log(mail)
-    console.log(code)
-
     $.ajax({
         url: '/mail/ajax/get_check',
         method: 'post',
@@ -218,7 +215,6 @@ function checkEmailCode(){
         data : {evc_email : mail,
                 code : code},
         success: function (data) {
-            console.log(data)
             if(data == 'true'){
                 $('#code').attr("readonly", true);
                 $('#codeCheck').remove();
@@ -259,8 +255,12 @@ function startTimer(duration) {
             $('#email').css("background-color", "#096c8a");
 
             // 이메일 입력을 다시 가능하게 하고 버튼을 복구
-            $('#email_input').attr("readonly", false);
-            $('#email_input').val(''); // 이메일 입력 필드 초기화
+            let empty = isEmptyCheck($('#mb_loginMethod').val());
+            console.log(empty);
+            if(empty){
+                $('#email_input').attr("readonly", false);
+                $('#email_input').val(''); // 이메일 입력 필드 초기화
+            }
             $('#code').remove();  // 인증 코드 필드 제거
             $('#codeCheck').remove();  // 인증 확인 버튼 제거
 
@@ -273,17 +273,12 @@ function startTimer(duration) {
 
 
 function removeEmail_varification(mail){
-    var isEmpty = function(mail){
-        if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){
-          return true
-        }else{
-          return false
-        }
-      };
-
-    if (isEmpty == true){
+    let empty = isEmptyCheck(mail);
+    if (empty == true){
         mail = $('#email_input').val();
     }
+    console.log(empty)
+    console.log(mail)
     $.ajax({
         url: '/mail/ajax/delete_mail',
         type: 'POST',
