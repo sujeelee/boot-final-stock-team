@@ -22,10 +22,10 @@ public class KakaoLoginController {
         String accessToken = kakaoService.getAccessTokenFromKakao(code);        
         KakaoUserInfo userInfo = kakaoService.getUserInfo(accessToken); 
 
-        if (userInfo != null) {
-            kakaoService.kakaoLogout(accessToken); //로그인해서 정보만 가져온 뒤 로그아웃
-            System.out.println("카카오 로그아웃 완료");
-        }
+        // if (userInfo != null) {
+        //     kakaoService.kakaoLogout(accessToken); //로그인해서 정보만 가져온 뒤 로그아웃
+        //     System.out.println("카카오 로그아웃 완료");
+        // }
         //카카오 로그인 >> 정보를 가져온 뒤 DB에 저장 >> 카카오 로그아웃
         System.out.println("accessToken: " + accessToken);
         System.out.println("userInfo: " + userInfo.getKakaoAccount().getEmail());
