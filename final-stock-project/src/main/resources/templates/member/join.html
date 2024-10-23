@@ -220,6 +220,10 @@ function checkEmailCode(){
                 $('#codeCheck').remove();
                 $('#ec_checked').val("t");
                 alert("Email 인증 성공");
+
+                //인터벌을 멈추고 싶은 위치
+                clearInterval(timerInterval);  // 타이머 인터벌 중단
+                
                 removeEmail_varification(mail);
             }else{
                 alert("잘못된 코드입니다! 다시 확인해주세요!")
@@ -234,9 +238,11 @@ function checkEmailCode(){
 
 //타이머
 
+var timerInterval;
+
 function startTimer(duration) {
     var timer = duration, minutes, seconds;
-    var timerInterval = setInterval(function () {
+    timerInterval = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
 
@@ -256,7 +262,8 @@ function startTimer(duration) {
 
             // 이메일 입력을 다시 가능하게 하고 버튼을 복구
             let empty = isEmptyCheck($('#mb_loginMethod').val());
-            console.log(empty);
+            
+            //카카오, 네이버면 이메일을 지우지 않음
             if(empty){
                 $('#email_input').attr("readonly", false);
                 $('#email_input').val(''); // 이메일 입력 필드 초기화
@@ -296,6 +303,15 @@ function removeEmail_varification(mail){
     });
 
 }
+
+window.onbeforeunload = function (event) {
+	// 표준에 따라 기본 동작 방지
+    event.preventDefault();
+    location.href = "이동할 페이지 주소";
+[출처] 자바스크립트 페이지 이동 (location.href)|작성자 창공
+    location.href = "이동할 페이지 주소";
+}
+
 
 </script>
 
