@@ -47,14 +47,14 @@
 		set cg_report = ''
 		where mb_id = #{mb_id} and cg_type = #{cg_type} and cg_num = #{cg_num}
 	</update>
+
 	<insert id="insertComment">
 		INSERT INTO comment (wr_no, mb_id, co_content)
         VALUES (#{wr_no}, #{mb_id}, #{co_content}) 
 	</insert>
-	    <select id="getCommentList" resultType="CommentVO">
-    	SELECT *
-    	FROM comment
-    	WHERE wr_no = #{wr_no}
-		ORDER BY wr_no DESC
+
+	<select id="getCommentList" resultType="CommentVO">
+		SELECT * FROM comment where wr_no = 2 order by co_id desc 
     </select>
+
 </mapper>

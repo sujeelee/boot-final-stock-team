@@ -84,10 +84,8 @@ public class CommunityService {
 		
 	}
 
-	public List<CommentVO> getCommentList(String wr_no) {
-		if(wr_no == null) {
-			return null;
-		}
+	public List<CommentVO> getCommentList(int wr_no) {
+
 		return communityDao.getCommentList(wr_no);
 	}
 

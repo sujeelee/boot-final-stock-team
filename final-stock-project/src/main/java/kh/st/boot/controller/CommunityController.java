@@ -138,13 +138,23 @@ public class CommunityController {
 		result.put("res", "s");
 		return result;
 	}
+
+
 	@PostMapping("/replaceComment")
-	public String replaceCommentList_post(Model mo, Principal principal,@RequestBody @PathVariable String wr_no){
-		List<CommentVO> list = communityService.getCommentList(wr_no);
+	public String replaceCommentList_post(Model mo, Principal principal, @RequestParam Map<String, Object> paramMap){
+		List<CommentVO> colist = communityService.getCommentList(Integer.parseInt(paramMap.get("wr_no").toString()));
+		
+
+		
+		System.out.println("paramMap : "+ paramMap );
+		System.out.println("colist : "+ colist);
+
 		if (principal != null) {
 			mo.addAttribute("userInfo", principal.getName());
 		}
-		mo.addAttribute("list", list);
+		
+		
+		mo.addAttribute("colist", colist);
 		return "community/community :: #replace_comment";
 	}
 	

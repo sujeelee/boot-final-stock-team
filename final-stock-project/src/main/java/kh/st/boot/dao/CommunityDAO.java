@@ -32,7 +32,7 @@ public interface CommunityDAO {
 
 	void insertComment(CommentVO newComment);
 
-	List<CommentVO> getCommentList(String wr_no);
+	List<CommentVO> getCommentList(int wr_no);
  
 
 }
