@@ -110,7 +110,6 @@ public class MemberController {
     //회원가입
     @GetMapping("/join")
     public String join(){
-    	//화면 미구현
     	return "member/join";
     }
     

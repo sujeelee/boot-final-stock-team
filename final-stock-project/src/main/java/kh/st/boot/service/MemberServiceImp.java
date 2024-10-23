@@ -72,15 +72,20 @@ public class MemberServiceImp implements MemberService{
     @Override
     public Boolean join(JoinDTO user_) {
         //닉네임과 이름은 중복이 가능하다 가정함
+        
+
         if (user_ == null) {
             return false;
         }
+
+        System.out.println(user_.getMb_loginMethod());
+
         //아이디 공백 체크
         if (user_.getId() == null || user_.getId().trim().length() == 0) {
             return false;
         }
         //아이디 Regex
-        if (!Check_Regex(user_.getId(), "^\\w{8,13}$")) {
+        if (!Check_Regex(user_.getId(), "^\\w{8,20}$") && user_.getMb_loginMethod().equals("internal")) {
             return false;
         }
         //비밀번호 공백 체크
@@ -88,7 +93,7 @@ public class MemberServiceImp implements MemberService{
             return false;
         }
         //비밀번호 Regex
-        if (!Check_Regex(user_.getPw(), "^[a-zA-Z0-9!@#$]{8,15}$")) {
+        if (!Check_Regex(user_.getPw(), "^[a-zA-Z0-9!@#$]{8,20}$")) {
             return false;    
         }
         //중복 체크
