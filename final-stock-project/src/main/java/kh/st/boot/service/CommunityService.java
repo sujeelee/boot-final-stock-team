@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.CommunityDAO;
-import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.vo.BoardVO;
-import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
 import lombok.AllArgsConstructor;
 
@@ -15,37 +13,70 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CommunityService {
 
-    private CommunityDAO communityDAO;
-    
-//    public void addLike(int wr_no) {
-//        communityDAO.incrementLikes(wr_no);
-//    }
-//
-//    public void addReport(int wr_no) {
-//        communityDAO.incrementReports(wr_no);
-//    }
-//
-//    public void addComment(CommentVO comment) {
-//        communityDAO.addComment(comment);
-//    }
+    private CommunityDAO communityDao;
 
 	public void insertBoard(BoardVO newBoard) {
-		communityDAO.insertBoard(newBoard);		
+		communityDao.insertBoard(newBoard);		
 	}
 
 	public List<BoardVO> getBoardList(String st_code) {
 		if(st_code == null) {
 			return null;
 		}
-		return communityDAO.getBoardList(st_code);
+		return communityDao.getBoardList(st_code);
 	}
 
-	public CommunityActionVO nuguaction(Integer wr_no, String mb_id) {
-        CommunityActionVO action = communityDAO.nuguaction(wr_no, mb_id);
-       
-        if (action == null) {
-            return null;
-        }
-        return action;
-    }
+	public boolean setFeelAction(CommunityActionVO feel) {
+		if (feel == null || feel.getMb_id() == null || 
+		feel.getSt_code() == null || feel.getMb_id().trim().length() == 0) {
+			return false;
+		}
+		// 개시글 번호가 음수 이거나 0일 수 없음
+		if (feel.getCg_num() < 1) {
+			return false;
+		}
+		
+		if (feel.getCg_type().equals("board")) {
+			//보더 처리
+			boolean tmp = false;
+			CommunityActionVO tmpCA = communityDao.findBoardByObjBoardVO(feel);
+
+			if (tmpCA == null) {
+				tmp = communityDao.createBoardOfCommunityAction(feel);
+				return tmp;
+			}
+
+			if (feel.getCg_like().equals("like")) {
+				if(tmpCA.getCg_like() == null || tmpCA.getCg_like().trim().length() == 0){
+					tmp = communityDao.updateBoardOfCommunityAction_setLike(feel);
+				} else {
+					tmp = communityDao.updateBoardOfCommunityAction_setLikeNull(feel);
+				}
+			} else if(feel.getCg_report().equals("report")) {
+				if (tmpCA.getCg_report() == null || tmpCA.getCg_report().trim().length() == 0) {
+					tmp = communityDao.updateBoardOfCommunityAction_setReport(feel);
+				} else {
+					tmp = communityDao.updateBoardOfCommunityAction_setReportNull(feel);
+				}
+				
+			}
+			return tmp;
+		}
+
+
+		if (feel.getCg_type().equals("다야 나와라")) {
+			//comment 처리 (후추)
+
+
+
+
+
+
+		}
+
+
+		return false;
+	}
+
+
 }
