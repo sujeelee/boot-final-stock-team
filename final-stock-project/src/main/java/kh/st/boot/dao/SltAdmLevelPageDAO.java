@@ -17,12 +17,17 @@ public interface SltAdmLevelPageDAO {
 	boolean insertAdmLv(@Param("lv_name")String lv_name,
 						@Param("lv_num")int lv_num, 
 						@Param("lv_alpha")String lv_alpha,
-						@Param("lv_auto_use")String lv_auto_use,
+						@Param("lv_auto_use")char lv_auto_use,
 						@Param("lv_up_limit") int lv_up_limit);
 
 	void dltAdmLvdao(AdminLevelPageVO adminLevelPageVO);
 
+
 	void updateAdmLv(AdminLevelPageVO level);
+
+	AdminLevelPageVO selectAdmLev(int lv_num);
+
+	void updateAdmLev(AdminLevelPageVO admLevVO);
 
 	
 

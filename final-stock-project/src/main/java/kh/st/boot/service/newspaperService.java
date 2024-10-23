@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.NewspaperDAO;
 import kh.st.boot.model.vo.NewsPaperVO;
+import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.PageMaker;
 
 @Service
 public class newspaperService {
@@ -15,8 +17,8 @@ public class newspaperService {
 	@Autowired
 	private NewspaperDAO newspaperDAO;
 
-	public List<NewsPaperVO> getAllNewspapers() {
-		return newspaperDAO.selectAllNewspapers();
+	public List<NewsPaperVO> getAllNewspapers(Criteria cri) {
+		return newspaperDAO.selectAllNewspapers(cri);
 	}
 
 	public boolean addNewspaper(String np_name, byte np_use) {
@@ -39,8 +41,8 @@ public class newspaperService {
 		newspaperDAO.deleteNewspaper(NewsPaperVO);
 	}
 
-	public List<NewsPaperVO> searchNewspapers(String np_name, byte useByte, int np_no) {
-		List<NewsPaperVO> allNewspapers = newspaperDAO.selectAllNewspapers(); // 모든 신문사 가져오기
+	public List<NewsPaperVO> searchNewspapers(String np_name, byte useByte, int np_no, Criteria cri) {
+		List<NewsPaperVO> allNewspapers = newspaperDAO.selectAllNewspapers(cri); // 모든 신문사 가져오기
 		List<NewsPaperVO> filteredNewspapers = new ArrayList<>();
 
 		
@@ -57,6 +59,11 @@ public class newspaperService {
 		}
 
 		return filteredNewspapers; // 필터링된 신문사 목록 반환
+	}
+
+	public PageMaker getPageMaker(Criteria cri) {
+		int count = newspaperDAO.selectCountList(cri);
+		return new PageMaker(10, cri, count);
 	}
 
 }

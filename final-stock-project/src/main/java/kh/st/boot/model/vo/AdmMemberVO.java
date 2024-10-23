@@ -16,7 +16,7 @@ public class AdmMemberVO {
     private String mb_password;
     private String mb_name;	// 이름
     private String mb_nick;
-    private String mb_hp;
+    private String mb_ph;
     private String mb_email;
     private int mb_zip; //(11자리)
     private String mb_addr;

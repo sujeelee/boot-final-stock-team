@@ -3,13 +3,20 @@ package kh.st.boot.dao;
 import java.util.List;
 
 import kh.st.boot.model.vo.AdmMemberVO;
+import kh.st.boot.pagination.Criteria;
 
 public interface AdmUserDAO {
 
-	List<AdmMemberVO> AdmUserSearch();
+	List<AdmMemberVO> selectAdmUser(Criteria cri);
 
-	 void AdmUserUpdate(String mb_id, String mb_name, String mb_nick, String mb_hp, String mb_stop_date);
+	int selectCountList(Criteria cri);
 
-	void AdmUserDelet(String mb_id, String mb_name, String mb_nick, String mb_hp, String mb_datetime);
+	AdmMemberVO UseSelect(int mb_no);
+
+	void UseUpdate(AdmMemberVO admMemberVO);
+
+//	AdmMemberVO UserDelete(int mb_no);
+	
+	int UserDelete(int mb_no);
 
 }

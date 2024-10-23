@@ -14,60 +14,78 @@
 <title>관리자 페이지</title>
 </head>
 <body>
-	<div id="wrapper" class="conent">
+	<div id="wrapper">
 		<div id="container">
 			<h1 id="container_title">주문내역</h1>
-			<div id="container_main">
+			<div id="container_main" class="content">
 				<!-- 검색기능 form -->
 				<form action="/admin/admOrder/orderAdm/search" method="post"
-					class="local_sch">
+					class="local_sch" style="text-align: left;">
 					<select>
 						<option value="0">회원아이디</option>
 						<option value="1">회원이름</option>
 						<option value="2">주문번호</option>
 						<option value="3">주식명</option>
 					</select> <input type="text" name="search" required class="in_sch">
-					<button type="submit">사용자 검색</button>
+					<button type="submit" class="btn_submit btn">검색</button>
 				</form>
 				<div class="tbl_col">
-					<form action="/admin/admOrder/orderAdm/delet" method="post">
-						<table>
-							<thead>
-								<tr>
-									<th>주문번호</th>
-									<th style="width: 420px">회원아이디</th>
-									<th>주문자명</th>
-									<th>결제금액</th>
-									<th>결제일</th>
-									<th>주식명</th>
-									<th>주식 주 개수</th>
-									<th>주식 주당 가격</th>
-									<th>관리</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- 값 불러오기 -->
-								<tr th:each="list : ${list}">
-									<td th:text="${list.od_id}"></td>
-									<td th:text="${list.mb_id}"></td>
-									<td th:text="${list.od_name}"></td>
-									<td th:text="${list.od_price}"></td>
-									<td th:text="${list.od_date}"></td>
-									<td th:text="${list.od_st_name}"></td>
-									<td th:text="${list.od_qty}"></td>
-									<td th:text="${list.od_st_price}"></td>
-									<td class="td_upd" style="text-align: center;">
-											<input type="hidden" name="od_id" th:value="${list.od_id} " placeholder="주문번호" required>
-											<button type="submit"
-												onclick="return confirm('정말 삭제하시겠습니까?');">내역삭제</button>
-									</td>
-								</tr>
-								<tr th:if="${#lists.isEmpty(list)}">
-									<td colspan="9" class="no-data">검색 결과가 없습니다.</td>
-								</tr>
-							</tbody>
-						</table>
-					</form>
+					<table>
+						<thead>
+							<tr>
+								<th>주문번호</th>
+								<th style="width: 420px">회원아이디</th>
+								<th>주문자명</th>
+								<th>결제금액</th>
+								<th>결제일</th>
+								<th>주식명</th>
+								<th>주식 주 개수</th>
+								<th>주식 주당 가격</th>
+								<th>관리</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- 값 불러오기 -->
+							<tr th:each="list : ${list}">
+								<td th:text="${list.od_id}"></td>
+								<td th:text="${list.mb_id}"></td>
+								<td th:text="${list.od_name}"></td>
+								<td th:text="${list.od_price}"></td>
+								<td th:text="${list.od_date}"></td>
+								<td th:text="${list.od_st_name}"></td>
+								<td th:text="${list.od_qty}"></td>
+								<td th:text="${list.od_st_price}"></td>
+
+								<td class="td_upd" style="text-align: center;">
+									<form action="/admin/admOrder/orderAdm/delet" method="post">
+										<input type="hidden" name="od_id" th:value="${list.od_id} "
+											placeholder="주문번호" required>
+										<button type="submit" class="btn_submit btn"
+											onclick="return confirm('정말 삭제하시겠습니까?');">내역삭제</button>
+									</form>
+								</td>
+							</tr>
+							<tr th:if="${#lists.isEmpty(list)}">
+								<td colspan="9" class="no-data">검색 결과가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
+					<div id="display_box">
+						<ul class="pagination" th:object="${pm_ord}"
+							th:if="${pm_ord.endPage != 0}">
+							<li th:if="${pm_ord.prev}"><a
+								th:href="@{/admin/admOrder/orderAdm(page=${pm_ord.startPage - 1})}">◀</a>
+							</li>
+							<li
+								th:each="i : ${#numbers.sequence(pm_ord.startPage, pm_ord.endPage)}"
+								th:classappend="${pm_ord.cri.page} == ${i} ? 'active' : ''"><a
+								th:href="@{/admin/admOrder/orderAdm(page=${i})}" th:text="${i}"></a></li>
+							<li th:if="${pm_ord.next}"><a
+								th:href="@{/admin/admOrder/orderAdm(page=${pm_ord.endPage + 1})}">▶</a>
+							</li>
+						</ul>
+					</div>
+
 				</div>
 
 			</div>
