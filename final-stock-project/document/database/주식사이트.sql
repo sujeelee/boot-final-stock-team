@@ -112,7 +112,8 @@ CREATE TABLE `stock_info` (
 CREATE TABLE `comment` (
 	`co_id`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
 	`wr_no`	INT(11) NOT NULL,
-	`co_good`	int(11)	NULL,
+	`co_good` int(5) DEFAULT 0,
+	`co_bad` int(5) DEFAULT 0,
 	`co_content`	text	NULL,
 	`mb_id`	varchar(255)	NULL
 );
