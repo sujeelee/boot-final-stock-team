@@ -45,6 +45,12 @@ public class MailController {
     }
 
 
+    @PostMapping("ajax/delete_mail")
+    public @ResponseBody boolean delete_Email_Check(@RequestParam("evc_email") String evc_email){
+        boolean res = mailService.deleteMailCheckOnDB(evc_email);
+        return res;
+    }
+
 
     //MailSend
     public boolean mailSend(String to, String title, String content) {

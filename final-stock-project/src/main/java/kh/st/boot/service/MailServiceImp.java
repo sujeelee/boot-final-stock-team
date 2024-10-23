@@ -28,5 +28,13 @@ public class MailServiceImp implements MailService{
 		}
 		return false;
 	}
+
+	@Override
+	public boolean deleteMailCheckOnDB(String evc_email) {
+		if (evc_email == null) {
+			return false;
+		}
+		return mailDao.deleteMailCodeByMail(evc_email);
+	}
     
 }
