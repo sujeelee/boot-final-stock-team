@@ -6,7 +6,6 @@
         SELECT * FROM day_check
     </select>
 
-
 	<select id="OneSelect" resultType="AdmDaycheckVO">
         SELECT * FROM day_check 
         WHERE mb_id = #{mb_Id}

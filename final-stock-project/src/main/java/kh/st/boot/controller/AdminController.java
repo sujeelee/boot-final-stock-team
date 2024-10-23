@@ -151,8 +151,9 @@ public class AdminController {
 		
 	
 	// -------------------------------------------------------------------------------
-	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
+	// -------------------------- 뉴스 관리 컨트롤러 ---------------------------------
 	// -------------------------------------------------------------------------------
+	
 	// newspaper 뉴스
 	@GetMapping("/admNews/news")
 	public String newsPage(Model model, Criteria cri) {
@@ -298,9 +299,9 @@ public class AdminController {
 	
 	
 	// -------------------------------------------------------------------------------
-	// -------------------------- 포인트 적립내역 검색 컨트롤러
+	// -------------------------- 출석체크 포인트 적립내역 검색 컨트롤러
 	// -----------------------------------
-	// -------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------                    
 
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
@@ -310,9 +311,8 @@ public class AdminController {
 		return "/admin/admDaycheck/daycheckAdm";
 	}
 
-	
 	// 검색하기
-	
+
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
 		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id);
@@ -323,11 +323,9 @@ public class AdminController {
 		model.addAttribute("list", sltPointOne);
 		model.addAttribute("onesCount", onesCount);  
 		return "/admin/admDaycheck/daycheckAdm";
-		
+
 	}
-	
-	
-	
+
 	
 	
 	
