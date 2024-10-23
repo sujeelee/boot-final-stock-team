@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.st.boot.model.vo.BoardVO;
+import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
 import kh.st.boot.service.CommunityService;
 import kh.st.boot.service.StocksHeaderService;
@@ -115,5 +116,37 @@ public class CommunityController {
 		}
 		return result;
 	}
+	@PostMapping("/comment")
+	@ResponseBody
+	public Map<String, Object> CommentPostMethod(Model mo, @RequestParam String co_content, int wr_no, Principal principal) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		if (principal == null) {
+			result.put("res", "error");
+			result.put("msg", "회원만 작성 가능합니다.");
+			return result;
+		}				
+		CommentVO newComment = new CommentVO(); // 새로운 CommentVO 객체 생성
+		newComment.setMb_id(principal.getName());
+		newComment.setWr_no(wr_no);
+		newComment.setCo_content(co_content);
+		
+		System.out.println("comment : " + co_content);
+		System.out.println("newcomment : " + newComment );
+
+
+		communityService.insertComment(newComment);
+		result.put("res", "s");
+		return result;
+	}
+	@PostMapping("/replaceComment")
+	public String replaceCommentList_post(Model mo, Principal principal,@RequestBody @PathVariable String wr_no){
+		List<CommentVO> list = communityService.getCommentList(wr_no);
+		if (principal != null) {
+			mo.addAttribute("userInfo", principal.getName());
+		}
+		mo.addAttribute("list", list);
+		return "community/community :: #replace_comment";
+	}
+	
 
 }

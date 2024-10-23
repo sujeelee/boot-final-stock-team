@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.CommunityDAO;
 import kh.st.boot.model.vo.BoardVO;
+import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
 import lombok.AllArgsConstructor;
 
@@ -76,6 +77,18 @@ public class CommunityService {
 
 
 		return false;
+	}
+
+	public void insertComment(CommentVO newComment) {
+		communityDao.insertComment(newComment);
+		
+	}
+
+	public List<CommentVO> getCommentList(String wr_no) {
+		if(wr_no == null) {
+			return null;
+		}
+		return communityDao.getCommentList(wr_no);
 	}
 
 

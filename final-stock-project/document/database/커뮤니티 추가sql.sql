@@ -1,5 +1,5 @@
 
-
+DROP TABLE `community_action`
 CREATE TABLE `stockandfund`.`community_action` (
   `cg_no` INT NOT NULL AUTO_INCREMENT,
   `cg_num` INT NULL COMMENT '게시판 이거나 댓글 기본키',
