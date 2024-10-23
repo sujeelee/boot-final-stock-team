@@ -91,7 +91,10 @@
 								</div>
 
 								<!-- 댓글 버튼 -->
-								<button class="reply-btn" type="button">
+								<button class="reply-btn" type="button"
+								th:data-wrNo="${item.wr_no}"
+								th:onclick="replaceCommentListbytoggle(this.getAttribute('data-wrNo'))"
+								>
 									<i class='bx bx-comment' aria-label="댓글 남기기"></i> <span
 										style="font-size: 13px"></span>
 								</button>
@@ -109,20 +112,21 @@
 							
 
 
-						<div id="replace_comment" style="display: none;">
+						<div th:id="'replace_comment'+${item.wr_no}">
+						<div id="replace_comment">
 							<ul class="comment-list" th:each="item : ${colist}">
 								<li class="comment">
-									<div class="board-header">
-										<address class="board-author">
-											<span class="author-name">[[${item.mb_id}]]</span>
-											<span class="author-badge">만약 유저마다 레벨이 있을 경우 필요합니다.</span>
+									<div class="comment-header">
+										<address class="comment-author">
+											<span class="comment-author-name">[[${item.mb_id}]]</span>
+											<span class="comment-author-badge">만약 유저마다 레벨이 있을 경우 필요합니다.</span>
 										</address>
 									</div>
-									<div class="board-body">
-										<p class="board-text">[[${item.co_content}]]</p>
+									<div class="comment-body">
+										<p class="comment-text">[[${item.co_content}]]</p>
 									</div>
 									<form onsubmit="return false;">
-										<div class="board-footer">
+										<div class="commentfooter">
 											<!-- 좋아요 버튼 -->
 
 											<button class="like-btn action" type="button"
@@ -147,7 +151,7 @@
 								</li>
 							</ul>
 						</div>
-
+					</div>
 
 						
 					</ul>
@@ -285,7 +289,9 @@
             commentInputDiv.toggle();  // 댓글 입력 필드 토글
         });
         
-        
+        function replaceCommentListbytoggle(wr_no) {
+        	replaceCommentList(wr_no);
+		}
         $(document).on('click', '.submit-comment-btn', function() {
         	
         	const wrNo = $(this).siblings('input[name="wr_no"]').val(); // 숨겨진 wr_no
@@ -335,7 +341,7 @@
 					type: 'POST',
 					data: comment, 
 					success: function (data) {
-						$('#replace_comment').replaceWith(data);
+						$('#replace_comment'+wrNo).replaceWith(data);
 						console.log(data)
 						$('.comment-text').val('');
 					},

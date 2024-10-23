@@ -54,7 +54,7 @@
 	</insert>
 
 	<select id="getCommentList" resultType="CommentVO">
-		SELECT * FROM comment where wr_no = 2 order by co_id desc 
+		SELECT * FROM comment where wr_no = #{wr_no} order by co_id desc 
     </select>
 
 </mapper>
