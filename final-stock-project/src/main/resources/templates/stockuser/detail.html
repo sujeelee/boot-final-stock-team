@@ -60,7 +60,7 @@
 					<div class="order-header">
 						<span class="mini-title">주문하기</span>
 					</div>
-					<div class="order-div" th:if="${mb_id == null}">
+					<div class="order-div" th:if="${member.mb_id == null}">
 						<div class="not-member">
 							<div class="none-list">
 						    	<div class="none-content">
@@ -73,7 +73,7 @@
 						    </div>
 						</div>
 					</div>
-					<div class="order-div" th:if="${mb_id != null}">
+					<div class="order-div" th:if="${member.mb_id != null}">
 						<div class="btn-list order-btn-list">
 							<button type="button" class="btn btn-outline-danger order-type on" value="buy" onclick="order_status(this);">구매</button>
 							<button type="button" class="btn btn-outline-primary order-type" value="sell" onclick="order_status(this);">판매</button>
@@ -89,11 +89,16 @@
 							</div>
 							<form name="forderform" th:action="@{/stock/orderupdate}" class="form-tab" onsubmit="return forderform_update(this);" method="POST">
 								  <input type="hidden" name="stock_total_qty" th:value="${stock.st_qty}">
+								  <input type="hidden" name="percent" th:value="${config.cf_percent}">
+								  <input type="hidden" name="po_percent" th:value="${config.cf_od_point}">
 								  <input type="hidden" name="od_st_code" th:value="${st_code}">
 								  <input type="hidden" name="od_price" value="0">
 								  <input type="hidden" name="status" value="now">
 								  <input type="hidden" name="od_type" value="buy">
-								  <input type="hidden" name="mb_id" th:value="${mb_id}">
+								  <input type="hidden" name="od_st_name" th:value="${stock.st_name}">
+								  <input type="hidden" name="mb_id" th:value="${member.mb_id}">
+								  <input type="hidden" name="od_name" th:value="${member.mb_name}">
+								  <input type="hidden" name="od_st_price" th:value="${today.si_price}">
 								  <div class="form-content">
 									<div class="form-group price-button rigth">
 									  		<div class="st-label">구매가격</div>
@@ -101,7 +106,7 @@
 									  </div>
 									  <div class="form-group price-button left">
 									  	<div>
-									  		<input type="text" readonly name="od_st_price" id="od_st_price" th:data-orgin="${today.si_price}" th:value="${today.si_price}" data-tag="od_st_price" onkeyup="calculator_qty(this)">
+									  		<input type="text" readonly name="st_price" id="od_st_price" th:data-orgin="${today.si_price}" th:value="${today.si_price}" data-tag="od_st_price" onkeyup="calculator_qty(this)">
 									  		<div class="btn-group-qty price-hidden" style="display:none;">
 										  		<button type="button" class="btn" data-tag="od_st_price" value="plus" onclick="calculator_qty(this);">+</button>
 												<button type="button" class="btn" data-tag="od_st_price" value="minus" onclick="calculator_qty(this);">-</button>
@@ -123,7 +128,7 @@
 									  	<div>총 금액</div>
 								  	</div>
 								  	<div class="total-info left">
-								  		<div class="deposit" th:data-deposit="${deposit}" th:data-stocks="'1'" th:text="${#numbers.formatInteger(deposit, 0, 'COMMA')} + '원'"></div>
+								  		<div class="deposit" th:data-deposit="${deposit}" th:data-stocks="${myStocks.stocksQty}" th:text="${#numbers.formatInteger(deposit, 0, 'COMMA')} + '원'"></div>
 									  	<div class="tot-price">0원</div>
 								  	</div>
 								  </div>
@@ -151,36 +156,36 @@
 							</div>
 						</div>
 					</div>
-					<div class="mystock-div" th:if="${mb_id != null}">
+					<div class="mystock-div" th:if="${member.mb_id != null}">
 						<div class="order-header">
 							<span class="mini-title">내 주식</span>
 						</div>
-						<div class="mystock-info">
-						<div class="mystock-list form-content">
-							<div class="mystock-row rigth">
-								<div class="my-price">1주 평균금액</div>
-								<div class="my-qty">보유 수량</div>
-								<div class="my-total">총 금액</div>
-								<div class="my-orign">투자원금</div>
-						    </div>
-						    <div class="mystock-row left">
-								<div class="my-price">269원</div>
-								<div class="my-qty">2주</div>
-								<div class="my-total">546원</div>
-								<div class="my-orign">538원</div>
-						   </div>
+						<div class="mystock-info" th:if="${myStocks.stocksQty > 0}">
+							<div class="mystock-list form-content">
+								<div class="mystock-row rigth">
+									<div class="my-price">1주 평균금액</div>
+									<div class="my-qty">보유 수량</div>
+									<div class="my-total">총 금액</div>
+									<div class="my-orign">투자원금</div>
+							    </div>
+							    <div class="mystock-row left">
+									<div class="my-price" th:text="${#numbers.formatInteger(myStocks.stockAverage, 0,'COMMA')} + '원'"></div>
+									<div class="my-qty" th:text="${#numbers.formatInteger(myStocks.stocksQty,0,'COMMA')} + '주'"></div>
+									<div class="my-total" th:text="${#numbers.formatInteger(myStocks.stockNowPrice,0,'COMMA')} + '원'"></div>
+									<div class="my-orign" th:text="${#numbers.formatInteger(myStocks.stockOrignPrice,0,'COMMA')} + '원'"></div>
+							   </div>
+							</div>
+							<div class="divider"></div>
+							<div class="mystock-list form-content bottom">
+								<div class="mystock-row rigth">
+									<div class="my-price">거래 수수료</div>
+							    </div>
+							    <div class="mystock-row left">
+									<div class="my-price" th:text="${#numbers.formatInteger(myStocks.stockPercent,0,'COMMA')} + '원 예상'"></div>
+							   </div>
+							</div>
 						</div>
-						<div class="divider"></div>
-						<div class="mystock-list form-content bottom">
-							<div class="mystock-row rigth">
-								<div class="my-price">거래 수수료</div>
-						    </div>
-						    <div class="mystock-row left">
-								<div class="my-price">0원 예상</div>
-						   </div>
-						</div>
-						</div>
-					    <div class="none-list" style="display:none;">
+					    <div class="none-list" th:if="${myStocks.stocksQty == 0}">
 					    	<div class="none-content">
 								<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
 					    		<p class="no-title">내역이 없어요</p>
@@ -267,6 +272,7 @@
 				var footer_class = $(".footer-sticky").attr("class");
 				if(type.value != 'wait'){
 					$("input[name=od_type]").val(type.value);
+					calculator_price($("input[name=od_type]").val());
 				} //대기 리스트에서는 필요가 없어요
 				
 				if(type.value == 'sell'){
@@ -365,13 +371,21 @@
 				}
 				
 				if($("input[name=od_type]").val() == 'buy'){
+					
+					var percent = parseInt($("input[name=percent]").val());
+					
 					var deposit = parseInt($(".deposit").data("deposit"));
+					
 					if($(btn).data("tag") == "od_qty"){
 						//var total_price = parseInt($("#od_st_price").val()) * parseInt($("#od_qty").val());
 						var total = org_qty * parseInt($("#od_st_price").val());
+						total += Math.floor(total * percent / 100);
 						if(total > deposit){
-							alert("최대 구매 가능 금액은 " + addCommas(deposit) + "원 입니다.");
-							org_qty = Math.floor(deposit / parseInt($("#od_st_price").val()));
+							if(confirm("최대 구매 가능 금액은 " + addCommas(deposit) + "원 입니다.\n예치금을 충전하러 가시겠습니까?")){
+								location.href="/deposit";
+							}
+							org_qty = deposit / (parseInt($("#od_st_price").val()) + Math.floor(parseInt($("#od_st_price").val()) * percent / 100));
+							org_qty = Math.floor(org_qty);
 						}
 						var stock_total = parseInt($("input[name=stock_total_qty]").val());
 						if(org_qty > stock_total){
@@ -380,6 +394,7 @@
 						}
 					} else {
 						var total = org_qty * parseInt($("#od_qty").val());
+						total += Math.floor(total * percent / 100);
 						if(total > deposit){
 							alert("최대 구매 가능 금액은 " + addCommas(deposit) + "원 입니다.");
 							org_qty = $("#od_st_price").data("orgin");
@@ -393,14 +408,22 @@
 				
 				$("#" + $(btn).data("tag")).val(org_qty);
 				
-				calculator_price();
+				calculator_price($("input[name=od_type]").val());
 			}
 			
-			function calculator_price(){
+			function calculator_price(type){
+				var percent = parseInt($("input[name=percent]").val());
 				var total_price = parseInt($("#od_st_price").val()) * parseInt($("#od_qty").val());
+				if(type == "sell"){
+					total_price -= Math.floor(total_price * percent / 100);
+				} else {
+					total_price += Math.floor(total_price * percent / 100);
+				}
+				
 				$("input[name=od_price]").val(total_price);
 				$(".tot-price").text(addCommas(total_price) + "원");
 			}
+			
 			function control_type(val){
 				$("input[name=status]").val(val);
 				if(val == "wait"){
