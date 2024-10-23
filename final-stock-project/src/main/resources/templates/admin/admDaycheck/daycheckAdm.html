@@ -34,13 +34,29 @@
                             <td th:text="${item.dc_datetime}"></td>
                             <td th:text="${item.mb_id}"></td>
                             <td th:text="${item.po_num}"></td>
-                            <td th:text="${item.dc_days}"></td>
+                            <td th:text="${countDay}"></td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(list)}">
                             <td colspan="4" class="no-data">검색 결과가 없습니다.</td>
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- 페이지네이션 -->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                <div id="display_box" style="text-align: center;">
+                    <ul class="pagination" th:if="${pm_daycheck.endPage != 0}">
+                        <li th:if="${pm_daycheck.prev}">
+                            <a th:href="@{/admin/admDaycheck/daycheckAdm(page=${pm_daycheck.startPage - 1})}">◀</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(pm_daycheck.startPage, pm_daycheck.endPage)}"
+                            th:classappend="${pm_daycheck.cri.page} == ${i} ? 'active' : ''">
+                            <a th:href="@{/admin/admDaycheck/daycheckAdm(page=${i})}" th:text="${i}"></a>
+                        </li>
+                        <li th:if="${pm_daycheck.next}">
+                            <a th:href="@{/admin/admDaycheck/daycheckAdm(page=${pm_daycheck.endPage + 1})}">▶</a>
+                        </li>
+                    </ul>
+                </div>
 
             </div>
             <footer id="ft">

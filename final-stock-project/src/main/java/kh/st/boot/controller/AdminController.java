@@ -305,28 +305,38 @@ public class AdminController {
 
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
-	public String sltAdmPointPage(Model model) {
-		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllPoint();
+	public String sltAdmPointPage(Model model, Criteria cri) {
+		// 전체 검색해서 가져옴 
+		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllPoint(cri);
+		// 서비스에서 날짜 찍혀있는것만 돌려서 가져옵니다 
+		List<Integer> countDay = pointSltIdPageService.sltAllDay(cri);
+		PageMaker pm_daycheck = pointSltIdPageService.getPageMaker(cri);
+		System.out.println(sltPoint);
+		
+		model.addAttribute("countDay", countDay);
 		model.addAttribute("list", sltPoint);
+		model.addAttribute("pm_daycheck", pm_daycheck);
 		return "/admin/admDaycheck/daycheckAdm";
 	}
 
 	// 검색하기
 
 	@PostMapping("/admDaycheck/daycheckAdm/update")
-	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
-		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id);
-		// 1 갯수 새는 서비스 불러옴 
-		int onesCount = pointSltIdPageService.countOnesInDays(mb_id);
+	public String sltIdPointPage(@RequestParam String mb_id, Model model, Criteria cri) {
+		// 검색한 내용 가져오는거?
+		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(cri);
+		//mb_id 아이디 검색함 > 서비스에서 판별하는 메서드를 호출하는걸로 바꿔야함 
+		//List<AdmDaycheckVO> daychCount = pointSltIdPageService.getDaychCount(mb_id);
+		// 페이지메이커 
+		PageMaker pm_daycheck = pointSltIdPageService.getPageMaker(cri);
 		
-		// 모델을 하나 더 해서 갯수샌걸 보내줍니다 
 		model.addAttribute("list", sltPointOne);
-		model.addAttribute("onesCount", onesCount);  
+		model.addAttribute("pm_daycheck", pm_daycheck);
 		return "/admin/admDaycheck/daycheckAdm";
 
 	}
 
-	
+
 	
 	
 	// -------------------------------------------------------------------------------
