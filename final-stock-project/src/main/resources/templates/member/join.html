@@ -45,6 +45,7 @@
         input[type="text"],
         input[type="password"],
         input[type="email"],
+        input[type="number"],
         input[type="date"] {
             border: 1px solid #ccc; /* 테두리 색상 */
             border-radius: 4px; /* 모서리 둥글기 */
@@ -126,8 +127,11 @@
                     <input type="text" name="ph" placeholder="Phone Number">
                     <input type="email" id="email_input" name="email" placeholder="Email"
                     th:value="${not #strings.isEmpty(userInfo)} ? ${userInfo}"
-                    th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'"
-                    >
+                    th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'">
+
+                    <!-- 타이머가 표시될 부분 -->
+                    <div id="timer" style="color: red; margin-top: 10px;"></div>
+
                     <input type="button" id="email" value="이메일 유효성 검사" >
                     <label for="remember-check">
                         <input type="checkbox" id="remember-check" name="emailing"> <span>이메일 수신 동의 확인</span>
@@ -184,8 +188,10 @@ function getEmailCode(mail){
         data : {evc_email : mail},
         success: function (data) {
             $('#email').after('<input type="button" id="codeCheck" value="이메일 코드 확인" >');
-            $('#email').after('<input type="number" id="code"  placeholder="code" >');
-            $('#email').remove();
+            $('#email').after('<input type="number" id="code"  placeholder="code">');
+            $('#email').attr("disabled", true);
+            $('#email').css("background-color", "gray");
+            startTimer(10);  // 5분(300초) 타이머 시작
         },
         error: function (data, status, err) {
             alert("이메일 전송 실패! 이메일이 잘못 되었거나 잠시 후 다시 시도해 주세요.")
@@ -209,11 +215,12 @@ function checkEmailCode(){
         data : {evc_email : mail,
                 code : code},
         success: function (data) {
-            if(data){
+            if(data == 'true'){
                 $('#code').attr("readonly", true);
                 $('#codeCheck').remove();
                 $('#ec_checked').val("t");
                 alert("Email 인증 성공");
+                removeEmail_varification(mail);
             }else{
                 alert("잘못된 코드입니다! 다시 확인해주세요!")
             }
@@ -225,7 +232,73 @@ function checkEmailCode(){
     });
 }
 
+//타이머
+
+function startTimer(duration) {
+    var timer = duration, minutes, seconds;
+    var timerInterval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        $('#timer').text("이메일 전송 완료! 인증 가능 시간 " + minutes + ":" + seconds);
+
+        if (--timer < 0) {
+            clearInterval(timerInterval);
+            $('#timer').text("인증 시간이 만료되었습니다.");
+            removeEmail_varification();//이메일 삭제
+            alert("이메일 인증 시간이 만료되었습니다. 다시 시도해 주세요.");
+
+            $('#email').attr("disabled", false);
+            $('#email').css("background-color", "#096c8a");
+
+            // 이메일 입력을 다시 가능하게 하고 버튼을 복구
+            let empty = isEmptyCheck($('#mb_loginMethod').val());
+            console.log(empty);
+            if(empty){
+                $('#email_input').attr("readonly", false);
+                $('#email_input').val(''); // 이메일 입력 필드 초기화
+            }
+            $('#code').remove();  // 인증 코드 필드 제거
+            $('#codeCheck').remove();  // 인증 확인 버튼 제거
+
+            
+        }
+    }, 1000);  // 1초마다 실행
+}
+
+
+
+
+function removeEmail_varification(mail){
+    let empty = isEmptyCheck(mail);
+    if (empty == true){
+        mail = $('#email_input').val();
+    }
+    console.log(empty)
+    console.log(mail)
+    $.ajax({
+        url: '/mail/ajax/delete_mail',
+        type: 'POST',
+        dataType : 'text',
+        data: {
+            evc_email : mail
+        },
+        success: function(data) {
+            console.log('성공(true 가나오면 성공):', data);
+        },
+        error: function(xhr, status, error) {
+            console.log('에러:', error);
+            // 에러 처리
+        }
+    });
+
+}
+
 </script>
+
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>

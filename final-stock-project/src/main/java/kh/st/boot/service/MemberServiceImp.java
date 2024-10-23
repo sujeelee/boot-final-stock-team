@@ -78,8 +78,6 @@ public class MemberServiceImp implements MemberService{
             return false;
         }
 
-        System.out.println(user_.getMb_loginMethod());
-
         //아이디 공백 체크
         if (user_.getId() == null || user_.getId().trim().length() == 0) {
             return false;
@@ -131,7 +129,17 @@ public class MemberServiceImp implements MemberService{
         New_User.setMb_fail(0);
         New_User.setMb_level(1);
         New_User.setMb_point(50);
+
+        //카카오 로그인인 경우
+        if (user_.getMb_loginMethod().equals("kakao")) {
+            New_User.setMb_loginMethod("kakao");
+        }
+        //네이버 로그인인 경우
+        if (user_.getMb_loginMethod().equals("naver")) {
+            New_User.setMb_loginMethod("naver");
+        }
         
+
 
         boolean res = memberDao.join(New_User);
         System.out.println(res);
