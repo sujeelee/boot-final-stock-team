@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kh.st.boot.model.dto.MyStocksDTO;
 import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
@@ -130,14 +131,17 @@ public class StockController {
 		
 		
 		List<ReservationVO> reservation = null;
+		MyStocksDTO myStocks = new MyStocksDTO();
 		
 		if(mb_id != null) {
 			reservation = orderService.getReservation(st_code, mb_id);
+			myStocks = orderService.totalMyStock(st_code, mb_id);
 		}
 		
 		model.addAttribute("list", list);
 		model.addAttribute("reservation", reservation);
 		model.addAttribute("deposit", deposit);
+		model.addAttribute("myStocks", myStocks);
 		return "stockuser/detail";
 	}
 	
@@ -155,7 +159,6 @@ public class StockController {
 	
 	@PostMapping("orderupdate")
 	public String stockOrder(@RequestParam Map<String, Object> form, Model model, Principal principal) {
-		System.out.println(form);
 		String st_code = (String) form.get("od_st_code");
 		//로그인상태가 아닐 시
         if (principal == null) {
@@ -164,8 +167,16 @@ public class StockController {
         	
             return "util/msg";
         }
-		String orderUpdate = orderService.orderUpdate(form);
+		String result = orderService.orderUpdate(form, model);
+		String msg = "정상적으로 처리되지 않았습니다.";
+		String url = "/stock/" + st_code;
+		if(!result.equals("실패")) {
+			msg = result + "처리 되었습니다.";
+		}
 		
-		return "redirect:/stock/" + st_code;
+		model.addAttribute("msg", msg);
+    	model.addAttribute("url", url);
+    	
+        return "util/msg";
 	}
 }
