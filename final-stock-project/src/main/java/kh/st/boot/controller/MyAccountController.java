@@ -352,7 +352,11 @@ public class MyAccountController {
 			} else {
 				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
 				content_view = stock.getSt_name();
-				content_view += tmps.getDe_content().trim().split("매수 :")[1];
+				if(tmps.getDe_content().contains("매수 :")) {
+					content_view += tmps.getDe_content().trim().split("매수 :")[1];
+				} else {
+					content_view += tmps.getDe_content().trim().split("매도 :")[1];
+				}
 			}
 			tmps.setContent_view(content_view);
 			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
@@ -391,7 +395,11 @@ public class MyAccountController {
 			} else {
 				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
 				content_view = stock.getSt_name();
-				content_view += tmps.getDe_content().trim().split("매수 :")[1];
+				if(tmps.getDe_content().contains("매수 :")) {
+					content_view += tmps.getDe_content().trim().split("매수 :")[1];
+				} else {
+					content_view += tmps.getDe_content().trim().split("매도 :")[1];
+				}
 			}
 			tmps.setContent_view(content_view);
 			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
