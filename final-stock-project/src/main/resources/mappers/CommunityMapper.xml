@@ -56,5 +56,28 @@
 	<select id="getCommentList" resultType="CommentVO">
 		SELECT * FROM comment where wr_no = #{wr_no} order by co_id desc 
     </select>
-
+    
+	<update id="updateCount">
+		UPDATE board b
+		 set b.wr_comment = (
+		 select COUNT(*)
+		 FROM comment c
+		 WHERE c.wr_no = b.wr_no
+		 )		
+	</update> 
+	
+	<update id="ActionCount">
+		<choose>
+			<when test="feel.cg_type=='board'">
+				UPDATE board 
+				set 
+				<if test="feel.cg_like > 0">
+					wr_like = wr_like + 1
+				</if>
+				<if test="feel.cg_report > 0">
+				</if>
+			</when>
+		</choose>
+	</update>
+	
 </mapper>

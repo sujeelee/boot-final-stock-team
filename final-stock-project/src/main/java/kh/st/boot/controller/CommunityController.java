@@ -109,6 +109,7 @@ public class CommunityController {
 		feel.setSt_code(st_code);
 		//변수들을 이용해서 DB에저장하고 필요한 값을 map에 넣습니다.
 		boolean res = communityService.setFeelAction(feel);
+		res=communityService.ActionCount(feel);
 		if(res){
 			result.put("res", "200"); //다 정상
 		} else {
@@ -116,6 +117,7 @@ public class CommunityController {
 		}
 		return result;
 	}
+	
 	@PostMapping("/comment")
 	@ResponseBody
 	public Map<String, Object> CommentPostMethod(Model mo, @RequestParam String co_content, int wr_no, Principal principal) {
@@ -134,7 +136,14 @@ public class CommunityController {
 		System.out.println("newcomment : " + newComment );
 
 
-		communityService.insertComment(newComment);
+		boolean res = communityService.insertComment(newComment);
+		
+		if(res) {
+			res = communityService.updateCount(newComment);
+			
+		}
+		
+		
 		result.put("res", "s");
 		return result;
 	}
@@ -157,6 +166,6 @@ public class CommunityController {
 		mo.addAttribute("colist", colist);
 		return "community/community :: #replace_comment";
 	}
-	
+
 
 }

@@ -28,65 +28,62 @@ public class CommunityService {
 	}
 
 	public boolean setFeelAction(CommunityActionVO feel) {
-		if (feel == null || feel.getMb_id() == null || 
-		feel.getSt_code() == null || feel.getMb_id().trim().length() == 0) {
-			return false;
-		}
-		// 개시글 번호가 음수 이거나 0일 수 없음
-		if (feel.getCg_num() < 1) {
-			return false;
-		}
-		
-		if (feel.getCg_type().equals("board")) {
-			//보더 처리
-			boolean tmp = false;
-			CommunityActionVO tmpCA = communityDao.findBoardByObjBoardVO(feel);
+	    if (feel == null || feel.getMb_id() == null || 
+	            feel.getSt_code() == null || feel.getMb_id().trim().length() == 0) {
+	            return false;
+	        }
+	        // 게시글 번호가 음수이거나 0일 수 없음
+	        if (feel.getCg_num() < 1) {
+	            return false;
+	        }
 
-			if (tmpCA == null) {
-				tmp = communityDao.createBoardOfCommunityAction(feel);
-				return tmp;
-			}
+	        boolean tmp = false;
+	        CommunityActionVO tmpCA = communityDao.findBoardByObjBoardVO(feel);
 
-			if (feel.getCg_like().equals("like")) {
-				if(tmpCA.getCg_like() == null || tmpCA.getCg_like().trim().length() == 0){
-					tmp = communityDao.updateBoardOfCommunityAction_setLike(feel);
-				} else {
-					tmp = communityDao.updateBoardOfCommunityAction_setLikeNull(feel);
-				}
-			} else if(feel.getCg_report().equals("report")) {
-				if (tmpCA.getCg_report() == null || tmpCA.getCg_report().trim().length() == 0) {
-					tmp = communityDao.updateBoardOfCommunityAction_setReport(feel);
-				} else {
-					tmp = communityDao.updateBoardOfCommunityAction_setReportNull(feel);
-				}
-				
-			}
-			return tmp;
-		}
+	        if (tmpCA == null) {
+	            tmp = communityDao.createBoardOfCommunityAction(feel);
+	            return tmp;
+	        }
 
+	        // 좋아요 처리
+	        if ("like".equals(feel.getCg_like())) {
+	            if (tmpCA.getCg_like() == null || tmpCA.getCg_like().trim().isEmpty()) {
+	                tmp = communityDao.updateBoardOfCommunityAction_setLike(feel);
+	            } else {
+	                tmp = communityDao.updateBoardOfCommunityAction_setLikeNull(feel);
+	            }
+	        // 신고 처리
+	        } else if ("report".equals(feel.getCg_report())) {
+	            if (tmpCA.getCg_report() == null || tmpCA.getCg_report().trim().isEmpty()) {
+	                tmp = communityDao.updateBoardOfCommunityAction_setReport(feel);
+	            } else {
+	                tmp = communityDao.updateBoardOfCommunityAction_setReportNull(feel);
+	            }
+	        }
 
-		if (feel.getCg_type().equals("다야 나와라")) {
-			//comment 처리 (후추)
-
-
-
-
-
-
-		}
-
-
-		return false;
+	        return tmp;
 	}
 
-	public void insertComment(CommentVO newComment) {
-		communityDao.insertComment(newComment);
+	public boolean insertComment(CommentVO newComment) {
+		return communityDao.insertComment(newComment);
 		
 	}
 
 	public List<CommentVO> getCommentList(int wr_no) {
 
 		return communityDao.getCommentList(wr_no);
+	}
+
+	public boolean updateCount(CommentVO newComment) {
+		if(newComment == null) {
+			
+		}
+		return communityDao.updateCount(newComment.getWr_no());
+	}
+
+	public boolean ActionCount(CommunityActionVO feel) {
+		
+		return communityDao.ActionCount(feel);
 	}
 
 

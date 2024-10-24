@@ -34,6 +34,7 @@
                         <button type="submit" class="board-button">
                             <i class='bx bx-comment' aria-label="본문 남기기"></i>
                         </button>
+                        
                     </div>
                 </div>
             </form>
@@ -73,8 +74,10 @@
 
                             <!-- 댓글 버튼 -->
                             <button class="reply-btn" type="button">
-                                <i class='bx bx-comment' aria-label="댓글 남기기"></i>
+                                <i class='bx bx-comment' aria-label="댓글 남기기"></i>                                
                             </button>
+                            <span th:id="'counter'+${item.wr_no}" th:text=${item.wr_comment}></span>
+                             
 
                             <!-- 댓글 입력 폼 -->
                             <div class="comment-input" style="display: none;">
@@ -86,7 +89,10 @@
 
                         <!-- 댓글 리스트 -->
                         <div th:class="'replace_comment' + ${item.wr_no}" style="display: none;">
+                        
+	                        
 	                        <ul class="comment-list" id="replace_comment">
+	                        
 	                            <li class="comment" th:each="col : ${colist}">
 	                                <div class="board-header">
 	                                    <address class="board-author">
@@ -195,6 +201,7 @@
 	                        $('#replace_board').replaceWith(data);
 	                        console.log(data)
 	                        $('#wr_content').val('');
+	                        
 	                    },
 	                    error: function(xhr, status, error) {
 	                        console.log(`오류 : ` + xhr);
@@ -203,7 +210,10 @@
 	  
 	            });
 	        }
-
+			function Count(wr_no) {
+				var Num = $('#counter' + wr_no).text();
+				$('#counter' + wr_no).text(parseInt(Num) + 1);
+			}
 	        function handleAction(cg_num, cg_action, cg_type) {
 	            //보드만
 	            let cg_like = "";
@@ -247,8 +257,30 @@
 
 	        
 	        $(document).on('click', '.reply-btn', function() {
+	            // 댓글 입력 필드 토글
 	            const commentInputDiv = $(this).siblings('.comment-input');
-	            commentInputDiv.toggle();  // 댓글 입력 필드 토글
+	            
+	            // 형제 요소 중 hidden input에서 wr_no 값을 가져옴
+	            const wr_no = $(this).siblings('.comment-input').find('input[name="wr_no"]').val();
+
+	            if (!wr_no) {
+	                console.error("wr_no 값을 찾을 수 없습니다.");
+	                return;
+	            }
+
+	            console.log(wr_no); // 콘솔에 wr_no 값 출력 확인
+
+	            // 댓글 목록을 나타낼 div 선택
+	            const commentListDiv = $('.replace_comment' + wr_no); // 동적 클래스 선택
+
+	            // 입력 필드와 댓글 목록을 함께 토글
+	            commentInputDiv.toggle();
+	            commentListDiv.toggle();
+
+	            // 댓글 목록이 처음 보일 때만 서버에서 데이터를 불러옴
+	            if (commentListDiv.is(':visible')) {
+	                replaceCommentList(wr_no);  // 댓글 목록 갱신 함수 호출
+	            }
 	        });
         function replaceCommentListbytoggle(wr_no) {
         	replaceCommentList(wr_no);
@@ -279,6 +311,7 @@
                 success: function(response) {
                     console.log('댓글이 등록되었습니다:', response);           
 					replaceCommentList(wrNo);
+					Count(wrNo);
                 },
                 error: function(error) {
                     console.error('댓글 등록 오류:', error);
@@ -302,13 +335,13 @@
 			success: function (data) {
 				console.log(data);
 				$('.replace_comment' + wrNo).find(".comment-list").replaceWith(data);
-				$(".replace_comment" + wrNo).show(); //반대는 hide();
 				$('.comment-text').val('');
 			},error:function(request,status,error){
 		        console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		    }
 		});
 	}
+
     </script>
 	</main>
 </body>

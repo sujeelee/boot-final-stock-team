@@ -30,9 +30,13 @@ public interface CommunityDAO {
 
 	boolean updateBoardOfCommunityAction_setReportNull(CommunityActionVO feel);
 
-	void insertComment(CommentVO newComment);
+	boolean insertComment(CommentVO newComment);
 
 	List<CommentVO> getCommentList(int wr_no);
+
+	boolean updateCount(int wr_no);
+
+	boolean ActionCount(CommunityActionVO feel);
  
 
 }
