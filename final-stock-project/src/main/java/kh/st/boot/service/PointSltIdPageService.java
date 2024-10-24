@@ -25,8 +25,18 @@ public class PointSltIdPageService {
 		return admDaycheckDAO.AllSelect(cri);
 	}
 
-	public List<AdmDaycheckVO> sltOnePoint(Criteria cri) {
-		return admDaycheckDAO.OneSelect();
+	public List<AdmDaycheckVO> sltOnePoint(String mb_id, Criteria cri) {
+		List<AdmDaycheckVO> allPoint = admDaycheckDAO.AllSelect(cri); // 일단 전부다 가져오고
+		List<AdmDaycheckVO> filteredSlt = new ArrayList<>(); // 필터링 결과 넣을 배열을 하나 만들어줍니다
+
+		for (AdmDaycheckVO filter : allPoint) {
+
+			if (mb_id == null || mb_id.isEmpty() || filter.getMb_id().contains(mb_id)) {
+				filteredSlt.add(filter);
+			}
+		}
+
+		return filteredSlt;
 	}
 
 	public List<Integer> sltAllDay(Criteria cri) {
@@ -46,25 +56,14 @@ public class PointSltIdPageService {
 					}
 
 				}
-				 // 1의 개수를 filteredallDay에 추가
-	            filteredallDay.add(countOfOnes);
+				// 1의 개수를 filteredallDay에 추가
+				filteredallDay.add(countOfOnes);
 			}
 		}
-		System.out.println(filteredallDay+" 응애 ");
-		return filteredallDay;					//  카운트 다 끝난 값을 컨트롤러로 리턴합니다
+		System.out.println(filteredallDay + " 응애 ");
+		return filteredallDay; // 카운트 다 끝난 값을 컨트롤러로 리턴합니다
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public PageMaker getPageMaker(Criteria cri) {
 		int count = admDaycheckDAO.selectCountList(cri);
 		return new PageMaker(10, cri, count);

@@ -324,7 +324,7 @@ public class AdminController {
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model, Criteria cri) {
 		// 검색한 내용 가져오는거?
-		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(cri);
+		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id,cri);
 		//mb_id 아이디 검색함 > 서비스에서 판별하는 메서드를 호출하는걸로 바꿔야함 
 		//List<AdmDaycheckVO> daychCount = pointSltIdPageService.getDaychCount(mb_id);
 		// 페이지메이커 
