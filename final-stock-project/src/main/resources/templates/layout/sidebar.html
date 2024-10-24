@@ -1,56 +1,83 @@
 <sidebar th:fragment="sidebar">
 <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}">
 	<div class="sidebar">
-		<ul class="nav-list">
-			<li class="side_icon" onclick="showDash(this);">
-				<a href="#">
-					<i class="fa-solid fa-arrow-trend-up"></i>
-					<span class="links_name">내 투자</span>
-				</a>
-				<span class="tooltip">내투자</span>
-			</li>
-			<li class="side_icon" onclick="showDash(this);">
-				<a href="#">
-					<i class="bx bx-user"></i>
-					<span class="links_name">관심주식</span>
-				</a>
-				<span class="tooltip">관심주식</span>
-			</li>
-			<li class="side_icon" onclick="showDash(this);">
-				<a href="#">
-					<i class="bx bx-chat"></i>
-					<span class="links_name">실시간</span>
-				</a>
-				<span class="tooltip">실시간</span>
-			</li>
-			
-			<li class="side_icon" sec:authorize="isAnonymous()">
-				<a th:href="@{/member/login}">
-					<i class="bx bx-log-in"></i>
-					<span class="links_name">로그인</span>
-				</a>
-				<span class="tooltip">로그인</span>
-			</li>
-			
-			<!-- 회원가입 -->
-			<li class="side_icon" sec:authorize="isAnonymous()">
-			<a th:href="@{/member/join}">
-			<i class="bx bx-user-plus"></i>
-			<span class="links_name">회원가입</span>
-			</a>
-			<span class="tooltip">회원가입</span>
-			</li>
-			<!-- 로그아웃 -->
-			<li class="side_icon" sec:authorize="isAuthenticated()">
-				<a th:href="@{/member/logout}">
-					<i class="bx bx-log-out"></i>
-					<span class="links_name">로그아웃</span>
-				</a>
-				<span class="tooltip">로그아웃</span>
-			</li>
-		</ul>
+		<div class="sidebar-rows">
+			<ul class="nav-list">
+				<li class="side_icon" data-tag="mystock" onclick="showDash(this);">
+					<a href="#">
+						<i class="fa-solid fa-arrow-trend-up"></i>
+						<span class="links_name">내 투자</span>
+					</a>
+					<span class="tooltip">내투자</span>
+				</li>
+				<li class="side_icon" data-tag="mywish" onclick="showDash(this);">
+					<a href="#">
+						<i class="fa-solid fa-heart"></i>
+						<span class="links_name">관심주식</span>
+					</a>
+					<span class="tooltip">관심주식</span>
+				</li>
+				<li class="side_icon" data-tag="hot" onclick="showDash(this);">
+					<a href="#">
+						<i class="fa-solid fa-fire"></i>
+						<span class="links_name">&nbsp;실시간</span>
+					</a>
+					<span class="tooltip">실시간</span>
+				</li>
+			</ul>
+		</div>
+		<div class="sidebar-line"></div>
+		<div class="sidebar-rows">
+			<ul>
+				<li class="side_icon" sec:authorize="isAnonymous()">
+					<a th:href="@{/member/login}">
+						<i class="fa-solid fa-right-to-bracket"></i>
+						<span class="links_name">&nbsp;로그인</span>
+					</a>
+					<span class="tooltip">로그인</span>
+				</li>
+				
+				<!-- 회원가입 -->
+				<li class="side_icon" sec:authorize="isAnonymous()">
+					<a th:href="@{/member/join}">
+						<i class="fa-solid fa-user-plus"></i>
+						<span class="links_name">회원가입</span>
+					</a>
+					<span class="tooltip">회원가입</span>
+				</li>
+				<!-- 로그아웃 -->
+				<li class="side_icon" sec:authorize="isAuthenticated()">
+					<a th:href="@{/member/logout}">
+						<i class="fa-solid fa-right-from-bracket"></i>
+						<span class="links_name">로그아웃</span>
+					</a>
+					<span class="tooltip">로그아웃</span>
+				</li>
+			</ul>
+		</div>
 	</div>
 	<div class="dash-info" style="display: none">
-		dsk;flskdf;dlk;s sdlfk;sdlkf;s sdklfk;sldkf;slk
+		<div class="guest-dash-info" sec:authorize="isAnonymous()">
+			<div class="dash-guest">
+				회원전용 기능이에요:)
+			</div>
+			<div class="dash-guest">
+				로그인 후 이용해주세요!
+			</div>
+			<div class="dash-guest">
+				<a th:href="@{/member/login}">
+					<button type="button" class="btn btn-info">로그인 하러 가기</button>
+				</a>
+				<a th:href="@{/member/join}">
+					<button type="button" class="btn btn-info">회원가입 하러 가기</button>
+				</a>
+			</div>
+		</div>
+		<div class="member-dash-info" sec:authorize="isAuthenticated()">
+			회원
+		</div>
+		<div class="dash-hot-stocks" style="display: none">
+			화끈하죠잉
+		</div>
 	</div>
 </sidebar>

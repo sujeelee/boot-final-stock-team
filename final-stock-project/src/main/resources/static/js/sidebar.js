@@ -1,4 +1,13 @@
 function showDash(icon) {
+	
+	var tag  = $(icon).data("tag"); //이걸로 대시인포에 보여줄 내용 컨트롤
+	if(tag == "hot"){
+		$(".dash-info").find("div").hide();
+		$(".dash-hot-stocks").show();
+	} else {
+		$(".dash-info").find("div").show();
+		$(".dash-hot-stocks").hide();
+	}
     if (!$(icon).hasClass("active")) {
         // 사이드바 열기
         $(".dash-info").css("display", "block");
