@@ -155,7 +155,7 @@ public class CommunityController {
 		
 		
 		mo.addAttribute("colist", colist);
-		return "community/community :: #replace_comment"+(String) paramMap.get("wr_no");
+		return "community/community :: #replace_comment";
 	}
 	
 
