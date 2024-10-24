@@ -4,7 +4,7 @@
 	top: 0;
 	height: 100%;
 	width: 78px;
-	background: #096c8a;
+	background: #17a2b8;
 	padding: 6px 14px;
 	z-index: 99;
 	transition: all 0.5s ease;
@@ -60,7 +60,7 @@
 	font-size: 28px;
 	text-align: center;
 	line-height: 60px;
-	background-color: #096c8a; /* 아이콘 배경색 */
+	background-color: #17a2b8; /* 아이콘 배경색 */
 }
 
 .sidebar .nav-list {
@@ -76,10 +76,10 @@
 
 .sidebar li .tooltip {
 	position: absolute;
-	top: -20px;
-	left: calc(100% + 15px);
+	right: calc(100% + 15px);
 	z-index: 3;
-	background: #fff;
+	background: #17a2b8;
+	color: #fff;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 	padding: 6px 12px;
 	border-radius: 4px;
@@ -101,33 +101,6 @@
 
 .sidebar.open li .tooltip {
 	display: none;
-}
-
-.sidebar input {
-	font-size: 15px;
-	color: #fff;
-	font-weight: 400;
-	outline: none;
-	height: 50px;
-	border: none;
-	border-radius: 12px;
-	transition: all 0.5s ease;
-	background: #1d1b31;
-}
-
-.sidebar.open input {
-	padding: 0 20px 0 50px;
-	width: 100%;
-}
-
-.sidebar .bx-search {
-	position: absolute;
-	top: 50%;
-	left: 0;
-	transform: translateY(-50%);
-	font-size: 22px;
-	background: #1d1b31;
-	color: #fff;
 }
 
 .sidebar li a {
@@ -162,7 +135,7 @@
 
 .sidebar li a:hover .links_name, .sidebar li a:hover i {
 	transition: all 0.5s ease;
-	color: #11101d;
+	color: #d1dcde;
 }
 
 .sidebar li.profile {
@@ -236,7 +209,7 @@
 	}
 }
 
-.test {
+.dash-info {
 	position: fixed; /* 화면에 고정 */
 	right: 78px; /* 오른쪽에 붙이기 */
 	top: 0; /* 상단에 붙이기 */

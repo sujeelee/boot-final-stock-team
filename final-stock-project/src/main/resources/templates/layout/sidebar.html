@@ -1,96 +1,56 @@
 <sidebar th:fragment="sidebar">
-  <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/sidebar.css}" >
-</th:block>
-  <div class="sidebar">
-    <ul class="nav-list">
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-grid-alt"></i>
-          <span class="links_name">Dashboard</span>
-        </a>
-        <span class="tooltip">Dashboard</span>
-      </li>
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-user"></i>
-          <span class="links_name">User</span>
-        </a>
-        <span class="tooltip">User</span>
-      </li>
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-chat"></i>
-          <span class="links_name">Messages</span>
-        </a>
-        <span class="tooltip">Messages</span>
-      </li>
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-pie-chart-alt-2"></i>
-          <span class="links_name">Analytics</span>
-        </a>
-        <span class="tooltip">Analytics</span>
-      </li>
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-folder"></i>
-          <span class="links_name">File Manager</span>
-        </a>
-        <span class="tooltip">Files</span>
-      </li>
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-cart-alt"></i>
-          <span class="links_name">Order</span>
-        </a>
-        <span class="tooltip">Order</span>
-      </li>
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-heart"></i>
-          <span class="links_name">Saved</span>
-        </a>
-        <span class="tooltip">Saved</span>
-      </li>
-      <li class="side_icon" onclick="showDash(this);">
-        <a href="#">
-          <i class="bx bx-cog"></i>
-          <span class="links_name">Setting</span>
-        </a>
-        <span class="tooltip">Setting</span>
-      </li>
-      <div class="login" sec:authorize="isAnonymous()">
-        <li class="side_icon">
-          <a th:href="@{/member/login}">
-            <i class="bx bx-log-in"></i>
-            <span class="links_name">Login</span>
-          </a>
-          <span class="tooltip">Login</span>
-        </li>
-
-        <!-- 회원가입 -->
-        <li class="side_icon">
-          <a th:href="@{/member/join}">
-            <i class="bx bx-user-plus"></i>
-            <span class="links_name">Sign Up</span>
-          </a>
-          <span class="tooltip">Sign Up</span>
-        </li>
-      </div>
-      <!-- 로그아웃 -->
-      <div class="login" sec:authorize="isAuthenticated()">
-        <li class="side_icon">
-          <a th:href="@{/member/logout}">
-            <i class="bx bx-log-out"></i>
-            <span class="links_name">Logout</span>
-          </a>
-          <span class="tooltip">Logout</span>
-        </li>
-      </div>
-    </ul>
-  </div>
-  <div class="test" style="display: none">
-    dsk;flskdf;dlk;s sdlfk;sdlkf;s sdklfk;sldkf;slk
-  </div>
+<link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}">
+	<div class="sidebar">
+		<ul class="nav-list">
+			<li class="side_icon" onclick="showDash(this);">
+				<a href="#">
+					<i class="fa-solid fa-arrow-trend-up"></i>
+					<span class="links_name">내 투자</span>
+				</a>
+				<span class="tooltip">내투자</span>
+			</li>
+			<li class="side_icon" onclick="showDash(this);">
+				<a href="#">
+					<i class="bx bx-user"></i>
+					<span class="links_name">관심주식</span>
+				</a>
+				<span class="tooltip">관심주식</span>
+			</li>
+			<li class="side_icon" onclick="showDash(this);">
+				<a href="#">
+					<i class="bx bx-chat"></i>
+					<span class="links_name">실시간</span>
+				</a>
+				<span class="tooltip">실시간</span>
+			</li>
+			
+			<li class="side_icon" sec:authorize="isAnonymous()">
+				<a th:href="@{/member/login}">
+					<i class="bx bx-log-in"></i>
+					<span class="links_name">로그인</span>
+				</a>
+				<span class="tooltip">로그인</span>
+			</li>
+			
+			<!-- 회원가입 -->
+			<li class="side_icon" sec:authorize="isAnonymous()">
+			<a th:href="@{/member/join}">
+			<i class="bx bx-user-plus"></i>
+			<span class="links_name">회원가입</span>
+			</a>
+			<span class="tooltip">회원가입</span>
+			</li>
+			<!-- 로그아웃 -->
+			<li class="side_icon" sec:authorize="isAuthenticated()">
+				<a th:href="@{/member/logout}">
+					<i class="bx bx-log-out"></i>
+					<span class="links_name">로그아웃</span>
+				</a>
+				<span class="tooltip">로그아웃</span>
+			</li>
+		</ul>
+	</div>
+	<div class="dash-info" style="display: none">
+		dsk;flskdf;dlk;s sdlfk;sdlkf;s sdklfk;sldkf;slk
+	</div>
 </sidebar>
