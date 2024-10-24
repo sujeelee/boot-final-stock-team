@@ -165,5 +165,9 @@ public class OrderService {
 		}
 		return myStock;
 	}
+
+	public boolean deleteReservation(String st_code, String re_no) {
+		return orderDao.deleteReservation(st_code, re_no);
+	}
 	
 }

@@ -60,4 +60,7 @@
     WHERE 
         od_st_code = #{code} AND mb_id = #{mb_id};
 	</select>
+	<delete id="deleteReservation">
+		delete from reservation where re_st_code = #{code} and re_no = #{re_no}
+	</delete>
 </mapper>
