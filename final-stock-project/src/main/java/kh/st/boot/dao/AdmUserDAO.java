@@ -8,6 +8,7 @@ import kh.st.boot.pagination.Criteria;
 public interface AdmUserDAO {
 
 	List<AdmMemberVO> selectAdmUser(Criteria cri);
+	
 
 	int selectCountList(Criteria cri);
 
@@ -18,5 +19,16 @@ public interface AdmUserDAO {
 //	AdmMemberVO UserDelete(int mb_no);
 	
 	int UserDelete(int mb_no);
+
+
+
+
+	List<AdmMemberVO> selectId(String search);
+
+
+	List<AdmMemberVO> selectName(String search);
+
+
+	List<AdmMemberVO> selectNick(String search);
 
 }

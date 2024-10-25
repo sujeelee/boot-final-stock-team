@@ -18,4 +18,27 @@
 	<delete id="UserDelete" parameterType="int">
         DELETE FROM member WHERE mb_no = #{mb_no}
     </delete>
+	 
+	 <select id="selectNick" resultType="AdmMemberVO">
+   		SELECT *
+  		FROM member
+   		WHERE mb_nick = #{search}
+	</select>
+	
+	 <select id="selectName" resultType="AdmMemberVO">
+  		SELECT *
+   		FROM member
+   		WHERE mb_name = #{search}
+	</select>
+	
+	 <select id="selectId" resultType="AdmMemberVO">
+    	SELECT *
+   		FROM member
+  		WHERE mb_id = #{search}
+	</select>
+
+	
+
+    
+    
 </mapper>

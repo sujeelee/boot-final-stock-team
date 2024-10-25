@@ -14,11 +14,11 @@
 			<div id="container_main" class="content">
 				<!-- 검색기능 form -->
 				<div id="select_left">
-					<form action="" class="local_sch">
-						<select style="height: 25px">
-							<option>회원아이디</option>
-							<option>회원이름</option>
-							<option>회원닉네임</option>
+					<form action="/admin/admMember/usersearch" method="post" class="local_sch">
+						<select name="use_sch" style="height: 25px">
+							<option value="mb_id">회원아이디</option>
+							<option value="mb_name">회원이름</option>
+							<option value="mb_nick">회원닉네임</option>
 						</select> <input type="text" name="search" required class="in_sch" style="height: 25px">
 						<button type="submit" class="btn_submit btn"> 검색 </button>
 					</form>

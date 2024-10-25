@@ -1,5 +1,6 @@
 package kh.st.boot.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -40,10 +41,34 @@ public class AdminUserService {
 //		return adminuserDAO.UserDelete(mb_no);
 //	}
 
+	
 	public boolean getAdmUseDel(int mb_no) {
 	    int result = adminuserDAO.UserDelete(mb_no);
 	    return result > 0;  // 1 이상의 값을 반환하면 삭제 성공
 	}
+
+
+	
+	
+// 다 따로 검색해서 값을 넘겨준다면? 그냥 편하게 검색할수 있지 않을까 ? 
+	//아이디검색
+	public List<AdmMemberVO> adminId(String search) {
+		System.out.println("여기입니다 "+  search);
+		return adminuserDAO.selectId(search);
+	}
+	//이름검색
+	public List<AdmMemberVO> adminName(String search) {
+		System.out.println("여기입니다 "+  search);
+		return adminuserDAO.selectName(search);
+	}
+	//닉네임검색
+	public List<AdmMemberVO> adminNick(String search) {
+		System.out.println("여기입니다 "+  search);
+		return adminuserDAO.selectNick(search);		
+	}
+	
+	
+	
 	
 	
 }

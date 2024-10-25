@@ -147,8 +147,36 @@ public class AdminController {
 		return "redirect:/admin/admMember/adminUser";
 	}
 	
+	
+	// 회원 정보 검색하기 
 		
-		
+	@PostMapping("/admMember/usersearch")
+	public String admuserSearch(@RequestParam("use_sch") String useSch, @RequestParam("search") String search, Model model) {
+		 	List<AdmMemberVO> user = null; 
+		 	switch (useSch) {
+            case "mb_id":
+                user = admUserService.adminId(search);
+                System.out.println("여기입니다 "+ user );
+                break;
+            case "mb_name":
+                user = admUserService.adminName(search);
+                System.out.println("여기입니다 "+ user );
+                break;
+            case "mb_nick":
+                user = admUserService.adminNick(search);
+                System.out.println("여기입니다 "+ user );
+                break;
+        }
+		 	model.addAttribute("user", user);
+		 	System.out.println("여기입니다 "+ user );
+		 return "redirect:/admin/admMember/adminUser";
+	}
+	
+// switch 문으로 id, nick, name 어떤걸로 보냈는지 구분해서 입력값search 를 넘겨줌 
+// 검색기능 호출했는데 가져오고 모델 바로 태워?> 
+	
+
+	
 	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 ---------------------------------
@@ -325,8 +353,6 @@ public class AdminController {
 	public String sltIdPointPage(@RequestParam String mb_id, Model model, Criteria cri) {
 		// 검색한 내용 가져오는거?
 		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id,cri);
-		//mb_id 아이디 검색함 > 서비스에서 판별하는 메서드를 호출하는걸로 바꿔야함 
-		//List<AdmDaycheckVO> daychCount = pointSltIdPageService.getDaychCount(mb_id);
 		// 페이지메이커 
 		PageMaker pm_daycheck = pointSltIdPageService.getPageMaker(cri);
 		
