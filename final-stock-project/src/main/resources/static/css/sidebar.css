@@ -3,7 +3,7 @@
 	right: 0;
 	top: 0;
 	height: 100%;
-	width: 78px;
+	width: 58px;
 	background: #17a2b8;
 	padding: 6px 14px;
 	z-index: 99;
@@ -54,10 +54,9 @@
 .sidebar i {
 	color: #fff;
 	height: 60px;
-	min-width: 50px;
+	min-width: 30px;
 	font-size: 28px;
 	text-align: center;
-	line-height: 60px;
 	background-color: #17a2b8; /* 아이콘 배경색 */
 }
 
@@ -124,7 +123,7 @@
 	transition: 0.4s;
 	position: absolute;
 	margin-top : 100%;
-	margin-left: 15%;
+	margin-left: -5%;
 	text-align: center;
 }
 
@@ -133,7 +132,7 @@
 	pointer-events: auto;
 }
 
-.sidebar li a:hover .links_name, .sidebar li a:hover i {
+.sidebar li a:hover .links_name, .sidebar li a:hover i{
 	transition: all 0.5s ease;
 	color: #d1dcde;
 }
@@ -141,7 +140,7 @@
 .sidebar li.profile {
 	position: fixed;
 	height: 40px;
-	width: 78px;
+	width: 58px;
 	right: 0;
 	bottom: 0px;
 	padding: 10px 14px;
@@ -182,7 +181,7 @@
 }
 
 .sidebar.open .profile #log_out {
-	width: 50px;
+	width: 58px;
 	background: none;
 }
 
@@ -191,7 +190,7 @@
 	background: #ffffff;
 	top: 0;
 	left: 0px;
-	width: calc(100% - 78px);
+	width: calc(100% - 58px);
   	transition: left 0.5s ease, transform 0.5s ease; /* left와 transform 속성에 대한 전환 효과 */
 }
 
@@ -211,13 +210,13 @@
 
 .dash-info {
 	position: fixed; /* 화면에 고정 */
-	right: 78px; /* 오른쪽에 붙이기 */
+	right: 58px; /* 오른쪽에 붙이기 */
 	top: 0; /* 상단에 붙이기 */
 	height: 100%;
 	display: none; /* 처음에 보이지 않도록 설정 */
 	width: 0;
 	z-index: 1000; /* 다른 요소 위로 올리기 */
-	background-color: rgba(23, 162, 184, 0.1);
+	background-color: #e7f6f8;
 	color: #1d5d66;
 	transition: width 0.25s ease; /* 부드러운 애니메이션 효과 추가 */
 	overflow: hidden; /* 내용이 잘리지 않도록 숨김 */
@@ -246,3 +245,25 @@
 }
 .guest-dash-info{margin-top: 250px; height: 25%;display: flex;justify-content: center;align-items: center;flex-wrap:wrap;}
 .dash-guest > a > .btn{margin-bottom: 15px;}
+.dash-hot-stocks{box-sizing: border-box;}
+.dash-title {margin-top: 15px; text-align: left; margin-left: 10px;}
+.dash-table-line{border: 1px solid #bfd8db;width: 100%;height: 1px;margin-bottom: 1px;}
+.dash-blue{color: blue;}
+.dash-red{color: red;}
+.dash-red:before{content: "+";}
+.dash-grey{color: grey;}
+.dash-table::-webkit-scrollbar{display: block !important;}
+.dash-table{margin:0;height: 840px;box-sizing: border-box; overflow: auto; padding: 5px; font-size: 15px;}
+.dash-middle{display: flex;align-items:center;min-width: 0;justify-content: space-between;}
+.dash-row{margin-bottom: 10px;}
+.dash-table-rigth{white-space: nowrap;text-align: left; min-width: 0;}
+.dash-table-left{text-align: right;}
+.dash-font{font-size: 12px;}
+.dash-table-rigth > a:link{text-decoration: none;}
+.dash-table-rigth > a:visited, .dash-table-rigth > a:active{color: #1d5d66;}
+.dash-table-rigth > span {color: #0d7cd1; font-size: 18px;}
+.dash-row:hover {transition: all 0.5s ease;background-color: #c2eaf0;border-radius: 12px;}
+.dash-qty{font-size: 12px;}
+.none-content{text-align: center;margin-top: 20%;}
+.fa-color{color: rgba(9, 108, 138, 0.3);}fdjs
+.no-title{margin-top: 2%; font-weight: bold; color: #888; font-size: 0.9em;}
