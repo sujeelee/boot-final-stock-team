@@ -4,7 +4,7 @@
 }
 
 .news-date {
-    width: 100%;
+    width: 1080px;
     height: 65px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -17,7 +17,7 @@
 }
   
 .explanatory-text{
-	width: 100%;
+	width: 1080px;
     height: 65px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -154,10 +154,6 @@
 	}
 	
 	.news-item {
-		width: 100%;
-	}
-	
-	.news-date {
 		width: 100%;
 	}
 	     
