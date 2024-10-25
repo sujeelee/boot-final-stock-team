@@ -264,6 +264,6 @@
 .dash-table-rigth > span {color: #0d7cd1; font-size: 18px;}
 .dash-row:hover {transition: all 0.5s ease;background-color: #c2eaf0;border-radius: 12px;}
 .dash-qty{font-size: 12px;}
-.none-content{text-align: center;margin-top: 20%;}
-.fa-color{color: rgba(9, 108, 138, 0.3);}fdjs
-.no-title{margin-top: 2%; font-weight: bold; color: #888; font-size: 0.9em;}
+.dash-none-content{text-align: center;margin-top: 20%;}
+.dash-fa-color{color: rgba(9, 108, 138, 0.3);}fdjs
+.dash-no-title{margin-top: 2%; font-weight: bold; color: #888; font-size: 0.9em;}
