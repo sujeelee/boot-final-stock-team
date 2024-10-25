@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8">
+<title>시드키 : 뉴스 리스트</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/stockuser.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
+<style type="text/css">
+	
+</style>
+</head>
+<body>
+	<main layout:fragment="content">
+	
+		<div th:replace="~{layout/stocksHeader.html}"></div>
+		<div class="form-content">
+			<section style="width: 80%;">
+				<h2 th:text="${stock.st_name} + ' 뉴스'"></h2>
+			</section>
+			<section class="order-section">
+				<div th:replace="~{layout/stocksOrder.html}"></div>
+			</section>
+		</div>
+	</main>
+</body>
+</html>
