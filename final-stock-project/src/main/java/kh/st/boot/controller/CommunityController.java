@@ -98,6 +98,7 @@ public class CommunityController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		//principal는 오브잭트  principal.getName();는 문지열, 오브잭트의 null을 확인해 주는게 좋습니다.
 		//principal가 null 일때 map 형식인 result에 key와 value를 넣어서 화면에서 사용할 수 있게 도와줍니다.
+		System.out.println(feel);
 		if (principal == null) {
 			result.put("res", "401");
 			result.put("msg", "로그인한 회원만 이용 가능합니다.");
@@ -109,7 +110,6 @@ public class CommunityController {
 		feel.setSt_code(st_code);
 		//변수들을 이용해서 DB에저장하고 필요한 값을 map에 넣습니다.
 		boolean res = communityService.setFeelAction(feel);
-		res=communityService.ActionCount(feel);
 		if(res){
 			result.put("res", "200"); //다 정상
 		} else {
@@ -136,13 +136,11 @@ public class CommunityController {
 		System.out.println("newcomment : " + newComment );
 
 
-		boolean res = communityService.insertComment(newComment);
-		
+		boolean res = communityService.insertComment(newComment);	
 		if(res) {
 			res = communityService.updateCount(newComment);
 			
 		}
-		
 		
 		result.put("res", "s");
 		return result;

@@ -33,10 +33,20 @@ public interface CommunityDAO {
 	boolean insertComment(CommentVO newComment);
 
 	List<CommentVO> getCommentList(int wr_no);
+	
+	int getLikeCountForBoard(int cg_num);
+
+	int getReportCountForBoard(int cg_num);
+
+	boolean updateBoardCounts(int cg_num, int likeCount, int reportCount);
+
+	int getLikeCountForComment(int cg_num);
+
+	int getReportCountForComment(int cg_num);
+
+	boolean updateCommentCounts(int cg_num, int likeCount, int reportCount);
 
 	boolean updateCount(int wr_no);
-
-	boolean ActionCount(CommunityActionVO feel);
  
 
 }

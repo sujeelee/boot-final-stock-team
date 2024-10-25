@@ -21,7 +21,7 @@
 
 	<insert id="createBoardOfCommunityAction">
 		insert into community_action(cg_num, cg_type, st_code, mb_id, cg_datetime, cg_like, cg_report)
-		value (#{cg_num}, #{cg_type}, #{st_code},#{mb_id}, now() ,#{cg_like}, #{cg_report})
+		VALUES (#{cg_num}, #{cg_type}, #{st_code},#{mb_id}, now() ,#{cg_like}, #{cg_report})
 	</insert> 
 
 	<update id="updateBoardOfCommunityAction_setLike">
@@ -56,8 +56,7 @@
 	<select id="getCommentList" resultType="CommentVO">
 		SELECT * FROM comment where wr_no = #{wr_no} order by co_id desc 
     </select>
-    
-	<update id="updateCount">
+   	<update id="updateCount">
 		UPDATE board b
 		 set b.wr_comment = (
 		 select COUNT(*)
@@ -66,18 +65,41 @@
 		 )		
 	</update> 
 	
-	<update id="ActionCount">
-		<choose>
-			<when test="feel.cg_type=='board'">
-				UPDATE board 
-				set 
-				<if test="feel.cg_like > 0">
-					wr_like = wr_like + 1
-				</if>
-				<if test="feel.cg_report > 0">
-				</if>
-			</when>
-		</choose>
-	</update>
-	
+    <!-- 게시글의 좋아요 및 신고 수 업데이트 -->
+    <update id="updateBoardCounts">
+        UPDATE board
+        SET wr_good = #{likeCount}, wr_singo = #{reportCount}
+        WHERE wr_no = #{cg_num}
+    </update>
+
+    <!-- 댓글의 좋아요 및 신고 수 업데이트 -->
+    <update id="updateCommentCounts">
+        UPDATE comment
+        SET co_good = #{likeCount}, co_bad = #{reportCount}
+        WHERE co_id = #{cg_num}
+    </update>
+
+    <!-- 게시글에 대한 좋아요 카운트 조회 -->
+    <select id="getLikeCountForBoard" resultType="int">
+        SELECT COUNT(*) FROM community_action
+        WHERE cg_num = #{cg_num} AND cg_type = 'board' AND cg_like = 'like'
+    </select>
+
+    <!-- 게시글에 대한 신고 카운트 조회 -->
+    <select id="getReportCountForBoard" resultType="int">
+        SELECT COUNT(*) FROM community_action
+        WHERE cg_num = #{cg_num} AND cg_type = 'board' AND cg_report = 'report'
+    </select>
+
+    <!-- 댓글에 대한 좋아요 카운트 조회 -->
+    <select id="getLikeCountForComment" resultType="int">
+        SELECT COUNT(*) FROM community_action
+        WHERE cg_num = #{cg_num} AND cg_type = 'comment' AND cg_like = 'like'
+    </select>
+
+    <!-- 댓글에 대한 신고 카운트 조회 -->
+    <select id="getReportCountForComment" resultType="int">
+        SELECT COUNT(*) FROM community_action
+        WHERE cg_num = #{cg_num} AND cg_type = 'comment' AND cg_report = 'report'
+    </select>	
 </mapper>
