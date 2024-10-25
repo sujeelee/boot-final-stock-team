@@ -62,6 +62,7 @@
                                         th:data-boNum="${item.wr_no}" th:data-action="like" th:data-type="board"
                                         th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'), this.getAttribute('data-type'))">
                                     <i class='bx bxs-heart'></i>
+                                    <span th:id="'bolikecounter'+${item.wr_no}" th:text=${item.wr_good}></span>
                                 </button>
 
                                 <!-- 신고 버튼 -->
@@ -69,6 +70,7 @@
                                         th:data-boNum="${item.wr_no}" th:data-action="report" th:data-type="board"
                                         th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'), this.getAttribute('data-type'))">
                                     <i class='bx bx-x-circle' aria-label="신고하기"></i>
+                                    <span th:id="'boreportcounter'+${item.wr_no}" th:text=${item.wr_singo}></span>
                                 </button>
                             </div>
 
@@ -110,6 +112,7 @@
 	                                                th:data-boNum="${col.co_id}" th:data-action="like" th:data-type="comment"
 	                                                th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'), this.getAttribute('data-type'))">
 	                                            <i class='bx bxs-heart'></i>
+	                                             <span th:id="'colikecounter'+${col.wr_no}" th:text=${col.co_good}></span>
 	                                        </button>
 	
 	                                        <!-- 신고 버튼 -->
@@ -117,6 +120,7 @@
 	                                                th:data-boNum="${col.co_id}" th:data-action="report" th:data-type="comment"
 	                                                th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'), this.getAttribute('data-type'))">
 	                                            <i class='bx bx-x-circle' aria-label="신고하기"></i>
+	                                            <span th:id="'coreportcounter'+${col.wr_no}" th:text=${col.co_bad}></span>
 	                                        </button>
 	                                    </div>
 	                                </form>
@@ -215,7 +219,6 @@
 				$('#counter' + wr_no).text(parseInt(Num) + 1);
 			}
 	        function handleAction(cg_num, cg_action, cg_type) {
-	            //보드만
 	            let cg_like = "";
 	            let cg_report = "";
 	            if(cg_action == 'like'){cg_like = 'like'}

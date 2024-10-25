@@ -101,5 +101,6 @@
     <select id="getReportCountForComment" resultType="int">
         SELECT COUNT(*) FROM community_action
         WHERE cg_num = #{cg_num} AND cg_type = 'comment' AND cg_report = 'report'
-    </select>	
+    </select>
+    	
 </mapper>
