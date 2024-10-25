@@ -1,11 +1,14 @@
 package kh.st.boot.service;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import kh.st.boot.dao.StockDAO;
+import kh.st.boot.model.dto.MyStocksDTO;
+import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.model.vo.WishVO;
@@ -17,6 +20,8 @@ public class StocksHeaderService {
 	private StockDAO stockDao;
 	
 	private StockService stockService;
+	private OrderService orderService;
+	private MyAccountService myAccountService;
 
 	public WishVO wishCheck(String st_code, String mb_id) {
 		return stockDao.wishCheck(st_code, mb_id);
@@ -70,6 +75,20 @@ public class StocksHeaderService {
 		}  
 		
 		StockVO stock = stockService.getCompanyOne(st_code);
+		
+		List<ReservationVO> reservation = null;
+		MyStocksDTO myStocks = new MyStocksDTO();
+		int deposit = 0;
+		
+		if(mb_id != null) {
+			deposit = myAccountService.getAccountAmt(mb_id).getAc_deposit();
+			reservation = orderService.getReservation(st_code, mb_id);
+			myStocks = orderService.totalMyStock(st_code, mb_id);
+		}
+		
+		model.addAttribute("reservation", reservation);
+		model.addAttribute("deposit", deposit);
+		model.addAttribute("myStocks", myStocks);
 		
 		model.addAttribute("stock", stock);
 		model.addAttribute("today", today);

@@ -122,26 +122,7 @@ public class StockController {
 		
 		model = stocksHeaderService.getModelSet(model, principal, st_code); //v
 		
-		String mb_id = null;
-		int deposit = 0;
-		if(principal != null) {
-			mb_id = principal.getName();
-			deposit = myAccountService.getAccountAmt(mb_id).getAc_deposit();
-		}
-		
-		
-		List<ReservationVO> reservation = null;
-		MyStocksDTO myStocks = new MyStocksDTO();
-		
-		if(mb_id != null) {
-			reservation = orderService.getReservation(st_code, mb_id);
-			myStocks = orderService.totalMyStock(st_code, mb_id);
-		}
-		
 		model.addAttribute("list", list);
-		model.addAttribute("reservation", reservation);
-		model.addAttribute("deposit", deposit);
-		model.addAttribute("myStocks", myStocks);
 		return "stockuser/detail";
 	}
 	
