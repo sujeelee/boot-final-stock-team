@@ -34,8 +34,7 @@ public class CommunityController {
 	@GetMapping
 	public String community(Model mo, Principal principal, @PathVariable String st_code) {
 		mo = stocksHeaderService.getModelSet(mo, principal, st_code);
-		List<BoardVO> list = communityService.getBoardList(st_code);
-		System.out.println("list :" +list);
+		List<BoardVO> list = communityService.getBoardList(st_code,principal.getName());
 
 
 		if (principal != null) {
@@ -70,9 +69,7 @@ public class CommunityController {
 				e.printStackTrace();
 			}
 		}
-		
-		System.out.println("board : " + board);
-		System.out.println("newBoard : " + newBoard );
+
 
 
 		communityService.insertBoard(newBoard);
@@ -98,7 +95,6 @@ public class CommunityController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		//principal는 오브잭트  principal.getName();는 문지열, 오브잭트의 null을 확인해 주는게 좋습니다.
 		//principal가 null 일때 map 형식인 result에 key와 value를 넣어서 화면에서 사용할 수 있게 도와줍니다.
-		System.out.println(feel);
 		if (principal == null) {
 			result.put("res", "401");
 			result.put("msg", "로그인한 회원만 이용 가능합니다.");
@@ -131,9 +127,6 @@ public class CommunityController {
 		newComment.setMb_id(principal.getName());
 		newComment.setWr_no(wr_no);
 		newComment.setCo_content(co_content);
-		
-		System.out.println("comment : " + co_content);
-		System.out.println("newcomment : " + newComment );
 
 
 		boolean res = communityService.insertComment(newComment);	
@@ -150,11 +143,7 @@ public class CommunityController {
 	@PostMapping("/replaceComment")
 	public String replaceCommentList_post(Model mo, Principal principal, @RequestParam Map<String, Object> paramMap){
 		List<CommentVO> colist = communityService.getCommentList(Integer.parseInt(paramMap.get("wr_no").toString()));
-		
-
-		
-		System.out.println("paramMap : "+ paramMap );
-		System.out.println("colist : "+ colist);
+			
 
 		if (principal != null) {
 			mo.addAttribute("userInfo", principal.getName());

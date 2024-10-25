@@ -20,11 +20,21 @@ public class CommunityService {
 		communityDao.insertBoard(newBoard);		
 	}
 
-	public List<BoardVO> getBoardList(String st_code) {
+	public List<BoardVO> getBoardList(String st_code, String mb_id) {
 		if(st_code == null) {
 			return null;
 		}
-		return communityDao.getBoardList(st_code);
+		List<BoardVO> list = communityDao.getBoardList(st_code);
+		for(BoardVO tmp : list) {
+			CommunityActionVO ca = new CommunityActionVO();
+			ca.setCg_num(tmp.getWr_no());
+			ca.setCg_type("board");
+			ca.setMb_id(mb_id);
+			
+			tmp.setCg_like("y");
+			tmp.setCg_report("n");
+		}
+		return list;
 	}
 
 	public boolean setFeelAction(CommunityActionVO feel) {
@@ -36,13 +46,14 @@ public class CommunityService {
 	        if (feel.getCg_num() < 1) {
 	            return false;
 	        }
-
 	        boolean tmp = false;
 	        CommunityActionVO tmpCA = communityDao.findBoardByObjBoardVO(feel);
-
 	        if (tmpCA == null) {
 	            tmp = communityDao.createBoardOfCommunityAction(feel);
-	            return tmp;
+	            // tmpCA에다가 다시 위 코드에 추가한 인설트를 다시 셀렉트로 가져온다.
+	            tmpCA = communityDao.selectCommunityAction(feel.getCg_num(), feel.getMb_id());
+	            tmpCA.setCg_like(null);
+	            tmpCA.setCg_report(null);
 	        }
 
 	        // 좋아요 처리
@@ -61,16 +72,8 @@ public class CommunityService {
 	            }
 	        }
 	        if(tmp){
-	            // 좋아요 또는 신고가 성공적으로 처리된 경우
-	            System.out.println("Action successful: " + feel);
-	            
-	            // 좋아요 및 신고 수 업데이트 호출 전에 현재 상태 로그
-	            System.out.println("Before updating counts: " +
-	                "cg_num=" + feel.getCg_num() + 
-	                ", cg_type=" + feel.getCg_type());
 	        		updateActionCounts(feel);
 	        		
-	        		System.out.println("Counts updated successfully.");
 	        }else {
 	        	System.out.println("Action failed for: " + feel);
 			}
@@ -81,36 +84,20 @@ public class CommunityService {
 	    // 게시글에 대한 좋아요 및 신고 수 업데이트
 	    if ("board".equals(feel.getCg_type())) {
 	        int likeCount = communityDao.getLikeCountForBoard(feel.getCg_num());
-	        System.out.println("Retrieved likeCount for board: " + likeCount);
 	        int reportCount = communityDao.getReportCountForBoard(feel.getCg_num());
-	        System.out.println("Retrieved reportCount for board: " + reportCount);
 
-	        // 추가 로그 출력
-	        System.out.println("Board - cg_num: " + feel.getCg_num() + ", LikeCount: " + likeCount + ", ReportCount: " + reportCount);
-	        System.out.println("Retrieved likeCount for board: " + likeCount);
+
 
 	        boolean success = communityDao.updateBoardCounts(feel.getCg_num(), likeCount, reportCount);
-	        if (!success) {
-	            System.out.println("Failed to update board counts for cg_num=" + feel.getCg_num());
-	        } else {
-	            System.out.println("Successfully updated board counts for cg_num=" + feel.getCg_num());
-	        }
 	    }
 	    // 댓글에 대한 좋아요 및 신고 수 업데이트
 	    else if ("comment".equals(feel.getCg_type())) {
 	        int likeCount = communityDao.getLikeCountForComment(feel.getCg_num());
 	        int reportCount = communityDao.getReportCountForComment(feel.getCg_num());
 
-	        // 추가 로그 출력
-	        System.out.println("Comment - cg_num: " + feel.getCg_num() + ", LikeCount: " + likeCount + ", ReportCount: " + reportCount);
 	        
 
 	        boolean success = communityDao.updateCommentCounts(feel.getCg_num(), likeCount, reportCount);
-	        if (!success) {
-	            System.out.println("Failed to update comment counts for cg_num=" + feel.getCg_num());
-	        } else {
-	            System.out.println("Successfully updated comment counts for cg_num=" + feel.getCg_num());
-	        }
 	    }
     }
 

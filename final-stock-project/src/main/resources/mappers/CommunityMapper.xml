@@ -7,6 +7,15 @@
         VALUES (#{wr_category}, #{mb_id}, #{wr_content}) 
     </insert>
 	
+	<select id="selectCommunityAction" resultType="CommunityActionVO">
+		SELECT *
+		FROM
+			COMMUNITY_ACTION
+		WHERE
+			CG_NUM = #{cg_num} AND
+			MB_ID = #{mb_id}
+	</select>
+	
     <select id="getBoardList" resultType="BoardVO">
     	SELECT *
     	FROM board
