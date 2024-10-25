@@ -4,9 +4,12 @@ function showDash(icon) {
 	if(tag == "hot"){
 		$(".dash-info").find("div").hide();
 		$(".dash-hot-stocks").show();
+		$(".dash-hot-stocks").find("div").show();
 	} else {
 		$(".dash-info").find("div").show();
 		$(".dash-hot-stocks").hide();
+		$(".member-dash-title").text($(icon).find(".links_name").text());
+		get_list_dash(tag);
 	}
     if (!$(icon).hasClass("active")) {
         // 사이드바 열기
@@ -16,7 +19,7 @@ function showDash(icon) {
         $(".navbar").css("padding", "15px 110px"); // 패딩을 15px 40px로 변경
         
         setTimeout(function() {
-            $(".dash-info").css("width", "200px"); // 사이드바 너비 설정
+			$(".dash-info").css("width", "300px"); 
             $(".home-section").css("left", "-100px"); // home 요소를 오른쪽으로 밀기
         }, 50); // 자연스러운 애니메이션을 위한 짧은 지연
 

@@ -74,10 +74,71 @@
 			</div>
 		</div>
 		<div class="member-dash-info" sec:authorize="isAuthenticated()">
-			회원
+			<h4 class="dash-title member-dash-title"></h4>
+			<div class="dash-table-line"></div>       
+			<div class="dash-table" id="dash-ajax" th:fragment="dash-ajax">
+				<div class="dash-row" th:each="dashs : ${dashList}">
+					<div class="dash-middle">
+						<div class="dash-table-rigth">
+							<a th:href="'/stock/'+${dashs.code}">
+								<span th:text="${dashs.stockName}"></span>
+							</a>
+							<div class="dash-qty dash-grey" th:if="${dashs.stocksQty > 0}" th:text="${#numbers.formatInteger(dashs.stocksQty, 0, 'COMMA')} + '주'"></div>
+						</div>
+						<div class="dash-table-left">
+							<div th:text="${#numbers.formatInteger(dashs.price, 0, 'COMMA')} + '원'"></div>
+							<div th:class="${dashs.flt == '0' ? 'dash-grey' : dashs.flt.contains('-') ? 'dash-blue' :'dash-red' } + ' dash-font'" th:text="${#numbers.formatInteger(dashs.vs, 0, 'COMMA')}+'원 ('+ ${#numbers.formatDecimal(dashs.flt, 1, 2)}+'%)'"></div>
+						</div>
+					</div>
+				</div><!-- end dash-row -->
+				<div class="dash-row none-list" th:if="${dashList == null or #lists.isEmpty(dashList)}">
+			    	<div class="none-content">
+						<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
+			    		<p class="no-title">내역이 없어요</p>
+				    </div>
+				</div>
+			</div>	
 		</div>
 		<div class="dash-hot-stocks" style="display: none">
-			화끈하죠잉
+			<h4 class="dash-title">실시간 차트</h4>
+			<div class="dash-table-line"></div>       
+			<div class="dash-table">
+				<div class="dash-row" th:each="hots : ${hotlist}">
+					<div class="dash-middle">
+						<div class="dash-table-rigth">
+							<span th:text="${hots.ranks}"></span>
+							<a th:href="'/stock/'+${hots.code}">
+								<span th:text="${hots.st_name}"></span>
+							</a>
+						</div>
+						<div class="dash-table-left">
+							<div th:text="${#numbers.formatInteger(hots.price, 0, 'COMMA')} + '원'"></div>
+							<div th:class="${hots.flt == '0' ? 'dash-grey' : hots.flt.contains('-') ? 'dash-blue' :'dash-red' } + ' dash-font'" th:text="${#numbers.formatInteger(hots.vs, 0, 'COMMA')}+'원 ('+ ${#numbers.formatDecimal(hots.flt, 1, 2)}+'%)'"></div>
+						</div>
+					</div>
+				</div><!-- end dash-row -->
+			</div>	
 		</div>
 	</div>
+	<script th:inline="javascript">
+		function get_list_dash(tag){
+			var mb_id = null;
+			if([[${member.mb_id}]]){
+				mb_id = [[${member.mb_id}]];
+			}
+			if(mb_id != null){
+				$.ajax({
+					url : '/dashlist',
+					method : "post", //원하는 방식 선택
+					data : { //보낸 데이터를 객체로
+						tag : tag,
+						mb_id : mb_id
+					},
+					success : function(data){
+						$("#dash-ajax").replaceWith(data);
+					}
+				});
+			}
+		}
+	</script>
 </sidebar>
