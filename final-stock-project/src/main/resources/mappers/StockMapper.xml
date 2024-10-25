@@ -265,4 +265,19 @@
 		) b ON a.st_code = b.st_code
 		ORDER BY a.st_name ASC;
 	</select>
+	<select id="getOldJisu" resultType="StockJisuVO">
+		select * from stock_jisu where ji_type = #{type} and ji_date = #{date}
+	</select>
+	<insert id="insertStockJisu">
+		insert into stock_jisu
+		set	ji_type = #{ji.ji_type},
+			ji_date = #{ji.ji_date},
+			ji_clpr = #{ji.ji_clpr},
+			ji_vs = #{ji.ji_vs},
+			ji_fltRt = #{ji.ji_fltRt},
+			ji_mkp = #{ji.ji_mkp},
+			ji_hipr = #{ji.ji_hipr},
+			ji_lopr = #{ji.ji_lopr},
+			ji_trqu = #{ji.ji_trqu}
+	</insert>
 </mapper>

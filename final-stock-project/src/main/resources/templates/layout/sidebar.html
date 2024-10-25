@@ -91,10 +91,10 @@
 						</div>
 					</div>
 				</div><!-- end dash-row -->
-				<div class="dash-row none-list" th:if="${dashList == null or #lists.isEmpty(dashList)}">
-			    	<div class="none-content">
-						<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
-			    		<p class="no-title">내역이 없어요</p>
+				<div class="dash-row dash-none-list" th:if="${dashList == null or #lists.isEmpty(dashList)}">
+			    	<div class="dash-none-content">
+						<i class="fa-solid fa-note-sticky fa-5x dash-fa-color"></i>
+			    		<p class="dash-no-title">내역이 없어요</p>
 				    </div>
 				</div>
 			</div>	
