@@ -97,7 +97,7 @@
 				
 				function deleteTag(content) {
 				    // HTML을 삭제하고 텍스트만 반환
-				    return $('<div>').html(content).text();
+					return content.replace(/<\/?[^>]+(>|$)/g, "");
 				} // 디비에 있는 태그들을 제거하고 순수 텍스트만 가져오는 함수
 				
 				function fetchNews(date){

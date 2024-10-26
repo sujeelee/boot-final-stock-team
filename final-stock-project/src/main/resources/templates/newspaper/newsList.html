@@ -97,8 +97,9 @@
 			    }
 			    
 			    function deleteTag(content) {
-				    return $('<div>').html(content).text();
-				}
+			    	 return content.replace(/<\/?[^>]+(>|$)/g, "");
+			    }
+
 	
 			    function fetchNews(date) {
 			        let ne_datetime = formatDate(date);
@@ -115,6 +116,7 @@
 			            contentType: "application/json; charset=utf-8",
 			            dataType: "json",
 			            success: function (data) {
+			            	console.log(data);
 			                displayNewsList(data.newsList);
 			            },
 			            error: function (jqXHR, textStatus, errorThrown) {
