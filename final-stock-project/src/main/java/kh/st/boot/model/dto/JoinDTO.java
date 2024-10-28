@@ -30,7 +30,6 @@ public class JoinDTO {
     private int mb_fail = 0;
     private int mb_level = 1;
     private int mb_point = 50;
-    private String mb_loginMethod = "internal";
 
     //디버깅용
     @Override

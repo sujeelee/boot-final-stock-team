@@ -1,7 +1,7 @@
 
 /* 꾸미기~~~~~~ */
 .local_sch {
-	margin: 10px 0;
+	margin: 5px 0;
 	text-align: left;
 }
 
@@ -124,4 +124,8 @@ border: 1px solid #dcdcdc;
 
 .tbl_col{
 	text-align: center;
+}
+
+#display_box{
+display: inline-block;
 }

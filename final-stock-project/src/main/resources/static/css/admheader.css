@@ -39,6 +39,7 @@ a:link, a:visited {
 }
 
 
+
 /* 테이블 기본 설정 */
 table {
 	clear: both;
@@ -295,5 +296,6 @@ button, input[type="submit"] {
 #display_box{
 display: inline-block;
 }
+
 
 
