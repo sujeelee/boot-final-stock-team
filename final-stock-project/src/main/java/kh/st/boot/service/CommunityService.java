@@ -1,6 +1,8 @@
 package kh.st.boot.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,24 @@ public class CommunityService {
 			ca.setCg_type("board");
 			ca.setMb_id(mb_id);
 			
-			tmp.setCg_like("y");
-			tmp.setCg_report("n");
+		     if (mb_id != null) { // 로그인한 사용자
+		            CommunityActionVO actionStatus = communityDao.checkUserActions(ca);
+
+		            // actionStatus가 null이 아닐 경우에만 속성 설정
+		            if (actionStatus != null) {
+		                // 좋아요와 신고 상태를 설정
+		                tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "y" : "n");
+		                tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "y" : "n");
+		            } else {
+		                // actionStatus가 null일 경우 기본값 설정
+		                tmp.setCg_like("n");
+		                tmp.setCg_report("n");
+		            }
+		        } else {
+		            // 로그인하지 않은 사용자에 대해 기본값 설정
+		            tmp.setCg_like("n");
+		            tmp.setCg_report("n");
+		        }
 		}
 		return list;
 	}
@@ -115,4 +133,9 @@ public class CommunityService {
 
 		return communityDao.getCommentList(wr_no);
 	}
+
+	public List<BoardVO> getBoardList(String st_code) {
+		return communityDao.getBoardList(st_code);
+	}
+
 }

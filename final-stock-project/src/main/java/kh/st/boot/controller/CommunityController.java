@@ -34,12 +34,13 @@ public class CommunityController {
 	@GetMapping
 	public String community(Model mo, Principal principal, @PathVariable String st_code) {
 		mo = stocksHeaderService.getModelSet(mo, principal, st_code);
-		List<BoardVO> list = communityService.getBoardList(st_code,principal.getName());
-
-
-		if (principal != null) {
-			mo.addAttribute("userInfo", principal.getName());
-		}
+		// principal이 null일 경우 mb_id를 null로 설정
+	    String mb_id = null;
+	    if (principal != null) {
+	        mb_id = principal.getName();
+	        mo.addAttribute("userInfo", mb_id);
+	    }
+		List<BoardVO> list = communityService.getBoardList(st_code,mb_id);
 
 		mo.addAttribute("list", list);
 		return "community/community";
@@ -79,11 +80,15 @@ public class CommunityController {
 
 
 	@PostMapping("/replace")
-	public String replaceBoardList_post(Model mo, Principal principal,@RequestBody @PathVariable String st_code){
-		List<BoardVO> list = communityService.getBoardList(st_code);
-		if (principal != null) {
-			mo.addAttribute("userInfo", principal.getName());
-		}
+	public String replaceBoardList_post(Model mo, Principal principal, @PathVariable String st_code){
+		// Principal이 null일 경우 mb_id를 null로 설정
+	    String mb_id = null;
+	    if (principal != null) {
+	        mb_id = principal.getName(); // principal이 null이 아닐 때만 getName() 호출
+	        mo.addAttribute("userInfo", mb_id); // 사용자 정보가 있을 때만 모델에 추가
+	    }
+		List<BoardVO> list = communityService.getBoardList(st_code,mb_id);
+
 		mo.addAttribute("list", list);
 		return "community/community :: #replace_board";
 	}
@@ -91,7 +96,7 @@ public class CommunityController {
 
 	@PostMapping("/action")
 	@ResponseBody
-	public Map<String, Object> communityAction(@RequestBody CommunityActionVO feel, Principal principal, @RequestBody @PathVariable String st_code) {
+	public Map<String, Object> communityAction(@RequestBody CommunityActionVO feel, Principal principal,@PathVariable String st_code) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		//principal는 오브잭트  principal.getName();는 문지열, 오브잭트의 null을 확인해 주는게 좋습니다.
 		//principal가 null 일때 map 형식인 result에 key와 value를 넣어서 화면에서 사용할 수 있게 도와줍니다.
@@ -104,6 +109,7 @@ public class CommunityController {
 		String mb_id = principal.getName();
 		feel.setMb_id(mb_id);
 		feel.setSt_code(st_code);
+		
 		//변수들을 이용해서 DB에저장하고 필요한 값을 map에 넣습니다.
 		boolean res = communityService.setFeelAction(feel);
 		if(res){
@@ -111,6 +117,17 @@ public class CommunityController {
 		} else {
 			result.put("res", "204"); //DB 에 저장은 되는데 다른곳에 오류가 있음
 		}
+		
+		List<BoardVO> list = communityService.getBoardList(st_code);
+		for (BoardVO board : list) {
+		    board.setCg_like(feel.getCg_like());
+		    board.setCg_report(feel.getCg_report());
+		    System.out.println("feel : " + feel);
+		}
+	
+			
+		System.out.println(list);
+		result.put("list", list);
 		return result;
 	}
 	

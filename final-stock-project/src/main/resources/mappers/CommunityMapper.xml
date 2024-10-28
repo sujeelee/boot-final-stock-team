@@ -111,5 +111,20 @@
         SELECT COUNT(*) FROM community_action
         WHERE cg_num = #{cg_num} AND cg_type = 'comment' AND cg_report = 'report'
     </select>
+    
+	<!-- 좋아요 및 신고 여부 확인 -->
+	<select id="checkUserActions" resultType="CommunityActionVO">
+	    SELECT 
+	        IF(cg_like = 'like', 'like', 'n') AS cg_like,
+	        IF(cg_report = 'report', 'report', 'n') AS cg_report,
+	        cg_num 
+	    FROM 
+	        community_action 
+	    WHERE 
+	        cg_num = #{cg_num} AND 
+	        cg_type = 'board' AND 
+	        mb_id = #{mb_id}
+	</select>
+	
     	
 </mapper>

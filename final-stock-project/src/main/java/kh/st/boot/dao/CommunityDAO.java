@@ -47,6 +47,8 @@ public interface CommunityDAO {
 	boolean updateCommentCounts(int cg_num, int likeCount, int reportCount);
 
 	boolean updateCount(int wr_no);
+
+	CommunityActionVO checkUserActions(CommunityActionVO ca);
  
 
 }
