@@ -1,23 +1,22 @@
 package kh.st.boot.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kh.st.boot.dao.AdmUserDAO;
+import kh.st.boot.dao.AdminUserDAO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
-import lombok.AllArgsConstructor;
+import kh.st.boot.pagination.UserCriteria;
 
 @Service
-@AllArgsConstructor
 public class AdminUserService {
-	
-	
-	private AdmUserDAO adminuserDAO;
-	
+
+	@Autowired
+	private AdminUserDAO adminuserDAO;
+
 	public List<AdmMemberVO> getAdminMem(Criteria cri) {
 		return adminuserDAO.selectAdmUser(cri);
 	}
@@ -31,7 +30,6 @@ public class AdminUserService {
 		return adminuserDAO.UseSelect(mb_no);
 	}
 
-
 	public boolean getAdmUserUpd(AdmMemberVO admMemberVO) {
 		adminuserDAO.UseUpdate(admMemberVO);
 		return true;
@@ -41,34 +39,21 @@ public class AdminUserService {
 //		return adminuserDAO.UserDelete(mb_no);
 //	}
 
-	
 	public boolean getAdmUseDel(int mb_no) {
-	    int result = adminuserDAO.UserDelete(mb_no);
-	    return result > 0;  // 1 이상의 값을 반환하면 삭제 성공
+		int result = adminuserDAO.UserDelete(mb_no);
+		return result > 0; // 1 이상의 값을 반환하면 삭제 성공
 	}
 
+    // 페이지네이션이 적용된 검색 결과 가져오기
+    public List<AdmMemberVO> getSearchUser(String use_sh, UserCriteria cri) {
+        return adminuserDAO.selectUser(use_sh, cri);
+    }
 
-	
-	
-// 다 따로 검색해서 값을 넘겨준다면? 그냥 편하게 검색할수 있지 않을까 ? 
-	//아이디검색
-	public List<AdmMemberVO> adminId(String search) {
-		System.out.println("여기입니다 "+  search);
-		return adminuserDAO.selectId(search);
-	}
-	//이름검색
-	public List<AdmMemberVO> adminName(String search) {
-		System.out.println("여기입니다 "+  search);
-		return adminuserDAO.selectName(search);
-	}
-	//닉네임검색
-	public List<AdmMemberVO> adminNick(String search) {
-		System.out.println("여기입니다 "+  search);
-		return adminuserDAO.selectNick(search);		
-	}
-	
-	
-	
-	
+    // 검색 결과에 따른 PageMaker 생성
+    public PageMaker getPageMakerSearch(UserCriteria cri, String use_sh) {
+        int totalCount = adminuserDAO.selectUserCount(use_sh, cri); // 검색된 전체 결과 수 반환
+        return new PageMaker(10, cri, totalCount); // PageMaker 생성 (displayPageNum을 10으로 설정)
+    }
+
 	
 }

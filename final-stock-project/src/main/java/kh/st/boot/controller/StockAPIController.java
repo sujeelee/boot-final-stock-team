@@ -122,6 +122,7 @@ public class StockAPIController {
 		int count = 0;
 		
 		apiUrl += cri.getPage();
+		
 		if(params.get("sfl") != null && params.get("stx") != null) {
 			String stx = params.get("stx").toString();
 			try {

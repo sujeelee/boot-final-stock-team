@@ -62,13 +62,13 @@
 	<div class="container">
 	<div class="footerdivider"></div> <!-- 줄 추가 -->
 	<div style="display: flex; align-items: center; margin-left: 80px;">
-	    <img alt="로고" th:src="@{/img/S2DKEY_logo.png}" height="50px;" style="margin-right: 8px;">
-	    <span th:text="${config.cf_title}"></span>
+	    <img alt="로고" src="/media/cc0-images/grapefruit-slice-332-332.jpg" style="margin-right: 8px;">
+	    <span>S2DKEY</span>
 	</div>
     <div class="footer-links">
         <a href="https://corp.tossinvest.com/contents/terms/?id=29" target="_blank">개인정보 처리방침</a>
         <span>|</span>
-        <a href="https://corp.tossinvest.com/customer" target="_blank" th:text="'고객센터 ' + ${config.cf_tel}"></a>
+        <a href="https://corp.tossinvest.com/customer" target="_blank">고객센터 1599-7987</a>
         <span>|</span>
         <a href="https://corp.tossinvest.com/notice" target="_blank">공지사항</a>
         <span>|</span>
@@ -80,15 +80,15 @@
         <span>|</span>
         <a href="https://corp.tossinvest.com/contents/terms/?id=31" target="_blank">신용정보 활용체제</a>
         <span>|</span>
-        <a th:href="@{/}" th:text="${config.cf_title}"></a>
+        <a href="https://corp.tossinvest.com">S2DKEY</a>
     </div>
 	    <div class="footer-company-info">
-	        <span th:text="'대표 이메일 : ' + ${config.cf_email}"></span>
-	        <span th:text="'대표 : ' + ${config.cf_owner_name}"></span>
-	        <span th:text="'주소 : ' + ${config.cf_zip} + ' ) ' + ${config.cf_addr} + ' ' + ${config.cf_addr2}"></span>
+	        <span>사업자 등록번호 : 519-87-01431</span>
+	        <span>대표 : 이수지</span>
+	        <span>주소 : 서울특별시 강남구 강남구 테헤란로 134-2 6층 (역삼동, 호산빌딩)</span>
 	    </div>
 	<div class="footer-disclaimer">
-	    <span th:text="${config.cf_title} + '증권에서 제공하는 투자 정보는 고객의 투자 판단을 위한 단순 참고용일 뿐, 투자 제안 및 권유, 종목 추천을 위해 작성된 것이 아닙니다.'"></span>
+	    <span>S2DKEY 증권에서 제공하는 투자 정보는 고객의 투자 판단을 위한 단순 참고용일 뿐, 투자 제안 및 권유, 종목 추천을 위해 작성된 것이 아닙니다.</span>
     </div>
     </div>
     </footer>

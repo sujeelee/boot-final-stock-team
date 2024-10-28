@@ -75,7 +75,24 @@ public class MyAccountServiceImp implements MyAccountService {
 
 	@Override
 	public boolean deleteUser(MemberVO user) {
-		return myAccountDao.deleteUser(user.getMb_id());
+		// 뉴스 회원인지 확인
+		NewsMemberVO nm = myAccountDao.selectNewsMember(user.getMb_no());
+		// 주식 회원인지 확인
+		StockMemberVO sm = myAccountDao.selectStockMember(user.getMb_no());
+		if(nm != null) {
+			if(myAccountDao.deleteMemberApprove(user.getMb_no())) {
+				myAccountDao.deleteNewsMember(user.getMb_no());
+			}
+		}
+		if(sm != null) {
+			if(myAccountDao.deleteMemberApprove(user.getMb_no())) {
+				myAccountDao.deleteStockMember(user.getMb_no());
+			}
+		}
+		if(myAccountDao.deleteAccount(user.getMb_no())) {
+			return myAccountDao.deleteUser(user.getMb_id());
+		}
+		return false;
 	}
 
 	@Override
