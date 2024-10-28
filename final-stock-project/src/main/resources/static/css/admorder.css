@@ -1,7 +1,7 @@
 
 /* 꾸미기~~~~~~ */
 .local_sch {
-	margin: 5px 0;
+	margin: 10px 0;
 }
 
 .local_sch select {
@@ -59,8 +59,4 @@ tr {
 	border: 0;
 	height: 25px;
 	color: #fff;
-}
-
-#display_box{
-display: inline-block;
 }
