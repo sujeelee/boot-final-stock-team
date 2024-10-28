@@ -13,11 +13,18 @@
 	<main layout:fragment="content">
 		<div class="main-container">
 			<div class="main-jisu">
+					<h4 class="main-title">이벤트</h4>
+					<div class="main-table">
+						<div class="main-row">
+						</div> <!-- end main-row -->
+					</div>
+				</div>
+			<div class="main-jisu">
 				<h4 class="main-title">주가지수</h4>
-				<div class="main-table">
+				<div class="main-table jisu-row-background">
 					<div class="main-row">
 						<div class="right">
-							<div class="jisu-title">코스피</div>
+							<div class="jisu-title">코스피 <img th:src="@{img/flag.png}" height="16px;"/></div>
 							<div class="jisu-price">2,583.27</div>
 							<div class="jsiu-vs dash-red">2.24(0.08%)</div>
 						</div>
@@ -27,7 +34,7 @@
 					</div> <!-- end main-row -->
 					<div class="main-row">
 						<div class="right">
-							<div class="jisu-title">코스닥</div>
+							<div class="jisu-title">코스닥 <img th:src="@{img/flag.png}" height="16px;"/></div>
 							<div class="jisu-price">727.41</div>
 							<div class="jsiu-vs dash-blue">-7.18(-0.9%)</div>
 						</div>
@@ -37,7 +44,7 @@
 					</div> <!-- end main-row -->
 					<div class="main-row">
 						<div class="right">
-							<div class="jisu-title">KRX 300</div>
+							<div class="jisu-title">KRX 300 <img th:src="@{img/flag.png}" height="16px;"/></div>
 							<div class="jisu-price">150,500.56</div>
 							<div class="jsiu-vs dash-grey">0(0%)</div>
 						</div>
@@ -48,50 +55,163 @@
 				</div>
 			</div>
 			<div class="main-news">
-				<h4 class="main-title">주요뉴스</h4>
+				<div class="main-title">
+					<h4>주요뉴스</h4>
+					<span class="more-link">
+						<a href="/newspaper">더보기</a>
+					</span>
+				</div>
+				<div class="main-table">
+					<div class="main-row news-row" th:each="num_news: ${#numbers.sequence(1,4)}">
+						<a href="/newspaper">
+							<div class="news-img">
+								<img src="https://www.infostockdaily.co.kr/news/photo/202410/202696_198668_722.png">
+								<div class="news-title">코스피, 기관 매수에 2600선 회복 시도…삼전 1%대 반등</div>
+								<div class="news-mini-text">2시간전 . 인포스탁데일리</div>
+							</div>
+						</a>
+					</div> <!-- end main-row -->
+				</div>
 			</div>
 			<div class="main-hot">
 				<h4 class="main-title">실시간 차트</h4>
+				<div class="main-table hot-chart-main">
+					<div class="main-row">
+						<table class="table table-borderless">
+							<thead class="main-header-sticky">
+								<tr>
+									<th class="left">종목</th>
+									<th>현재가</th>
+									<th>등락률</th>
+									<th>시가총액</th>
+									<th>거래량</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="hotm : ${hotlist}" th:onclick="stock_link_url('stock/' + [[${hotm.code}]]);">
+									<td class="left">
+										<span class="hot-main-rank" th:text="${hotm.ranks}"></span>
+										<span th:text="${hotm.st_name}"></span>
+									</td>
+									<td>
+										<span th:text="${#numbers.formatInteger(hotm.price, 0, 'COMMA')} + '원'"></span>
+									</td>
+									<td>
+										<span th:class="${hotm.flt == '0' ? 'dash-grey' : hotm.flt.contains('-') ? 'dash-blue' :'dash-red' } + ' dash-font'" th:text="${#numbers.formatInteger(hotm.vs, 0, 'COMMA')}+'원 ('+ ${#numbers.formatDecimal(hotm.flt, 1, 2)}+'%)'"></span>
+									</td>
+									<td class="table-black">
+										<span th:text="${hotm.price_text}"></span>
+									</td>
+									<td>
+										<span th:text="${#numbers.formatInteger(hotm.trqu, 0, 'COMMA')} + '주'"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div> <!-- end main-row -->
+				</div>
 			</div>
-			<div class="main-board">
+			<div class="main-board main-board-comm">
 				<h4 class="main-title">인기 급상승 커뮤니티</h4>
+				<div class="main-table">
+					<div class="main-row">
+						<div class="comm-main-row">
+							<div class="comm-left">
+								<ul>
+									<li onclick="get_board(this);" th:each="nums : ${#numbers.sequence(1,4)}">
+										<div class="comm-stock-li">
+											<span class="comm-main-rank"  th:text="${nums}"></span>
+											<span class="comm-main-title" th:text="${nums} + 'YG PLUS'"></span>
+											<div class="comm-main-vs dash-red">7.5%</div>
+										</div>
+									</li>
+								</ul>
+							</div> <!-- comm-left end -->
+							<div class="comm-rigth">
+								<div class="comm-main-list">
+									<table class="table table-borderless">
+										<tr class="comm-main-row-list" th:each="nums : ${#numbers.sequence(1,5)}">
+											<td>
+												<div class="comm-member">
+													<span>긍정연진</span> 
+													<span class="grey-text">·</span>
+													<span class="grey-text">17분전</span>
+												</div>
+												<div class="comm-row-content">
+													푼돈 벌어 모할라꼬
+													진득히 조금만 더 기다려 보셔요
+													당장 오늘만 봐도 세시 쇼타임 한방 더 남은거 같은데
+													아니 ㅋㅋㅋㅋㅋㅋㅋ 지금 몇퍼가 올랐는데 오늘 고점대비 4퍼떨어졌다고 죽을라카노 그럴꺼면 그냥 주식 삭제 ㄱㄱ
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="last-td">
+									<div><span class="comm-last-title">YG PLUS</span>커뮤니티&nbsp;<i class="fa-solid fa-chevron-right"></i></div>
+								</div>
+							</div> <!-- comm-rigth end -->
+						</div>
+					</div> <!-- end main-row -->
+				</div>
 			</div>
 		</div>
 		<script th:inline="javascript">
 			google.charts.load('current', {'packages':['corechart']});
 			google.charts.setOnLoadCallback(drawChart);
-
-	     	function drawChart() { 
-		        var data = google.visualization.arrayToDataTable([
-		          ['Year', 'Sales'],
-		          ['2004',  1000],
-		          ['2005',  1170],
-		          ['2006',  660],
-		          ['2007',  1030],
-		          ['2004',  1000],
-		          ['2005',  1170],
-		          ['2006',  660],
-		          ['2007',  1030]
-	        ]);
-
-	        var options = {
-				width: 150,
-				height: 75,
-				chartArea: { left : '0', right : 0, top: '0', bottom: '0'},
-	        };
-
-	        var chart = new google.visualization.LineChart(document.getElementById('graph1'));
-
-	        chart.draw(data, options);
-	        
-	        var chart2 = new google.visualization.LineChart(document.getElementById('graph2'));
-
-	        chart2.draw(data, options);
-	        
-	        var chart3 = new google.visualization.LineChart(document.getElementById('graph3'));
-
-	        chart3.draw(data, options);
-	      }
+			
+			function drawChart() { 
+				var data = google.visualization.arrayToDataTable([
+					['Year', 'Sales'],
+					['2004',  1000],
+					['2005',  1170],
+					['2006',  660],
+					['2007',  1030],
+					['2004',  1000],
+					['2005',  1170],
+					['2006',  660],
+					['2007',  1030]
+				]);
+				
+				var options = {
+					width: 200,
+					height: 100,
+					chartArea: { left : '0', right : 0, top: '0', bottom: '0'},
+					backgroundColor: {fill : '#f5f8fc'},
+					hAxis: {
+						gridlines: { color: 'none' },  // 수평축의 눈금선 제거
+						textPosition: 'none'           // 수평축의 라벨 제거
+					},
+					vAxis: {
+						gridlines: { color: 'none' },  // 수직축의 눈금선 제거
+						textPosition: 'none'           // 수직축의 라벨 제거
+					},
+				};
+				
+				var chart = new google.visualization.LineChart(document.getElementById('graph1'));
+				
+				chart.draw(data, options);
+				
+				var chart2 = new google.visualization.LineChart(document.getElementById('graph2'));
+				
+				chart2.draw(data, options);
+				
+				var chart3 = new google.visualization.LineChart(document.getElementById('graph3'));
+				
+				chart3.draw(data, options);
+			}
+			function stock_link_url(url){
+				window.open(url, '_blank'); // 새 창에서 URL 열기
+			}
+			
+			get_board($(".comm-left ul li").first());
+			
+			function get_board(target){
+				var title = $(target).find(".comm-main-title").text();
+				$(".comm-left ul li").removeClass("on");
+				$(target).addClass("on");
+				$(".comm-last-title").text(title);
+			}
 		</script>
 	</main>
 </body>
