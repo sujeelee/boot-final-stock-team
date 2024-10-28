@@ -25,8 +25,8 @@
 					<div class="main-row">
 						<div class="right">
 							<div class="jisu-title">코스피 <img th:src="@{img/flag.png}" height="16px;"/></div>
-							<div class="jisu-price">2,583.27</div>
-							<div class="jsiu-vs dash-red">2.24(0.08%)</div>
+							<div class="jisu-price" th:text="${#numbers.formatDecimal(kospi[kospi.size() - 1].ji_mkp, 1, 2)}"></div>
+							<div th:class="${kospi[kospi.size() - 1].ji_fltRt == '0' ? 'dash-grey' : kospi[kospi.size() - 1].ji_fltRt.contains('-') ? 'dash-blue' :'dash-red' } + ' jsiu-vs'" th:text="${#numbers.formatDecimal(kospi[kospi.size() - 1].ji_vs, 1, 2)} + ' ('+${#numbers.formatDecimal(kospi[kospi.size() - 1].ji_fltRt, 1, 2)}+'%)'"></div>
 						</div>
 						<div class="left">
 							<div id="graph1"></div>
@@ -35,8 +35,8 @@
 					<div class="main-row">
 						<div class="right">
 							<div class="jisu-title">코스닥 <img th:src="@{img/flag.png}" height="16px;"/></div>
-							<div class="jisu-price">727.41</div>
-							<div class="jsiu-vs dash-blue">-7.18(-0.9%)</div>
+							<div class="jisu-price" th:text="${#numbers.formatDecimal(kosdaq[kosdaq.size() - 1].ji_mkp, 1, 2)}"></div>
+							<div th:class="${kosdaq[kosdaq.size() - 1].ji_fltRt == '0' ? 'dash-grey' : kosdaq[kosdaq.size() - 1].ji_fltRt.contains('-') ? 'dash-blue' :'dash-red' } + ' jsiu-vs'" th:text="${#numbers.formatDecimal(kosdaq[kosdaq.size() - 1].ji_vs, 1, 2)} + ' ('+${#numbers.formatDecimal(kosdaq[kosdaq.size() - 1].ji_fltRt, 1, 2)}+'%)'"></div>
 						</div>
 						<div class="left">
 							<div id="graph2"></div>
@@ -45,8 +45,8 @@
 					<div class="main-row">
 						<div class="right">
 							<div class="jisu-title">KRX 300 <img th:src="@{img/flag.png}" height="16px;"/></div>
-							<div class="jisu-price">150,500.56</div>
-							<div class="jsiu-vs dash-grey">0(0%)</div>
+							<div class="jisu-price" th:text="${#numbers.formatDecimal(krx[krx.size() - 1].ji_mkp, 1, 2)}"></div>
+							<div th:class="${krx[krx.size() - 1].ji_fltRt == '0' ? 'dash-grey' : krx[krx.size() - 1].ji_fltRt.contains('-') ? 'dash-blue' :'dash-red' } + ' jsiu-vs'" th:text="${#numbers.formatDecimal(krx[krx.size() - 1].ji_vs, 1, 2)} + ' ('+${#numbers.formatDecimal(krx[krx.size() - 1].ji_fltRt, 1, 2)}+'%)'">0(0%)</div>
 						</div>
 						<div class="left">
 							<div id="graph3"></div>
@@ -161,44 +161,81 @@
 			google.charts.setOnLoadCallback(drawChart);
 			
 			function drawChart() { 
-				var data = google.visualization.arrayToDataTable([
-					['Year', 'Sales'],
-					['2004',  1000],
-					['2005',  1170],
-					['2006',  660],
-					['2007',  1030],
-					['2004',  1000],
-					['2005',  1170],
-					['2006',  660],
-					['2007',  1030]
-				]);
 				
-				var options = {
-					width: 200,
-					height: 100,
-					chartArea: { left : '0', right : 0, top: '0', bottom: '0'},
-					backgroundColor: {fill : '#f5f8fc'},
-					hAxis: {
-						gridlines: { color: 'none' },  // 수평축의 눈금선 제거
-						textPosition: 'none'           // 수평축의 라벨 제거
-					},
-					vAxis: {
-						gridlines: { color: 'none' },  // 수직축의 눈금선 제거
-						textPosition: 'none'           // 수직축의 라벨 제거
-					},
-				};
+				var data = []; // 데이터 테이블을 저장할 배열
+				
+				var kospi = [[${kospi}]] ? [[${kospi}]] : null;
+				var kosdaq = [[${kosdaq}]] ? [[${kosdaq}]] : null;
+				var krx = [[${krx}]] ? [[${krx}]] : null;
+				
+				var options = [];
+				for(var i=1; i<4;i++){
+					var colors = "";
+					var data_array = [];
+					data[i] = new google.visualization.DataTable(); 
+					data[i].addColumn('string', 'Day'); 
+					data[i].addColumn('number', 'price');
+					if(i == 1){
+						for(var j=0;j<kospi.length;j++){
+							data_array.push([kospi[j].ji_date, parseFloat(kospi[j].ji_clpr)]);
+							var lastValue = parseFloat(kospi[kospi.length - 1].ji_vs); // 마지막 값 가져오기
+							console.log(lastValue);
+							if (lastValue < 0) {
+								colors = '#0000FF'; // 마지막 값이 -이면 파란색
+							} else {
+								colors = '#004411'; // 기본 색상 (예: 빨간색)
+							}
+						}
+					}
+					if(i == 2){
+						for(var j=0;j<kosdaq.length;j++){
+							data_array.push([kosdaq[j].ji_date, parseFloat(kosdaq[j].ji_clpr)]);
+							var lastValue = parseFloat(kosdaq[kosdaq.length - 1].ji_vs); // 마지막 값 가져오기
+							if (lastValue < 0) {
+								colors = '#0000FF'; // 마지막 값이 -이면 파란색
+							} else {
+								colors = '#004411'; // 기본 색상 (예: 빨간색)
+							}
+						}
+					}
+					if(i == 3){
+						for(var j=0;j<krx.length;j++){
+							data_array.push([krx[j].ji_date, parseFloat(krx[j].ji_clpr)]);
+							var lastValue = parseFloat(krx[krx.length - 1].ji_vs); // 마지막 값 가져오기
+							if (lastValue < 0) {
+								colors = '#0000FF'; // 마지막 값이 -이면 파란색
+							} else {
+								colors = '#004411'; // 기본 색상 (예: 빨간색)
+							}
+						}
+					}
+					console.log(colors);
+					options[i] = {
+						width: 200,
+						height: 100,
+						chartArea: { left : '0', right : 0, top: '0', bottom: '0'},
+						backgroundColor: {fill : '#f5f8fc'},
+						enableInteractivity  : false,
+						vAxis: {
+							gridlines: { color: 'none' },  // 수직축의 눈금선 제거
+							textPosition: 'none'           // 수직축의 라벨 제거
+						},
+						colors: [colors] // 동적으로 설정한 색상 배열
+					};
+					data[i].addRows(data_array);
+				}
 				
 				var chart = new google.visualization.LineChart(document.getElementById('graph1'));
 				
-				chart.draw(data, options);
+				chart.draw(data[1], options[1]);
 				
 				var chart2 = new google.visualization.LineChart(document.getElementById('graph2'));
 				
-				chart2.draw(data, options);
+				chart2.draw(data[2], options[2]);
 				
 				var chart3 = new google.visualization.LineChart(document.getElementById('graph3'));
 				
-				chart3.draw(data, options);
+				chart3.draw(data[3], options[3]);
 			}
 			function stock_link_url(url){
 				window.open(url, '_blank'); // 새 창에서 URL 열기

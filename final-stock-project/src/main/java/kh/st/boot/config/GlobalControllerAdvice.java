@@ -16,6 +16,7 @@ import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.HotStockDTO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.service.ConfigService;
 import kh.st.boot.service.MemberService;
 import kh.st.boot.service.StocksHeaderService;
@@ -69,5 +70,20 @@ public class GlobalControllerAdvice {
     	model.addAttribute("dashList", list);
     	
     	return "layout/sidebar :: #dash-ajax";
+    }
+    
+    @ModelAttribute("kospi")
+    public List<StockJisuVO> kospiConfig() {
+        return configService.jisuConfig("kospi");
+    }
+    
+    @ModelAttribute("kosdaq")
+    public List<StockJisuVO> kosdaqConfig() {
+        return configService.jisuConfig("kosdaq");
+    }
+    
+    @ModelAttribute("krx")
+    public List<StockJisuVO> krxConfig() {
+        return configService.jisuConfig("krx");
     }
 }

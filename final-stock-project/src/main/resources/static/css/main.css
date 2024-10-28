@@ -8,6 +8,7 @@
 .main-row > .left{margin-left: 15%;margin-bottom: 5%;}
 .jisu-title > img {margin-bottom: 4%;}
 .jisu-title{width: 90px;}
+.jsiu-vs{position: absolute;}
 .news-img > img {width: 300px;}
 .news-title{box-sizing: border-box;}
 .more-link > a, .news-row > a, td > a, a:hover {text-decoration: none;color: #000;}

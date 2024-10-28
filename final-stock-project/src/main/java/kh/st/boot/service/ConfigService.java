@@ -11,6 +11,7 @@ import kh.st.boot.dao.StockDAO;
 import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.HotStockDTO;
 import kh.st.boot.model.vo.AdminVO;
+import kh.st.boot.model.vo.StockJisuVO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -38,6 +39,10 @@ public class ConfigService {
 		}
 		
 		return lists;
+	}
+	
+	public List<StockJisuVO> jisuConfig(String type) {
+		return stockDao.jisuConfig(type);
 	}
 	
 }
