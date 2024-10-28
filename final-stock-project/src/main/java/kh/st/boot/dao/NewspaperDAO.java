@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.pagination.Criteria;
 
@@ -27,12 +26,7 @@ public interface NewspaperDAO {
 	//왜 이렇게 했는지 주석 달기
 	NewsPaperVO getNewsOne(@Param("name") String np_name);
 
-
 	int selectCountList(Criteria cri);
-
-	List<AdmMemberVO> searchNews(Criteria cri, String np_name);
-
-	int selectTotalCount(Criteria cri, String np_name);
 
 	
 	//  NewspaperVO 로 결과() 보내줌 

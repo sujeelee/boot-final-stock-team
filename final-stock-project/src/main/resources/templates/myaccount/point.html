@@ -209,7 +209,7 @@
 				<!-- Balance Section -->
 				<div class="balance-section">
 					<div class="balance-info">
-						<p class="balance-text">사용 가능 포인트 · <span th:text="${#authentication.principal.member.mb_point}"></span>포인트</p>
+						<p class="balance-text">사용 가능 포인트 · <span th:text="${#numbers.formatInteger(point, 1, 'COMMA')}"></span>포인트</p>
 					</div>
 				</div>
 				<section>

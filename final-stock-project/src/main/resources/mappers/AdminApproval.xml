@@ -16,12 +16,12 @@
 	</update>
 
 	<insert id="newsInsert">
-		INSERT INTO news_member (mb_no, mp_company)
+		INSERT INTO news_member (mb_no, mb_news)
 		VALUES (#{mb_no}, #{mp_company})
 	</insert>
 
 	<insert id="stockInsert">
-		INSERT INTO stock_member (mb_no, mp_company)
+		INSERT INTO stock_member (mb_no, mb_stock)
 		VALUES (#{mb_no}, #{mp_company})
 	</insert>
 

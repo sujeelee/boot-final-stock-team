@@ -1,56 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
 <head>
-
-<link href="/css/admdaycheck.css" rel='stylesheet'>
-<script src="https://kit.fontawesome.com/3f892a70ad.js"
-	crossorigin="anonymous">
-	
-</script>
-<script
-	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
-<meta charset="UTF-8">
-<title>관리자 페이지</title>
+    <link href="/css/admdaycheck.css" rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/3f892a70ad.js" crossorigin="anonymous"></script>
+    <script src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
 </head>
 <body>
-	<div id="wrapper">
-		<div id="container">
-			<h1 id="container_title">출석체크 포인트 관리 페이지</h1>
-			<div id="container_main" class="content">
-				<form action="/admin/admDaycheck/daycheckAdm/update" method="post" 
-					style="text-align: left;">
-					<input type="text" name="mb_id" placeholder="출석 체크 회원 아이디" required class="in_sch">
-					<button type="submit" class="btn_submit btn in_sch">검색</button>
-				</form>
-				<!-- 레벨 테이블 -->
-				<table>
-					<thead>
-						<tr>
-							<th>출석 체크일</th>
-							<th>출석 체크 회원 아이디</th>
-							<th>지급된 출석체크 포인트</th>
-							<th>이번달 출석일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="list : ${list}">
-							<td th:text="${list.dc_datetime}"></td>
-							<td th:text="${list.mb_id}"></td>
-							<td th:text="${list.po_num}"></td>
-							<td th:text="${list.dc_days}"></td>
-							<td></td>
+    <div id="wrapper">
+        <div id="container">
+            <h1 id="container_title">출석체크 포인트 관리 페이지</h1>
+            <div id="container_main" class="content">
+                <form action="/admin/admDaycheck/daycheckAdm/update" method="post" style="text-align: left;">
+                    <input type="text" name="mb_id" placeholder="출석 체크 회원 아이디" required class="in_sch">
+                    <button type="submit" class="btn_submit btn in_sch">검색</button>
+                </form>
+                
+                <!-- 레벨 테이블 -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>출석 체크일</th>
+                            <th>출석 체크 회원 아이디</th>
+                            <th>지급된 출석체크 포인트</th>
+                            <th>이번달 출석일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${list}">
+                            <td th:text="${item.dc_datetime}"></td>
+                            <td th:text="${item.mb_id}"></td>
+                            <td th:text="${item.po_num}"></td>
+                            <td th:text="${countDay}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(list)}">
+                            <td colspan="4" class="no-data">검색 결과가 없습니다.</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-						</tr>
-					</tbody>
-				</table>
+                <!-- 페이지네이션 -->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                <div id="display_box" style="text-align: center;">
+                    <ul class="pagination" th:if="${pm_daycheck.endPage != 0}">
+                        <li th:if="${pm_daycheck.prev}">
+                            <a th:href="@{/admin/admDaycheck/daycheckAdm(page=${pm_daycheck.startPage - 1})}">◀</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(pm_daycheck.startPage, pm_daycheck.endPage)}"
+                            th:classappend="${pm_daycheck.cri.page} == ${i} ? 'active' : ''">
+                            <a th:href="@{/admin/admDaycheck/daycheckAdm(page=${i})}" th:text="${i}"></a>
+                        </li>
+                        <li th:if="${pm_daycheck.next}">
+                            <a th:href="@{/admin/admDaycheck/daycheckAdm(page=${pm_daycheck.endPage + 1})}">▶</a>
+                        </li>
+                    </ul>
+                </div>
 
-			</div>
-			<footer id="ft">
-				<p>Copyright © demo.sir.kr. All rights reserved.</p>
-			</footer>
-		</div>
-	</div>
+            </div>
+            <footer id="ft">
+                <p>Copyright © demo.sir.kr. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>

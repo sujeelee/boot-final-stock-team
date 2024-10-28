@@ -9,8 +9,6 @@ public interface AdminService {
 
 	boolean admUpdate(AdminVO adminVO);
 
-
-
 	
 
 
