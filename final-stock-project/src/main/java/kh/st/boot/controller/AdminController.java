@@ -342,11 +342,16 @@ public class AdminController {
 
 	// 접속시 불러오기
 	@GetMapping("/admOrder/orderAdm")
+<<<<<<< HEAD
 	public String sltOrder(Model model, Criteria cri) {
 		cri.setPerPageNum(12);
 		List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder(cri);
 		PageMaker pm_ord = admUserService.getPageMaker(cri);
 		model.addAttribute("pm_ord", pm_ord);
+=======
+	public String sltOrder(Model model) {
+		List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder();
+>>>>>>> parent of 0165321 (주문페이지 페이지네이션)
 		model.addAttribute("list", sltAdminOrder);
 		return "/admin/admOrder/orderAdm";
 	}

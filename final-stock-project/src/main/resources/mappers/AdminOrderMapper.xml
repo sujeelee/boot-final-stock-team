@@ -3,7 +3,7 @@
 <mapper namespace="kh.st.boot.dao.AdminOrderDAO">
 
 	<select id="selectAlladminOrder" resultType="admOrderPageVO">
-		SELECT * FROM `order` limit #{pageStart}, #{perPageNum}
+		SELECT * FROM `order`
 	</select>
 	
 	<select id="selectCountList" resultType="int"> select count(*) from `order`</select>
@@ -35,4 +35,8 @@
         WHERE ${od_sh} LIKE CONCAT('%', #{cri.od_search}, '%')
     </select>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 0165321 (주문페이지 페이지네이션)
 </mapper>
