@@ -9,6 +9,8 @@ import kh.st.boot.dao.AdminOrderDAO;
 import kh.st.boot.dao.NewspaperDAO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
+import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.PageMaker;
 
 @Service 
 public class AdminOrderService {
@@ -17,8 +19,8 @@ public class AdminOrderService {
 	private AdminOrderDAO adminOrderDAO ;
 
 
-	public List<admOrderPageVO> getAllsltAdminOrder() {
-		return adminOrderDAO.selectAlladminOrder();
+	public List<admOrderPageVO> getAllsltAdminOrder( Criteria cri) {
+		return adminOrderDAO.selectAlladminOrder(cri);
 	}
 
 
@@ -33,6 +35,14 @@ public class AdminOrderService {
 		return adminOrderDAO.deletOrder(od_id);
 	}
 
+
+	public PageMaker getPageMaker(Criteria cri) {
+		int count = adminOrderDAO.selectCountList(cri);
+
+		return new PageMaker(10, cri, count);
+	}
+	
+			
 
 
 	

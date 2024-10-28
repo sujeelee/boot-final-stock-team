@@ -3,7 +3,7 @@
 <mapper namespace="kh.st.boot.dao.AdminOrderDAO">
 
 	<select id="selectAlladminOrder" resultType="admOrderPageVO">
-		SELECT * FROM `order`
+		SELECT * FROM `order` limit #{pageStart}, #{perPageNum}
 	</select>
 
 
@@ -24,5 +24,10 @@
 	</select>
 	
 
-
+	<select id="selectCountList" resultType="int"> 
+		select count(*) from `order`
+		
+  	</select>
+	
+	
 </mapper>

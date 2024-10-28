@@ -21,12 +21,12 @@
 				<!-- 검색기능 form -->
 				<form action="/admin/admOrder/orderAdm/search" method="post"
 					class="local_sch" style="text-align: left;">
-					<select>
-						<option value="0">회원아이디</option>
+					<select name="ord_sh">
+						<option value="mb_id">회원아이디</option>
 						<option value="1">회원이름</option>
 						<option value="2">주문번호</option>
 						<option value="3">주식명</option>
-					</select> <input type="text" name="search" required class="in_sch">
+					</select> <input type="text" name="ord_search" required class="in_sch">
 					<button type="submit" class="btn_submit btn">검색</button>
 				</form>
 				<div class="tbl_col">

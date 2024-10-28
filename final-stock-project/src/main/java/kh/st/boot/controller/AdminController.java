@@ -371,8 +371,12 @@ public class AdminController {
 
 	// 접속시 불러오기
 	@GetMapping("/admOrder/orderAdm")
-	public String sltOrder(Model model) {
-		List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder();
+	public String sltOrder(Model model,  Criteria cri) {
+		cri.setPerPageNum(8);
+		List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder(cri);
+		PageMaker pm_order = adminOrderService.getPageMaker(cri);
+		
+		model.addAttribute("pm_ord", pm_order);
 		model.addAttribute("list", sltAdminOrder);
 		return "/admin/admOrder/orderAdm";
 	}
