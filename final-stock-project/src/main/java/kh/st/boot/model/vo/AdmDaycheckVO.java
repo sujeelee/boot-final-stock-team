@@ -11,7 +11,7 @@ public class AdmDaycheckVO {
 	private String mb_id;
 	private String dc_days;
 	private int po_num;
-	
+	private int countDay; // 이번달 출석일을 전달합니다 
 }
 
 

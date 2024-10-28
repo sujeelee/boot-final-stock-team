@@ -12,11 +12,7 @@
         WHERE mb_id = #{mb_Id}
     </select>
 
-    <select id="daySelect" resultType="AdmDaycheckVO">
-        SELECT * FROM day_check 
-        WHERE mb_id = #{mb_Id}
-    </select>
-    
+   
     
     
     

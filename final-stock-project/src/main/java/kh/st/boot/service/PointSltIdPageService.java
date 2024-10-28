@@ -1,5 +1,6 @@
 package kh.st.boot.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,38 +12,36 @@ import kh.st.boot.model.vo.AdmDaycheckVO;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor	
+@AllArgsConstructor
 public class PointSltIdPageService {
-	
-	
+
 	@Autowired
 	private AdmDaycheckDAO admDaycheckDAO;
-	
-	
-	
+
 	public List<AdmDaycheckVO> sltAllPoint() {
-	
+
 		return admDaycheckDAO.AllSelect();
 	}
-	// 아이디 검색해서 조회
-	// 아이디 일부만 검색해도 나오게 하고싶으면 여기서 처리
-	// 전체 입력할꺼여서 쿼리로 처리하려고 함 
-	public List<AdmDaycheckVO> sltOnePoint(String mb_id) {
-	
-		return admDaycheckDAO.OneSelect(mb_id);
-	}
-	
-	
-	
-	public List<Integer> sltAllDay() {
-		List<AdmDaycheckVO> allDay = admDaycheckDAO.AllSelect(); // 모든 정보 가져오기
-		 admDaycheckDAO.daySelect();
-		return null;
-	}
-	
-	
-	
-	
 
+	public List<AdmDaycheckVO> sltAllDay() {
 
+		List<AdmDaycheckVO> allDay = admDaycheckDAO.AllSelect();
+
+		for (AdmDaycheckVO dayNum : allDay) {
+			String dcDays = dayNum.getDc_days();
+
+			if (dcDays != null) {
+				int count = countOnes(dcDays); // dc_days의 1 개수 세기
+				dayNum.setCountDay(count); // countList에 추가
+			}
+		}
+		return allDay;
+	}
+
+	// '1'제거한 길이를 원본에서 빼서 1이 몇개인지 확인
+	private int countOnes(String dcDays) {
+		return (dcDays.length() - dcDays.replace("1", "").length());
+	}
 }
+
+// 메퍼도 날짜만 검색하게 수정해야함 

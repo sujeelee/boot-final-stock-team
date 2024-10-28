@@ -295,8 +295,7 @@ public class AdminController {
 	
 
 	// -------------------------------------------------------------------------------
-	// -------------------------- 포인트 적립내역 검색 컨트롤러
-	// -----------------------------------	
+	// ------------------- 출석체크  포인트 적립내역 검색 컨트롤러 -------------------
 	// -------------------------------------------------------------------------------
 
 	// 검색하기랑 
@@ -306,19 +305,18 @@ public class AdminController {
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
 	public String sltAdmPointPage(Model model) {
-		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllPoint();
-		List<Integer> countDay = pointSltIdPageService.sltAllDay();
+		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllDay();
 		System.out.println(sltPoint);
-		model.addAttribute("countDay", countDay);
 		model.addAttribute("list", sltPoint);
 		return "/admin/admDaycheck/daycheckAdm";
 	}
 
-	// 검색하기
+	// 검색하기  1,0,0,1 수정해야함 
 
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
-		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id);
+		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltAllDay(mb_id);
+		
 		model.addAttribute("list", sltPointOne);
 		return "/admin/admDaycheck/daycheckAdm";
 
