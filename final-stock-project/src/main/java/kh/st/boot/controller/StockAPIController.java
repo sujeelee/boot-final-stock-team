@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.Criteria;
@@ -44,7 +47,7 @@ import kh.st.boot.service.StockService;
 public class StockAPIController {
 	@Autowired
 	StockService stockService;
-	private String encodeKey = "Ys5KwqClpBafJnzS5dWVgJrYaBHnZC8udtvx5/NkEepksQAMeaMA5n1N92DJQe39K7dfLtpnJcm9uS8s9i9WTw==";
+	private String encodeKey = "Ys5KwqClpBafJnzS5dWVgJrYaBHnZC8udtvx5%2FNkEepksQAMeaMA5n1N92DJQe39K7dfLtpnJcm9uS8s9i9WTw%3D%3D";
 	
 	@GetMapping("")
 	public String home(@RequestParam Map<String, String> params, StockCriteria cri, Model model) {
@@ -56,6 +59,14 @@ public class StockAPIController {
 			int cnt = stockService.getCompanyStockCount(st.getSt_code());
 			st.setSt_price_cnt(cnt);
 		}
+		
+		// 오늘 날짜 가져오기
+        LocalDate nowday = LocalDate.now();
+        // 날짜 형식 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        // 어제 날짜를 문자열로 변환
+        String date = nowday.format(formatter);
+		model.addAttribute("date", date);
 	    // 가져온 데이터를 모델에 추가
 	    model.addAttribute("list", list);
 	    model.addAttribute("pm", pm); // 페이지 정보 추가
@@ -428,6 +439,84 @@ public class StockAPIController {
 	        	result.put("res", "fail");
 	        }
 			return result;
+	}
+	
+	@PostMapping("/getStockJisu")
+	@ResponseBody
+	public Map<String, String> getStockJisu(HttpServletRequest req, HttpServletResponse res, @RequestParam("date") String date) {
+			String[] idxNm = {"KRX 300", "코스닥", "코스피"};
+			
+			Map<String, String> result = new HashMap<>();
+			for(int i=0;i<idxNm.length;i++) { 
+				String apiUrl = "https://apis.data.go.kr/1160100/service/GetMarketIndexInfoService/getStockMarketIndex?serviceKey="
+						+ encodeKey
+						+ "&endBasDt=" + date
+						+ "&numOfRows=50"
+						+ "&resultType=json";
+		
+				String encoded;
+				try {
+					encoded = URLEncoder.encode(idxNm[i], StandardCharsets.UTF_8.toString());
+					apiUrl += "&idxNm=" + encoded;
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
+				if(jsonArray == null) {
+					result.put("res", "fail"); 
+					return result;
+				}
+				Map<String, String> field = new HashMap<>();
+				
+				field.put("idxNm", "ji_type");
+				field.put("basDt", "ji_date");
+				field.put("clpr", "ji_clpr");
+				field.put("vs", "ji_vs");
+				field.put("mkp", "ji_mkp");
+				field.put("fltRt", "ji_fltRt");
+				field.put("hipr", "ji_hipr");
+				field.put("lopr", "ji_lopr");
+				field.put("trqu", "ji_trqu");
+				
+				boolean chk = false;
+				
+				// jsonArray 값을 확인하기 위한 for문
+		        for (Map<String, Object> item : jsonArray) {
+		        	 StockJisuVO oldJisu = stockService.getOldJisu((String)item.get("basDt"), idxNm[i]);
+		        	 
+		        	 if(oldJisu != null) continue;
+		        	
+		        	 StockJisuVO jisu = new StockJisuVO(); //지수정보VO생성 
+		            for (Map.Entry<String, Object> entry : item.entrySet()) {
+		            	String jsonKey = entry.getKey();
+		                Object value = entry.getValue();
+		                String voFieldName = field.get(jsonKey);
+		                if (voFieldName != null) {
+		                	Field fields;
+							try {
+								fields = StockJisuVO.class.getDeclaredField(voFieldName);
+								fields.setAccessible(true); // private 필드 접근
+			                    fields.set(jisu, value); // 필드에 값 설정
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+		                }
+		            }
+		            
+		            chk = stockService.insertStockJisu(jisu);
+		            
+		            if(chk) {
+		            	result.put("res", "success"); 
+		            } else {
+		            	result.put("res", "fail");
+		            	result.put("type" + i, idxNm[i]);
+		            }
+		        }
+		        
+			}
+		return result;
 	}
 	
 }

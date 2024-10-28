@@ -4,7 +4,7 @@
 
 	<select id="getReservation" resultType="ReservationVO">
 		select * from reservation 
-		where re_st_code = #{code} and mb_id = #{mb_id} 
+		where re_st_code = #{code} and mb_id = #{mb_id} and re_state like '%대기%'
 		order by re_no
 	</select>
 	<insert id="insertReservation" useGeneratedKeys="true" keyColumn="re.re_no">

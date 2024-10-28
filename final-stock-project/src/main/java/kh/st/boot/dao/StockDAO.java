@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kh.st.boot.model.dto.DashListDTO;
+import kh.st.boot.model.dto.HotStockDTO;
+import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.model.vo.WishVO;
@@ -44,5 +47,15 @@ public interface StockDAO {
 	StockPriceVO getStockPriceLater(@Param("code")String st_code);
 
 	List<StockPriceVO> getStockInfoListDate(@Param("code")String st_code, @Param("to")String to_date, @Param("from")String from_date);
+
+	List<HotStockDTO> getHotStockList();
+
+	List<DashListDTO> getMyStock(@Param("mb_id")String mb_id);
+
+	List<DashListDTO> getMyWish(@Param("mb_id")String mb_id);
+
+	StockJisuVO getOldJisu(@Param("date")String date, @Param("type")String type);
+
+	boolean insertStockJisu(@Param("ji")StockJisuVO jisu);
 
 }

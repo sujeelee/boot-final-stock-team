@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.StockDAO;
+import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
@@ -132,5 +133,13 @@ public class StockService {
 		if(stock == null ) return 0;
 		
 		return stockDao.getCountStockPrice(st_code);
+	}
+
+	public StockJisuVO getOldJisu(String date, String type) {
+		return stockDao.getOldJisu(date, type);
+	}
+
+	public boolean insertStockJisu(StockJisuVO jisu) {
+		return stockDao.insertStockJisu(jisu);
 	}
 }
