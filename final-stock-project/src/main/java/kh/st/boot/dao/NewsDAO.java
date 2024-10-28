@@ -49,4 +49,6 @@ public interface NewsDAO {
 
 	void deleteFileByNeNo(int ne_no);
 
+	List<NewsVO> selectNewsList(String st_name);
+
 }

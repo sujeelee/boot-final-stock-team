@@ -9,7 +9,9 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockuser.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
 <style type="text/css">
-	
+	.news-section {
+		width: 80%;
+	}
 </style>
 </head>
 <body>
@@ -17,8 +19,18 @@
 	
 		<div th:replace="~{layout/stocksHeader.html}"></div>
 		<div class="form-content">
-			<section style="width: 80%;">
+			<section class="news-section">
+				<div class="news-container">
+					<ul class="news-list">
+						<li class="news-item">
+							<div class="news-box">
+								
+							</div>
+						</li>
+					</ul>
+				</div>
 				<h2 th:text="${stock.st_name} + ' 뉴스'"></h2>
+				
 			</section>
 			<section class="order-section">
 				<div th:replace="~{layout/stocksOrder.html}"></div>
