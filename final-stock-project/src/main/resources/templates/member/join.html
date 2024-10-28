@@ -110,7 +110,7 @@
 <body>
 	<main layout:fragment="content">
 		<div class="login-wrapper">
-	        <h2 th:text="${not #strings.isEmpty(userInfo)} ? 'kakao Join' : 'Join'">Join</h2>
+	        <h2 th:text="${where == 'internal'} ? 'Join' : ${where}+' join'">Join</h2>
 	        <div class="divider"></div> <!-- 줄 추가 -->
 	        <form method="post" th:action="@{/member/join}" id="login-form">
                 <div class="wrapper">
@@ -149,8 +149,7 @@
                         <input type="date" name="birth" placeholder="birth">
                         <input type="hidden" id="ec_checked" name="ec" value="f">
                         <input type="hidden" id="mb_loginMethod" name="mb_loginMethod"
-                        th:value="${not #strings.isEmpty(userInfo)} ? 'kakao'"
-                        >
+                        th:value="${not #strings.isEmpty(userInfo)} ? '${where}'">
                 </div>
                     <!--/* 다음 kakao를 이용한 주소 가져오기 */-->
                     <div class="address-wrapper">
@@ -220,6 +219,10 @@ function checkEmailCode(){
                 $('#codeCheck').remove();
                 $('#ec_checked').val("t");
                 alert("Email 인증 성공");
+
+                //인터벌을 멈추고 싶은 위치
+                clearInterval(timerInterval);  // 타이머 인터벌 중단
+                
                 removeEmail_varification(mail);
             }else{
                 alert("잘못된 코드입니다! 다시 확인해주세요!")
@@ -234,9 +237,11 @@ function checkEmailCode(){
 
 //타이머
 
+var timerInterval;
+
 function startTimer(duration) {
     var timer = duration, minutes, seconds;
-    var timerInterval = setInterval(function () {
+    timerInterval = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
 
@@ -256,7 +261,8 @@ function startTimer(duration) {
 
             // 이메일 입력을 다시 가능하게 하고 버튼을 복구
             let empty = isEmptyCheck($('#mb_loginMethod').val());
-            console.log(empty);
+            
+            //카카오, 네이버면 이메일을 지우지 않음
             if(empty){
                 $('#email_input').attr("readonly", false);
                 $('#email_input').val(''); // 이메일 입력 필드 초기화
@@ -296,6 +302,15 @@ function removeEmail_varification(mail){
     });
 
 }
+
+function NotReload(){
+    if( (event.ctrlKey == true && (event.keyCode == 78 || event.keyCode == 82)) || (event.keyCode == 116) ) {
+        event.keyCode = 0;
+        event.cancelBubble = true;
+        event.returnValue = false;
+    } 
+}
+document.onkeydown = NotReload;
 
 </script>
 
