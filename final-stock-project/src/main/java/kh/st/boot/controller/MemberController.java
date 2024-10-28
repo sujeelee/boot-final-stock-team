@@ -27,18 +27,30 @@ public class MemberController {
 	private MemberService memberService;
 	
     @Value("${kakao.client_id}")
-    private String client_id;
+    private String kakao_client_id;
 
     @Value("${kakao.redirect_uri}")
-    private String redirect_uri;
+    private String kakao_redirect_uri;
+
+    @Value("${naver.client_id}")
+    private String naver_client_Id;
+    
+    @Value("${naver.client_secret}")
+    private String naver_client_secret;
+
+    @Value("${naver.redirect_uri}")
+    private String naver_redirect_uri;
+    
 
 	//로그인
     @GetMapping("/login")
     public String login(HttpServletRequest request, Model mo){
     	
-        String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
-        mo.addAttribute("location", location);
-
+        String kakao_location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+kakao_client_id+"&redirect_uri="+kakao_redirect_uri;
+        String naver_location = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id="+naver_client_Id+"&state=indeX101010&redirect_uri="+ naver_redirect_uri;
+        
+        mo.addAttribute("kakao_location", kakao_location);
+        mo.addAttribute("naver_location", naver_location);
 
     	String uri = request.getHeader("Referer");
 	    if (uri != null && !uri.contains("/member/login")) {
@@ -109,7 +121,10 @@ public class MemberController {
 
     //회원가입
     @GetMapping("/join")
-    public String join(){
+    public String join(Model mo){
+
+        String info = "internal";
+        mo.addAttribute("where", info);
     	return "member/join";
     }
     

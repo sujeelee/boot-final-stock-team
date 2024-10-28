@@ -13,4 +13,8 @@ public class HotStockDTO {
    private int price; //한주 가격
    private int vs; //대비
    private String flt; //등락율
+   
+   private int trqu; //체결수량
+   private String price_text; //시가총액 텍스트 
+   private String mrk; //시가총액
 }
