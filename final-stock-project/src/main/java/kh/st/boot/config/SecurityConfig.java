@@ -3,10 +3,16 @@ package kh.st.boot.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import kh.st.boot.auth.CustomAuthenticationProvider;
+import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.handler.LoginFailHandler;
 import kh.st.boot.handler.LoginSuccessHandler;
 import kh.st.boot.model.util.UserRole;
@@ -19,6 +25,11 @@ public class SecurityConfig{
 	@Autowired
 	private MemberDetailService memberDetailService;
 
+    @Autowired
+    private CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Autowired
+    private MemberDAO memberDao;
 	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,7 +53,7 @@ public class SecurityConfig{
 //                .usernameParameter("userId") //아이디 파라미터 명
 //                .passwordParameter("password") // 비밀번호 파라미터 명
                 .successHandler(new LoginSuccessHandler())
-                // .failureHandler(new LoginFailHandler())
+                .failureHandler(new LoginFailHandler(memberDao))
             )
             // .oauth2Login((oauth2) -> oauth2  // OAuth2 로그인 설정 추가
             //     .loginPage("/member/login")  
@@ -64,6 +75,14 @@ public class SecurityConfig{
             		.deleteCookies("AUTO_LOGIN", "JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명그아웃 성공 시 제거할 쿠키명
             		.permitAll());  // 로그아웃도 모두 접근 가능
         return http.build();
+
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
+        auth.authenticationProvider(customAuthenticationProvider);
+        return auth.build();
     }
 
 }
