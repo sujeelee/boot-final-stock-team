@@ -16,88 +16,71 @@
     <div th:replace="~{layout/stocksHeader.html}"></div>
 
     <!-- 댓글 및 인기 주식 섹션을 감싸는 div 추가 -->
-    <div class="board-popular-wrapper container">
+    <div class="board-popular-wrapper">
         <div class="board-section">    
             <h2 th:text="${stock.st_name} + ' 커뮤니티'"></h2>
-
-
-
-                <form name="boardForm" method="post" onsubmit="return checkboard(this)" id="boardForm">
-
-                    <div class="board-editor">
-                        <!-- hidden 영역 -->
-                        <input type="hidden" name="wr_category" th:value="${stock.st_code}">
-                        <div class="textarea-container">
-                            <textarea id="wr_content" name="wr_content" rows="4" 
-                            th:placeholder="${not #strings.isEmpty(userInfo) ? '게시글을 입력하세요.' : '로그인 후 이용해 주세요.'}"
-                            required onclick="chk_member();"></textarea>
-                        </div>                   
-                    </div>
-                    <div class="board-footer">
-                    <div class="board-button-right">
-                        <button type="submit" class="board-button">
-                            <i class='bx bx-comment' aria-label="본문 남기기"></i> <!-- 댓글 남기기 아이콘 -->
-                        </button>
-                    </div>		   		   
-                    </div>
-
-                </form>
-
-
-
+            <form name="boardForm" method="post" onsubmit="return checkboard(this)" id="boardForm">
+                <div class="board-editor">
+                    <!-- hidden 영역 -->
+			        <input type="hidden" name="wr_category" th:value="${stock.st_code}">
+                    <div class="textarea-container">
+                        <textarea id="wr_content" name="wr_content" rows="4" placeholder="로그인 이후입력하세요" required onclick="chk_member();"></textarea>
+                    </div>                   
+                </div>
+           <div class="board-footer">
+		    <div class="board-button-right">
+ 				<button type="submit" class="board-button">
+                    <i class='bx bx-comment' aria-label="본문 남기기"></i> <!-- 댓글 남기기 아이콘 -->
+                </button>
+            </div>		   		   
+		   </div>
+            </form>
             <div class="boarddivider"></div> <!-- 줄 추가 -->
 
             <!-- 게시글 리스트를 보여주는 부분 -->
-
-
-            <div id="replace_board">
-                <ul id="boardList" th:each="item : ${list}">
-                    <li class="board">
-                        <div class="board-header">
-                            <address class="board-author">
-                                <span class="author-name">[[${item.mb_id}]]</span>
-                                <span class="author-badge">만약 유저마다 레벨이 있을 경우 필요합니다.</span>      
-                            </address>
-                            <button class="follow-btn">팔로우</button>
-                        </div>
-                            <div class="board-body">
-                            <p class="board-text">[[${item.wr_content}]]</p>
-                        </div>
-
-
-                        <form onsubmit="return false;">
-                            <div class="board-footer">
-                                    <!-- 좋아요 버튼 -->
-                                    
-                                <button class="like-btn action" type="button"
-                                    th:data-boNum="${item.wr_no}"
-                                    th:data-action="like"
-                                    th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'))">
-                                    <i class='bx bxs-heart'></i>
-                                    <span style="font-size: 13px"></span>
-                                </button>
-                            
-                                <!-- 신고 버튼 -->
-                                <button class="report-btn" type="button"
-                                th:data-boNum="${item.wr_no}"
-                                th:data-action="report"
-                                th:onclick="handleAction(this.getAttribute('data-boNum'), this.getAttribute('data-action'))">
-                                    <i class='bx bx-x-circle' aria-label="신고하기"></i>
-                                    <span style="font-size: 13px"></span>
-                                </button>
-                        
-                            </div>
-                        </form>
-                            <!-- 댓글 버튼 -->
-                            <button class="reply-btn" type="button">
-                                <i class='bx bx-comment' aria-label="댓글 남기기"></i>
-                                <span style="font-size: 13px"></span>
-                            </button>
-                            
-                    </li>
-                </ul>
-            </div>
-
+            <ul id="boardList">
+                <li class="board" th:each="board : ${list}">
+					 <div class="board-header">
+					   <address class="board-author">
+					     <span class="author-name" th:text="${board.mb_id}"></span>
+					     <span class="author-badge">mb_lever</span>      
+					   </address>
+					     <button class="follow-btn">팔로우</button>
+					  </div>
+					    <div class="board-body">
+					      <p class="board-text" th:text="${board.wr_content}">
+					       
+					      </p>
+					    </div>
+					    <p th:text="${board.wr_no}"></p>
+						<!-- form 태그에서 action, method 제거, submit 방지 위해 onsubmit 추가 -->
+						<form onsubmit="return false;">
+						    <div class="board-footer">
+						        <!-- 좋아요 버튼 -->
+                                 
+						        <button class="like-btn action" type="button" th:with="fo = 'like'"
+                                    th:onclick="handleAction( [[${board.wr_no}]] , [[${fo}]])">
+						            <i class='bx bxs-heart'></i>
+						            <span style="font-size: 13px"></span>
+						        </button>
+						
+						        <!-- 신고 버튼 -->
+                                <button class="report-btn" type="button" th:with="fo = 'report'"
+                                th:onclick="handleAction( [[${board.wr_no}]] , [[${fo}]])">
+						            <i class='bx bx-x-circle' aria-label="신고하기"></i>
+						            <span style="font-size: 13px"></span>
+						        </button>
+						
+						    </div>
+						</form>
+				        <!-- 댓글 버튼 -->
+				        <button class="reply-btn" type="button">
+				            <i class='bx bx-comment' aria-label="댓글 남기기"></i>
+				            <span style="font-size: 13px"></span>
+				        </button>
+						
+                </li>
+            </ul>
         </div>
         
         <div class="popular-stocks" >
@@ -114,11 +97,37 @@
     </div>
     <script th:inline="javascript">
 
+        var $mb_id = [[${mb_id}]];
+
+        function toggleInput() {
+            const $replyInput = $('.reply-input');
+            if ($replyInput.is(':visible')) {
+                $replyInput.hide();
+            } else {
+                $replyInput.show();
+            }
+        }
+        function chk_member(){
+        	return true;
+        	var userid = [[${mb_id}]];
+        	
+    		if(userid == null){
+    			if(confirm("회원만 이용가능합니다.\n로그인페이지로 이동하시겠습니까?")) {
+    				location.href = "/member/login";
+    				return false;
+    			} else {
+    				alert("해당 기능은 로그인 후 사용할 수 있습니다.");
+    				return false;
+    			}
+    		}
+        }
         function checkboard(form) {
+        	chk_member();
+			//console.log(form);
+			//console.log(form.wr_category.value);
 		    insertBoard(form);
 		    return false; // 폼 제출 방지
 		}
-
         function insertBoard(form) {
 			//form > 전송하고 싶은 데이터가 다 들어있어 form 태그 안 요스를 모두 가져옴
 			let url = "/stock/"+/*[[${stock.st_code}]]*/;
@@ -131,69 +140,74 @@
                 async: false, //false : 비동기 / true : 동기
                 success: function(data) {
                 	console.log(data);
-                    if (data.res === "s") {
+                    /*if (data.res === "success") {
                         // 성공적으로 댓글이 등록된 후의 처리
                         console.log("댓글 등록 성공:", data);
                         // 댓글 목록 갱신 또는 UI 업데이트 로직 추가
-                        replaceBoardList();
-                        //replaceCommentList();
-                    } else {
-                        alert(data.msg);
-                    }
-                    
+                    }*/
+                    // displayPost(data.newBoard);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("AJAX 오류:", textStatus, errorThrown);
                     alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
                 }
             });
+            function displayPost(newBoard) {
+            	console.log(newBoard); // newBoard 확인
+                const wrNo = /*[[${board.wr_no}]]?:_*/ 0;
+                const foLike = 'like'; // 좋아요 문자열
+                const foReport = 'report'; // 신고 문자열   
 
+                console.log(wrNo)
+
+            	str = `
+					<li class="board">
+					    <div class="board-header">
+					      <address class="board-author">
+					        <span class="author-name" >${newBoard.mb_id}</span>
+					        <span class="author-badge">mb_lever</span>      
+					      </address>
+					       <button class="follow-btn">팔로우</button>
+					    </div>
+					    <div class="board-body">
+					      <p class="board-text">
+					        ${newBoard.wr_content}
+					      </p>
+					    </div>
+					    <!-- form 태그에서 action, method 제거, submit 방지 위해 onsubmit 추가 -->
+					    <form onsubmit="return false;">
+					        <div class="board-footer">
+					            <!-- 좋아요 버튼 -->
+
+					                <i class='bx bxs-heart'></i>
+					                <span style="font-size: 13px"></span>
+					            </button>
+
+					            <!-- 신고 버튼 -->
+
+					                <i class='bx bx-x-circle' aria-label="신고하기"></i>
+					                <span style="font-size: 13px"></span>
+					            </button>
+					        </div>
+					    </form>
+			            <!-- 댓글 버튼 -->
+			            <button class="reply-btn" type="button">
+			                <i class='bx bx-comment' aria-label="댓글 남기기"></i>
+			                <span style="font-size: 13px"></span>
+			            </button>
+					</li>
+            	`;
+            	$('#boardList').prepend(str);
+            }
         }
-
-
-        function replaceBoardList(){
-
-            const st_code = /*[[${stock.st_code}]]*/ '' ;
-
-            let url = "/stock/" + /*[[${stock.st_code}]]*/ ''; // 주식 코드 추가
-            url += "/community/replace";   
-
-            console.log(st_code)
-
-            $.ajax({
-                    url: url,
-                    type: 'post',
-                    data: JSON.stringify(st_code),
-                    contentType: 'application/json',
-                    success: function (data) {
-                        $('#replace_board').replaceWith(data);
-                        console.log(data)
-                        $('#wr_content').val('');
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(`오류 : ` + xhr);
-
-                    }
-  
-            });
-        }
-
         function handleAction(cg_num, cg_action) {
-            //보드만
-            let cg_like = "";
-            let cg_report = "";
-
-            if(cg_action == 'like'){cg_like = 'like'}
-            if(cg_action == 'report'){cg_report = 'report'}
-
-            const feel = {
+            const cg = {
                 cg_num: cg_num,
-                cg_like: cg_like,
-                cg_report: cg_report,
-                cg_type : 'board'
+                cg_action: cg_action,
+                mb_id: $mb_id
             };
 
-            console.log(feel);
+            console.log(cg);
 
             let url = "/stock/" + /*[[${stock.st_code}]]*/ ''; // 주식 코드 추가
             url += "/community/action";
@@ -202,27 +216,16 @@
                 type: "POST",
                 url: url,
                 contentType: "application/json",
-                data: JSON.stringify(feel), // 데이터 직렬화하여 전송
+                data: JSON.stringify(cg), // 데이터 직렬화하여 전송
                 dataType : "json", 
                 success: function(data) {
-                    console.log(data.res)
-
-                    if(data.res == '401' ){
-                        alert(data.msg)
-                    } else if (data.res === '200'){
-                        //데이터 처리
-                        alert("정상 작동중");
-                    }
-
+                    console.log(data)
                 },
                 error: function(error) {
                     alert("처리 중 오류가 발생했습니다.");
                 }
             });
         }
-
-
-
 
     </script>
 </main>

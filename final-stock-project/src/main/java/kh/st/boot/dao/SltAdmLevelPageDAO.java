@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
 
 @Mapper

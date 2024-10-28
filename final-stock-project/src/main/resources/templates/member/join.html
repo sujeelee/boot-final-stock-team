@@ -109,52 +109,43 @@
 <body>
 	<main layout:fragment="content">
 		<div class="login-wrapper">
-	        <h2 th:text="${not #strings.isEmpty(userInfo)} ? 'kakao Join' : 'Join'">Join</h2>
+	        <h2>Join</h2>
 	        <div class="divider"></div> <!-- 줄 추가 -->
 	        <form method="post" th:action="@{/member/join}" id="login-form">
-                <div class="wrapper">
-                <div class="name-wrapper">
-                    <input type="text" name="id" placeholder="ID"
-                    th:value="${not #strings.isEmpty(userInfo)} ? ${userInfo}"
-                    th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'"
-                    >
-                    <input type="password" name="pw" placeholder="Password">
-                    <input type="password" name="pw2" placeholder="Password">
-                    <input type="text" name="name" placeholder="Name">
-                    <input type="text" name="nick" placeholder="Nick Name">
+	        <div class="wrapper">
+	        <div class="name-wrapper">
+	            <input type="text" name="id" placeholder="ID">
+	            <input type="password" name="pw" placeholder="Password">
+	            <input type="password" name="pw2" placeholder="Password">
+                <input type="text" name="name" placeholder="Name">
+                <input type="text" name="nick" placeholder="Nick Name">
 
-                    <input type="text" name="ph" placeholder="Phone Number">
-                    <input type="email" id="email_input" name="email" placeholder="Email"
-                    th:value="${not #strings.isEmpty(userInfo)} ? ${userInfo}"
-                    th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'"
-                    >
-                    <input type="button" id="email" value="이메일 유효성 검사" >
-                    <label for="remember-check">
-                        <input type="checkbox" id="remember-check" name="emailing"> <span>이메일 수신 동의 확인</span>
-                    </label>
-                    <div class="input-with-button">
-                        <input type="text"  onclick="sample3_execDaumPostcode()" id="sample3_postcode" name="zip" placeholder="우편번호 찾기">
-                        <button  type="button" class="search-button" onclick="sample3_execDaumPostcode()">우편번호 찾기</button>
-                    </div>
-                        <input type="hidden" id="sample3_extraAddress" name="addr2" placeholder="참고항목" readonly>
-                        <div id="wrap" style="display:none;border:1px solid;width:100%;height:100%;margin:5px 0;position:relative">
-                            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-                        </div>
-                        <input type="text" id="sample3_address" name="addr" placeholder="주소" readonly>
-                        <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소">
-                        <input type="date" name="birth" placeholder="birth">
-                        <input type="hidden" id="ec_checked" name="ec" value="f">
-                        <input type="hidden" id="mb_loginMethod" name="mb_loginMethod"
-                        th:value="${not #strings.isEmpty(userInfo)} ? 'kakao'"
-                        >
-                </div>
-                    <!--/* 다음 kakao를 이용한 주소 가져오기 */-->
-                    <div class="address-wrapper">
+                <input type="text" name="ph" placeholder="Phone Number">
+                <input type="email" id="email_input" name="email" placeholder="Email">
+                <input type="button" id="email" value="이메일 유효성 검사" >
+                <label for="remember-check">
+	                <input type="checkbox" id="remember-check" name="emailing"> <span>이메일 수신 동의 확인</span>
+	            </label>
+	            <div class="input-with-button">
+			        <input type="text"  onclick="sample3_execDaumPostcode()" id="sample3_postcode" name="zip" placeholder="우편번호 찾기">
+			        <button  type="button" class="search-button" onclick="sample3_execDaumPostcode()">우편번호 찾기</button>
+			    </div>
+			        <input type="hidden" id="sample3_extraAddress" name="addr2" placeholder="참고항목" readonly>
+			        <div id="wrap" style="display:none;border:1px solid;width:100%;height:100%;margin:5px 0;position:relative">
+			            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+			        </div>
+			        <input type="text" id="sample3_address" name="addr" placeholder="주소" readonly>
+			        <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소">
+				    <input type="date" name="birth" placeholder="birth">
+	                <input type="hidden" id="ec_checked" name="ec" value="f">
+			</div>
+                <!--/* 다음 kakao를 이용한 주소 가져오기 */-->
+			    <div class="address-wrapper">
 
-                    </div>
-                </div>
-                <div class="divider"></div> <!-- 줄 추가 -->
-                <input type="submit" value="Join">
+			    </div>
+			</div>
+			<div class="divider"></div> <!-- 줄 추가 -->
+	            <input type="submit" value="Join">
 	        </form>
 	    </div>
 

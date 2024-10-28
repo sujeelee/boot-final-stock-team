@@ -22,6 +22,8 @@ public interface MyAccountDAO {
 	List<PointVO> selectPointList(@Param("cri")TransCriteria cri, @Param("mb_id")String mb_id);
 
 	boolean updatePw(String mb_id, String mb_password);
+	
+	boolean deleteAccount(int mb_no);
 
 	boolean deleteUser(String mb_id);
 
@@ -34,5 +36,13 @@ public interface MyAccountDAO {
 	boolean deleteMemberApprove(int mb_no);
 
 	String getStockName(@Param("mp_company")String mp_company);
+
+	NewsMemberVO selectNewsMember(int mb_no);
+
+	StockMemberVO selectStockMember(int mb_no);
+
+	void deleteNewsMember(int mb_no);
+
+	void deleteStockMember(int mb_no);
 
 }
