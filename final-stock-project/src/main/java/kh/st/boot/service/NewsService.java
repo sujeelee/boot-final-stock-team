@@ -42,5 +42,7 @@ public interface NewsService {
 
 	List<NewsVO> getNewsList(String st_name);
 
+	String removeHTML(String ne_content);
+
 }
 
