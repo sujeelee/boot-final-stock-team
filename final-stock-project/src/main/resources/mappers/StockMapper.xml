@@ -283,4 +283,50 @@
 			ji_lopr = #{ji.ji_lopr},
 			ji_trqu = #{ji.ji_trqu}
 	</insert>
+	<select id="jisuConfig" resultType="StockJisuVO">
+		select * from stock_jisu AS s1
+		where 
+		<choose>
+			<when test="type == 'kospi'">
+				ji_type = '코스피'
+				AND ji_date IN (
+				    SELECT ji_date 
+				    FROM (
+				        SELECT ji_date 
+				        FROM stock_jisu 
+				        WHERE ji_type = '코스피' 
+				        ORDER BY ji_date DESC 
+				        LIMIT 20
+				    ) AS last_dates
+				)
+			</when>
+			<when test="type == 'kosdaq'">
+				ji_type = '코스닥'
+				AND ji_date IN (
+				    SELECT ji_date 
+				    FROM (
+				        SELECT ji_date 
+				        FROM stock_jisu 
+				        WHERE ji_type = '코스닥' 
+				        ORDER BY ji_date DESC 
+				        LIMIT 20
+				    ) AS last_dates
+				)
+			</when>
+			<otherwise>
+				ji_type = 'KRX 300'
+				AND ji_date IN (
+				    SELECT ji_date 
+				    FROM (
+				        SELECT ji_date 
+				        FROM stock_jisu 
+				        WHERE ji_type = 'KRX 300' 
+				        ORDER BY ji_date DESC 
+				        LIMIT 20
+				    ) AS last_dates
+				)
+			</otherwise>
+		</choose>
+		order by ji_date asc
+	</select>
 </mapper>
