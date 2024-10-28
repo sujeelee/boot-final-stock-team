@@ -150,17 +150,4 @@
 		DELETE FROM FILE WHERE FI_REG_NO = #{ne_no} AND FI_TYPE = 'news'
 	</delete>
 	
-	<select id="selectNewsList" resultType="NewsVO">
-		SELECT *, NP_NAME, FI_PATH
-		FROM
-			NEWS
-		JOIN
-			NEWSPAPER ON NEWSPAPER.NP_NO = NEWS.NP_NO
-		JOIN
-			FILE ON NE_NO = FI_REG_NO
-		WHERE
-			NE_TITLE LIKE CONCAT('%', #{st_name}, '%')
-			OR NE_CONTENT LIKE CONCAT('%', #{st_name}, '%')
-		ORDER BY NE_DATETIME DESC
-	</select>
 </mapper>

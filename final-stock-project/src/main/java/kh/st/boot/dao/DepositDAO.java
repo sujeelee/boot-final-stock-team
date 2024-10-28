@@ -8,11 +8,12 @@ import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.OrderVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.TransCriteria;
 
 public interface DepositDAO {
 
-	String findMaxOrderId(@Param("date")String date, @Param("type")String type);
+	String findMaxOrderId(@Param("date")String date);
 
 	DepositOrderVO getOrderCheck(@Param("od_id")String do_od_id);
 
@@ -24,7 +25,7 @@ public interface DepositDAO {
 
 	void insertAccountDeposit(@Param("ac")AccountVO ac); 
 	
-	void updateAccountDeposit(@Param("ac")AccountVO ac, @Param("totalPrice")int totalPrice); 
+	void updateAccountDeposit(@Param("ac")AccountVO ac); 
 	
 	void insertDepositLog(@Param("de")DepositVO deposit);
 

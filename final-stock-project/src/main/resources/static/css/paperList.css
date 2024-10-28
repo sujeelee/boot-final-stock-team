@@ -4,7 +4,7 @@
 }
 
 .news-date {
-    width: 1080px;
+    width: 100%;
     height: 65px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -17,7 +17,7 @@
 }
   
 .explanatory-text{
-	width: 1080px;
+	width: 100%;
     height: 65px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -105,14 +105,6 @@
     padding: 16px 23px 0 0;
 }
 
-.news-content-box {
-    display: flex; 					/* Flexbox로 레이아웃 설정 */
-	justify-content: space-between; /* 좌우 공간 나누기 */
-	align-items: stretch; 			/* 수직 중앙 정렬 */
-	padding: 12px 0 21px;
-	height: 110px; 					/* 고정 높이 설정 */
-}
-
 .news-title a, .news-content a {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -120,6 +112,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
+}
+
+.news-content-box {
+    display: flex; 					/* Flexbox로 레이아웃 설정 */
+	justify-content: space-between; /* 좌우 공간 나누기 */
+	align-items: stretch; 			/* 수직 중앙 정렬 */
+	padding: 12px 0 21px;
+	height: 110px; 					/* 고정 높이 설정 */
 }
 
 .news-text-box{
@@ -132,8 +132,7 @@
 
 .news-image-box {
     flex-basis: 30%; 			/* 이미지 영역 크기 조정 */
-	width: 160px; 	
-	max-width: 160px;			/* 최대 넓이 설정 */
+	max-width: 30%; 			/* 최대 넓이 설정 */
 	padding-left: 20px; 		/* 텍스트와 이미지 사이 간격 */
 	display: flex; 				/* Flexbox로 이미지 박스 레이아웃 설정 */
 	align-items: center; 		/* 세로 중앙 정렬 */
@@ -150,15 +149,20 @@
 @media (max-width: 1200px) {
   
 	.news-list {
+		width: 100%;
 		grid-template-columns: 1fr;
 	}
 	
 	.news-item {
 		width: 100%;
 	}
+	
+	.news-date {
+		width: 100%;
+	}
 	     
 	.news-text-box{
-		width: 800px;
+		width: 580px;
 	}
 
 }

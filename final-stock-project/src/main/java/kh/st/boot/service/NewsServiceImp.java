@@ -203,9 +203,4 @@ public class NewsServiceImp implements NewsService{
 		return true;
 	}
 
-	@Override
-	public List<NewsVO> getNewsList(String st_name) {
-		return newsDao.selectNewsList(st_name);
-	}
-
 }

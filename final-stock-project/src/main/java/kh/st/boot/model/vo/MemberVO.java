@@ -36,17 +36,14 @@ public class MemberVO {
     private Date mb_cookie_limit; // 쿠키 만료기간
     private boolean auto_login; // autoLogin, DB에는 없습니다. (re 가 on 일 경우 true 값이 들어옵니다.)
     
-    //팔로워 관련
-    private int mb_followers;
-    
     // 뉴스회원 테이블
     private String mb_news; // 회원 신문사명
 
     // OAuth 관련 필드
-    private String mb_oauthProvider; 
-    private String mb_oauthId; 
-    private String mb_loginMethod; //internal kakao naver
-    private String refreshToken; // 리프레시 토큰 (사용 유무 아직 모름)
+    private String oauthProvider; // 예: "Kakao", "Naver"
+    private String oauthId; // 카카오 또는 네이버에서 제공하는 사용자 ID
+    private String loginMethod; // 예: "internal" = 자체로그인, "oauth" = 외부로그인
+    private String refreshToken; // 리프레시 토큰
     
 	public String getMb_auth() {
 		String auth = "GUEST";

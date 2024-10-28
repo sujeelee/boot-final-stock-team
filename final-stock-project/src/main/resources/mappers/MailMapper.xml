@@ -3,17 +3,11 @@
 <mapper namespace="kh.st.boot.dao.MailDAO">
 
 	<insert id="setMailCode">
-		insert into email_verification(evc_email, evc_code)
-		value(#{evc_email}, #{code})
+	insert into email_verification(evc_email, evc_code)
+	value(#{evc_email}, #{code})
 	</insert>
 
 	<select id="getMailCode" resultType="MailVO">
-		select * from email_verification where evc_email = #{evc_email} order by evc_email desc LIMIT 1
+	select * from email_verification where evc_email = #{evc_email} order by evc_email desc LIMIT 1
 	</select>
-
-	<delete id="deleteMailCodeByMail">
-		delete from email_verification
-		where evc_email = #{evc_email}
-	</delete>
-
 </mapper>

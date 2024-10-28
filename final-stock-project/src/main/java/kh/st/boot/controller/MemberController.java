@@ -1,7 +1,5 @@
 package kh.st.boot.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,40 +16,19 @@ import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.MemberService;
+import lombok.AllArgsConstructor;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
 	
-    @Autowired
 	private MemberService memberService;
 	
-    @Value("${kakao.client_id}")
-    private String kakao_client_id;
-
-    @Value("${kakao.redirect_uri}")
-    private String kakao_redirect_uri;
-
-    @Value("${naver.client_id}")
-    private String naver_client_Id;
-    
-    @Value("${naver.client_secret}")
-    private String naver_client_secret;
-
-    @Value("${naver.redirect_uri}")
-    private String naver_redirect_uri;
-    
-
 	//로그인
     @GetMapping("/login")
-    public String login(HttpServletRequest request, Model mo){
+    public String login(HttpServletRequest request){
     	
-        String kakao_location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+kakao_client_id+"&redirect_uri="+kakao_redirect_uri;
-        String naver_location = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id="+naver_client_Id+"&state=indeX101010&redirect_uri="+ naver_redirect_uri;
-        
-        mo.addAttribute("kakao_location", kakao_location);
-        mo.addAttribute("naver_location", naver_location);
-
     	String uri = request.getHeader("Referer");
 	    if (uri != null && !uri.contains("/member/login")) {
 	        request.getSession().setAttribute("prevPage", uri);
@@ -121,10 +98,8 @@ public class MemberController {
 
     //회원가입
     @GetMapping("/join")
-    public String join(Model mo){
-
-        String info = "internal";
-        mo.addAttribute("where", info);
+    public String join(){
+    	//화면 미구현
     	return "member/join";
     }
     

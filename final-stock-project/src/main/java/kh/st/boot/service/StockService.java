@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.StockDAO;
-import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
@@ -90,38 +89,15 @@ public class StockService {
 	public List<StockPriceVO> getStockInfoListDate(String st_code, String type) {
 		String to_date = null, from_date = null;
 		
-		if(type.equals("3month")) {
+		
+		if(type.equals("date")) {
 			// 년월 형식으로 변환 (yyyyMM)
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-			// 2개월 전 날짜
+		    // 2개월 전 날짜
 	        to_date = LocalDate.now().minusMonths(2).format(formatter);
 	        // 1개월 후 날짜
 	        from_date = LocalDate.now().plusMonths(1).format(formatter);
-		    
-		} else if(type.equals("year")) {
-			// 년형식으로 변환 (yyyy)
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-			// 현재년도
-	        to_date = LocalDate.now().format(formatter);
-	        // 1년후
-	        from_date = LocalDate.now().plusYears(1).format(formatter);
-		} else if(type.equals("month")) {
-			// 년월 형식으로 변환 (yyyyMM)
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-			// 오늘 날짜
-	        to_date = LocalDate.now().format(formatter);
-	        // 1개월 후 날짜
-	        from_date = LocalDate.now().plusMonths(1).format(formatter);
-		} 
-		
-		/*else if(type.equals("7days")) {
-			// 년월일 형식으로 변환 (yyyyMMdd)
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-			// 7일 전 날짜
-	        to_date = LocalDate.now().minusDays(7).format(formatter);
-	        // 오늘 날짜로부터 1일 후 
-	        from_date = LocalDate.now().plusDays(1).format(formatter);
-		} */
+		}
 		
 		List<StockPriceVO> list = stockDao.getStockInfoListDate(st_code, to_date, from_date);
 		return list;
@@ -133,13 +109,5 @@ public class StockService {
 		if(stock == null ) return 0;
 		
 		return stockDao.getCountStockPrice(st_code);
-	}
-
-	public StockJisuVO getOldJisu(String date, String type) {
-		return stockDao.getOldJisu(date, type);
-	}
-
-	public boolean insertStockJisu(StockJisuVO jisu) {
-		return stockDao.insertStockJisu(jisu);
 	}
 }

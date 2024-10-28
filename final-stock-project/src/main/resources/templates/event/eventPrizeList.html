@@ -75,7 +75,13 @@
                         <div id="prizeList">
                             <ul class="list-group">
                                 
-                            
+                                <!-- 상품 리스트를 렌더링 -->
+                                
+                                <script th:inline="javascript">
+
+
+                                </script>
+
                                 <th:block th:each="prize, index : ${prizeList}">
 
                                     <li class="list-group-item bg-gray d-flex justify-content-between align-items-center" th:classappend="${index.last} ? 'mb-2'">
@@ -101,7 +107,7 @@
             
         </ul>
     </div>
-    
+
 <script>
     $(document).ready(function() {
         // 이벤트 이름을 클릭하면 AJAX로 상품 리스트를 불러옴

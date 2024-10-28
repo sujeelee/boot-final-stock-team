@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import kh.st.boot.dao.DepositDAO;
 import kh.st.boot.dao.MemberDAO;
@@ -18,16 +17,16 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor	
 public class DepositService {
-	
 	private DepositDAO depositDao;
+	private MemberDAO memberDao;
 	
 	@Transactional
-	public String getOrderId(String type) {
+	public String getOrderId() {
 		LocalDate now = LocalDate.now();
         String date = now.format(DateTimeFormatter.ofPattern("yyMMdd"));
         
         // 현재 날짜로 시작하는 가장 큰 주문 번호 찾기
-        String maxOrderId = depositDao.findMaxOrderId(date, type);
+        String maxOrderId = depositDao.findMaxOrderId(date);
         
         int newOrderIdNumber;
         if (maxOrderId == null) {
@@ -49,7 +48,7 @@ public class DepositService {
 		String od_id = newOrder.getDo_od_id();
 		DepositOrderVO chk = depositDao.getOrderCheck(od_id);
 		if(chk != null) {
-			od_id = getOrderId("");
+			od_id = getOrderId();
 			newOrder.setDo_od_id(od_id);
 		}
 		depositDao.insertOrderData(newOrder);
@@ -58,14 +57,14 @@ public class DepositService {
 	}
 
 	@SuppressWarnings("null")
-	public boolean updateOrder(DepositOrderVO upOrder, Model model) {
+	public boolean updateOrder(DepositOrderVO upOrder) {
 		DepositOrderVO chk = depositDao.getOrderCheck(upOrder.getDo_od_id());
 		
 		if(chk == null) {
 			return false;
 		}
 		
-		MemberVO mb = (MemberVO) model.getAttribute("member");
+		MemberVO mb = memberDao.findById(chk.getMb_id());
 		
 		if(mb == null) return false;
 		
@@ -84,8 +83,10 @@ public class DepositService {
 			newaAc.setAc_deposit(chk.getDo_price());
 			depositDao.insertAccountDeposit(newaAc);
 		} else {
+			int newPrice = ac.getAc_deposit() + chk.getDo_price();
 			deposit.setDe_before_num(ac.getAc_deposit());
-			depositDao.updateAccountDeposit(ac, chk.getDo_price());
+			ac.setAc_deposit(newPrice);
+			depositDao.updateAccountDeposit(ac);
 		}
 		
 		depositDao.insertDepositLog(deposit);

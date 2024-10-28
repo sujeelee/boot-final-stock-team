@@ -13,8 +13,10 @@ import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.StockMemberVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
@@ -73,7 +75,24 @@ public class MyAccountServiceImp implements MyAccountService {
 
 	@Override
 	public boolean deleteUser(MemberVO user) {
-		return myAccountDao.deleteUser(user.getMb_id());
+		// 뉴스 회원인지 확인
+		NewsMemberVO nm = myAccountDao.selectNewsMember(user.getMb_no());
+		// 주식 회원인지 확인
+		StockMemberVO sm = myAccountDao.selectStockMember(user.getMb_no());
+		if(nm != null) {
+			if(myAccountDao.deleteMemberApprove(user.getMb_no())) {
+				myAccountDao.deleteNewsMember(user.getMb_no());
+			}
+		}
+		if(sm != null) {
+			if(myAccountDao.deleteMemberApprove(user.getMb_no())) {
+				myAccountDao.deleteStockMember(user.getMb_no());
+			}
+		}
+		if(myAccountDao.deleteAccount(user.getMb_no())) {
+			return myAccountDao.deleteUser(user.getMb_id());
+		}
+		return false;
 	}
 
 	@Override

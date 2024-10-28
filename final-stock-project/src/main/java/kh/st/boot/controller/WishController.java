@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.WishVO;
 import kh.st.boot.service.StocksHeaderService;
 import lombok.AllArgsConstructor;
@@ -28,14 +26,13 @@ public class WishController {
 	
 	@PostMapping("/wish")
 	@ResponseBody
-	public Map<String, String> stockWish(Model model, @RequestParam String st_code, @RequestParam String status, Principal principal, HttpServletRequest req, HttpServletResponse res) {
-		
+	public Map<String, String> stockWish(@RequestParam String st_code, @RequestParam String status, Principal principal, HttpServletRequest req, HttpServletResponse res) {
+		String mb_id = null;
 		Map<String, String> result = new HashMap<String, String>();
 		
-		MemberVO member = (MemberVO) model.getAttribute("member");
-		String mb_id = member.getMb_id();
-		
-		if(mb_id == null) {
+		if(principal != null) {
+			mb_id = principal.getName();
+		} else {
 			result.put("res", "fail");
 			result.put("msg", "로그인한 회원만 이용가능합니다.");
 			return result;

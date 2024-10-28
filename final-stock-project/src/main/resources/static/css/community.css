@@ -267,7 +267,7 @@
 	    margin: 5px 0 0; /* 가격의 여백 설정 */
 	    color: #666; /* 가격 색상 */
 	}
-	#boardList_ui {
+	#boardList {
 	  list-style: none;
 	  padding: 0;
 	  margin: 0;
@@ -276,7 +276,6 @@
 	.board {
 	  border-bottom: 1px solid #e0e0e0;
 	  padding: 15px 0;
-	  list-style: none;
 	}
 	
 	.board-header {

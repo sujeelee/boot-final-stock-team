@@ -1,0 +1,131 @@
+
+/* 꾸미기~~~~~~ */
+.local_sch {
+	margin: 5px 0;
+	text-align: left;
+}
+
+.local_sch select {
+	height: 30px;
+	margin-right: 3px;
+	border: 1px solid #dcdcdc;
+}
+
+.in_sch {
+	height: 30px;
+	border: 1px solid #dcdcdc;
+	padding: 0 5px;
+}
+
+.tbl_col thead th {
+	background: #6f809a;
+	color: #fff;
+	border: 1px solid #60718b;
+	font-weight: normal;
+	text-align: center;
+	padding: 9px 5px;
+	font-size: 0.92em;
+	text-decoration: underline;
+	text-underline-position: under;
+}
+
+tbody {
+	background: white;
+}
+
+tbody td {
+	border: 1px solid #d6dce7;
+	padding: 5px;
+	text-align: left;
+}
+
+tr {
+	display: table-row;
+}
+
+.td_upd {
+	height: 26px;
+	line-height: 26px;
+	border: 0;
+	border-radius: 3px;
+	padding: 0 8px;
+	margin: 1px;
+	font-weight: normal;
+	background: #3f51b5;
+	color: #fff;
+}
+
+#sec_ing {
+	margin-top: 50px;
+}
+
+#point_ins_txt {
+	text-align: left;
+	color: #3f5fb5;
+	font-size: 20px;
+	font-weight: bold;
+	margin: 20px 0 10px;
+}
+
+#grid_4 {
+	width: 220px;
+}
+
+#mb_id {
+padding: 0 5px;
+height: 35px;
+line-height: 32px;
+border: 1px solid #dcdcdc;
+}
+
+#po_content{
+padding: 0 5px;
+height: 35px;
+line-height: 32px;
+border: 1px solid #dcdcdc;
+width: 436px;
+}
+
+.point_ins{
+padding: 0 5px;
+height: 35px;
+line-height: 32px;
+border: 1px solid #dcdcdc;
+}
+
+.btn_submit{
+	margin-top: 2px;
+	padding: 0 15px;
+    border: 0;
+    height: 30px;
+    color: #fff;
+}
+
+.local_sch{
+	margin-bottom: 10px;
+}
+
+.in_sch{
+	
+	padding: 5px;
+}
+
+.ins{
+	margin-top: 10px;
+}
+
+.content{
+	text-align: left !important;
+}
+
+.point_set{
+	text-align: center;
+}
+
+.tbl_col{
+	text-align: center;
+}
+
+#display_box{
+display: inline-block;
+}

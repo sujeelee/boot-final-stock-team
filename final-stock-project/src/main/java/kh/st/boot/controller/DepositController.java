@@ -67,7 +67,7 @@ public class DepositController {
         	upOrder.setDo_status("완료");
         	upOrder.setDo_od_id(request.getParameter("orderId"));
         	
-        	boolean res = depositService.updateOrder(upOrder, model);
+        	boolean res = depositService.updateOrder(upOrder);
         	
         	if(res == false) {
         		model.addAttribute("msg" , "충전오류가 발생했습니다.");
@@ -87,7 +87,7 @@ public class DepositController {
     @PostMapping("/insertOrder")
     @ResponseBody
     public String insertOrder(@RequestParam Map<String, Object> params, Model model, Principal principal, HttpServletRequest req, HttpServletResponse res){ 
-    	String id = depositService.getOrderId("");
+    	String id = depositService.getOrderId();
     	DepositOrderVO newOrder = new DepositOrderVO();
     	// VO 클래스의 필드 목록을 가져옴
         Field[] fields = newOrder.getClass().getDeclaredFields();

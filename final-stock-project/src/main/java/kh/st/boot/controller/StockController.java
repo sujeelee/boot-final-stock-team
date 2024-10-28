@@ -2,28 +2,19 @@ package kh.st.boot.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import kh.st.boot.model.dto.MyStocksDTO;
-import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.model.vo.WishVO;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.StockCriteria;
-import kh.st.boot.service.MyAccountService;
-import kh.st.boot.service.OrderService;
 import kh.st.boot.service.StockService;
 import kh.st.boot.service.StocksHeaderService;
 import lombok.AllArgsConstructor;
@@ -36,8 +27,6 @@ public class StockController {
 	
 	private StockService stockService;
 	private StocksHeaderService stocksHeaderService;//v
-	private OrderService orderService;
-	private MyAccountService myAccountService;
 	
 	@GetMapping(value = {"/stockList/{type}", "/stockList/{type}/{mrk}", "/stockList"})
 	public String stockList(Model model, Principal principal, StockCriteria cri, @PathVariable(required = false) String type, @PathVariable(required = false) String mrk) {
@@ -123,47 +112,7 @@ public class StockController {
 		model = stocksHeaderService.getModelSet(model, principal, st_code); //v
 		
 		model.addAttribute("list", list);
+		
 		return "stockuser/detail";
-	}
-	
-	@PostMapping("/graph/{st_code}")
-	@ResponseBody
-	public Map<String, Object> stockDetailDate(@PathVariable String st_code, @RequestParam String type) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		List<StockPriceVO> list = stockService.getStockInfoListDate(st_code, type);
-		
-		map.put("list", list);
-		
-		return map;
-	}
-	
-	@PostMapping("orderupdate")
-	public String stockOrder(@RequestParam Map<String, Object> form, Model model, Principal principal) {
-		String st_code = (String) form.get("od_st_code");
-		//로그인상태가 아닐 시
-        if (principal == null) {
-        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
-        	model.addAttribute("url", "/member/login");
-        	
-            return "util/msg";
-        }
-		String result = orderService.orderUpdate(form, model);
-		String msg = "정상적으로 처리되지 않았습니다.";
-		String url = "/stock/" + st_code;
-		if(!result.equals("실패")) {
-			msg = result + "처리 되었습니다.";
-		}
-		
-		model.addAttribute("msg", msg);
-    	model.addAttribute("url", url);
-    	
-        return "util/msg";
-	}
-	
-	@PostMapping("/delete/{st_code}")
-	@ResponseBody
-	public boolean reservationDelete(@PathVariable String st_code, @RequestParam String re_no) {
-		return orderService.deleteReservation(st_code, re_no);
 	}
 }

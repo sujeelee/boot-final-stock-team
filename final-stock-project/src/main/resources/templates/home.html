@@ -4,95 +4,14 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorate="~{layout/layout.html}"
 >
-<head>
-<meta charset="UTF-8" />
-<title>시드키 : </title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
-</head>
-<body>
-	<main layout:fragment="content">
-		<div class="main-container">
-			<div class="main-jisu">
-				<h4 class="main-title">주가지수</h4>
-				<div class="main-table">
-					<div class="main-row">
-						<div class="right">
-							<div class="jisu-title">코스피</div>
-							<div class="jisu-price">2,583.27</div>
-							<div class="jsiu-vs dash-red">2.24(0.08%)</div>
-						</div>
-						<div class="left">
-							<div id="graph1"></div>
-						</div>
-					</div> <!-- end main-row -->
-					<div class="main-row">
-						<div class="right">
-							<div class="jisu-title">코스닥</div>
-							<div class="jisu-price">727.41</div>
-							<div class="jsiu-vs dash-blue">-7.18(-0.9%)</div>
-						</div>
-						<div class="left">
-							<div id="graph2"></div>
-						</div>
-					</div> <!-- end main-row -->
-					<div class="main-row">
-						<div class="right">
-							<div class="jisu-title">KRX 300</div>
-							<div class="jisu-price">150,500.56</div>
-							<div class="jsiu-vs dash-grey">0(0%)</div>
-						</div>
-						<div class="left">
-							<div id="graph3"></div>
-						</div>
-					</div> <!-- end main-row -->
-				</div>
-			</div>
-			<div class="main-news">
-				<h4 class="main-title">주요뉴스</h4>
-			</div>
-			<div class="main-hot">
-				<h4 class="main-title">실시간 차트</h4>
-			</div>
-			<div class="main-board">
-				<h4 class="main-title">인기 급상승 커뮤니티</h4>
-			</div>
-		</div>
-		<script th:inline="javascript">
-			google.charts.load('current', {'packages':['corechart']});
-			google.charts.setOnLoadCallback(drawChart);
+  <head>
+    <meta charset="UTF-8" />
+    <title>시드키 : </title>
+  </head>
+  <body>
+    <main layout:fragment="content">
+		
 
-	     	function drawChart() { 
-		        var data = google.visualization.arrayToDataTable([
-		          ['Year', 'Sales'],
-		          ['2004',  1000],
-		          ['2005',  1170],
-		          ['2006',  660],
-		          ['2007',  1030],
-		          ['2004',  1000],
-		          ['2005',  1170],
-		          ['2006',  660],
-		          ['2007',  1030]
-	        ]);
-
-	        var options = {
-				width: 150,
-				height: 75,
-				chartArea: { left : '0', right : 0, top: '0', bottom: '0'},
-	        };
-
-	        var chart = new google.visualization.LineChart(document.getElementById('graph1'));
-
-	        chart.draw(data, options);
-	        
-	        var chart2 = new google.visualization.LineChart(document.getElementById('graph2'));
-
-	        chart2.draw(data, options);
-	        
-	        var chart3 = new google.visualization.LineChart(document.getElementById('graph3'));
-
-	        chart3.draw(data, options);
-	      }
-		</script>
 	</main>
-</body>
+  </body>
 </html>

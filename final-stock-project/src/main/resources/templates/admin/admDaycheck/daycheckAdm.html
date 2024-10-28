@@ -3,15 +3,8 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
 <head>
-<meta charset="UTF-8">
-<title>Admin Level Page</title>
-<link th:href="@{/css/admnews.css}" rel="stylesheet" />
-<!--  스타일 적용 했음  -->
-</head>
-<<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
+
+<link href="/css/admdaycheck.css" rel='stylesheet'>
 <script src="https://kit.fontawesome.com/3f892a70ad.js"
 	crossorigin="anonymous">
 	
@@ -20,309 +13,44 @@
 	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
 <meta charset="UTF-8">
 <title>관리자 페이지</title>
-<style type="text/css">
-
-/* 기본 설정 방식 */
-body {
-	margin: 0;
-	padding: 0;
-	font-size: 0.75em; /* 폰트 사이즈 */
-	background: #f3f3f3;
-	height: 100%;
-}
-
-* {
-	box-sizing: border-box;
-}
-
-/* 푸터 css */
-#ft {
-	background: #777;
-	padding: 11px 0 0 25px;
-	color: white;
-	text-align: center;
-	height: 48px;
-}
-
-#ft p {
-	line-height: 20px;
-}
-
-/* 헤더 탑 설정 */
-#hd_top {
-	/* 상단 고정 */
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 50px;
-	background: #3f51b5;
-	/* z-index: 1000; */
-}
-
-/* 로고 설정 */
-#logo {
-	background: #2f409f;
-	height: 100%;
-	float: left;
-	width: 210px;
-	text-decoration: none;
-	text-align: center;
-	/* 마진 오토 걸어서 맞춘거 15px 0 15px 50px */
-	padding: 8px 0 5px 0px;
-	font-size: 10px;
-	color: white;
-}
-
-#hometeg {
-	float: right;
-	padding: 10px 18px;
-	font-size: 20px;
-}
-
-/* 사이드바 css */
-#menu {
-	position: fixed;
-	top: 0;
-	left: 0;
-	max-width: 220px;
-	height: 100%;
-	padding-top: 50px
-}
-
-#menu_ul {
-	position: relative;
-	height: 100%;
-	background: #ebebeb;
-	width: 210px;
-	list-style: none;
-}
-
-#menu_li {
-	padding: 15px;
-	/* 밑줄 색상 변경 해야함 */
-	border-bottom: 1px solid;
-}
-
-#main_h2 {
-	text-align: left;
-	color: #3f51b5;
-	font-size: 15px;
-	font-weight: bold;
-	margin: 13px 0 13px;
-}
-
-#nav_icon {
-	/* 사이드바 아이콘 및 글자 크기 조정 */
-	font-size: 22px;
-}
-
-/* 메인 관리 부분 */
-#wrapper {
-	min-height: 480px;
-}
-
-#container {
-	padding: 29px 0 0px 200px;
-	margin-top: 50px;
-	height: 100%;
-	width: 100%;
-	background-color: white;
-	margin-top: 50px;
-	height: 100%;
-	width: 100%;
-}
-
-#container_title {
-	position: fixed;
-	top: 38px;
-	left: 0;
-	width: 110%;
-	line-height: 52px;
-	font-size: 18px;
-	/* 높이조절 */
-	padding: 0 20px;
-	/* 왼쪽여백 조절 */
-	padding-left: 220px;
-	border-bottom: 1px solid;
-	background-color: white;
-	background-clip: content-box;
-}
-
-#container_main {
-	padding: 20px 20px 0 20px;
-	background-color: white;
-}
-
-article, aside, details, figcaption, figure, footer, header, hgroup,
-	menu, nav, section {
-	display: block;
-}
-
-label, input, button, select, img {
-	vertical-align: middle;
-}
-
-/* 링크 설정 */
-a {
-	/* 태그에 걸린 밑줄하고 빨간 색 제거 */
-	text-decoration: none;
-	color: white;
-	margin: 35px;
-}
-
-table {
-	clear: both;
-	width: 100%;
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-th {
-	border: 1px solid #e6e6e6;
-	background: #f6f6f6;
-	padding: 10px;
-	width: 200px;
-	text-align: left;
-}
-
-td {
-	border-top: 1px solid #e6e6e6;
-	border-bottom: 1px solid #e6e6e6;
-	padding: 10px;
-	text-align: left;
-}
-
-table td {
-	line-height: 22px
-}
-
-textarea {
-	width: 100%;
-	border: 1px solid #d5d5d5;
-	min-height: 80px;
-	height: 100px;
-}
-
-/* 버튼 설정 */
-button {
-	border: none;
-	margin: 0;
-	padding: 0;
-	cursor: pointer;
-	/* 수직 정렬 */
-	vertical-align: middle;
-}
-
-/* 헤더 탑과 사이드바 사이 간격 줄이기용 */
-ul {
-	padding: 0;
-	margin: 0;
-}
-
-p {
-	margin: 0;
-	padding: 0;
-	word-break: break-all;
-}
-
-select {
-	line-height: 32px;
-}
-
-/* 꾸미기~~~~~~ */
-.local_sch {
-	margin: 10px 0;
-}
-
-.local_sch select {
-	height: 30px;
-	margin-right: 3px;
-	border: 1px solid #dcdcdc;
-}
-
-.in_sch {
-	height: 35px;
-	border: 1px solid #dcdcdc;
-	padding: 0 5px;
-}
-
-.tbl_col thead th {
-	background: #6f809a;
-	color: #fff;
-	border: 1px solid #60718b;
-	font-weight: normal;
-	text-align: center;
-	padding: 9px 5px;
-	font-size: 0.92em;
-	text-decoration: underline;
-	text-underline-position: under;
-}
-
-tbody {
-	background: white;
-}
-
-tbody td {
-	border: 1px solid #d6dce7;
-	padding: 5px;
-	text-align: left;
-}
-
-tr {
-	display: table-row;
-}
-
-.td_upd {
-	height: 26px;
-	line-height: 26px;
-	border: 0;
-	border-radius: 3px;
-	padding: 0 8px;
-	margin: 1px;
-	font-weight: normal;
-	background: #3f51b5;
-	color: #fff;
-}
-
-</style>
+</head>
 <body>
-	<div class="content">
-		<!--  이거 추가하니까 사이드바랑 곂치던거 해결됨 wht?>???>??<>>?>?>?>?>?>>? -->
-		<h1>출석체크 포인트 관리 페이지 </h1>    <!--  아무것도 수정하지 않음     여기는 제일 마지막에 작업     -->
-		<div class="update-from">
-			<!-- insert 레이아웃 나눈거 -->
-			<form action="/admin/admDaycheck/daycheckAdm/update" method="post">
-				<input type="text" name="mb_id" placeholder="출석 체크 회원 아이디" required>
-				<button type="submit">검색</button>
-			</form>
+	<div id="wrapper">
+		<div id="container">
+			<h1 id="container_title">출석체크 포인트 관리 페이지</h1>
+			<div id="container_main" class="content">
+				<form action="/admin/admDaycheck/daycheckAdm/update" method="post" 
+					style="text-align: left;">
+					<input type="text" name="mb_id" placeholder="출석 체크 회원 아이디" required class="in_sch">
+					<button type="submit" class="btn_submit btn in_sch">검색</button>
+				</form>
+				<!-- 레벨 테이블 -->
+				<table>
+					<thead>
+						<tr>
+							<th>출석 체크일</th>
+							<th>출석 체크 회원 아이디</th>
+							<th>지급된 출석체크 포인트</th>
+							<th>이번달 출석일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="list : ${list}">
+							<td th:text="${list.dc_datetime}"></td>
+							<td th:text="${list.mb_id}"></td>
+							<td th:text="${list.po_num}"></td>
+							<td th:text="${list.dc_days}"></td>
+							<td></td>
+
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+			<footer id="ft">
+				<p>Copyright © demo.sir.kr. All rights reserved.</p>
+			</footer>
 		</div>
 	</div>
-	<!-- 레벨 테이블 -->
-	<table>
-		<thead>
-			<tr>
-				<th>출석 체크일</th>
-				<th>출석 체크 회원 아이디</th>
-				<th>지급된 출석체크 포인트</th>
-				<th>이번달 출석일 </th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="list : ${list}">
-				<td th:text="${list.dc_datetime}"></td>
-				<td th:text="${list.mb_id}"></td>
-				<td th:text="${list.po_num}"></td>
-				<td th:text="${onesCount}+ 일 "></td>	<!-- 1만 갯수 확인해서 가져옴  -->
-				<td>
-			</td>
-
-			</tr>
-		</tbody>
-	</table>
-	
-	<footer id="ft">
-		<p>Copyright © demo.sir.kr. All rights reserved.</p>
-	</footer>
 </body>
 </html>
