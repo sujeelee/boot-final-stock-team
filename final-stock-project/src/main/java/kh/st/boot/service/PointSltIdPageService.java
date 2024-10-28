@@ -34,6 +34,14 @@ public class PointSltIdPageService {
 	
 	
 	
+	public List<Integer> sltAllDay() {
+		List<AdmDaycheckVO> allDay = admDaycheckDAO.AllSelect(); // 모든 정보 가져오기
+		 admDaycheckDAO.daySelect();
+		return null;
+	}
+	
+	
+	
 	
 
 

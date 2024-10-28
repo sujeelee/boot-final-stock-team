@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class AdmDaycheckVO {
 	private int dc_no ;
 	private String dc_datetime;
-	private String mb_id;        
+	private String mb_id;
 	private String dc_days;
 	private int po_num;
 	

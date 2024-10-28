@@ -5,41 +5,28 @@
 
 
 	<select id="selectAll" resultType="AdmPointVO">
-		SELECT * FROM point limit
-		#{pageStart}, #{perPageNum}
+		SELECT * FROM point limit #{pageStart}, #{perPageNum}
 	</select>
-
-	<select id="selectCountList" resultType="int"> select count(*) from
-		point</select>
-
+	
+	<select id="selectCountList" resultType="int"> select count(*) from point</select>
+	
 
 	<select id="selectId" resultType="AdmPointVO">
 		SELECT * FROM point
-		WHERE mb_id
-		= #{mb_id}
+		WHERE mb_id = #{mb_id}
 	</select>
 
 	<insert id="updatePoint">
-		INSERT INTO point
-		(mb_id,po_num,po_content,po_datetime )
-		VALUES
-		(#{mb_id},#{po_num},#{po_content},now())
-
+		INSERT INTO point (mb_id,po_num,po_content,po_datetime )
+		VALUES (#{mb_id},#{po_num},#{po_content},now())
+		
 	</insert>
 
-	<delete id="deletPoint">
+  	<delete id="deletPoint">
 		DELETE FROM point WHERE po_no = #{po_no};
-	</delete>
-
-	<select id="pointUserSearch" resultType="AdmPointVO">
-		SELECT * FROM point
-        WHERE mb_id LIKE CONCAT('%', #{mb_id}, '%')
-        LIMIT #{cri.pageStart}, #{cri.perPageNum}
-	</select>
-
-	<select id="selectTotalCount" resultType="int">
-		select count(*) from point WHERE mb_id = #{mb_id}
-	</select>
-
-
+  	</delete>
+  
+  
+  
+  
 </mapper>

@@ -16,17 +16,17 @@ import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
+import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
 import kh.st.boot.pagination.Criteria;
-import kh.st.boot.pagination.OrderCriteria;
 import kh.st.boot.pagination.PageMaker;
-import kh.st.boot.pagination.UserCriteria;
 import kh.st.boot.service.AdmPointService;
 import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
+import kh.st.boot.service.AdminStock_addService;
 import kh.st.boot.service.AdminUserService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
@@ -40,10 +40,10 @@ public class AdminController {
 	// 의존성 추가?
 	@Autowired
 	private AdminService adminService;
-
+	
 	@Autowired
 	private AdminUserService admUserService;
-
+	
 	@Autowired
 	private newspaperService newspaperService;
 
@@ -62,6 +62,9 @@ public class AdminController {
 	@Autowired
 	private AdmPointService admPointService;
 
+	@Autowired
+	private AdminStock_addService adminStock_addService;
+	
 	// 관리자 기본 페이지
 
 	// 관리자 설정 페이지 값 전송 코드
@@ -94,29 +97,31 @@ public class AdminController {
 	// -------------------------------------------------------------------------------
 	// -------------------------- 회원 정보 수정 -------------------------------
 	// -------------------------------------------------------------------------------
-
+	
 	@GetMapping("/admMember/adminUser")
 	public String admUser(Model model, Criteria cri) {
 		cri.setPerPageNum(12);
 		List<AdmMemberVO> user = admUserService.getAdminMem(cri);
 		PageMaker pm_use = admUserService.getPageMaker(cri);
+		System.out.println("user값 가져오기");
 		model.addAttribute("user", user);
 		model.addAttribute("pm_use", pm_use);
-
+		
 		return "/admin/admMember/adminUser";
 	}
-
+	
+	
 	// 회원 정보 상세페이지 조회
 	@PostMapping("/admMember/admUserSelect")
 	public String admUserSelUpd(Model model, int mb_no) {
 		AdmMemberVO admUseSel = admUserService.getAdmUseSel(mb_no);
-
+		
 		model.addAttribute("admUseSel", admUseSel);
-
+		
 		return "/admin/admMember/admUserSelect";
 	}
-
-	// 회원 정보 상세페이지 업데이트
+	
+	// 회원 정보 상세페이지 업데이트 
 	@PostMapping("/admMember/admUserSelect/Update")
 	public String admUserUpdate(Model model, AdmMemberVO admMemberVO) {
 		boolean res = admUserService.getAdmUserUpd(admMemberVO);
@@ -124,44 +129,22 @@ public class AdminController {
 		if (res == false) {
 			model.addAttribute("msg", "실패");
 			model.addAttribute("url", "/admin/adminHome");
+			System.out.println("dadd");
 			return "util/msg";
 		}
 		System.out.println("수정값 보내기");
 		return "redirect:/admin/admMember/adminUser";
 	}
-
+	
 	// 회원 정보 삭제
 	// 이건 잘 모르겠음
 	@PostMapping("/admMember/adminUser/delete")
 	public String admUserDelete(int mb_no) {
 		boolean admimUserDel = admUserService.getAdmUseDel(mb_no);
-
+		
 		return "redirect:/admin/admMember/adminUser";
 	}
-
-	@GetMapping("/admMember/adminUser/userSearch")
-	public String admuseSearch(@RequestParam("use_sh") String use_sh, @RequestParam("search") String search,
-			@RequestParam(value = "page", defaultValue = "1") int page, Model model, UserCriteria cri) { // UserCriteria
-
-		// 한 페이지당 게시물 숫자
-		cri.setPerPageNum(12);
-		// cri로 넘겨줄 페이지
-		cri.setPage(page);
-		// 검색 매퍼에서 사용 
-		cri.setSearch(search);
-
-		List<AdmMemberVO> searchUser = admUserService.getSearchUser(use_sh, cri);
-
-		PageMaker pm_use = admUserService.getPageMakerSearch(cri, use_sh);
-
-		model.addAttribute("user", searchUser);
-		model.addAttribute("pm_use", pm_use);
-		model.addAttribute("use_sh", use_sh);
-		model.addAttribute("search", search);
-
-		return "/admin/admMember/adminUser";
-	}
-
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
@@ -173,6 +156,7 @@ public class AdminController {
 		PageMaker pm_news = newspaperService.getPageMaker(cri);
 		model.addAttribute("newspapers", newspapers);
 		model.addAttribute("pm_news", pm_news);
+		System.out.println("안녕");
 		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
 
@@ -223,22 +207,25 @@ public class AdminController {
 		return "redirect:/admin/admNews/news";
 	}
 
-	@GetMapping("/admNews/newspapers/search")
-	public String searchNewspapers(Model model,@RequestParam("np_name") String np_name, Criteria cri,
-			@RequestParam(value = "page", defaultValue = "1") int page) {
-		
+	// 뉴스검색
+	@PostMapping("/admNews/newspapers/search")
+	public String searchNewspapers(@RequestParam(required = false) String np_name,
+			@RequestParam(required = false) String np_use, @RequestParam(required = false) Integer np_no, Criteria cri, Model model) {
 		cri.setPerPageNum(7);
-		cri.setPage(page);
-		
-		List<AdmMemberVO> newspapers = newspaperService.getSearchNews(np_name, cri);
-		PageMaker pm_news = newspaperService.getPageMakerSearch(cri, np_name);
+		int intNpNo = (np_no != null) ? np_no.intValue() : 0; // np_no가 null이면 기본값 0 사용
+		System.out.println("컨트롤러");
 
+		// np_use를 byte로 변환 (1 또는 0)
+		byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 1 : (byte) 0;
+		List<NewsPaperVO> newspapers = newspaperService.searchNewspapers(np_name, useByte, intNpNo, cri);
+		PageMaker pm_news = newspaperService.getPageMaker(cri);
 		model.addAttribute("newspapers", newspapers);
 		model.addAttribute("pm_news", pm_news);
-
-		return "/admin/admNews/news";
-
+		System.out.println("컨트롤러2");
+		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
+	
+
 
 	// -------------------------------------------------------------------------------
 	// -------------------------- LV 관리 컨트롤러 -------------------------------
@@ -279,16 +266,18 @@ public class AdminController {
 		sltAdmLevelPageService.dltAdmLvService(dltAdm);
 		return "redirect:/admin/admLevel/admLevelPage";
 	}
-
+	
 	// 회원 정보 상세페이지 조회
-	@PostMapping("/admLevel/admLevSel")
-	public String admlevSel(Model model, int lv_num) {
-		AdminLevelPageVO admlevSel = sltAdmLevelPageService.getAdmlevSel(lv_num);
-
-		model.addAttribute("admlevSel", admlevSel);
-
-		return "/admin//admLevel/admLevSel";
-	}
+		@PostMapping("/admLevel/admLevSel")
+		public String admlevSel(Model model, int lv_num) {
+			AdminLevelPageVO admlevSel = sltAdmLevelPageService.getAdmlevSel(lv_num);
+			
+			model.addAttribute("admlevSel", admlevSel);
+			
+			return "/admin//admLevel/admLevSel";
+		}
+		
+	
 
 	// 수정하기
 	@PostMapping("/admLevel/admLevSel/update")
@@ -303,25 +292,24 @@ public class AdminController {
 		}
 		return "redirect:/admin/admLevel/admLevelPage";
 	}
-
-//	// 수정하기
-	@PostMapping("/admLevel/admLevelPage/update")
-	public String udtAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
-			@RequestParam char lv_auto_use, @RequestParam int lv_up_limit) {
-
-		sltAdmLevelPageService.udtAdmLvService(lv_name, lv_num, lv_alpha, lv_auto_use, lv_up_limit);
-		return "redirect:/admin/admLevel/admLevelPage";
-	}
+	
 
 	// -------------------------------------------------------------------------------
 	// -------------------------- 포인트 적립내역 검색 컨트롤러
-	// -----------------------------------
+	// -----------------------------------	
 	// -------------------------------------------------------------------------------
 
+	// 검색하기랑 
+	// 불러오기  페이지네이션 , 날짜 합쳐서 출력하기 
+	
+	
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
 	public String sltAdmPointPage(Model model) {
 		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllPoint();
+		List<Integer> countDay = pointSltIdPageService.sltAllDay();
+		System.out.println(sltPoint);
+		model.addAttribute("countDay", countDay);
 		model.addAttribute("list", sltPoint);
 		return "/admin/admDaycheck/daycheckAdm";
 	}
@@ -346,8 +334,8 @@ public class AdminController {
 		cri.setPerPageNum(12);
 		List<admOrderPageVO> sltAdminOrder = adminOrderService.getAllsltAdminOrder(cri);
 		PageMaker pm_ord = admUserService.getPageMaker(cri);
-		model.addAttribute("pm_ord", pm_ord);
 		model.addAttribute("list", sltAdminOrder);
+		model.addAttribute("pm_ord", pm_ord);
 		return "/admin/admOrder/orderAdm";
 	}
 
@@ -370,27 +358,6 @@ public class AdminController {
 		List<admOrderPageVO> deletOrder = adminOrderService.deletOrderNum(od_id);
 		return "redirect:/admin/admOrder/orderAdm";
 
-	}
-
-	@GetMapping("/admOrder/orderAdm/AdmOrderSearch")
-	public String rderSearch(@RequestParam("od_sh") String od_sh, @RequestParam("od_search") String od_search,
-			@RequestParam(value = "page", defaultValue = "1") int page, Model model, OrderCriteria cri) {
-//		페이지에 보여주는 리스트 수
-		cri.setPerPageNum(8);
-//		현재 페이지 넘기기		
-		cri.setPage(page);
-//		검색어 넘기기
-		cri.setOd_search(od_search);
-		List<admOrderPageVO> orderSearch = adminOrderService.getOrderSearch(od_sh, cri);
-		PageMaker pm_ord = adminOrderService.getPageMakerSearch(cri, od_sh);
-
-		pm_ord.setCri(cri);
-		model.addAttribute("list", orderSearch);
-		model.addAttribute("pm_ord", pm_ord);
-		model.addAttribute("od_sh", od_sh);
-		model.addAttribute("od_search", od_search);
-
-		return "/admin/admOrder/orderAdm";
 	}
 
 	// -------------------------------------------------------------------------------
@@ -456,21 +423,46 @@ public class AdminController {
 		return "redirect:/admin/admPoint/admPointPage";
 	}
 
-	@GetMapping("admPoint/admPointPage/pointSearch")
-	public String pointSearch(Model model, @RequestParam("mb_id") String mb_id, Criteria cri,
-			@RequestParam(value = "page", defaultValue = "1") int page) {
-		cri.setPerPageNum(7);
-		cri.setPage(page);
+	//		이거 vo 랑 html 이랑 서비스 다오 메퍼 까지 다 없음  그럼 어떡하지? 
+	
+	// 		
+	
+	//-------------------------------------------------------------------------------
+	// --------------------------주식주 증/감 여부 승인  ----------------------------
+	// ------------------------------------------------------------------------------
 
-		List<AdmPointVO> Slt = admPointService.getPointUserSearch(cri, mb_id);
-		PageMaker pm_point = admPointService.getPageMaker(cri, mb_id);
-
-		model.addAttribute("list", Slt);
-		model.addAttribute("pm_point", pm_point);
-		model.addAttribute("mb_id", mb_id);
-
-		return "/admin/admPoint/admPointPage";
-
+	
+	// 페이지 이동시 리스트 당겨옴
+	@GetMapping("/admStock/admStock_add")
+	public String stock_add(Model model) {
+		List<AdminStock_addVO> selecte = adminStock_addService.nullSelect();
+		System.out.println(" 서비스 다녀온 후 컨트롤러 진입"+selecte);
+		model.addAttribute("list", selecte); 
+		return "/admin/admStock/admStock_add";
 	}
 
+
+
+	// 상세페이지에서  승인/거절시 update 하고 리스트 페이지로 이동
+	@PostMapping("/admStock/admStock_add/choose")
+	public String chooseStock_add( int sa_no, String sa_yn, String sa_feedback) {
+//		sa_yn 체크시 : on // 아니면 "null" 		
+		System.out.println("int sa_no : " + sa_no);
+		System.out.println("String sa_yn : " + sa_yn);
+		System.out.println("String sa_feedback : " + sa_feedback);
+		adminStock_addService.update(sa_no,sa_yn,sa_feedback);
+		
+		return "redirect:/admin/admStock/admStock_add";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

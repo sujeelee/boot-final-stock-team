@@ -3,22 +3,22 @@
 <mapper namespace="kh.st.boot.dao.AdmDaycheckDAO">
 
     <select id="AllSelect" resultType="AdmDaycheckVO">
-        SELECT * FROM day_check limit #{pageStart}, #{perPageNum}
+        SELECT * FROM day_check
     </select>
 
-	<select id="selectCountList" resultType="int"> select count(*) from day_check</select>
 
 	<select id="OneSelect" resultType="AdmDaycheckVO">
         SELECT * FROM day_check 
         WHERE mb_id = #{mb_Id}
     </select>
 
-
-	<select id="daycouunt" resultType="AdmDaycheckVO">
-        SELECT dc_days FROM day_check 
+    <select id="daySelect" resultType="AdmDaycheckVO">
+        SELECT * FROM day_check 
         WHERE mb_id = #{mb_Id}
     </select>
-	
+    
+    
+    
     
 </mapper>
  

@@ -3,24 +3,20 @@
 <mapper namespace="kh.st.boot.dao.NewspaperDAO">
 
 	<select id="selectAllNewspapers" resultType="NewspaperVO">
-		SELECT * FROM
-		newspaper limit #{pageStart}, #{perPageNum}
+		SELECT * FROM newspaper limit #{pageStart}, #{perPageNum}
 	</select>
 
 	<select id="selectCountList" resultType="int"> select count(*) from
-		newspaper
-	</select>
+		newspaper</select>
 
 	<insert id="insertNewspaper">
 		INSERT INTO newspaper (np_name, np_use)
-		VALUES
-		(#{np_name}, #{np_use})
+		VALUES (#{np_name}, #{np_use})
 	</insert>
 
 	<update id="updateNewspaper">
 		UPDATE newspaper
-		SET np_name = #{np_name}, np_use =
-		#{np_use}
+		SET np_name = #{np_name}, np_use = #{np_use}
 		WHERE np_no = #{np_no}
 	</update>
 
@@ -30,8 +26,7 @@
 	</delete>
 
 	<select id="selectNewspapersByStatus" resultType="NewspaperVO">
-		SELECT * FROM
-		newspaper WHERE np_use = #{np_use}
+		SELECT * FROM newspaper WHERE np_use = #{np_use}
 	</select>
 	<!-- 왜 이런 쿼리를 썻는지 주석달기 -->
 	<select id="getNewsOne" resultType="NewspaperVO">
@@ -39,18 +34,6 @@
 		np_name = #{name} limit 1
 	</select>
 	<!-- 이게 중복방지 기능인것같은데 먼저 중복체크하고 vo 로 보냄 -->
-
-
-	<select id="searchNews" resultType="NewspaperVO">
-		SELECT * FROM newspaper
-		WHERE np_name LIKE CONCAT('%', #{np_name}, '%')
-		LIMIT #{cri.pageStart}, #{cri.perPageNum}
-	</select>
-
-	<select id="selectTotalCount" resultType="int">
-		select count(*) from
-		newspaper WHERE np_name = #{np_name}
-	</select>
 
 
 
