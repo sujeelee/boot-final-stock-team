@@ -41,7 +41,7 @@ th.left, td.left {text-align: left;}
 .comm-main-row-list{display: flex;justify-content: center;align-items: center;padding: 1%;}
 .last-td{cursor: pointer;position: sticky;bottom: -1px;z-index: 2; background-color: #fff;text-align:right; padding-top: 15px; padding-bottom: 15px; box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.2);}
 .last-td > div {margin-right: 2%;}
-.comm-left{margin-right: 10%;}
+.comm-left{margin-right: 3%;}
 .main-board-comm{width: 111%}
 .comm-rigth{border: 1px solid #888; border-radius: 10px;}
 .comm-main-row-list{border-bottom: 1px solid #888;}
