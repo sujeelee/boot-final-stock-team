@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kh.st.boot.model.dto.MyAccountStocksDTO;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
-import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.PointVO;
-import kh.st.boot.model.vo.StockMemberVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.TransCriteria;
 
@@ -34,5 +33,7 @@ public interface MyAccountDAO {
 	boolean deleteMemberApprove(int mb_no);
 
 	String getStockName(@Param("mp_company")String mp_company);
+
+	List<MyAccountStocksDTO> selectMyStockList(String mb_id);
 
 }
