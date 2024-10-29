@@ -311,11 +311,11 @@ public class AdminController {
 		return "/admin/admDaycheck/daycheckAdm";
 	}
 
-	// 검색하기  1,0,0,1 수정해야함 
+	// 검색하기 
 
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
-		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltAllDay(mb_id);
+		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOneDay(mb_id);
 		
 		model.addAttribute("list", sltPointOne);
 		return "/admin/admDaycheck/daycheckAdm";

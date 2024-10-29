@@ -18,14 +18,24 @@ public class PointSltIdPageService {
 	@Autowired
 	private AdmDaycheckDAO admDaycheckDAO;
 
-	public List<AdmDaycheckVO> sltAllPoint() {
-
-		return admDaycheckDAO.AllSelect();
-	}
-
 	public List<AdmDaycheckVO> sltAllDay() {
 
 		List<AdmDaycheckVO> allDay = admDaycheckDAO.AllSelect();
+
+		for (AdmDaycheckVO dayNum : allDay) {
+			String dcDays = dayNum.getDc_days();
+
+			if (dcDays != null) {
+				int count = countOnes(dcDays); // dc_days의 1 개수 세기
+				dayNum.setCountDay(count); // countList에 추가
+			}
+		}
+		return allDay;
+	}
+
+	public List<AdmDaycheckVO> sltOneDay(String mb_id) {
+
+		List<AdmDaycheckVO> allDay = admDaycheckDAO.OneSelect(mb_id);
 
 		for (AdmDaycheckVO dayNum : allDay) {
 			String dcDays = dayNum.getDc_days();
@@ -42,6 +52,5 @@ public class PointSltIdPageService {
 	private int countOnes(String dcDays) {
 		return (dcDays.length() - dcDays.replace("1", "").length());
 	}
-}
 
-// 메퍼도 날짜만 검색하게 수정해야함 
+}
