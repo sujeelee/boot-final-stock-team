@@ -56,4 +56,21 @@
 		WHERE
 			MB_ID = #{mb_id}
 	</insert>
+
+    <update id="updateStopTime">
+        update member
+        set
+            mb_stop_date = now()
+        where
+            mb_id = #{id}
+    </update>
+
+    <update id="reset_stop_time">
+        update member
+        set
+            mb_stop_date = null
+        where
+            mb_id = #{id}
+    </update>
+
 </mapper>

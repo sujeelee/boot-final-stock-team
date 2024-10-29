@@ -7,8 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import kh.st.boot.auth.CustomAuthenticationProvider;
@@ -52,7 +50,7 @@ public class SecurityConfig{
                 .loginProcessingUrl("/member/login") //실제 로그인 되는 곳
 //                .usernameParameter("userId") //아이디 파라미터 명
 //                .passwordParameter("password") // 비밀번호 파라미터 명
-                .successHandler(new LoginSuccessHandler())
+                .successHandler(new LoginSuccessHandler(memberDao))
                 .failureHandler(new LoginFailHandler(memberDao))
             )
             // .oauth2Login((oauth2) -> oauth2  // OAuth2 로그인 설정 추가

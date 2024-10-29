@@ -19,11 +19,6 @@ public class MemberDetailService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberVO member = memberDao.findById(username);
 
-		if (member == null) {
-			System.out.println("Member dTl : " + member);
-			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username);
-		}
-
 		return new CustomUser(member);
 	}
 
