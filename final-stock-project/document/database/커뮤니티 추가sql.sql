@@ -1,12 +1,12 @@
 
-
-CREATE TABLE `stockandfund`.`community_action` (
-  `cg_no` INT NOT NULL AUTO_INCREMENT,
-  `cg_num` INT NULL COMMENT '게시판 이거나 댓글 기본키',
-  `cg_type` varchar(10) NULL COMMENT '게시판이면 없음 댓글이면 c',
-  `st_code` VARCHAR(255) NULL COMMENT '주식코드',
-  `mb_id` VARCHAR(255) NULL COMMENT '회원아이디',
-  `cg_datetime` DATETIME NULL,
-  `cg_like` varchar(10) NULL,
-  `cg_report` varchar(10) NULL,
-  PRIMARY KEY (`cg_no`));
+DROP TABLE IF EXISTS stockandfund.community_action;
+CREATE TABLE stockandfund.community_action (
+    cg_no INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    cg_num INT NOT NULL,
+    cg_type VARCHAR(50) NOT NULL,
+    st_code VARCHAR(50) NOT NULL,
+    mb_id VARCHAR(50) NOT NULL,
+    cg_datetime DATETIME NOT NULL,
+    cg_like VARCHAR(255),
+    cg_report VARCHAR(255)
+);
