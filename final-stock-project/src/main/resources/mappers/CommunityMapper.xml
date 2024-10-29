@@ -3,8 +3,8 @@
 <mapper namespace="kh.st.boot.dao.CommunityDAO"> 
 
     <insert id="insertBoard">
-        INSERT INTO board (wr_category, mb_id, wr_content)
-        VALUES (#{wr_category}, #{mb_id}, #{wr_content}) 
+        INSERT INTO board (wr_category, mb_id, wr_content, mb_level)
+        VALUES (#{wr_category}, #{mb_id}, #{wr_content}, #{mb_level}) 
     </insert>
 	
 	<select id="selectCommunityAction" resultType="CommunityActionVO">
