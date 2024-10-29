@@ -1,5 +1,6 @@
 package kh.st.boot.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,22 @@ public class AdminUserService {
 	public boolean getAdmUseDel(int mb_no) {
 	    int result = adminuserDAO.UserDelete(mb_no);
 	    return result > 0;  // 1 이상의 값을 반환하면 삭제 성공
+	}
+
+	public void insertUser(int mb_no, String mb_id, String mb_password, String mb_name, String mb_nick, String mb_hp,
+			String mb_email, int mb_zip, String mb_addr, String mb_addr2, Date mb_birth, int mb_level,
+			String mb_datetime, String mb_edit_date, String mb_stop_date, String mb_out_date, String mb_cookie,
+			String mb_cookie_limit, int mb_point, int mb_emailing, String mb_account) {
+			adminuserDAO.insertUser( mb_no, mb_id, mb_password, mb_name, mb_nick, mb_hp, mb_email, mb_zip,
+			        mb_addr, mb_addr2, mb_birth, mb_level, mb_datetime, mb_edit_date, mb_stop_date,
+			        mb_out_date, mb_cookie, mb_cookie_limit, mb_point, mb_emailing, mb_account);
+		
+		
+		
+		
+		
+		
+		
 	}
 }
 

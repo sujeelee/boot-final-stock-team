@@ -1,8 +1,10 @@
 package kh.st.boot.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,7 +97,7 @@ public class AdminController {
 	}
 
 	// -------------------------------------------------------------------------------
-	// -------------------------- 회원 정보 수정 -------------------------------
+	// -------------------------- 회원관리 회원정보 정보 수정 -------------------------------
 	// -------------------------------------------------------------------------------
 	
 	@GetMapping("/admMember/adminUser")
@@ -143,6 +145,22 @@ public class AdminController {
 		boolean admimUserDel = admUserService.getAdmUseDel(mb_no);
 		
 		return "redirect:/admin/admMember/adminUser";
+	}
+	
+	
+	// 회원 등록하기 
+	
+	@PostMapping("/admMember/adminUser/insert")
+	public String admUserInsert(int mb_no,String mb_id,String mb_password,String mb_name,String mb_nick,String mb_hp,String mb_email,int mb_zip,
+							String mb_addr,String mb_addr2,Date mb_birth,int mb_level,String mb_datetime,String mb_edit_date,String mb_stop_date,
+		 					String mb_out_date,String mb_cookie,String mb_cookie_limit,int mb_point,int mb_emailing,String mb_account) {
+
+				admUserService.insertUser( mb_no, mb_id, mb_password, mb_name, mb_nick, mb_hp, mb_email, mb_zip,
+				        mb_addr, mb_addr2, mb_birth, mb_level, mb_datetime, mb_edit_date, mb_stop_date,
+				        mb_out_date, mb_cookie, mb_cookie_limit, mb_point, mb_emailing, mb_account);
+
+		
+		return "redirect/admin/admNews/adminUser";
 	}
 	
 	// -------------------------------------------------------------------------------
