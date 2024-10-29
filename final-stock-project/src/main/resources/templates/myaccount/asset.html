@@ -229,6 +229,16 @@
 			color: #4e5968;
             font-size: 18px;
 		}
+		
+		.final-button {
+			width: 100%;
+			border: 0;
+			background-color: transparent;
+		}
+		
+		.final-button :hover {
+			background-color: #f9fafb;
+		}
 	</style>
 </head>
 <body>
@@ -330,24 +340,33 @@
 			            </section>
 		            </section>
 			        <section class="final-section">
-						<div class="final-details">
-							<div class="my-info-left">
-								<span class="my-text-left"><i class="fa-solid fa-coins"></i> 판매 수익</span>
-							</div>
-							<div class="my-info-right">
-								<span class="my-text-right"
-									  th:text="${#numbers.formatInteger(proceedsAll, 0, 'COMMA')} + '원'"></span>
-							</div>
-						</div>
-						<div class="final-details">
-							<div class="my-info-left">
-								<span class="my-text-left"><i class="fa-sharp fa-solid fa-copyright"></i> 포인트</span>
-							</div>
-							<div class="my-info-right">
-								<span class="my-text-right" 
-									  th:text="${#numbers.formatInteger(point, 0, 'COMMA')} + 'P'"></span>
-							</div>
-						</div>
+			        	<a href="/myaccount/profit">
+			        		<button class="final-button" style="width: 100%;">
+			        			<div class="final-details">
+									<div class="my-info-left">
+										<span class="my-text-left"><i class="fa-solid fa-coins"></i> 판매 수익</span>
+									</div>
+									<div class="my-info-right">
+										<span class="my-text-right"
+											  th:text="${#numbers.formatInteger(proceedsAll, 0, 'COMMA')} + '원'"></span>
+									</div>
+								</div>
+			        		</button>
+			        	</a>
+						
+						<a href="/myaccount/point/use">
+							<button class="final-button" style="width: 100%;">
+								<div class="final-details">
+									<div class="my-info-left">
+										<span class="my-text-left"><i class="fa-sharp fa-solid fa-copyright"></i> 포인트</span>
+									</div>
+									<div class="my-info-right">
+										<span class="my-text-right" 
+											  th:text="${#numbers.formatInteger(point, 0, 'COMMA')} + 'P'"></span>
+									</div>
+								</div>
+							</button>
+						</a>
 					</section>
 		        </div>
 		    </div>
