@@ -9,16 +9,134 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockuser.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
 <style type="text/css">
+	.news-section {
+		width: 80%;
+	}
 	
+	.news-container {
+    	width: 100%;
+	}
+	
+	.news-list {
+	    width: 1080px;
+	    list-style: none;
+	    padding: 0;
+	    margin: 0 -14px -15px 0;
+	}
+	
+	.news-box {
+	    padding: 18px;
+	}
+	
+	.news-item {
+	    display: flex;               /* Flexbox를 사용하여 레이아웃 설정 */
+	    flex-direction: column;      /* 세로 방향으로 배치 */
+	    background-color: #fff;
+	    height: 180px;
+	    margin-bottom: 15px;
+	}
+	
+	.news-title a {
+	    font-size: 18px;
+	    color: black;
+	    text-decoration: none;
+	}
+	
+	.news-content a {
+	    font-size: 16px;
+	    color: #777;
+	    text-decoration: none;
+	}
+	
+	.news-content-box {
+	    display: flex; 					/* Flexbox로 레이아웃 설정 */
+		justify-content: space-between; /* 좌우 공간 나누기 */
+		align-items: stretch; 			/* 수직 중앙 정렬 */
+		padding: 12px 0 21px;
+		height: 110px; 					/* 고정 높이 설정 */
+	}
+	
+	.news-title a, .news-content a {
+	    display: -webkit-box;
+	    -webkit-line-clamp: 2;
+	    -webkit-box-orient: vertical;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: normal;
+	}
+	
+	.news-text-box{
+		width: 800px;
+	}
+	
+	.news-image-box {
+	    flex-basis: 30%; 			/* 이미지 영역 크기 조정 */
+		width: 160px; 	
+		max-width: 160px;			/* 최대 넓이 설정 */
+		padding-left: 20px; 		/* 텍스트와 이미지 사이 간격 */
+		display: flex; 				/* Flexbox로 이미지 박스 레이아웃 설정 */
+		align-items: center; 		/* 세로 중앙 정렬 */
+		justify-content: center; 	/* 가로 중앙 정렬 */
+	}
+	
+	.news-image-box img {
+		width: 140px;
+	    max-width: 100%;	 /* 이미지 크기 조정 */
+		height: 126px; 		 /* 비율에 맞게 조정 */
+	    display: block;
+	    border-radius: 10px;
+	}
+	
+	.news-footer {
+		padding-top: 10px;
+	}
+	
+	.news-footer span {
+		font-size: 14px;
+	}
 </style>
 </head>
 <body>
 	<main layout:fragment="content">
-	
 		<div th:replace="~{layout/stocksHeader.html}"></div>
 		<div class="form-content">
-			<section style="width: 80%;">
-				<h2 th:text="${stock.st_name} + ' 뉴스'"></h2>
+			<section class="news-section">
+				<h4 class="mt-4 ml-3" th:text="${stock.st_name} + ' 뉴스'"></h4>
+				<div class="news-container">
+					<ul class="news-list">
+						<li class="news-item" th:each="item : ${list}">
+							<div class="news-box">
+								<div class="news-content-box">
+			                    	<div class="news-text-box">
+				                    	<div class="news-title mb-2">
+				                    		<a th:href="@{/stock/detail/{ne_no}(ne_no=${item.ne_no})}" 
+       											th:onclick="'window.open(this.href, \'_blank\', \'width=860,height=2150,left=500\'); return false;'" 
+       											th:text="${item.ne_title}">헤드라인 제목</a>
+				                    	</div>
+				                    	<div class="news-content">
+					                        <a th:href="@{/stock/detail/{ne_no}(ne_no=${item.ne_no})}" 
+       											th:onclick="'window.open(this.href, \'_blank\', \'width=860,height=2150,left=500\'); return false;'" 
+       											th:text="${item.ne_content}">헤드라인 내용</a>                   		
+				                    	</div>
+				                    	<div class="news-footer">
+				                    		<span th:text="${#dates.format(item.ne_datetime, 'MM월 dd일')} + ' · '">xxxx.xx.xx</span>
+				                    		<span th:text="${item.np_name}">신문사</span>
+				                    	</div>
+			                    	</div>
+			                    	<div class="news-image-box">
+			                    		<img th:src="@{'/uploads' + ${item.fi_path}}" alt="썸네일">
+			                    	</div>
+			                    </div>
+							</div>
+						</li>
+						<li class="none-list" th:if="${list == null or #lists.isEmpty(list)}">
+							<div class="none-content">
+								<i class="fa-solid fa-note-sticky fa-5x fa-color"></i>
+						 		<p class="no-title">발행된 종이 신문이 없거나<br>신문게재 정보가 입력되지 않았습니다.</p>
+						 	</div>
+						</li>
+					</ul>
+				</div>
 			</section>
 			<section class="order-section">
 				<div th:replace="~{layout/stocksOrder.html}"></div>

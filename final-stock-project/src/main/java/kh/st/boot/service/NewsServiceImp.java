@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -203,4 +204,13 @@ public class NewsServiceImp implements NewsService{
 		return true;
 	}
 
+	@Override
+	public List<NewsVO> getNewsList(String st_name) {
+		return newsDao.selectNewsList(st_name);
+	}
+
+	@Override
+	public String removeHTML(String ne_content) {
+		return Jsoup.parse(ne_content).text();
+	} // html 태그들을 없애고 순수 텍스트만 가져오게 하는 메소드
 }

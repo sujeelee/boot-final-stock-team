@@ -30,7 +30,6 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/newspaper")
-@Log4j2
 public class NewsController {
 	private NewsService newsService;
 	

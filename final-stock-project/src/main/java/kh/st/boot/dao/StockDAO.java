@@ -58,4 +58,6 @@ public interface StockDAO {
 
 	boolean insertStockJisu(@Param("ji")StockJisuVO jisu);
 
+	List<StockJisuVO> jisuConfig(@Param("type")String type);
+
 }

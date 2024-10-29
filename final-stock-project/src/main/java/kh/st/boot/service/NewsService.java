@@ -40,5 +40,9 @@ public interface NewsService {
 
 	FileVO getFile(int ne_no);
 
+	List<NewsVO> getNewsList(String st_name);
+
+	String removeHTML(String ne_content);
+
 }
 

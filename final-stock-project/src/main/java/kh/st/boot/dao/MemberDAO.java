@@ -14,7 +14,7 @@ public interface MemberDAO {
     
     void reset_Fail_Number(@Param("id")String mb_id);
 
-    Boolean join(@Param("user")MemberVO new_User);
+    Boolean join(MemberVO new_User);
 
 	MemberVO findIdByCookie(@Param("sid")String sid);
 

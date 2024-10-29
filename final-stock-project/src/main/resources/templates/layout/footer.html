@@ -39,7 +39,10 @@
 			/* 마우스 호버 시 검은색으로 변경 */
 			.footer-links a:hover {
 			  color: #000000; /* 검은색 */
-			  border-bottom: 2px solid #096c8a; /* 밑줄 */
+			  padding: 10px;
+			}
+			.footer-links a:hover:not(.footer-logo-a){
+				border-bottom: 2px solid #096c8a; /* 밑줄 */
 			}
 			.company-info {
             display: flex; /* Flexbox를 사용하여 가로 방향으로 정렬 */
@@ -61,31 +64,25 @@
 	</style>
 	<div class="container">
 	<div class="footerdivider"></div> <!-- 줄 추가 -->
-	<div style="display: flex; align-items: center; margin-left: 80px;">
-	    <img alt="로고" th:src="@{/img/S2DKEY_logo.png}" height="50px;" style="margin-right: 8px;">
-	    <span th:text="${config.cf_title}"></span>
+	<div class="footer-links" style="display: flex; align-items: center; margin-left: 24%;">
+	        <a href="https://corp.tossinvest.com/contents/terms/?id=29" target="_blank">개인정보 처리방침</a>
+	        <span>|</span>
+	        <a href="/investment-disclaimers">투자 유의사항</a>
+	        <span>|</span>
+	        <a href="https://corp.tossinvest.com/contents/terms/?id=53" target="_blank">이용자권리 및 유의사항</a>
+	        <span>|</span>
+	        <a href="https://corp.tossinvest.com/contents/terms/?id=31" target="_blank">신용정보 활용체제</a>
+	        <span>|</span>
+	        <a th:href="@{/}" class="footer-logo-a">
+		        <span th:text="${config.cf_title}"></span>
+		        <img alt="로고" th:src="@{/img/long_logo.png}" height="50px;" style="margin-left: 8px;">
+	        </a>
 	</div>
-    <div class="footer-links">
-        <a href="https://corp.tossinvest.com/contents/terms/?id=29" target="_blank">개인정보 처리방침</a>
-        <span>|</span>
-        <a href="https://corp.tossinvest.com/customer" target="_blank" th:text="'고객센터 ' + ${config.cf_tel}"></a>
-        <span>|</span>
-        <a href="https://corp.tossinvest.com/notice" target="_blank">공지사항</a>
-        <span>|</span>
-        <a href="https://corp.tossinvest.com/faq" target="_blank">자주 묻는 질문</a>
-        <span>|</span>
-        <a href="/investment-disclaimers">투자 유의사항</a>
-        <span>|</span>
-        <a href="https://corp.tossinvest.com/contents/terms/?id=53" target="_blank">이용자권리 및 유의사항</a>
-        <span>|</span>
-        <a href="https://corp.tossinvest.com/contents/terms/?id=31" target="_blank">신용정보 활용체제</a>
-        <span>|</span>
-        <a th:href="@{/}" th:text="${config.cf_title}"></a>
-    </div>
 	    <div class="footer-company-info">
 	        <span th:text="'대표 이메일 : ' + ${config.cf_email}"></span>
 	        <span th:text="'대표 : ' + ${config.cf_owner_name}"></span>
 	        <span th:text="'주소 : ' + ${config.cf_zip} + ' ) ' + ${config.cf_addr} + ' ' + ${config.cf_addr2}"></span>
+	        <span th:text="'고객센터 : ' + ${config.cf_tel}"></span>
 	    </div>
 	<div class="footer-disclaimer">
 	    <span th:text="${config.cf_title} + '증권에서 제공하는 투자 정보는 고객의 투자 판단을 위한 단순 참고용일 뿐, 투자 제안 및 권유, 종목 추천을 위해 작성된 것이 아닙니다.'"></span>
