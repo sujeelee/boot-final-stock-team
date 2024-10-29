@@ -73,7 +73,10 @@
 	        <span>|</span>
 	        <a href="https://corp.tossinvest.com/contents/terms/?id=31" target="_blank">신용정보 활용체제</a>
 	        <span>|</span>
-	        <a th:href="@{/}" class="footer-logo-a"><span th:text="${config.cf_title}"></span><img alt="로고" th:src="@{/img/long_logo.png}" height="50px;" style="margin-left: 8px;"></a>
+	        <a th:href="@{/}" class="footer-logo-a">
+		        <span th:text="${config.cf_title}"></span>
+		        <img alt="로고" th:src="@{/img/long_logo.png}" height="50px;" style="margin-left: 8px;">
+	        </a>
 	</div>
 	    <div class="footer-company-info">
 	        <span th:text="'대표 이메일 : ' + ${config.cf_email}"></span>
