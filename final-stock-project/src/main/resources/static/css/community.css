@@ -384,3 +384,10 @@
 	.div-ul{
 		margin-top: 30px;
 	}
+	.liked {
+	    color: #ff0000 !important; /* 좋아요 활성화 시 색상 */
+	}
+	
+	.reported {
+	    color: #0000ff !important; /* 신고 활성화 시 색상 */
+	}

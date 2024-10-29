@@ -3,8 +3,6 @@ package kh.st.boot.dao;
 import java.util.List;
 
 import kh.st.boot.model.vo.AdmPointVO;
-import lombok.Data;
-
 
 public interface AdmPointDAO {
 

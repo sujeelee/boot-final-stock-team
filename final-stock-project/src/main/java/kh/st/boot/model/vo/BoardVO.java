@@ -19,6 +19,7 @@ public class BoardVO {
 	//DB 상 존제하지 않습니다.
 	//report 신고, like 좋아요로 확은
 	//join해서 가져올 것
-	private String cg_like;
-	private String cg_report;
+	private String cg_like; //좋아요 눌렀는지 확인
+	private String cg_report; // 신고 눌렀는지 확인
+	
 }
