@@ -202,6 +202,8 @@ public class MyAccountController {
         	model.addAttribute("url", "/member/login");
             return "util/msg";
         }
+        MemberVO user = memberService.findById(principal.getName());
+        model.addAttribute("user", user);
 		return "myaccount/settings";
 	}
 	

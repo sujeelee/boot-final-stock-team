@@ -182,7 +182,6 @@
 					<div class="my-details">
 						<div class="my-info-left">
 							<span class="my-text-left">계좌번호</span>
-							
 						</div>
 						<div class="my-info-right">
 							<span class="my-text-right"
@@ -196,6 +195,15 @@
 						<div class="my-info-right">
 							<span class="my-text-right" 
 								  th:text="${#dates.format(#authentication.principal.member.mb_datetime, 'yyyy년 MM월 dd일')}"></span>
+						</div>
+					</div>
+					<div class="my-details">
+						<div class="my-info-left">
+							<span class="my-text-left">회원 레벨</span>
+						</div>
+						<div class="my-info-right">
+							<span class="my-text-right" 
+								  th:text="${user.mb_level} + ' Lv'"></span>
 						</div>
 					</div>
 				</section>
