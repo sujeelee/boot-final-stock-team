@@ -319,7 +319,7 @@
 					        </div>
 					        <!-- 국내 주식 -->
 					        <div class="my-item-box">
-					            <span class="my-item-text1">국내주식</span>
+					            <span class="my-item-text1"><img th:src="@{/img/flag.png}" width="24"></img> 국내주식</span>
 					            <div class="my-details">
 					                <span class="my-item-text2" 
 					                	  th:text="${#numbers.formatInteger(stockMoney, 1, 'COMMA')} + '원'"></span>
@@ -399,10 +399,8 @@
 				});
 			}
 			function displayBalance(data){
-				str = `
-                	<span class="my-balance-text2">${data.text}보다 ${data.money}원</span>
-		          	<span class="my-balance-text2">(${data.rateOfReturn}%)</span>
-				`;
+				var str = '<span class="my-balance-text2">'+data.text+'보다 '+addCommas(parseInt(data.money))+'원</span>';
+				str += '<span class="my-balance-text2">('+data.rateOfReturn+'%)</span>';
 				$('.balance-box').html(str);
 			}
 			
@@ -413,8 +411,8 @@
 		    // 초기 차트 그리기
 		    function drawChart() {
 		        let data = new google.visualization.DataTable();
-		        data.addColumn('date', 'Date');
-		        data.addColumn('number', 'Deposit');
+		        data.addColumn('date', '');
+		        data.addColumn('number', '');
 				
 		        // 초기 데이터
 		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
@@ -422,7 +420,7 @@
 		        let options = {
 	        	    width: 920,
 	        	    height: 350,
-	        	    legend: { position: 'bottom' },
+	        	    legend: 'none',
 	        	    curveType: 'function',
 	        	    pointSize: 0,
 	        	    hAxis: {
@@ -450,8 +448,8 @@
 		    // 차트를 업데이트하는 함수
 		    function updateChart(graphData) {
 		        let data = new google.visualization.DataTable();
-		        data.addColumn('date', 'Date');
-		        data.addColumn('number', 'Deposit');
+		        data.addColumn('date', '');
+		        data.addColumn('number', '');
 
 		        // 서버에서 받은 데이터를 사용하여 차트를 업데이트
 		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
@@ -459,7 +457,7 @@
 		        let options = {
 	        	    width: 920,
 	        	    height: 350,
-	        	    legend: { position: 'bottom' },
+	        	    legend: 'none',
 	        	    curveType: 'function',
 	        	    pointSize: 0,
 	        	    hAxis: {
