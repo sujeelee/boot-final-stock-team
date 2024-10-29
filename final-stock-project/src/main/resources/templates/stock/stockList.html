@@ -10,7 +10,8 @@
 <body>
 	<main layout:fragment="content">
 		<h2 class="center">주식시세관리</h2>
-		<div class="btn-list">
+		<div class="btn-list"> 
+			<button class="btn btn-info" th:onclick="getStockJisu([[${date}]]);">지수 업데이트</button> 
 			<a class="btn btn-info" th:href="@{/admin/stock/getListStock}">주식회사 등록</a> 
 		</div>
 		<div class="form-search center">
@@ -172,6 +173,32 @@
 					return false;
 				}
 				return true;
+			}
+			function getStockJisu(date){
+				$('body').append('<div class="modal-backdrop fade show" style="background-color: rgba(211, 211, 211, 0.7);"></div>'); // 새로운 backdrop 추가
+				$('#loadingModal').show();
+				var url = '/admin/stock/getStockJisu';
+				var param = {date : date};
+		        setTimeout(function() {
+					$.ajax({
+			            url: url,
+			            type: 'post',
+			            data: param,
+			            dataType : 'json',
+			            async: false, 
+			            success: function (data) {
+		                	console.log(data);
+			            	$('#loadingModal').hide();
+		                	$('.modal-backdrop').remove(); // 백드롭 제거
+		                	
+			                if(data.res == "fail"){
+			                	alert("정상적으로 처리되지 못했습니다.");
+			                } else {
+			                	alert("지수 정보 가져오기를 성공했습니다.");
+			                }
+			            }
+			        });
+		        }, 1000);  // 1초 딜레이
 			}
 		</script>
 		
