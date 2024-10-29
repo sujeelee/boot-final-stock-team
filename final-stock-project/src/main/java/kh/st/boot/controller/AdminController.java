@@ -452,11 +452,19 @@ public class AdminController {
 	@GetMapping("/admStock/admStock_add")
 	public String stock_add(Model model) {
 		List<AdminStock_addVO> selecte = adminStock_addService.nullSelect();
-		System.out.println(" 서비스 다녀온 후 컨트롤러 진입"+selecte);
 		model.addAttribute("list", selecte); 
 		return "/admin/admStock/admStock_add";
 	}
 
+	// 검색하기
+	@PostMapping("/admStock/admStock_add/search")
+	public String Stock_addSearch(Model model, String mb_id) {
+		List<AdminStock_addVO> search = adminStock_addService.search (mb_id);
+		model.addAttribute("search",search);
+		return "redirect:/admin/admStock/admStock_add";
+	}
+	
+	
 
 
 	// 상세페이지에서  승인/거절시 update 하고 리스트 페이지로 이동
