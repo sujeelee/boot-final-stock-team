@@ -208,7 +208,7 @@ public class MyAccountController {
 	}
 	
 	@PostMapping("/settings")
-	public String settingsPost(MemberApproveVO mp) {
+	public String settingsPost(Model model, Principal principal, MemberApproveVO mp) {
 		if(myAccountService.getMemberApprove(mp.getMb_no()) == null) {
 			myAccountService.insertMemberApprove(mp);
 		}else {
@@ -216,6 +216,8 @@ public class MyAccountController {
 				myAccountService.insertMemberApprove(mp);
 			}
 		}
+        MemberVO user = memberService.findById(principal.getName());
+        model.addAttribute("user", user);
 		return "myaccount/settings";
 	}
 	
