@@ -4,7 +4,7 @@ function showDash(icon) {
         $(".test").css("display", "block");
         
         // 패딩 값 늘리기
-        $(".navbar").css("padding", "15px 110px"); // 패딩을 15px 40px로 변경
+        $(".navbar").css("padding", "15px 80px"); // 패딩을 15px 40px로 변경
         
         setTimeout(function() {
             $(".test").css("width", "200px"); // 사이드바 너비 설정
@@ -23,7 +23,7 @@ function showDash(icon) {
             $(".test").css("display", "none"); // 애니메이션 완료 후 사이드바 숨김
             
             // 원래 패딩 값으로 복원
-            $(".navbar").css("padding", "15px 20px"); // 패딩을 원래대로 복원
+           $(".navbar").css("padding", "15px 20px"); // 패딩을 원래대로 복원
         }, 250); // 사이드바 애니메이션과 일치시키기 위한 지연
 
         $(".side_icon").removeClass("active");

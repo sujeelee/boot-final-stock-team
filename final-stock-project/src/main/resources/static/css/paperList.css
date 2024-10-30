@@ -143,6 +143,7 @@
     max-width: 100%;	 /* 이미지 크기 조정 */
 	height: 126px; 		 /* 비율에 맞게 조정 */
     display: block;
+    border-radius: 10px;
 }
 
 

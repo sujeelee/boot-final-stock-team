@@ -43,6 +43,25 @@
 						</tr>
 					</tbody>
 				</table>
+				
+				<div id="display_box">
+					<ul class="pagination" th:object="${pm_day}"
+						th:if="${pm_day.endPage != 0}">
+						<li th:if="${pm_day.prev}"><a
+							th:href="@{/admin/admDaycheck/daycheckAdm(page=${pm_day.startPage - 1})}">◀</a>
+						</li>
+						<li
+							th:each="i : ${#numbers.sequence(pm_day.startPage, pm_day.endPage)}"
+							th:classappend="${pm_day.cri.page} == ${i} ? 'active' : ''">
+							<a
+							th:href="@{/admin/admDaycheck/daycheckAdm(page=${i})}"
+							th:text="${i}"></a>
+						</li>
+						<li th:if="${pm_day.next}"><a
+							th:href="@{/admin/admDaycheck/daycheckAdm(page=${pm_day.endPage + 1})}">▶</a>
+						</li>
+					</ul>
+				</div>
 
 			</div>
 			<footer id="ft">

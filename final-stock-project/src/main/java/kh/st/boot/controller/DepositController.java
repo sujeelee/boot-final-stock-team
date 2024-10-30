@@ -119,5 +119,19 @@ public class DepositController {
 		id = depositService.insertOrder(newOrder);
 		return id;
     }
+    
+    @GetMapping("/send")
+	public String sendDeposit(Model model, Principal principal) {
+        
+    	//로그인상태가 아닐 시
+        if (principal == null) {
+        	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
+        	model.addAttribute("url", "/member/login");
+        	
+            return "util/msg";
+        }
+        
+		return "deposit/depositSend";
+	}
 	
 }
