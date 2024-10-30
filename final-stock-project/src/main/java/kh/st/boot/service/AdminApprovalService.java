@@ -33,9 +33,11 @@ public class AdminApprovalService {
 
 			if (mp_type.equals("news")) {
 				adminApprovalDAO.newsInsert( mb_no,mp_company);
+				adminApprovalDAO.newsLvUp(mb_no);
 			}
 			else if (mp_type.equals("stock")) {
 				adminApprovalDAO.stockInsert(mb_no,mp_company);
+				adminApprovalDAO.stockLvUp(mb_no);
 			}
 		}
 

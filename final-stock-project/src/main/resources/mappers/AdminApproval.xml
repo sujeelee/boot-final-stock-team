@@ -38,4 +38,20 @@
 		WHERE mp_company = #{mp_company}
 	</select>
 
+	
+	<update id="stockLvUp">
+		UPDATE member
+		SET mb_level = 8
+		WHERE mb_no = #{mb_no}
+	</update>
+	
+
+	
+    <update id="newsLvUp">
+		UPDATE member
+		SET mb_level = 7
+		WHERE mb_no = #{mb_no}
+	</update>
+
+
 </mapper>

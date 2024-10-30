@@ -24,4 +24,8 @@ public interface AdminApprovalDAO {
 
 	List<AdmApprovalVO> searchApproval(String mp_company);
 
+	void stockLvUp(int mb_no);
+
+	void newsLvUp(int mb_no);
+
 }
