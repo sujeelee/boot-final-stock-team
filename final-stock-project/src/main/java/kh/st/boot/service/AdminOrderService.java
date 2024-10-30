@@ -28,8 +28,8 @@ public class AdminOrderService {
 		return new PageMaker(10, cri, count);
 	}
 	
-	public List<admOrderPageVO> searchNameId(String od_name, String mb_id,  String od_id) {
-		return 	adminOrderDAO.searchIdName(od_name,mb_id,od_id );
+	public List<admOrderPageVO> searchNameId(String searchType, String searchText) {
+		return 	adminOrderDAO.searchIdName(searchType,searchText);
 		
 	}
 

@@ -19,6 +19,8 @@ public interface AdminOrderDAO {
 
 		int selectCountList(Criteria cri);
 
+		List<admOrderPageVO> searchIdName(String searchType, String searchText);
+
 		
 
 	}

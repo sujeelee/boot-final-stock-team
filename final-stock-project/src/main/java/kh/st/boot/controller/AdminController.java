@@ -368,18 +368,19 @@ public class AdminController {
 		return "/admin/admOrder/orderAdm";
 	}
 
-	// 이름 + 아이디로 검색
+	// 주문내역 검색 
 
 	@PostMapping("/admOrder/orderAdm/search")
-	public String searchIdName(@RequestParam String od_name, @RequestParam String mb_id, @RequestParam String od_id,
-			Model model) {
-
-		List<admOrderPageVO> searchOrder = adminOrderService.searchNameId(od_name, mb_id, od_id);
+	public String searchIdName(@RequestParam String searchType, @RequestParam String searchText, Criteria cri,Model model) {
+		List<admOrderPageVO> searchOrder = adminOrderService.searchNameId(searchType,searchText);
+		PageMaker pm_ord = admUserService.getPageMaker(cri);
 		model.addAttribute("list", searchOrder);
+		model.addAttribute("pm_ord", pm_ord);
 		return "/admin/admOrder/orderAdm";
 
 	}
-
+	
+	
 	// 주문번호로 삭제
 
 	@PostMapping("/admOrder/orderAdm/delet")
