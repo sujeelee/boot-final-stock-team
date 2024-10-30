@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
-import kh.st.boot.model.dto.MyAccountStocksDTO;
 import kh.st.boot.model.util.DateUtil;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
@@ -79,60 +78,35 @@ public class MyAccountController {
 			    rateOfReturn = (money * 100) / begin;
 			}
 		}
-		// 구매 가능 금액 account.ac_deposit
-		// 투자 중인 금액
 		int stockMoney = 0; // 투자중인 금액
-		List<MyAccountStocksDTO> myStockList = myAccountService.getMyStockList(mb_id);
-		for(MyAccountStocksDTO tmp : myStockList) {
-			if(myStockList != null) {
-				stockMoney += tmp.getStockOrignPrice();
+		if(depositList != null) {
+			for(DepositVO deposit : depositList) {
+				if(deposit.getDe_stock_code() != null) {
+					stockMoney += deposit.getDe_num();
+				}
 			}
 		}
-		// 월 수익
+		int orderMoney = account.getAc_deposit() - stockMoney; // 주문 가능 금액
+		
 		Date now = new Date();
-		int buyAmount = 0, sellAmount = 0;
-        String today = new SimpleDateFormat("yyyy-MM").format(now);
-        List<OrderVO> buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
-        List<OrderVO> sellList = myAccountService.getOrderListBySellDate(mb_id, today);
-        if(buyList != null && buyList.size() != 0) {
-	        for(OrderVO order : buyList) {
-	        	buyAmount += order.getOd_price();
-	        }
-        }
-        if(sellList != null && sellList.size() != 0) {
-        	for(OrderVO order : sellList) {
-        		sellAmount += order.getOd_price();
-        	}
-        }
-        int proceeds = sellAmount - buyAmount;
-        // 전체 수익
-        List<OrderVO> buyListAll = myAccountService.getOrderListByBuy(mb_id);
-        List<OrderVO> sellListAll = myAccountService.getOrderListBySell(mb_id);
-        int buyAmountAll = 0;
-        int sellAmountAll = 0;
-        if(buyListAll != null && buyListAll.size() != 0) {
-	        for(OrderVO order : buyListAll) {
-	        	buyAmountAll += order.getOd_price();
-	        }
-        }
-        if(sellListAll != null && sellListAll.size() != 0) {
-        	for(OrderVO order : sellListAll) {
-        		sellAmountAll += order.getOd_price();
-        	}
-        }
-        // 수익 금액
-        int proceedsAll = sellAmountAll - buyAmountAll;
-        // 포인트
-		MemberVO user = memberService.findById(mb_id);
-		int point = user.getMb_point();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+		String isMonth = format.format(now) + "-01";
+		List<DepositVO> depositListMonth = myAccountService.getDepositListByDate(mb_id, isMonth);
+		int monthMoney = 0;
+		if(depositListMonth != null) {
+			for(DepositVO deposit : depositList) {
+				if(deposit.getDe_stock_code() != null) {
+					monthMoney += deposit.getDe_num();
+				}
+			}
+		}
 		model.addAttribute("money", money);
 		model.addAttribute("account", account);
 		model.addAttribute("rateOfReturn", rateOfReturn);
 		model.addAttribute("graphData", graphData);
-		model.addAttribute("stockMoney", stockMoney);
-		model.addAttribute("proceeds", proceeds);
-		model.addAttribute("proceedsAll", proceedsAll);
-		model.addAttribute("point", point);
+		model.addAttribute("stockMoney", stockMoney);	// 투자중인 금액
+		model.addAttribute("orderMoney", orderMoney);	// 주문 가능 금액
+		model.addAttribute("monthMoney", monthMoney);	// 월 수익
 		return "myaccount/asset";
 	}
 	
@@ -445,7 +419,7 @@ public class MyAccountController {
         }
         if(sellList != null && sellList.size() != 0) {
         	for(OrderVO order : sellList) {
-        		sellAmount += order.getOd_price();
+        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
         	}
         }
         // 수익 금액
@@ -493,7 +467,7 @@ public class MyAccountController {
 	        }
 	        if(sellList != null && sellList.size() != 0) {
 	        	for(OrderVO order : sellList) {
-	        		sellAmount += order.getOd_price();
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
 	        	}
 	        }
 	        proceeds = sellAmount - buyAmount;
@@ -526,7 +500,7 @@ public class MyAccountController {
 	        }
 	        if(sellList != null && sellList.size() != 0) {
 	        	for(OrderVO order : sellList) {
-	        		sellAmount += order.getOd_price();
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
 	        	}
 	        }
 	        proceeds = sellAmount - buyAmount;
@@ -555,7 +529,7 @@ public class MyAccountController {
 	        }
 	        if(sellList != null && sellList.size() != 0) {
 	        	for(OrderVO order : sellList) {
-	        		sellAmount += order.getOd_price();
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
 	        	}
 	        }
 	        proceeds = sellAmount - buyAmount;
@@ -584,7 +558,7 @@ public class MyAccountController {
 	        }
 	        if(sellList != null && sellList.size() != 0) {
 	        	for(OrderVO order : sellList) {
-	        		sellAmount += order.getOd_price();
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
 	        	}
 	        }
 	        proceeds = sellAmount - buyAmount;
@@ -626,7 +600,7 @@ public class MyAccountController {
 	        }
 	        if(sellList != null && sellList.size() != 0) {
 	        	for(OrderVO order : sellList) {
-	        		sellAmount += order.getOd_price();
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
 	        	}
 	        }
 	        proceeds = sellAmount - buyAmount;
@@ -651,7 +625,7 @@ public class MyAccountController {
 	        }
 	        if(sellList != null && sellList.size() != 0) {
 	        	for(OrderVO order : sellList) {
-	        		sellAmount += order.getOd_price();
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
 	        	}
 	        }
 	        proceeds = sellAmount - buyAmount;
@@ -676,7 +650,7 @@ public class MyAccountController {
 	        }
 	        if(sellList != null && sellList.size() != 0) {
 	        	for(OrderVO order : sellList) {
-	        		sellAmount += order.getOd_price();
+	        		sellAmount += (order.getOd_price() - order.getOd_percent_price());
 	        	}
 	        }
 	        proceeds = sellAmount - buyAmount;

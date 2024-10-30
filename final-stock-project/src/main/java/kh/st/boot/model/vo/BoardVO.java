@@ -14,13 +14,5 @@ public class BoardVO {
 	private int wr_comment; //작성된 댓글수
 	private int wr_good; //좋아요갯수
 	private int wr_singo; //신고갯수
-	private int mb_level;
-	private String wr_blind;
-
-	//DB 상 존제하지 않습니다.
-	//report 신고, like 좋아요로 확은
-	//join해서 가져올 것
-	private String cg_like; //좋아요 눌렀는지 확인
-	private String cg_report; // 신고 눌렀는지 확인
-	
+	private String wr_blind; //숨겨짐여부나중에추가예정
 }

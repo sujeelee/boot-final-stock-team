@@ -1,244 +1,233 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/layout.html}">
+<html 
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout.html}">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>시드키 : 커뮤니티</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/stockuser.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/community.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
-
-<style>
-    
-</style>
+    <meta charset="UTF-8">
+    <title>커뮤니티</title>
 </head>
 <body>
-<main layout:fragment="content">    
-<div th:replace="~{layout/stocksHeader.html}"></div>
+<main layout:fragment="content">
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/community.css}" >
+    </th:block>
+    <div th:replace="~{layout/stocksHeader.html}"></div>
 
-<!--/* 절취선 */-->
-<div class="d-flex">
-    <div class="board-popular-wrapper container">
-        <div class="board-section">
+    <!-- 댓글 및 인기 주식 섹션을 감싸는 div 추가 -->
+    <div class="board-popular-wrapper">
+        <div class="board-section">    
             <h2 th:text="${stock.st_name} + ' 커뮤니티'"></h2>
-
-
-            <!--/* 개시글 작성 */-->
-            <form method="POST" onsubmit="return insertBoard(this)">
+            <form name="boardForm" method="post" onsubmit="return checkboard(this)" id="boardForm">
                 <div class="board-editor">
                     <!-- hidden 영역 -->
-                    <input type="hidden" name="wr_category" th:value="${stock.st_code}">
+			        <input type="hidden" name="wr_category" th:value="${stock.st_code}">
                     <div class="textarea-container">
-
-                        <textarea id="wr_content" name="wr_content" rows="4"
-                                  th:placeholder="${not #strings.isEmpty(userInfo) ? '게시글을 입력하세요.' : '로그인 후 이용해 주세요.'}"
-                                  required></textarea>
-
-                    </div>
+                        <textarea id="wr_content" name="wr_content" rows="4" placeholder="로그인 이후입력하세요" required onclick="chk_member();"></textarea>
+                    </div>                   
                 </div>
-                <div class="board-footer">
-                    <div class="board-button-right">
-                        <button type="submit" class="board-button">
-                            <i class='bx bx-comment' aria-label="본문 남기기"></i>
-                        </button>
-                        
-                    </div>
-                </div>
+           <div class="board-footer">
+		    <div class="board-button-right">
+ 				<button type="submit" class="board-button">
+                    <i class='bx bx-comment' aria-label="본문 남기기"></i> <!-- 댓글 남기기 아이콘 -->
+                </button>
+            </div>		   		   
+		   </div>
             </form>
+            <div class="boarddivider"></div> <!-- 줄 추가 -->
 
-            <!--/* 절취선 */-->
-            <div class="boarddivider"></div>
-
-            <th:block th:each="item : ${bolist} ">
-                <!--/* 게시글 유저정보 + 반복 */-->
-                
-                <div class="board-header">
-                    <address class="board-author">
-                        <span class="author-name" th:text="${item.mb_id}?:_">ID</span>
-                        <span class="author-badge" th:text="'Lv' + ${item.mb_level}?:_">Lv 1</span>
-                    </address>
-                </div>
-                
-                <!--/* 게시글 콘텐츠 */-->
-                <div class="board-body">
-                    <p class="board-text" th:text="${item.wr_content}?:_"></p>
-                </div>
-
-
-                <!--/* 게시글 추천, 신고 */-->
-                <div class="board-footer">
-
-                    <!--/* 게시글 좋아요 버튼 */-->  
-                    <button class="btn-like">
-                        <i class='bx bxs-heart'></i>
-                    </button>
-
-                    <!--/* 게시글 싫어요 버튼 */-->
-                    <button class="btn-report">
-                        <i class='bx bx-x-circle'></i>
-                    </button>
-                </div>
-
-
-
-                <!--/* 댓글 버튼 */-->
-                <div>
-                    <button class="reply-btn" type="button"
-                    data-toggle="collapse" th:data-target="'#commentColl' + ${item.wr_no}">
-                        <i class='bx bx-comment'></i>                                
-                    </button>
-                    <!--/* 댓글 count */-->
-                    <span th:text="${item.wr_comment}?:_">0</span>
-                </div>
-
-            
-
-                <!--/* 댓글 each */-->
-                <div th:id="'commentColl' + ${item.wr_no}" class="collapse comment">
-                        
-
-                    <!--/* 댓글 작성 */-->
-                    <div class="input-group">
-                        <input type="text"
-                        th:placeholder="${not #strings.isEmpty(userInfo) ? '댓글을 입력하세요.' : '로그인 후 이용해 주세요.'}"
-                        class="comment-input"
-                        >
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary"
-                            onclick="insertComment(this)"
-                            >등록</button>
-                        </div>
-                    </div> 
-
-
-                    <!--/* colist == 0 이면 없다고 이야기할 공간 */-->
-
-                    <div th:if="${colist == null or #lists.isEmpty(colist)}" class="comment-item" style="text-align: center;">
-
-                        <span>아직 댓글이 없습니다. 첫 댓글의 영광을 누리세요!</span>
-
-                    </div>
-
-                    <!--/* colist 반복 할 구간 + replaced 할 공간 */-->
-                    <div th:class="'comment_item'+${item.wr_no}" id="co_list_replace">
-
-                            <div th:each="comment : ${colist}">
-
-                                    <p th:text="${comment.mb_id}">ID</p>
-                                    <i th:text="${comment.co_content}">content</i>
-                                    <button class="btn">수정</button>
-                                    <button class="btn">삭제</button>
-
-                                    <button class="btn"
-                                    
-                                    ><i class='bx bxs-heart'></i>
-                                        좋아요
-                                        <span></span>
-                                    </button>
-
-                                    <button class="btn"
-                                    
-                                    ><i class='bx bx-x-circle'></i>싫어요
-                                        <span></span>
-                                    </button>
-
-                            </div>
-
-                    </div>
-                    <!--/* colist 반복 할 구간 종료 */-->
-
-
-                </div>
-                
-                <div class="boarddivider"></div>
-
-            </th:block>
-
-            <!--/* 개시글 Done */-->
-
-
-
-
+            <!-- 게시글 리스트를 보여주는 부분 -->
+            <ul id="boardList">
+                <li class="board" th:each="board : ${list}">
+					 <div class="board-header">
+					   <address class="board-author">
+					     <span class="author-name" th:text="${board.mb_id}"></span>
+					     <span class="author-badge">mb_lever</span>      
+					   </address>
+					     <button class="follow-btn">팔로우</button>
+					  </div>
+					    <div class="board-body">
+					      <p class="board-text" th:text="${board.wr_content}">
+					       
+					      </p>
+					    </div>
+					    <p th:text="${board.wr_no}"></p>
+						<!-- form 태그에서 action, method 제거, submit 방지 위해 onsubmit 추가 -->
+						<form onsubmit="return false;">
+						    <div class="board-footer">
+						        <!-- 좋아요 버튼 -->
+                                 
+						        <button class="like-btn action" type="button" th:with="fo = 'like'"
+                                    th:onclick="handleAction( [[${board.wr_no}]] , [[${fo}]])">
+						            <i class='bx bxs-heart'></i>
+						            <span style="font-size: 13px"></span>
+						        </button>
+						
+						        <!-- 신고 버튼 -->
+                                <button class="report-btn" type="button" th:with="fo = 'report'"
+                                th:onclick="handleAction( [[${board.wr_no}]] , [[${fo}]])">
+						            <i class='bx bx-x-circle' aria-label="신고하기"></i>
+						            <span style="font-size: 13px"></span>
+						        </button>
+						
+						    </div>
+						</form>
+				        <!-- 댓글 버튼 -->
+				        <button class="reply-btn" type="button">
+				            <i class='bx bx-comment' aria-label="댓글 남기기"></i>
+				            <span style="font-size: 13px"></span>
+				        </button>
+						
+                </li>
+            </ul>
         </div>
-    </div>
-
-    <div class="popular-stocks">
-        <span>인기 급상승 주식</span>
-        <div class="div-ul">
+        
+        <div class="popular-stocks" >
+            <span>인기 급상승 주식</span>
+            <div class="div-ul">
             <ul class="stock-list">
                 <li class="stockItem">
                     <h3>카카오</h3>
                     <p>67,800원</p>
                 </li>
             </ul>
+            </div>
         </div>
     </div>
+    <script th:inline="javascript">
 
+        var $mb_id = [[${mb_id}]];
 
-    <section class="order-section">
-        <div th:replace="~{layout/stocksOrder.html}"></div>
-    </section>
-
-</div>
-
-<input th:id="mb_id" type="hidden" th:value="${not #strings.isEmpty(userInfo) ? userInfo : ''}">
-<script th:inline="javascript">
-const st_code =  /*[[${stock.st_code}]]*/ '' ;
-const mb_id = $('#mb_id').val();
-function insertBoard(form){
-
-let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-url += "/community/insert";
-    
-    $.ajax({
-        url: url,
-        type: "post",
-        data:$(form).serialize(),
-        dataType : 'json',
-        async: false, //false : 비동기 / true : 동기
-        success: function(data) {
-            if (data.res === "true") {
-                location.href = location.href;
+        function toggleInput() {
+            const $replyInput = $('.reply-input');
+            if ($replyInput.is(':visible')) {
+                $replyInput.hide();
             } else {
-                alert(data.msg);
+                $replyInput.show();
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error("AJAX 오류:", textStatus, errorThrown);
-            alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
         }
-    });
+        function chk_member(){
+        	return true;
+        	var userid = [[${mb_id}]];
+        	
+    		if(userid == null){
+    			if(confirm("회원만 이용가능합니다.\n로그인페이지로 이동하시겠습니까?")) {
+    				location.href = "/member/login";
+    				return false;
+    			} else {
+    				alert("해당 기능은 로그인 후 사용할 수 있습니다.");
+    				return false;
+    			}
+    		}
+        }
+        function checkboard(form) {
+        	chk_member();
+			//console.log(form);
+			//console.log(form.wr_category.value);
+		    insertBoard(form);
+		    return false; // 폼 제출 방지
+		}
+        function insertBoard(form) {
+			//form > 전송하고 싶은 데이터가 다 들어있어 form 태그 안 요스를 모두 가져옴
+			let url = "/stock/"+/*[[${stock.st_code}]]*/;
+			url += "/community/insert";
+            $.ajax({
+                url: url,
+                type: "post",
+                data:$(form).serialize(),
+                dataType : 'json',
+                async: false, //false : 비동기 / true : 동기
+                success: function(data) {
+                	console.log(data);
+                    /*if (data.res === "success") {
+                        // 성공적으로 댓글이 등록된 후의 처리
+                        console.log("댓글 등록 성공:", data);
+                        // 댓글 목록 갱신 또는 UI 업데이트 로직 추가
+                    }*/
+                    // displayPost(data.newBoard);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX 오류:", textStatus, errorThrown);
+                    alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+                }
+            });
+            function displayPost(newBoard) {
+            	console.log(newBoard); // newBoard 확인
+                const wrNo = /*[[${board.wr_no}]]?:_*/ 0;
+                const foLike = 'like'; // 좋아요 문자열
+                const foReport = 'report'; // 신고 문자열   
 
-    return false;
-}
+                console.log(wrNo)
 
+            	str = `
+					<li class="board">
+					    <div class="board-header">
+					      <address class="board-author">
+					        <span class="author-name" >${newBoard.mb_id}</span>
+					        <span class="author-badge">mb_lever</span>      
+					      </address>
+					       <button class="follow-btn">팔로우</button>
+					    </div>
+					    <div class="board-body">
+					      <p class="board-text">
+					        ${newBoard.wr_content}
+					      </p>
+					    </div>
+					    <!-- form 태그에서 action, method 제거, submit 방지 위해 onsubmit 추가 -->
+					    <form onsubmit="return false;">
+					        <div class="board-footer">
+					            <!-- 좋아요 버튼 -->
 
-function insertComment(button) {
+					                <i class='bx bxs-heart'></i>
+					                <span style="font-size: 13px"></span>
+					            </button>
 
-$(button).closest('.input-group').find('.comment-input').val();
+					            <!-- 신고 버튼 -->
 
-    let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-    url += "/community/insert";
-    
-    var comment = $(button).closest('.input-group').find('.comment-input').val();
-    $(button).closest('.input-group').find('.comment-input').val('');
+					                <i class='bx bx-x-circle' aria-label="신고하기"></i>
+					                <span style="font-size: 13px"></span>
+					            </button>
+					        </div>
+					    </form>
+			            <!-- 댓글 버튼 -->
+			            <button class="reply-btn" type="button">
+			                <i class='bx bx-comment' aria-label="댓글 남기기"></i>
+			                <span style="font-size: 13px"></span>
+			            </button>
+					</li>
+            	`;
+            	$('#boardList').prepend(str);
+            }
+        }
+        function handleAction(cg_num, cg_action) {
+            const cg = {
+                cg_num: cg_num,
+                cg_action: cg_action,
+                mb_id: $mb_id
+            };
 
+            console.log(cg);
 
-}   
+            let url = "/stock/" + /*[[${stock.st_code}]]*/ ''; // 주식 코드 추가
+            url += "/community/action";
 
-//무슨일을 하든 이걸 넣으면 해당 구간이 재설정 되도록 해주세요
-function replace_comment(section){
-    //section이 재설정 되면 됩니다.
-}
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json",
+                data: JSON.stringify(cg), // 데이터 직렬화하여 전송
+                dataType : "json", 
+                success: function(data) {
+                    console.log(data)
+                },
+                error: function(error) {
+                    alert("처리 중 오류가 발생했습니다.");
+                }
+            });
+        }
 
-
-
-</script>
-
+    </script>
 </main>
 </body>
 </html>

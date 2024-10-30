@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.DepositDAO;
 import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.dao.MyAccountDAO;
-import kh.st.boot.model.dto.MyAccountStocksDTO;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
@@ -200,11 +199,6 @@ public class MyAccountServiceImp implements MyAccountService {
 	public PageMaker getPageMakerByPoint(TransCriteria cri, String mb_id) {
 		int count = depositDao.getCountByPoint(cri, mb_id);
 		return new PageMaker(2, cri, count);
-	}
-
-	@Override
-	public List<MyAccountStocksDTO> getMyStockList(String mb_id) {
-		return myAccountDao.selectMyStockList(mb_id);
 	}
 
 }
