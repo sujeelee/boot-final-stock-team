@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdmMemberVO {
 	// 받아올 값 변수 설정
-	private int mb_no;		// 회원 고유번호 
-    private String mb_id;	// 
+	private int mb_no;
+    private String mb_id;
     private String mb_password;
-    private String mb_name;	// 이름
+    private String mb_name;
     private String mb_nick;
-    private String mb_hp;
+    private String mb_ph;
     private String mb_email;
     private int mb_zip; //(11자리)
     private String mb_addr;
@@ -40,3 +40,7 @@ public class AdmMemberVO {
     
 	
 }
+
+
+
+ 

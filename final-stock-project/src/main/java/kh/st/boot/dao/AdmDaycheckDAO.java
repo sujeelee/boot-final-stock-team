@@ -10,4 +10,8 @@ public interface AdmDaycheckDAO {
 
 	List<AdmDaycheckVO> OneSelect(String mb_id);
 
+
+
+
+
 }
