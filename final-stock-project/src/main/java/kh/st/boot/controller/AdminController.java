@@ -459,9 +459,11 @@ public class AdminController {
 	// 검색하기
 	@PostMapping("/admStock/admStock_add/search")
 	public String Stock_addSearch(Model model, String mb_id) {
+		System.out.println(mb_id);
 		List<AdminStock_addVO> search = adminStock_addService.search (mb_id);
-		model.addAttribute("search",search);
-		return "redirect:/admin/admStock/admStock_add";
+		System.out.println(mb_id);
+		model.addAttribute("list",search);
+		return "/admin/admStock/admStock_add";
 	}
 	
 	
