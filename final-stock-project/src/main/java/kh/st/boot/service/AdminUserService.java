@@ -60,5 +60,9 @@ public class AdminUserService {
 		
 		
 	}
+
+	public List<AdmMemberVO> searchUser(String searchType, String searchText) {
+		return adminuserDAO.userSearch(searchType,searchText);
+	}
 }
 

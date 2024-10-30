@@ -43,7 +43,23 @@
         )
     </insert>
 
-
+	<select id="userSearch" resultType="AdmMemberVO">
+	 SELECT * 
+    FROM member 
+    <where>
+        <choose>
+            <when test="searchType == 'id'">
+                mb_id = #{searchText}
+            </when>
+            <when test="searchType == 'name'">
+                mb_name = #{searchText}
+            </when>
+            <when test="searchType == 'nickname'">
+                mb_nick = #{searchText}
+            </when>
+        </choose>
+    </where>
+	</select>
 
 
 

@@ -158,10 +158,27 @@ public class AdminController {
 				admUserService.insertUser( mb_no, mb_id, mb_password, mb_name, mb_nick, mb_hp, mb_email, mb_zip,
 				        mb_addr, mb_addr2, mb_birth, mb_level, mb_datetime, mb_edit_date, mb_stop_date,
 				        mb_out_date, mb_cookie, mb_cookie_limit, mb_point, mb_emailing, mb_account);
-
-		
-		return "redirect/admin/admNews/adminUser";
+				return "redirect:/admin/admMember/adminUser";
 	}
+	
+	// 회원 검색하기 
+	@PostMapping("/admMember/adminUser/search")
+	public String userSearch(@RequestParam String searchType,
+							 @RequestParam String searchText, Model model, Criteria cri) {
+		System.out.println(searchType);
+		System.out.println(searchText);
+		List searchUser = admUserService.searchUser(searchType,searchText);
+		PageMaker pm_use = admUserService.getPageMaker(cri);
+		System.out.println(searchType);
+		System.out.println(searchText);
+		model.addAttribute("user",searchUser);
+		model.addAttribute("pm_use", pm_use);
+		return "/admin/admMember/adminUser";
+	}
+	
+	
+	
+	
 	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------

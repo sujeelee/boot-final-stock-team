@@ -12,6 +12,8 @@ import kh.st.boot.pagination.PostCriteria;
 @Mapper
 public interface AdminUserDAO {
 
+	List<AdmMemberVO> userSearch();
+
 	List<AdmMemberVO> selectAdmUser(Criteria cri);
 
 	int selectCountList(Criteria cri);
@@ -28,5 +30,7 @@ public interface AdminUserDAO {
 			String mb_email, int mb_zip, String mb_addr, String mb_addr2, Date mb_birth, int mb_level,
 			String mb_datetime, String mb_edit_date, String mb_stop_date, String mb_out_date, String mb_cookie,
 			String mb_cookie_limit, int mb_point, int mb_emailing, String mb_account);
+
+	List<AdmMemberVO> userSearch(String searchType, String searchText);
 
 }
