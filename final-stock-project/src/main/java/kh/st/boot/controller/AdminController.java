@@ -1,10 +1,8 @@
 package kh.st.boot.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +16,7 @@ import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
+import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
@@ -29,6 +28,7 @@ import kh.st.boot.service.AdmPointService;
 import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
+import kh.st.boot.service.AdminStock_addService;
 import kh.st.boot.service.AdminUserService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
@@ -70,7 +70,7 @@ public class AdminController {
 	// 관리자 기본 페이지
 
 	// 관리자 설정 페이지 값 전송 코드
-	@GetMapping("/adminHome")
+	@GetMapping("/adminHome")	
 	public String admin(Model model) {
 		// db에 저장된 값 DAO와 Service를 통해 받아온 값 리스트에 저장
 		AdminVO adminH = adminService.getAdminH();
@@ -306,16 +306,6 @@ public class AdminController {
 		
 	
 
-	// 회원 정보 상세페이지 조회
-	@PostMapping("/admLevel/admLevSel")
-	public String admlevSel(Model model, int lv_num) {
-		AdminLevelPageVO admlevSel = sltAdmLevelPageService.getAdmlevSel(lv_num);
-
-		model.addAttribute("admlevSel", admlevSel);
-
-		return "/admin//admLevel/admLevSel";
-	}
-
 	// 수정하기
 	@PostMapping("/admLevel/admLevSel/update")
 	public String udtAdmLv(AdminLevelPageVO admLevVO, Model model) {
@@ -382,7 +372,6 @@ public class AdminController {
 
 		List<admOrderPageVO> searchOrder = adminOrderService.searchNameId(od_name, mb_id, od_id);
 		model.addAttribute("list", searchOrder);
-		model.addAttribute("pm_ord", pm_ord);
 		return "/admin/admOrder/orderAdm";
 
 	}

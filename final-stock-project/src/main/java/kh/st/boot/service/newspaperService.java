@@ -57,9 +57,5 @@ public class newspaperService {
 		return new PageMaker(10, cri, totalCount);
 	}
 
-	public PageMaker getPageMaker(Criteria cri) {
-		int count = newspaperDAO.selectCountList(cri);
-		return new PageMaker(10, cri, count);
-	}
 
 }
