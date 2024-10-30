@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.vo.BoardVO;
@@ -23,6 +24,7 @@ import kh.st.boot.model.vo.CommunityActionVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.CommunityService;
 import kh.st.boot.service.StocksHeaderService;
+import kh.st.boot.service.newspaperService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -30,6 +32,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/stock/{st_code}/community")
 public class CommunityController {
 
+	private static final String wr_no = null;
 	private CommunityService communityService;
 	private StocksHeaderService stocksHeaderService;//
 	private MemberDAO memberDao;
@@ -79,26 +82,70 @@ public class CommunityController {
 		}
 
 		communityService.insertBoard(newBoard);
+		
 		result.put("res", "true");
 		return result;
 	}
-
-
-	@PostMapping("/replace")
-	public String replaceBoardList_post(Model mo, Principal principal, @PathVariable String st_code){
-		// Principal이 null일 경우 mb_id를 null로 설정
-	    String mb_id = null;
-	    if (principal != null) {
-	        mb_id = principal.getName(); // principal이 null이 아닐 때만 getName() 호출
-	        mo.addAttribute("userInfo", mb_id); // 사용자 정보가 있을 때만 모델에 추가
+	@PostMapping("delete")
+	@ResponseBody
+	public Map<String, Object> delete(@RequestParam int wr_no, Principal principal) {
+		Map<String, Object> result = new HashMap<>();
+		
+		String mb_id = principal.getName();
+		BoardVO board = communityService.getBoardbyID(wr_no,mb_id);  
+	   
+	    if (board == null) {
+	        result.put("res", "false");
+	        result.put("msg", "게시글을 찾을 수 없습니다.");
+	        return result; 
 	    }
-		List<BoardVO> list = communityService.getBoardList(st_code,mb_id);
 
-		mo.addAttribute("list", list);
-		return "community/community :: #replace_board";
+	    // 사용자가 게시글의 작성자가 아닐 경우
+	    if (!board.getMb_id().equals(mb_id)) {
+	        result.put("res", "false");
+	        result.put("msg", "본인의 게시글만 삭제할 수 있습니다.");
+	        return result; 
+	    }
+
+	    // 게시글 삭제
+	    boolean isDeleted = communityService.deleteBoard(wr_no); 
+	    if (isDeleted) {
+	        result.put("res", "true");
+	        result.put("msg", "게시글이 삭제되었습니다.");
+	    } else {
+	        result.put("res", "false");
+	        result.put("msg", "게시글 삭제에 실패했습니다.");
+	    }
+	    return result; // 삭제 완료 후 결과 반환
 	}
-
-
+	@PostMapping("/update")
+	@ResponseBody
+	public Map<String, Object> updata(@RequestParam int wr_no,@RequestParam String wr_content, Principal principal) {
+		Map<String, Object> result = new HashMap<>();
+		String mb_id = principal.getName();
+		BoardVO board = communityService.getBoardbyID(wr_no,mb_id);
+	    if (board != null) {
+	        // 게시글 내용 업데이트
+	        board.setWr_content(wr_content);
+	        
+	        // 서비스 메서드를 호출하여 업데이트 수행
+	        boolean updateSuccess = communityService.updateBoard(board);
+	        
+	        // 결과에 따라 메시지 설정
+	        if (updateSuccess) {
+	            result.put("res", "true");
+	            result.put("msg", "게시글이 성공적으로 업데이트되었습니다.");
+	        } else {
+	            result.put("res", "false");
+	            result.put("msg", "게시글 업데이트에 실패했습니다.");
+	        }
+	    } else {
+	        result.put("res", "false");
+	        result.put("msg", "게시글을 찾을 수 없습니다.");
+	    }
+		
+		return result;
+	}
 	@PostMapping("/action")
 	@ResponseBody
 	public Map<String, Object> communityAction(@RequestBody CommunityActionVO feel, Principal principal,@PathVariable String st_code) {
@@ -138,43 +185,51 @@ public class CommunityController {
 	
 	@PostMapping("/comment")
 	@ResponseBody
-	public Map<String, Object> CommentPostMethod(Model mo, @RequestParam String co_content, int wr_no, Principal principal) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		if (principal == null) {
-			result.put("res", "error");
-			result.put("msg", "회원만 작성 가능합니다.");
-			return result;
-		}				
-		CommentVO newComment = new CommentVO(); // 새로운 CommentVO 객체 생성
-		newComment.setMb_id(principal.getName());
-		newComment.setWr_no(wr_no);
-		newComment.setCo_content(co_content);
-
-
-		boolean res = communityService.insertComment(newComment);	
-		if(res) {
-			res = communityService.updateCount(newComment);
-			
-		}
-		
-		result.put("res", "s");
-		return result;
+	public Map<String, Object> CommentPostMethod(Model mo, @RequestParam String co_content, @RequestParam int wr_no, Principal principal) {
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    // 로그인 확인
+	    if (principal == null) {
+	        result.put("res", "error");
+	        result.put("msg", "회원만 작성 가능합니다.");
+	        return result;
+	    }
+	    
+	    // 댓글 객체 생성
+	    CommentVO newComment = new CommentVO();
+	    newComment.setMb_id(principal.getName());
+	    newComment.setWr_no(wr_no);
+	    newComment.setCo_content(co_content);
+	    
+	    // 댓글 추가
+	    boolean res = communityService.insertComment(newComment);
+	    
+	    if (res) {
+	        // 댓글 수 업데이트
+	        res = communityService.updateCount(newComment);
+	    }
+	    
+	    // 성공적인 응답 반환
+	    result.put("res", res ? "true" : "false");
+	    return result;
 	}
-
+	
 
 	@PostMapping("/replaceComment")
-	public String replaceCommentList_post(Model mo, Principal principal, @RequestParam Map<String, Object> paramMap){
-		List<CommentVO> colist = communityService.getCommentList(Integer.parseInt(paramMap.get("wr_no").toString()));
-			
-
-		if (principal != null) {
-			mo.addAttribute("userInfo", principal.getName());
-		}
-		
-		
-		mo.addAttribute("colist", colist);
-		return "community/community :: #replace_comment";
+	public String replaceCommentList_post(Model mo, Principal principal, @RequestParam int wr_no) {
+		System.out.println(wr_no);
+	    System.out.println("replaceCommentList_post 호출됨"); // 디버깅용 로그
+	    
+	    // 댓글 목록 가져오기
+	    List<CommentVO> colist = communityService.getCommentList(wr_no);
+	    System.out.println(colist);
+	    if (principal != null) {
+	        mo.addAttribute("userInfo", principal.getName());
+	    }
+	    
+	    mo.addAttribute("colist", colist);
+	    
+	    // HTML 조각 반환
+	    return "community/community :: #replace_comment";
 	}
-
-
 }

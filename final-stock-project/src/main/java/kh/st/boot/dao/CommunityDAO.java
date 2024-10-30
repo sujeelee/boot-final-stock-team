@@ -49,6 +49,14 @@ public interface CommunityDAO {
 	boolean updateCount(int wr_no);
 
 	CommunityActionVO checkUserActions(CommunityActionVO ca);
+
+	BoardVO getBoardbyID(int wr_no, String mb_id);
+
+	int deleteBoard(int wr_no);
+
+	int updateBoard(BoardVO board); 
+
+
  
 
 }

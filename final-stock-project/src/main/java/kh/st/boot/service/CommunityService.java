@@ -138,4 +138,21 @@ public class CommunityService {
 		return communityDao.getBoardList(st_code);
 	}
 
+	public BoardVO getBoardbyID(int wr_no, String mb_id) {
+		
+		return communityDao.getBoardbyID(wr_no,mb_id);
+	}
+
+	public boolean deleteBoard(int wr_no) {
+		int board = communityDao.deleteBoard(wr_no);
+	    return board > 0;
+		
+	}
+
+	public boolean updateBoard(BoardVO board) {
+		
+		return communityDao.updateBoard(board) > 0;
+	}
+
+
 }

@@ -126,5 +126,20 @@
 	        mb_id = #{mb_id}
 	</select>
 	
-    	
+	<select id="getBoardbyID" resultType="BoardVO">
+		SELECT *
+        FROM board
+        WHERE wr_no = #{wr_no} AND mb_id = #{mb_id}
+	</select>
+    
+    <delete id="deleteBoard">
+        DELETE FROM board WHERE wr_no = #{wr_no}
+    </delete>	
+    
+     <update id="updateBoard">
+        UPDATE board
+        SET wr_content = #{wr_content}
+        WHERE wr_no = #{wr_no} AND mb_id = #{mb_id}
+    </update>
+    
 </mapper>

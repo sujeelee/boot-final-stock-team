@@ -308,7 +308,9 @@ h2 {
 .board-title {
   font-weight: bold;
 }
-
+.board-text{
+	white-space: pre-wrap;
+}
 .board-text a {
   color: #007bff;
   text-decoration: none;
@@ -321,10 +323,7 @@ h2 {
 .follow-btn {
   margin-left: auto; /* 오른쪽 끝으로 버튼을 밀어냄 */
 }
-.follow-btn,
-.btn-like,
-.reply-btn,
-.btn-report {
+.follow-btn,.btn-like,.reply-btn,.btn-report,.btn-retouch,.btn-delete,.btn-save {
   background-color: transparent;
   border: none;
   color: gray;
@@ -343,12 +342,10 @@ h2 {
   margin-left: auto; /* 왼쪽 여백을 자동으로 설정 */
   margin-right: auto; /* 오른쪽 여백을 자동으로 설정하여 중앙 정렬 */
 }
-.btn-like {
+.btn-like,.btn-retouch {
   margin-right: 5px; /* like 버튼의 오른쪽에 간격 추가 */
+  margin-left: 5px;
 }
-.btn-report {
-	margin-left: 5px;
-  }
 .reply-btn {
   margin-left: 5px; /* reply 버튼의 왼쪽에 간격 추가 (필요시) */
 }
@@ -372,7 +369,13 @@ h2 {
   border-radius: 5px; /* 모서리 둥글게 */
   resize: none; /* 크기 조정 비활성화 */
 }
-
+.edit-input{
+	width: 100%; /* 버튼 공간을 제외한 너비 설정 */
+	padding: 10px; /* 내부 여백 */
+	border: 1px solid #ddd; /* 경계선 추가 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	resize: none; /* 크기 조정 비활성화 */
+}
 /* 댓글 제출 버튼 스타일 */
 .submit-reply {
   margin-top: 10px; /* 위쪽 여백 */

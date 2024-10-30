@@ -28,7 +28,7 @@
 
 
             <!--/* 개시글 작성 */-->
-            <form method="POST" onsubmit="return insertBoard(this)">
+            <form method="POST" onsubmit="return board_action(this, 'insert')">
                 <div class="board-editor">
                     <!-- hidden 영역 -->
                     <input type="hidden" name="wr_category" th:value="${stock.st_code}">
@@ -64,16 +64,39 @@
                 </div>
                 
                 <!--/* 게시글 콘텐츠 */-->
-                <div class="board-body">
+                <div class="board-body" th:data-id="${item.wr_no}">
                     <p class="board-text" th:text="${item.wr_content}?:_"></p>
-                </div>
+                    
+                    <button class="btn-save" style="display:none;"
+                    th:attr="data-wr-no=${item.wr_no}" 
+            		onclick="board_action(this.closest('.board-body'), 'update')">
+                    <i class='bx bx-edit-alt'></i>
+                    </button>
+               </div>
 
 
                 <!--/* 게시글 추천, 신고 */-->
                 <div class="board-footer">
+                	<!--/* 게시글 수정 버튼 */-->
+					<button class="btn-retouch"
+						th:if="${userInfo != null and item.mb_id == userInfo}"
+						th:onclick="'enableEditMode(' + ${item.wr_no} + ')'">
+						<i class='bx bx-edit-alt'></i>
+                    </button>
 
+
+                    <!--/* 게시글 삭제 버튼 */-->
+                    <button class="btn-delete" 
+                    	th:if="${userInfo != null and item.mb_id == userInfo}"
+                    	th:attr="data-wr-no=${item.wr_no}"
+                    	onclick="board_action(this, 'delete')">
+                    	<i class='bx bx-message-rounded-x'></i>                        
+                    </button>
+                    
                     <!--/* 게시글 좋아요 버튼 */-->  
-                    <button class="btn-like">
+                    <button class="btn-like"
+
+                    	>
                         <i class='bx bxs-heart'></i>
                     </button>
 
@@ -81,6 +104,7 @@
                     <button class="btn-report">
                         <i class='bx bx-x-circle'></i>
                     </button>
+                    
                 </div>
 
 
@@ -109,6 +133,7 @@
                         >
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary"
+                            th:attr="data-wr-no=${item.wr_no}"
                             onclick="insertComment(this)"
                             >등록</button>
                         </div>
@@ -124,7 +149,7 @@
                     </div>
 
                     <!--/* colist 반복 할 구간 + replaced 할 공간 */-->
-                    <div th:class="'comment_item'+${item.wr_no}" id="co_list_replace">
+                    <div th:id="'replace_comment' + ${item.wr_no}" class="comment_item">
 
                             <div th:each="comment : ${colist}">
 
@@ -187,22 +212,100 @@
 
 <input th:id="mb_id" type="hidden" th:value="${not #strings.isEmpty(userInfo) ? userInfo : ''}">
 <script th:inline="javascript">
-const st_code =  /*[[${stock.st_code}]]*/ '' ;
-const mb_id = $('#mb_id').val();
-function insertBoard(form){
+	const st_code =  /*[[${stock.st_code}]]*/ '' ;
+	const mb_id = /*[[${member.mb_id}]]*/;
+	//$('#mb_id').val();
+	
+	function board_action(form, type){
+		let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
+		var param;
+		
+		if(type == "insert"){
+			url += "/community/insert";
+			param = $(form).serialize();
+		} else if(type == "delete") {
+			url += "/community/delete";
+			var no = $(form).data('wr-no');
+			param = {wr_no : no};
+		} else if(type == "update"){
+			url += "/community/update";
+			var no = $(form).find('.btn-save').data('wr-no'); 
+			console.log("form:", form); 
+			console.log("data-wr-no:", $(form).data('wr-no'));
+	        const updatedContent = $(form).find('.edit-input').val();
+			param ={
+		            wr_no: no,
+		            wr_content: updatedContent
+		        }; 
+			console.log(param);
+		}
+		
+		$.ajax({
+			url: url,
+			type: "post",
+			data: param,
+		    async: false, //false : 비동기 / true : 동기
+		    success: function(data) {
+		        if (data.res === "true") {
+		        	location.href = location.href; 
+		        } else {
+		            alert(data.msg);
+		        }
+		    },
+		    error: function(jqXHR, textStatus, errorThrown) {
+		        console.error("AJAX 오류:", textStatus, errorThrown);
+		        alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+		    }
+		});
+		return false;
+		
+	}
+function enableEditMode(postId) {
+    const post = $(`.board-body[data-id="${postId}"]`); 
+    const content = post.find(".board-text");
 
-let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-url += "/community/insert";
+    const currentText = content.text();
+    // 기존 텍스트를 입력 필드로 변경
+    content.html(`<input type="text" value="${currentText}" class="edit-input">`);
+
+    // 버튼 숨기기 및 표시하기
+    post.find(".btn-retouch").hide(); 
+    post.find(".btn-save").show(); 
+}
+
+
+function insertComment(button) {
+
+$(button).closest('.input-group').find('.comment-input').val();
+
+    let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
+    url += "/community/comment";
     
+    var content = $(button).closest('.input-group').find('.comment-input').val();
+    console.log("댓글 내용:", content); // 댓글 내용 출력
+    $(button).closest('.input-group').find('.comment-input').val('');
+    var no = $(button).data('wr-no');
+    console.log("wr_no:", no); // wr_no 출력
+    
+    if (content.trim() === '') {
+        alert('댓글을 입력하세요.');
+        return;
+    }
     $.ajax({
         url: url,
-        type: "post",
-        data:$(form).serialize(),
-        dataType : 'json',
+        type: "POST",
+        data : {
+        	co_content : content,
+        	wr_no : no
+        },
         async: false, //false : 비동기 / true : 동기
         success: function(data) {
             if (data.res === "true") {
-                location.href = location.href;
+                // 댓글 입력 필드 초기화
+                $(button).closest('.input-group').find('.comment-input').val('');
+                
+                // 댓글 목록 갱신
+                replace_comment(no); 
             } else {
                 alert(data.msg);
             }
@@ -214,26 +317,34 @@ url += "/community/insert";
     });
 
     return false;
-}
-
-
-function insertComment(button) {
-
-$(button).closest('.input-group').find('.comment-input').val();
-
-    let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-    url += "/community/insert";
     
-    var comment = $(button).closest('.input-group').find('.comment-input').val();
-    $(button).closest('.input-group').find('.comment-input').val('');
-
 
 }   
 
-//무슨일을 하든 이걸 넣으면 해당 구간이 재설정 되도록 해주세요
-function replace_comment(section){
-    //section이 재설정 되면 됩니다.
+//무슨일을 하든 이걸 넣으면 해당 구간이 재설정 되도록 해주세요(?)이게 무슨말이에요 의현씨..
+function replace_comment(wr_no){
+	
+    let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
+    url += "/community/replaceComment";
+    
+	const commentData = { wr_no: wr_no }; // 댓글 ID로 section을 사용
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: commentData,
+        success: function(data) {
+        	console.log(data.colist); // 디버깅용 로그
+            
+        	
+        	$('#replace_comment' + wr_no).find(".comment-item").replaceWith(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("댓글 목록 갱신 오류:", textStatus, errorThrown);
+            alert("댓글 목록을 갱신하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+        }
+    });
 }
+
 
 
 
