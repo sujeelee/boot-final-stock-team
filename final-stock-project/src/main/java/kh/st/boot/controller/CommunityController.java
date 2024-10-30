@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.CommunityService;
 import kh.st.boot.service.StocksHeaderService;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ public class CommunityController {
 
 	private CommunityService communityService;
 	private StocksHeaderService stocksHeaderService;//
+	private MemberDAO memberDao;
 
 	@GetMapping
 	public String community(Model mo, Principal principal, @PathVariable String st_code) {
@@ -42,7 +45,7 @@ public class CommunityController {
 	    }
 		List<BoardVO> list = communityService.getBoardList(st_code,mb_id);
 
-		mo.addAttribute("list", list);
+		mo.addAttribute("bolist", list);
 		return "community/community";
 	}
 
@@ -51,13 +54,17 @@ public class CommunityController {
 	public Map<String, Object> boardPostMethod(Model mo, @RequestParam Map<String, Object> board, Principal principal) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		if (principal == null) {
-			result.put("res", "error");
+			result.put("res", "false");
 			result.put("msg", "회원만 작성 가능합니다.");
 			return result;
 		}
 
+		MemberVO user = memberDao.findById(principal.getName());
+				
+
 		BoardVO newBoard = new BoardVO(); // 새로운 BoardVO 객체 생성
-		newBoard.setMb_id(principal.getName());
+		newBoard.setMb_id(user.getMb_id());
+		newBoard.setMb_level(user.getMb_level());
 		for (Map.Entry<String, Object> entry : board.entrySet()) {
 			String jsonKey = entry.getKey();
 			Object value = entry.getValue();
@@ -71,10 +78,8 @@ public class CommunityController {
 			}
 		}
 
-
-
 		communityService.insertBoard(newBoard);
-		result.put("res", "s");
+		result.put("res", "true");
 		return result;
 	}
 

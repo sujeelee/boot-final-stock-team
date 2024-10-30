@@ -2,6 +2,7 @@ package kh.st.boot.service;
 
 import java.util.List;
 
+import kh.st.boot.model.dto.MyAccountStocksDTO;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
@@ -58,5 +59,7 @@ public interface MyAccountService {
 	List<OrderVO> getOrderListByDate(String mb_id, String now);
 
 	PageMaker getPageMakerByPoint(TransCriteria cri, String mb_id);
+
+	List<MyAccountStocksDTO> getMyStockList(String mb_id);
 
 }
