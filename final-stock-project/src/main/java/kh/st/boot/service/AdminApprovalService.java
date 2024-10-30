@@ -16,20 +16,19 @@ public class AdminApprovalService {
 	@Autowired
 	private AdminApprovalDAO adminApprovalDAO;
 
-	public List<AdmApprovalVO> nullSelect() {
-		return adminApprovalDAO.nullSelectAll();
+	public List<AdmApprovalVO> allSelect(Criteria cri) {
+		return adminApprovalDAO.SelectAll(cri);
 	}
-
-	public void ynUPDATE(int mp_no, String mp_type, String mp_company, String mp_yn, int mb_no) {
+	//mp_yn,mp_company,mp_type,mb_no
+	public void ynUPDATE( String mp_yn,String mp_company, String mp_type, int mb_no) {
 		// 거절한 경우 n값만 넣어주면 됨
 		if (mp_yn.equals("n")) {
-			adminApprovalDAO.nyUPDATE(mp_no, mp_yn); // n/y 와 승인시간 저장
+			adminApprovalDAO.nyUPDATE(mb_no, mp_yn); // n/y 와 승인시간 저장
 		}
 
 		else if (mp_yn.equals("y")) {
-			adminApprovalDAO.nyUPDATE(mp_no, mp_yn);
-			System.out.println(" 승인");
-			System.out.println(mp_type);
+			adminApprovalDAO.nyUPDATE(mb_no, mp_yn);
+
 			if (mp_type.equals("news")) {
 				System.out.println(" 뉴스");
 				adminApprovalDAO.newsInsert(mb_no,mp_company);
@@ -40,6 +39,17 @@ public class AdminApprovalService {
 			}
 		}
 
+	}
+
+	public PageMaker getPageMaker(Criteria cri) {
+		int count = adminApprovalDAO.selectCountList(cri);
+		return new PageMaker(10, cri, count);
+	}
+
+	public List<AdmApprovalVO> search(String mp_company) {
+		
+		return adminApprovalDAO.searchApproval(mp_company);
+		
 	}
 
 }

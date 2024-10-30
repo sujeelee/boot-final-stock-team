@@ -328,13 +328,41 @@ public class AdminController {
 
 	// -------------------------------------------------------------------------------
 	// --------------------------주식/뉴스 회원승인 ----------------------------------
+	@GetMapping("/admOrder/orderAdm/AdmOrderSearch")
+	public String rderSearch(@RequestParam("od_sh") String od_sh, @RequestParam("od_search") String od_search,
+			@RequestParam(value = "page", defaultValue = "1") int page, Model model, OrderCriteria cri) {
+//		페이지에 보여주는 리스트 수
+		cri.setPerPageNum(8);
+//		현재 페이지 넘기기		
+		cri.setPage(page);
+//		검색어 넘기기
+		cri.setOd_search(od_search);
+		List<admOrderPageVO> orderSearch = adminOrderService.getOrderSearch(od_sh, cri);
+		PageMaker pm_ord = adminOrderService.getPageMakerSearch(cri, od_sh);
+
+		pm_ord.setCri(cri);
+		model.addAttribute("list", orderSearch);
+		model.addAttribute("pm_ord", pm_ord);
+		model.addAttribute("od_sh", od_sh);
+		model.addAttribute("od_search", od_search);
+
+		return "/admin/admOrder/orderAdm";
+	}
+
+	// ------------------------- 글쓰기 권한 수정  페이지 ----------------------------
+	// -------------------------     admApprovalPage      ----------------------------
 	// -------------------------------------------------------------------------------
 
-	// 접속시 신청승인여부 null 인지 확인해서 처리해야 하는것만 불러오기
+	// 접속시
 
 	@GetMapping("/admApproval/admApprovalPage")
 	public String nullSltApproval(Model model) {
 		List<AdmApprovalVO> nullSlt = adminApprovalService.nullSelect();
+		
+	public String nullSltApproval(Model model, Criteria cri) {
+		List<AdmApprovalVO> nullSlt = adminApprovalService.allSelect(cri);
+		PageMaker pm_Approval = adminApprovalService.getPageMaker(cri);
+		model.addAttribute("pm_Approval", pm_Approval);
 		model.addAttribute("list", nullSlt);
 		return "/admin/admApproval/admApprovalPage";
 	}
@@ -342,13 +370,27 @@ public class AdminController {
 	// 승인/거절 했을때
 
 	@PostMapping("/admApproval/admApprovalPage/slt")
-	public String ySltApproval(@RequestParam int mp_no, @RequestParam String mp_type, @RequestParam String mp_company,
-			@RequestParam String mp_yn, @RequestParam int mb_no) {
+	public String ySltApproval(@RequestParam String mp_yn,@RequestParam String mp_company,@RequestParam String mp_type,@RequestParam int mb_no) {
+		adminApprovalService.ynUPDATE(mp_yn, mp_company, mp_type, mb_no);
 
-		adminApprovalService.ynUPDATE(mp_no, mp_type, mp_company, mp_yn, mb_no);
-		System.out.println(mb_no);
 		return "redirect:/admin/admApproval/admApprovalPage";
 	}
+	
+	
+	// 검색기능 
+	@PostMapping("/admApproval/admApprovalPage/search")
+	public String  searchApproval(@RequestParam String mp_company, Model model, Criteria cri) {
+		List<AdmApprovalVO> approvalSearch =  adminApprovalService.search(mp_company);
+		PageMaker pm_Approval = adminApprovalService.getPageMaker(cri);
+		model.addAttribute("pm_Approval", pm_Approval);
+		model.addAttribute("list", approvalSearch);
+		System.out.println(approvalSearch);
+		return "/admin/admApproval/admApprovalPage";
+	}
+	
+	
+	
+	
 
 	// -------------------------------------------------------------------------------
 	// --------------------------사용자포인트 관리 컨트롤러 --------------------------
