@@ -371,7 +371,6 @@
 								<span class="my-text-right">${mp_app_date}</span>
 							</div>
 						</div>
-						
 					`;
 					if(mp.mp_type == 'stock') {
 						str += `
@@ -385,7 +384,7 @@
 							</div>
 							<div id="demo" class="collapse">
 		                    	<form onsubmit="return false;">
-			                    	<input class="mb-2" type="number" id="sa_qty" placeholder="숫자만 입력해주세요" required>
+			                    	<input class="form-control mb-2" type="number" id="sa_qty" placeholder="숫자만 입력해주세요" required>
 			                    	<textarea class="form-control" id="sa_content" name="sa_content" style="min-height: 400px; height: auto;" placeholder="관리자한테 보낼 메시지를 입력해주세요"></textarea>
 			                    	<div class="d-flex my-details">
 			                    		<div class="mr-auto"></div>
@@ -398,12 +397,7 @@
 									<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
 								</div>
 								<div class="mr-auto"></div>
-								<button type="button" class="btn btn-outline-dark dropdown-toggle" id="dropdown-toggle" data-toggle="dropdown">
-				      				목록
-								</button>
-								<div class="dropdown-menu">
-									<p>xxxx.xx.xx 200주 승인</p>
-								</div>
+								<a href="#" class="btn btn-outline-dark" onclick="window.open('/myaccount/stockList', '_blank', 'width=900,height=400,left=550,top=300'); return false;">요청 목록</a>
 					        </div>
 						`;
 					}else{

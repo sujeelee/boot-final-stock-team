@@ -9,7 +9,9 @@ import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.TransCriteria;
 
 public interface MyAccountDAO {
@@ -42,4 +44,7 @@ public interface MyAccountDAO {
 
 	boolean insertStockAdd(String mb_id, int sa_qty, String sa_content);
 
+	List<StockAddVO> selectStockAddList(String mb_id, Criteria cri);
+
+	int getCountByStockAdd(String mb_id);
 }

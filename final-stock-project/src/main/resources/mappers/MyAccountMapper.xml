@@ -160,4 +160,20 @@
 		INSERT INTO STOCK_ADD (SA_QTY, MB_ID, SA_DATETIME, SA_CONTENT) VALUES
 		(#{sa_qty}, #{mb_id}, NOW(), #{sa_content})
 	</insert>
+	<select id="selectStockAddList" resultType="StockAddVO">
+		SELECT *
+		FROM
+			STOCK_ADD
+		WHERE
+			MB_ID = #{mb_id}
+		ORDER BY SA_DATETIME DESC
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	<select id="getCountByStockAdd" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			STOCK_ADD
+		WHERE
+			MB_ID = #{mb_id}
+	</select>
 </mapper>

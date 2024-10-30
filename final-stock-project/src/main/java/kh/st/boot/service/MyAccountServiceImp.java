@@ -16,7 +16,9 @@ import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
 import lombok.AllArgsConstructor;
@@ -207,6 +209,20 @@ public class MyAccountServiceImp implements MyAccountService {
 			return false;
 		}
 		return myAccountDao.insertStockAdd(mb_id, sa_qty, sa_content);
+	}
+
+	@Override
+	public List<StockAddVO> getStockAddList(String mb_id, Criteria cri) {
+		if(mb_id == null) {
+			return null;
+		}
+		return myAccountDao.selectStockAddList(mb_id, cri);
+	}
+
+	@Override
+	public PageMaker SelectPageMaker(Criteria cri, String mb_id) {
+		int count = myAccountDao.getCountByStockAdd(mb_id);
+		return new PageMaker(5, cri, count);
 	}
 
 }

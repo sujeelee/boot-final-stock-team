@@ -27,7 +27,9 @@ import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
 import kh.st.boot.service.MemberService;
@@ -309,7 +311,6 @@ public class MyAccountController {
 				mp.setMp_company(myAccountService.getStockName(mp.getMp_company()));
 			}
 			map.put("mp", mp);
-			
 		}
 		else if(mp.getMp_yn().equals("n")) {
 			map.put("status", "fail");
@@ -358,6 +359,17 @@ public class MyAccountController {
 		String mb_id = principal.getName();
 		boolean res = myAccountService.insertStockAdd(mb_id, sa_qty, sa_content);
 		return res;
+	}
+	
+	@GetMapping("/stockList")
+	public String stockList(Model model, Principal principal, Criteria cri) {
+		String mb_id = principal.getName();
+		cri.setPerPageNum(5);
+		List<StockAddVO> list = myAccountService.getStockAddList(mb_id, cri);
+		PageMaker pm = myAccountService.SelectPageMaker(cri, mb_id);
+		model.addAttribute("pm", pm);
+		model.addAttribute("list", list);
+		return "myaccount/stockList";
 	}
 	
 	@GetMapping("/transactions/{type}")
