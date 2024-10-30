@@ -12,6 +12,9 @@
         WHERE mb_id = #{mb_Id}
     </select>
 
+   
+    
+    
     
 </mapper>
  

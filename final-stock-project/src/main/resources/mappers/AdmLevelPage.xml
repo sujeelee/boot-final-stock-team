@@ -7,6 +7,12 @@
 		SELECT * FROM member_lv
 	</select>
 
+	<select id="selectAdmLev" resultType="AdminLevelPageVO">
+		SELECT * FROM member_lv
+		where lv_num = #{lv_num}
+	</select>
+
+
 
 	<select id="getLvOne" resultType="AdminLevelPageVO">
 		SELECT * FROM member_lv WHERE
@@ -15,7 +21,8 @@
 
 
 	<insert id="insertAdmLv">
-		INSERT INTO member_lv (lv_name, lv_num,lv_alpha,lv_auto_use,lv_up_limit)
+		INSERT INTO member_lv (lv_name,
+		lv_num,lv_alpha,lv_auto_use,lv_up_limit)
 		VALUES
 		(#{lv_name},#{lv_num},#{lv_alpha},#{lv_auto_use},#{lv_up_limit})
 	</insert>
@@ -26,20 +33,31 @@
 		WHERE lv_num = #{lv_num} AND
 		lv_name = #{lv_name} AND
 		lv_alpha = #{lv_alpha} AND
-		lv_auto_use = #{lv_auto_use} AND
+		lv_auto_use =
+		#{lv_auto_use} AND
 		lv_up_limit = #{lv_up_limit}
 	</delete>
 
 
-	<update id="updateAdmLv">
+	<update id="updateAdmLev">
 		UPDATE member_lv
- 		   SET lv_name = #{lv_name},
-       		   lv_alpha = #{lv_alpha},
-        	   lv_auto_use = #{lv_auto_use},
-       		   lv_up_limit = #{lv_up_limit}
-   		 WHERE lv_num = #{lv_num}
+		SET lv_name = #{lv_name},
+		lv_alpha = #{lv_alpha},
+		lv_auto_use = #{lv_auto_use},
+		lv_up_limit = #{lv_up_limit}
+		WHERE lv_num = #{lv_num}
 	</update>
 
+<!-- 
+	<update id="updateAdmLv">
+		UPDATE member_lv
+		SET lv_name = #{lv_name},
+		lv_alpha = #{lv_alpha},
+		lv_auto_use = #{lv_auto_use},
+		lv_up_limit = #{lv_up_limit}
+		WHERE lv_num = #{lv_num}
+	</update>
+ -->
 
 
 	<!-- ===================== 아래는 가져온거 ===================== ===================== 
@@ -49,18 +67,21 @@
 
 	<insert id="insertNewspaper">
 		INSERT INTO newspaper (np_name, np_use)
-		VALUES (#{np_name}, #{np_use})
+		VALUES
+		(#{np_name}, #{np_use})
 	</insert>
 
 	<update id="updateNewspaper">
 		UPDATE newspaper
-		SET np_name = #{np_name}, np_use = #{np_use}
+		SET np_name = #{np_name}, np_use =
+		#{np_use}
 		WHERE np_no = #{np_no}
 	</update>
 
 
 	<select id="selectNewspapersByStatus" resultType="NewspaperVO">
-		SELECT * FROM newspaper WHERE np_use = #{np_use}
+		SELECT * FROM
+		newspaper WHERE np_use = #{np_use}
 	</select>
 	<!-- 왜 이런 쿼리를 썻는지 주석달기 -->
 	<select id="getNewsOne" resultType="NewspaperVO">

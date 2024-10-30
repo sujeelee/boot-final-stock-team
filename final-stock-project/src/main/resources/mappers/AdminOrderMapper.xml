@@ -3,17 +3,10 @@
 <mapper namespace="kh.st.boot.dao.AdminOrderDAO">
 
 	<select id="selectAlladminOrder" resultType="admOrderPageVO">
-		SELECT * FROM `order`
+		SELECT * FROM `order` limit #{pageStart}, #{perPageNum}
 	</select>
-
-
-	<select id="searchIdName"
-		resultType="admOrderPageVO">
-		SELECT *
-		FROM `order`
-		WHERE od_name = #{od_name}
-		AND mb_id = #{mb_id} AND od_id = #{od_id}
-	</select>
+	
+	<select id="selectCountList" resultType="int"> select count(*) from order</select>
 
 
 	<select id="deletOrder" resultType="admOrderPageVO">
@@ -21,6 +14,28 @@
 		FROM `order`
 		WHERE
 		od_id = #{od_id}
+	</select>
+	
+	
+	<select id="searchIdName" resultType="admOrderPageVO">
+	 SELECT * 
+    FROM `order` 
+    <where>
+        <choose>
+            <when test="searchType == 'id'">
+                od_name = #{searchText}
+            </when>
+            <when test="searchType == 'name'">
+                mb_id = #{searchText}
+            </when>
+            <when test="searchType == 'num'">
+                od_id = #{searchText}
+            </when>
+             <when test="searchType == 'stock'">
+                od_status = #{searchText}
+            </when>
+        </choose>
+    </where>
 	</select>
 	
 

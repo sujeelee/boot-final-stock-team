@@ -33,6 +33,10 @@
     }
 </style>
 <body>
+   <form th:action="@{/admin/admStock/admStock_add/search}" method="post" style="margin-bottom: 20px;">
+    <input type="text" name="mb_id" placeholder="요청사 ID" style="padding: 5px;" />
+    <button type="submit" style="padding: 5px 10px;">검색</button>
+</form>
 	<table>
 		<thead>
 			<tr>
