@@ -109,7 +109,7 @@ public class MemberServiceImp implements MemberService{
         	New_User.setMb_ph(moStr[0] + moStr[1] + moStr[2]);
 		} else {
 	        New_User.setMb_ph(user_.getPh()); //전화번호
-		}
+		} 
         New_User.setMb_email(user_.getEmail());
         New_User.setMb_birth(user_.getBirth());
         //addr1, 2, zip 넣어주어야 함
