@@ -45,10 +45,16 @@ public class MemberVO {
     private String loginMethod; // 예: "internal" = 자체로그인, "oauth" = 외부로그인
     private String refreshToken; // 리프레시 토큰
     
+    private int deposit; //계좌에 얼마 있으세요?
+    
 	public String getMb_auth() {
 		String auth = "GUEST";
 		int lev = this.mb_level;
-		if(lev < 8) {
+		if(lev == 7) {
+			auth = "NEWS";
+		} else if(lev == 8) {
+			auth = "STOCK";
+		} else if(lev < 7) {
 			auth = "USER";
 		} else {
 			auth = "ADMIN";

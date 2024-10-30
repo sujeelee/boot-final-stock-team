@@ -2,23 +2,25 @@ package kh.st.boot.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kh.st.boot.dao.DepositDAO;
-import kh.st.boot.dao.MemberDAO;
+import kh.st.boot.model.dto.AccountChkDTO;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.SendVO;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor	
 public class DepositService {
 	private DepositDAO depositDao;
-	private MemberDAO memberDao;
+	private MemberService memberService;
 	
 	@Transactional
 	public String getOrderId() {
@@ -96,5 +98,71 @@ public class DepositService {
 
 	public void deleteStatusStay(String mb_id) {
 		depositDao.deleteStatusStay(mb_id);
+	}
+	
+	public AccountChkDTO chkAccount(String account) {
+		return depositDao.chkAccount(account);
+	}
+
+	public boolean sendInsert(Map<String, String> form) {
+		
+		SendVO send = new SendVO();
+		
+		send.setDs_send_name(form.get("send_name"));
+		send.setDs_receive_name(form.get("resv_name"));
+		send.setDs_receive_account(form.get("resv_acc"));
+		send.setDs_send_price(form.get("price"));
+		send.setMb_id(form.get("mb_id"));
+		send.setDs_re_mb_id(form.get("resv_id"));
+		
+		MemberVO sendMb = memberService.findById(form.get("mb_id"));
+		MemberVO resvMb = memberService.findById(form.get("resv_id"));
+		
+		AccountVO resvAc = depositDao.getAccount(resvMb.getMb_no());
+		
+		
+		
+		DepositVO sendDeposit = new DepositVO();
+		DepositVO resvDeposit = new DepositVO();
+		
+		int oldDeposit = sendMb.getDeposit();
+		int sendPrice = Integer.parseInt(form.get("price"));
+		
+		int finalDeposit = oldDeposit - sendPrice;
+		
+		if(finalDeposit < 0) {
+			return false;
+		}
+		
+		boolean chkSend = depositDao.insertSend(send);
+		
+		if(chkSend == true) {
+			sendDeposit.setDe_content("예치금 송금 : -" + sendPrice + "원 ");
+			sendDeposit.setDe_num(-sendPrice);
+			
+			resvDeposit.setDe_content("예치금 입금 : " + sendPrice + "원 ");
+			resvDeposit.setDe_num(sendPrice);
+			/*
+		
+		deposit.setDe_content("예치금 충전 : " + chk.getDo_price() + "원 주문번호 : " + upOrder.getDo_od_id());
+		deposit.setDe_num(chk.getDo_price());
+		deposit.setMb_id(mb.getMb_id());
+		deposit.setDe_before_num(0);
+		
+		if(resvAc == null) {
+			AccountVO newaAc = new AccountVO();
+			newaAc.setMb_no(mb.getMb_no());
+			newaAc.setAc_deposit(chk.getDo_price());
+			depositDao.insertAccountDeposit(newaAc);
+		} else {
+			deposit.setDe_before_num(ac.getAc_deposit());
+			depositDao.updateAccountDeposit(ac, chk.getDo_price());
+		}
+		
+		depositDao.insertDepositLog(deposit);
+			 * */
+		}
+		
+		return false;
 	}
 }
