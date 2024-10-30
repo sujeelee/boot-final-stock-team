@@ -1,4 +1,4 @@
-drop database if exists stockAndFund;
+﻿drop database if exists stockAndFund;
 
 create database if not exists stockAndFund;
 
@@ -90,15 +90,17 @@ CREATE TABLE `stock` (
 	`st_status`	varchar(255)	NULL
 );
 
+
+
 CREATE TABLE `board` (
 	`wr_no`	INT(11) primary key	 AUTO_INCREMENT	NOT NULL,
 	`wr_category`	varchar(255)	NULL,
 	`wr_content`	text	NULL,
 	`mb_id`	varchar(255)	NULL,
+	`mb_level`	int(4)	NULL,
 	`wr_comment`	int(11)	NULL	DEFAULT 0,
 	`wr_good`	int(11)	NULL	DEFAULT 0,
-	`wr_singo`	int(11)	NULL	DEFAULT 0,
-	`wr_blind`	char(2)	NULL	DEFAULT 'N'
+	`wr_singo`	int(11)	NULL	DEFAULT 0
 );
 
 CREATE TABLE `stock_info` (
