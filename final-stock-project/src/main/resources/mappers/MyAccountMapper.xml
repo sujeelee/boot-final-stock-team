@@ -134,4 +134,30 @@
 		ORDER BY 
 		    a.st_name ASC;
 	</select>
+	<select id="selectMemberStatus" resultType="String">
+	    SELECT 
+	        CASE 
+	            WHEN EXISTS (SELECT 1 FROM news_member WHERE mb_id = #{mb_id}) THEN 'news'
+	            WHEN EXISTS (SELECT 1 FROM stock_member WHERE mb_id = #{mb_id}) THEN 'stock'
+	            ELSE 'none'
+	        END AS member_status
+	    FROM
+	        MEMBER
+	    WHERE
+	        mb_id = #{mb_id}
+	</select>
+	<delete id="deleteMemberStatus">
+		<choose>
+	        <when test="status == 'news'">
+	            DELETE FROM news_member WHERE mb_no = #{mb_no}
+	        </when>
+	        <when test="status == 'stock'">
+	            DELETE FROM stock_member WHERE mb_no = #{mb_no}
+	        </when>
+	    </choose>
+	</delete>
+	<insert id="insertStockAdd">
+		INSERT INTO STOCK_ADD (SA_QTY, MB_ID, SA_DATETIME, SA_CONTENT) VALUES
+		(#{mb_id}, #{stockAmount}, NOW(), #{sa_content})
+	</insert>
 </mapper>

@@ -36,4 +36,10 @@ public interface MyAccountDAO {
 
 	List<MyAccountStocksDTO> selectMyStockList(String mb_id);
 
+	String selectMemberStatus(String mb_id);
+
+	boolean deleteMemberStatus(int mb_no, String status);
+
+	boolean insertStockAdd(String mb_id, int stockAmount, String sa_content);
+
 }

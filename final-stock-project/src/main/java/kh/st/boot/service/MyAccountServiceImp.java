@@ -188,4 +188,25 @@ public class MyAccountServiceImp implements MyAccountService {
 		return myAccountDao.selectMyStockList(mb_id);
 	}
 
+	@Override
+	public String getMemberStatus(String mb_id) {
+		return myAccountDao.selectMemberStatus(mb_id);
+	}
+
+	@Override
+	public boolean deleteMemberStatus(int mb_no, String status) {
+		if(status == "none") {
+			return false;
+		}
+		return myAccountDao.deleteMemberStatus(mb_no, status);
+	}
+
+	@Override
+	public boolean insertStockAdd(String mb_id, int stockAmount, String sa_content) {
+		if(mb_id == null) {
+			return false;
+		}
+		return myAccountDao.insertStockAdd(mb_id, stockAmount, sa_content);
+	}
+
 }

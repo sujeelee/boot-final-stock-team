@@ -323,9 +323,14 @@ public class MyAccountController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String mb_id = principal.getName();
 		MemberVO user = memberService.findById(mb_id);
+		String status = myAccountService.getMemberStatus(user.getMb_id());
 		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
 		if(res) {
-			map.put("status", true);
+			if(myAccountService.deleteMemberStatus(user.getMb_no(), status)) {
+				map.put("status", true);
+			}else {
+				map.put("status", false);
+			}
 		}else {
 			map.put("status", false);
 		}
@@ -345,6 +350,14 @@ public class MyAccountController {
 			map.put("status", false);
 		}
 		return map;
+	}
+	
+	@ResponseBody
+	@PostMapping("/applyStock")
+	public boolean applyStock(Principal principal, @RequestParam int stockAmount, @RequestParam String sa_content){
+		String mb_id = principal.getName();
+		boolean res = myAccountService.insertStockAdd(mb_id, stockAmount, sa_content);
+		return res;
 	}
 	
 	@GetMapping("/transactions/{type}")

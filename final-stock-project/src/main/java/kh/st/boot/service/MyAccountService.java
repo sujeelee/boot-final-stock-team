@@ -62,4 +62,10 @@ public interface MyAccountService {
 
 	List<MyAccountStocksDTO> getMyStockList(String mb_id);
 
+	String getMemberStatus(String mb_id);
+
+	boolean deleteMemberStatus(int mb_no, String status);
+
+	boolean insertStockAdd(String mb_id, int stockAmount, String sa_content);
+
 }
