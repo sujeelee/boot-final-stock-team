@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdminApprovalDAO;
 import kh.st.boot.model.vo.AdmApprovalVO;
+import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.PageMaker;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -16,8 +18,8 @@ public class AdminApprovalService {
 	@Autowired
 	private AdminApprovalDAO adminApprovalDAO;
 
-	public List<AdmApprovalVO> nullSelect() {
-		return adminApprovalDAO.nullSelectAll();
+	public List<AdmApprovalVO> nullSelect(Criteria cri) {
+		return adminApprovalDAO.nullSelectAll(cri);
 	}
 
 	public void ynUPDATE(int mp_no, String mp_type, String mp_company, String mp_yn, int mb_no) {
@@ -28,18 +30,20 @@ public class AdminApprovalService {
 
 		else if (mp_yn.equals("y")) {
 			adminApprovalDAO.nyUPDATE(mp_no, mp_yn);
-			System.out.println(" 승인");
-			System.out.println(mp_type);
+
 			if (mp_type.equals("news")) {
-				System.out.println(" 뉴스");
-				adminApprovalDAO.newsInsert(mb_no,mp_company);
+				adminApprovalDAO.newsInsert( mb_no,mp_company);
 			}
 			else if (mp_type.equals("stock")) {
-				System.out.println(" 주식");
 				adminApprovalDAO.stockInsert(mb_no,mp_company);
 			}
 		}
 
+	}
+
+	public PageMaker getPageMaker(Criteria cri) {
+		int count = adminApprovalDAO.selectCountList(cri);
+		return new PageMaker(10, cri, count);
 	}
 
 }
