@@ -10,13 +10,14 @@ import kh.st.boot.dao.AdminUserDAO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.UserCriteria;
 
 @Service
 public class AdminUserService {
 
 	@Autowired
 	private AdminUserDAO adminuserDAO;
-	
+
 	public List<AdmMemberVO> getAdminMem(Criteria cri) {
 		return adminuserDAO.selectAdmUser(cri);
 	}
@@ -30,7 +31,6 @@ public class AdminUserService {
 		return adminuserDAO.UseSelect(mb_no);
 	}
 
-
 	public boolean getAdmUserUpd(AdmMemberVO admMemberVO) {
 		adminuserDAO.UseUpdate(admMemberVO);
 		return true;
@@ -41,28 +41,21 @@ public class AdminUserService {
 //	}
 
 	public boolean getAdmUseDel(int mb_no) {
-	    int result = adminuserDAO.UserDelete(mb_no);
-	    return result > 0;  // 1 이상의 값을 반환하면 삭제 성공
+		int result = adminuserDAO.UserDelete(mb_no);
+		return result > 0; // 1 이상의 값을 반환하면 삭제 성공
 	}
 
-	public void insertUser(int mb_no, String mb_id, String mb_password, String mb_name, String mb_nick, String mb_hp,
-			String mb_email, int mb_zip, String mb_addr, String mb_addr2, Date mb_birth, int mb_level,
-			String mb_datetime, String mb_edit_date, String mb_stop_date, String mb_out_date, String mb_cookie,
-			String mb_cookie_limit, int mb_point, int mb_emailing, String mb_account) {
-			adminuserDAO.insertUser( mb_no, mb_id, mb_password, mb_name, mb_nick, mb_hp, mb_email, mb_zip,
-			        mb_addr, mb_addr2, mb_birth, mb_level, mb_datetime, mb_edit_date, mb_stop_date,
-			        mb_out_date, mb_cookie, mb_cookie_limit, mb_point, mb_emailing, mb_account);
-		
-		
-		
-		
-		
-		
-		
-	}
+    // 페이지네이션이 적용된 검색 결과 가져오기
+    public List<AdmMemberVO> getSearchUser(String use_sh, UserCriteria cri) {
+        return adminuserDAO.selectUser(use_sh, cri);
+    }
 
-	public List<AdmMemberVO> searchUser(String searchType, String searchText) {
-		return adminuserDAO.userSearch(searchType,searchText);
-	}
+    // 검색 결과에 따른 PageMaker 생성
+    public PageMaker getPageMakerSearch(UserCriteria cri, String use_sh) {
+        int totalCount = adminuserDAO.selectUserCount(use_sh, cri); // 검색된 전체 결과 수 반환
+        return new PageMaker(10, cri, totalCount); // PageMaker 생성 (displayPageNum을 10으로 설정)
+    }
+
+	
 }
 

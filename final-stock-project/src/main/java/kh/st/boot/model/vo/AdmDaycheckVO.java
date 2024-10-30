@@ -13,5 +13,3 @@ public class AdmDaycheckVO {
 	private int po_num;
 	private int countDay; // 이번달 출석일을 전달합니다 
 }
-
-

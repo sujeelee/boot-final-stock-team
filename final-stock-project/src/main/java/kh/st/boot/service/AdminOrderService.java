@@ -10,7 +10,9 @@ import kh.st.boot.dao.NewspaperDAO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
 import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.OrderCriteria;
 import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.UserCriteria;
 
 @Service
 public class AdminOrderService {
@@ -33,11 +35,18 @@ public class AdminOrderService {
 		
 	}
 
-
-
 	public List<admOrderPageVO> deletOrderNum(String od_id) {
 		return adminOrderDAO.deletOrder(od_id);
 	}
+
+	public List<admOrderPageVO> getOrderSearch(String od_sh, OrderCriteria cri) {
+		return adminOrderDAO.orderSearch(od_sh, cri);
+	}
+	
+	 public PageMaker getPageMakerSearch(OrderCriteria cri, String od_sh) {
+	        int totalCount = adminOrderDAO.selectOrderCount(od_sh, cri); // 검색된 전체 결과 수 반환
+	        return new PageMaker(10, cri, totalCount); // PageMaker 생성 (displayPageNum을 10으로 설정)
+	    }
 
 
 

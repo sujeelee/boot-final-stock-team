@@ -3,15 +3,18 @@
 <mapper namespace="kh.st.boot.dao.NewspaperDAO">
 
 	<select id="selectAllNewspapers" resultType="NewspaperVO">
-		SELECT * FROM newspaper limit #{pageStart}, #{perPageNum}
+		SELECT * FROM
+		newspaper limit #{pageStart}, #{perPageNum}
 	</select>
 
 	<select id="selectCountList" resultType="int"> select count(*) from
-		newspaper</select>
+		newspaper
+	</select>
 
 	<insert id="insertNewspaper">
 		INSERT INTO newspaper (np_name, np_use)
-		VALUES (#{np_name}, #{np_use})
+		VALUES
+		(#{np_name}, #{np_use})
 	</insert>
 
 	<update id="updateNewspaper">
@@ -34,6 +37,18 @@
 		np_name = #{name} limit 1
 	</select>
 	<!-- 이게 중복방지 기능인것같은데 먼저 중복체크하고 vo 로 보냄 -->
+
+
+	<select id="searchNews" resultType="NewspaperVO">
+		SELECT * FROM newspaper
+		WHERE np_name LIKE CONCAT('%', #{np_name}, '%')
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+
+	<select id="selectTotalCount" resultType="int">
+		select count(*) from
+		newspaper WHERE np_name = #{np_name}
+	</select>
 
 
 

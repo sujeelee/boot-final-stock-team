@@ -50,3 +50,14 @@ display: inline-block;
 	margin-bottom: 4px;
 	padding: 3px;
 }
+
+.btn_ateg {
+    font-size: 15px;
+    right: 22px;
+    padding-top: 3px;
+    height: 25px;
+    display: inline-block;
+    width: 66px;
+    text-align: center;
+    position: absolute;
+}

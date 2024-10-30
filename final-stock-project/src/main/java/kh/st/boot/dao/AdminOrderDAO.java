@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kh.st.boot.model.vo.admOrderPageVO;
 import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.OrderCriteria;
+import kh.st.boot.pagination.UserCriteria;
 
 @Mapper
 public interface AdminOrderDAO {
@@ -20,6 +22,9 @@ public interface AdminOrderDAO {
 		int selectCountList(Criteria cri);
 
 		List<admOrderPageVO> searchIdName(String searchType, String searchText);
+		List<admOrderPageVO> orderSearch(String od_sh, OrderCriteria cri);
+
+		int selectOrderCount(String od_sh, OrderCriteria cri);
 
 		
 

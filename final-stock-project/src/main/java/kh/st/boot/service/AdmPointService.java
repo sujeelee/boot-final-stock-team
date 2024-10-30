@@ -2,6 +2,7 @@ package kh.st.boot.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,17 @@ public class AdmPointService {
 	public PageMaker getPageMaker(Criteria cri) {
 		int count = admPointDAO.selectCountList(cri);
 		return new PageMaker(10, cri, count);
+	}
+
+
+	public List<AdmPointVO> getPointUserSearch(@Param("cri") Criteria cri, String mb_id) {
+		return 	admPointDAO.pointUserSearch(cri, mb_id);
+	}
+
+
+	public PageMaker getPageMaker(@Param("cri") Criteria cri, String mb_id) {
+		int totalCount = admPointDAO.selectTotalCount(cri, mb_id);
+		return new PageMaker(10, cri, totalCount);
 	}
 
 

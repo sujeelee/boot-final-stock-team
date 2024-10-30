@@ -6,12 +6,18 @@
 		SELECT
 		* FROM
 		member_approve
-		WHERE mp_yn IS NULL
+		WHERE (mp_yn IS NULL) limit #{pageStart}, #{perPageNum}
+	</select>
+
+	<select id="selectCountList" resultType="int"> SELECT COUNT(*) FROM
+		member_approve
+		WHERE (mp_yn IS NULL)
 	</select>
 
 	<update id="nyUPDATE">
 		UPDATE member_approve
-		SET mp_yn = #{mp_yn}, mp_app_date = NOW()
+		SET mp_yn = #{mp_yn},
+		mp_app_date = NOW()
 		WHERE mp_no = #{mp_no}
 	</update>
 

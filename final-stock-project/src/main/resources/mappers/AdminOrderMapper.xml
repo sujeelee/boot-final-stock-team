@@ -39,5 +39,15 @@
 	</select>
 	
 
+    <select id="orderSearch" resultType="admOrderPageVO">
+        SELECT * FROM `order`
+        WHERE ${od_sh} LIKE CONCAT('%', #{cri.od_search}, '%')
+        LIMIT #{cri.pageStart}, #{cri.perPageNum}
+    </select>
+    
+    <select id="selectOrderCount" resultType="int">
+        SELECT count(*) FROM `order`
+        WHERE ${od_sh} LIKE CONCAT('%', #{cri.od_search}, '%')
+    </select>
 
 </mapper>

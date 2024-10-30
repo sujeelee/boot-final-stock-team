@@ -19,5 +19,9 @@ public interface AdmPointDAO {
 
 	int selectCountList(Criteria cri);
 
+	List<AdmPointVO> pointUserSearch(Criteria cri, String mb_id);
+
+	int selectTotalCount(Criteria cri, String mb_id);
+
 	
 }
