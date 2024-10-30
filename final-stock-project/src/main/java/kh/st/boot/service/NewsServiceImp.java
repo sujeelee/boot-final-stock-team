@@ -213,4 +213,14 @@ public class NewsServiceImp implements NewsService{
 	public String removeHTML(String ne_content) {
 		return Jsoup.parse(ne_content).text();
 	} // html 태그들을 없애고 순수 텍스트만 가져오게 하는 메소드
+
+	@Override
+	public List<NewsVO> getNewsListByImg() {
+		return newsDao.selectNewsListByImg();
+	}
+
+	@Override
+	public List<NewsVO> getNewsListByNoImg() {
+		return newsDao.selectNewsListByNoImg();
+	}
 }

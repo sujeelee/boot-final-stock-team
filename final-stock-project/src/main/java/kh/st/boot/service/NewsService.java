@@ -44,5 +44,9 @@ public interface NewsService {
 
 	String removeHTML(String ne_content);
 
+	List<NewsVO> getNewsListByImg();
+
+	List<NewsVO> getNewsListByNoImg();
+
 }
 
