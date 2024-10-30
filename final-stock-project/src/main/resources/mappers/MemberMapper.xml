@@ -3,15 +3,7 @@
 <mapper namespace="kh.st.boot.dao.MemberDAO">
 
 	<select id="findById" resultType="MemberVO">
-        SELECT 
-		    m.*, 
-		    a.ac_deposit AS deposit
-		FROM 
-		    member m
-		LEFT JOIN 
-		    account a ON m.mb_no = a.mb_no
-		WHERE 
-		    m.mb_id = #{id};
+    select * from member where mb_id = #{id}
     </select>
 
     <update id="serUserCookie">

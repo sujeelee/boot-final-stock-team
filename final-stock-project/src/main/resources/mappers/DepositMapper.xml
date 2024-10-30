@@ -167,19 +167,4 @@
 				AND PO_NUM > 0 
 			</if>
 	</select>
-	<select id="chkAccount" resultType="kh.st.boot.model.dto.AccountChkDTO">
-		select mb_account as account, mb_id, mb_name 
-		from member
-		where mb_account = #{account}
-	</select>
-	<insert id="insertSend">
-		insert into deposit_send
-		set ds_send_name = #{se.ds_send_name},
-			ds_receive_name = #{se.ds_receive_name},
-			ds_receive_account = #{se.ds_receive_account},
-			mb_id = #{se.mb_id},
-			ds_re_mb_id = #{se.ds_re_mb_id},
-			ds_send_price = #{se.ds_send_price},
-			ds_datetime = NOW()
-	</insert>
 </mapper>
