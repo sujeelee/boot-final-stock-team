@@ -431,9 +431,11 @@ public class AdminController {
 
 	// 아이디로 사용자 검색
 	@PostMapping("admPoint/admPointPage/Id")
-	public String idSelect(@RequestParam String mb_id, Model model) {
+	public String idSelect(@RequestParam String mb_id, Model model,Criteria cri) {
 		List<AdmPointVO> idSlt = admPointService.idSelect(mb_id);
+		PageMaker pm_point = admPointService.getPageMaker(cri);
 		model.addAttribute("list", idSlt);
+		model.addAttribute("pm_point", pm_point);
 		return "/admin/admPoint/admPointPage";
 	}
 
