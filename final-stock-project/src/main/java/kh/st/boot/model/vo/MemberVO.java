@@ -48,10 +48,16 @@ public class MemberVO {
     private String mb_loginMethod; //internal kakao naver
     private String refreshToken; // 리프레시 토큰 (사용 유무 아직 모름)
     
+    private int deposit; //계좌에 얼마 있으세요?
+    
 	public String getMb_auth() {
 		String auth = "GUEST";
 		int lev = this.mb_level;
-		if(lev < 8) {
+		if(lev == 7) {
+			auth = "NEWS";
+		} else if(lev == 8) {
+			auth = "STOCK";
+		} else if(lev < 7) {
 			auth = "USER";
 		} else {
 			auth = "ADMIN";

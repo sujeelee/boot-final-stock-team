@@ -2,6 +2,7 @@ package kh.st.boot.controller;
 
 import java.lang.reflect.Field;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kh.st.boot.model.dto.AccountChkDTO;
 import kh.st.boot.model.vo.DepositOrderVO;
+import kh.st.boot.model.vo.SendVO;
 import kh.st.boot.service.DepositService;
 
 
@@ -133,5 +136,51 @@ public class DepositController {
         
 		return "deposit/depositSend";
 	}
+    
+    @PostMapping("/chkAccount")
+    @ResponseBody
+    public Map<String, Object> chkAccount(@RequestParam String account, Principal principal, HttpServletRequest req, HttpServletResponse res){ 
+    	Map<String, Object> result = new HashMap<String, Object>();
+    	
+    	account = "SID-" + account;
+    	
+    	String mb_id = principal.getName();
+    	
+    	AccountChkDTO chk = depositService.chkAccount(account);
+    	
+    	if(chk != null) {
+    		if(chk.getMb_id().equals(mb_id)) {
+    			result.put("res", "err");
+    			result.put("msg", "본인 계좌에는 보내기를 할 수 없어요:(");
+    			return result;
+    		} else {
+    			result.put("res", "success");
+    			result.put("msg", "보내기를 사용할 수 있는 계좌에요:)");
+    			result.put("account", chk);
+    		}
+    	} else {
+    		result.put("res", "err");
+			result.put("msg", "존재하지 않는 계좌에요:(");
+    	}
+    	
+    	return result;
+    }
 	
+    @PostMapping("/sendInsert")
+    @ResponseBody
+    public Map<String, Object> sendInsert(@RequestParam Map<String, String> form, Principal principal, HttpServletRequest req, HttpServletResponse res){ 
+    	Map<String, Object> result = new HashMap<String, Object>();
+    	
+    	//넘어온 아이디와 실제 시큐리티의 아이디가 일치하지 않을때
+    	if(!principal.getName().equals(form.get("mb_id"))) {
+    		result.put("res", "err");
+			result.put("msg", "잘못된 요청입니다.");
+			
+			return result;
+    	}
+    	
+    	boolean check = depositService.sendInsert(form); 
+    			
+    	return result;
+    }
 }

@@ -1,132 +1,280 @@
 <!DOCTYPE html>
-<html 
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-	layout:decorate="~{layout/layout.html}">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
 <head>
 <meta charset="UTF-8">
+<title>예치금 보내기</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/depositSend.css}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"/>
+
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<style type="text/css">
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@font-face {
+    font-family: 'HakgyoansimSantteutdotumL';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimSantteutdotumL.woff2') format('woff2');
+    font-weight: 300;
+    font-style: nomal;
+}
+*:not(i){font-family: 'HakgyoansimSantteutdotumL' !important; font-weight: 750 !important;}
+</style>
 </head>
 <body>
-	<main layout:fragment="content">
-		<h4 class="center">예치금 보내기</h4>
+	<div class="container">
+		<div class="prev-arrow" data-tag="" onclick="show_next(this);"><i class="fa-solid fa-chevron-left"></i></div>
 		<div class="div-deposit-send">
 			<form name="fdepositorder" action="" method="post" onsubmit="return fdepositorder_submit(this);">
 				<input type="hidden" name="price" value="0">
-				<div class="account-row">
-					<span class="account-title">어디로 돈을 보낼까요?</span>
+				<input type="hidden" name="resv_acc" value="">
+				<input type="hidden" name="resv_id" value="">
+				<input type="hidden" name="resv_name" value="">
+				<input type="hidden" name="send_name" value="">
+				<div class="account-row acc-chk-row">
+					<span class="account-title">어떤 계좌로 보낼까요?</span>
 					<div class="account-input">
 						<span class="start-acc">SID-</span>
 						<input class="account-control" type="text" name="account" id="account" value="" placeholder="계좌번호를 입력해주세요:)" size="40" onkeyup="account_chk(this.value);">
-						<button type="button" class="btn start-acc"style="display: none;" onclick="delete_account();"><i class="fa-regular fa-circle-xmark"></i></button>
+						<button type="button" class="btn start-acc"style="display: none;" onclick="account_chk('');"><i class="fa-regular fa-circle-xmark"></i></button>
+					</div>
+					<div class="msg-account center"></div>
+				</div>
+				<div class="account-chk center" style="display: none;">
+					<button type="button" class="btn btn-outline-info" data-tag="account" onclick="show_next(this);">확인</button>
+				</div>
+				<div class="account-row resv-row" style="display: none;">
+					<div class="" th:text="'출금 가능 금액 ' + ${#numbers.formatInteger(member.deposit,0,'COMMA')} + '원'"></div>
+					<span class="account-title resv-name"></span>
+					<span class="account-title">님에게</span>
+					<div class="resv_acc"></div>
+					<div class="account-input">
+						<input class="account-control" type="text" name="send_deposit" value="" placeholder="얼마나 보낼까요?" size="40" onkeyup="get_price(this.value);">
+						<button type="button" class="btn start-acc" style="display: none;" onclick="get_price(0);"><i class="fa-regular fa-circle-xmark"></i></button>
+					</div>
+					<div class="account-tiny center" th:text="'최대 출금가능 금액 ' + ${#numbers.formatInteger(member.deposit,0,'COMMA')} + '원'" th:onclick="get_price([[${member.deposit}]])"></div>
+					<div class="msg-resv center"></div>
+				</div>
+				<div class="resv-chk center" style="display: none;">
+					<button type="button" class="btn btn-outline-info" data-tag="resv" onclick="show_next(this);">다음</button>
+				</div>
+				<div class="account-row last-account-row" style="display: none;">
+					<div class="last-account-member">
+						<span class="account-title resv-name"></span>
+						<span class="account-title">님에게</span>
+						<div class="last-won"></div>
+						<div>보낼까요?</div>
+					</div>
+					
+					<div class="last-member-views">
+						<div class="last-left">
+							<div class="last-left-resv">받는 분에게 표시</div>
+							<div class="last-left-resv">입금 계좌</div>
+						</div>
+						<div class="last-right">
+							<div class="last-change-input account-input" style="display: none;">
+								<input type="text" class="account-control change-name" data-toggle="tooltip" title="10자까지 입력할 수 있어요:)" th:value="${member.mb_name}" size="25" onkeyup="name_legth(this.value);">
+								<button type="button" class="btn start-acc xmark" onclick="change_name('cancel')"><i class="fa-regular fa-circle-xmark"></i></button>
+								<button type="button" class="btn start-acc" onclick="change_name('change')"><i class="fa-solid fa-check"></i></button>
+							</div>
+							<div class="last-fake-click" th:onclick="change_name('input_view');"><span class="last-send-name" th:text="${member.mb_name}"></span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></div>
+							<div class=""><span class="resv_acc non-color"></span></div>
+						</div>
 					</div>
 				</div>
-				 <div class="form-footer center">
-		            <button type="submit" class="btn btn-outline-info">결제하기</button>
-		        </div>
+				<div class="form-footer center" style="display: none;">
+				    <button type="button" class="btn btn-outline-info" data-tag="send" onclick="show_next(this);">보내기</button>
+				</div>
 			</form>
 		</div>
 		<script th:inline="javascript">
+			account_chk("66-655334"); //난쥬 지우기
+			$("input[name=send_name]").val(/*[[${member.mb_name}]]*/);
+			
+			function addCommas(num) {
+				return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+			
 			function account_chk(val){
-				
+				var account = val.replace(/^[^0-9]+/, '').replace(/[^0-9\-]/g, '');
 				//숫자와 - 만 허용할게요
-				$("#account").val($("#account").val().replace(/[^0-9\-]/g, ''));
-				
-				if(val != null){
+				$("#account").val(account);
+				$("input[type=hidden]").val("");
+				$(".resv-name").text("");
+				if(account != ''){
 					$(".start-acc").show();
+					var url = "/deposit/chkAccount";
+					$.ajax({
+			            url: url,
+			            type: 'post',
+			            data: {account : account},
+			            dataType : 'json',
+			            async: false, 
+			            success: function (data) {
+			                if(data.res == "err"){
+			                	$(".msg-account").removeClass("msg-success");
+			                	$(".msg-account").addClass("msg-error");
+			                	$(".msg-account").text(data.msg);
+			                	$(".account-chk").hide();
+			                } else {
+			                	$("input[name=resv_acc]").val(data.account.account);
+			                	$("input[name=resv_name]").val(data.account.mb_name);
+			                	$("input[name=resv_id]").val(data.account.mb_id);
+			                	$(".resv_acc").text("S2D KEY " + data.account.account);
+			                	$(".msg-account").removeClass("msg-error");
+			                	$(".msg-account").addClass("msg-success");
+			                	$(".msg-account").text(data.msg);
+			                	$(".resv-name").text(data.account.mb_name);
+			                	$(".account-chk").show();
+			                }
+			            }
+			        });
 				} else {
 					$(".btn.start-acc").hide();
+					$(".account-chk").hide();
+					$(".msg-account").text("");
 				}
 			}
 			
-			function delete_account(){
-				$("#account").val("");
-				$(".btn.start-acc").hide();
-			}
-			function get_show(price){
+			function show_next(e){
 				
-				$("input[name=price]").val(0);
-				
-				if(price == "ect"){
-					$(".enter_price").slideDown(350, function() {
-						$("#ect_price").val(0);
-					    $(".enter_price").show();
-					});
-				} else {
-					get_price(price);
-					$(".enter_price").slideUp(350, function() {
-						$("#ect_price").val(0);
-					    $(".enter_price").hide();
-					});
+				var type = $(e).data("tag");
+				if(type == ""){
+					$(".last-account-row, .form-footer, .resv-row, .resv-chk").hide();
+					$("#account").attr("disabled", false);
+					$(".acc-chk-row").fadeIn(300);
 				}
-			}
-			
-			function add_price(price){
-				var new_price = parseInt($("#ect_price").val()) + parseInt(price);
-				$("#ect_price").val(new_price);
-				$("input[name=do_price]").val(new_price);
-				get_price(new_price);
+				if(type == "account"){
+					$(".prev-arrow").data("tag", "");
+					$(".msg-account").text("");
+					$("#account").attr("disabled", "disabled");
+					$(".last-account-row, .form-footer").hide();
+					$(".acc-chk-row, .account-chk").fadeOut(300, function() {
+					    $(".resv-row").fadeIn(300);
+					    $(".resv-chk").fadeIn(300);
+					});
+				} else if(type == "resv"){
+					$(".prev-arrow").data("tag", "account");
+					var price = parseInt($("input[name=price]").val());
+					if(price <= 0 || isNaN(price)){
+						$(".msg-resv").addClass("msg-error");
+						$(".msg-resv").text("보낼 금액은 1원 이상이어야 해요 :(");
+						$("input[name=send_deposit]").focus();
+					} else {
+						$(".last-won").text( addCommas(price) + "원을");
+						$(".resv-row, .resv-chk").fadeOut(300, function() {
+						    $(".last-account-row").fadeIn(300);
+						    $(".form-footer").fadeIn(300);
+						});
+					}
+				} else if(type == "send"){
+					$(".prev-arrow").data("tag", "resv");
+					var f = $("form[name=fdepositorder]");
+					var form_array = $(f).serializeArray();
+					// 배열을 객체로 변환
+				    var datas = {};
+				    form_array.forEach(function(item) {
+				    	datas[item.name] = item.value;
+				    });
+				    datas["mb_id"] = /*[[${member.mb_id}]]*/;
+					console.log(datas);
+					return;
+					var url = "/deposit/sendInsert";
+					
+					$.ajax({
+			            url: url,
+			            type: 'post',
+			            data: order_data,
+			            dataType : 'json',
+			            async: false, 
+			            success: function (data) {
+			                f.do_od_id.value = data;
+			            }
+			        });
+				}
 			}
 			
 			function get_price(price){
+				$(".msg-resv").text('');
+				if(price < 0 || price == 0){
+					$(".btn.start-acc").hide();
+					$("input[name=send_deposit]").val("");
+				} else {
+					$(".btn.start-acc").show();
+				}
+				var deposit = parseInt(/*[[${member.deposit}]]*/);
+				
 				if (/[^0-9]/g.test(price)) {				 
 					price = price.replace(/[^0-9]/g, '');
-					$("#ect_price").val(price);
 				}
-				// price가 100,000을 넘는지 확인
-			    if (parseInt(price) > 100000) {
-			        alert("직접입력으로 충전시 100,000원을 초과할 수 없습니다.");
-			        price = 100000;
-			        $("#ect_price").val(price);
+				// price가 소지 금액을 넘는지
+			    if (parseInt(price) > deposit) {
+			        alert("출금 가능한 금액이 부족합니다.");
+			        price = deposit;
 			    }
 				
-				$("input[name=do_price]").val(price);
+			    var text_price = addCommas(price) + "원";
+			    $("input[name=send_deposit]").val(text_price);
+				$("input[name=price]").val(price);
 			}
-			function fdepositorder_submit(f){
-				
-				if(f.price.value <= 0){
-					alert("보내실 금액을 입력해주세요.");
-					return false;
-				}
-				
-				if(!f.account.value){
-					alert("성함을 작성해주세요.");
-					f.do_name.focus();
-					return false;
-				}
-				
-				if(!f.do_tel.value){
-					alert("연락처를 작성해주세요.");
-					f.do_tel.focus();
-					return false;
-				}
-				if(!f.do_email.value){
-					alert("이메일을 작성해주세요.");
-					f.do_email.focus();
-					return false;
-				}
-				var url = "/deposit/insertOrder";
-				// 배열을 객체로 변환
-				var form_array = $(f).serializeArray();
-			    var order_data = {};
-			    form_array.forEach(function(item) {
-			    	order_data[item.name] = item.value;
-			    });
-				$.ajax({
-		            url: url,
-		            type: 'post',
-		            data: order_data,
-		            dataType : 'json',
-		            async: false, 
-		            success: function (data) {
-		                f.do_od_id.value = data;
-		            }
-		        });
-				
-				clientAuth(f);
-				return false;
+			
+			function name_legth(sender){
+				if (sender.length > 10) {
+					sender = sender.substring(0, 10);
+			    }
+				$(".change-name").val(sender);
 			}
+			
+			function change_name(type){
+				var sender = $(".change-name").val();
+				
+				if(type == "cancel"){
+					$(".last-change-input").fadeOut(300, function() {
+						$(".change-name").val($("input[name=send_name]").val());
+					    $(".last-fake-click").fadeIn(300);
+					    return;
+					});
+				}
+				
+				if(type == "input_view"){
+					$(".last-send-name").text(sender);
+					$(".last-fake-click").fadeOut(300, function() {
+						$('[data-toggle="tooltip"]').tooltip();
+					    $(".last-change-input").fadeIn(300);
+					});					
+				} else if(type == "change"){
+					if(sender == null || sender == ""){
+						alert("이름은 공란일 수 없어요:(");
+						$(".change-name").focus();
+						return;
+					}
+					$(".last-send-name").text(sender);
+					$(".change-name").val(sender); 
+					$("input[name=send_name]").val(sender); 
+					$(".last-change-input").fadeOut(300, function() {
+					    $(".last-fake-click").fadeIn(300);
+					});	
+				}
+			}
+			
+			function doNotReload() {
+				if ((event.ctrlKey == true && (event.keyCode == 78 || event.keyCode == 82)) || (event.keyCode == 116)){
+				    event.keyCode = 0;
+				    event.cancelBubble = true;
+				    event.returnValue = false;
+				}
+			 }
+			document.onkeydown = doNotReload;
+			history.pushState(null, null, location.href);
+			window.onpopstate = function (event) { history.go(1); };
 		</script>
-	</main>
+	</div>
 </body>
 </html>
