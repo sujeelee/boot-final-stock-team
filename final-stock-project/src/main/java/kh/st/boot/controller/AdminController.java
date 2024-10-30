@@ -165,12 +165,8 @@ public class AdminController {
 	@PostMapping("/admMember/adminUser/search")
 	public String userSearch(@RequestParam String searchType,
 							 @RequestParam String searchText, Model model, Criteria cri) {
-		System.out.println(searchType);
-		System.out.println(searchText);
 		List searchUser = admUserService.searchUser(searchType,searchText);
 		PageMaker pm_use = admUserService.getPageMaker(cri);
-		System.out.println(searchType);
-		System.out.println(searchText);
 		model.addAttribute("user",searchUser);
 		model.addAttribute("pm_use", pm_use);
 		return "/admin/admMember/adminUser";
