@@ -111,53 +111,29 @@
 					</span>
 				</div>
 				<div class="main-table">
-					<div class="main-row news-row" th:each="num_news: ${#numbers.sequence(1,4)}">
+					<div class="main-row news-row" th:each="newsImgList : ${newsImgList}">
 						<a href="/newspaper">
 							<div class="news-img">
-								<img src="https://www.infostockdaily.co.kr/news/photo/202410/202696_198668_722.png">
-								<div class="news-title">코스피, 기관 매수에 2600선 회복 시도…삼전 1%대 반등</div>
-								<div class="news-mini-text">2시간전 . 인포스탁데일리</div>
+								<img th:src="@{'/uploads' + ${newsImgList.fi_path}}" width="300" height="168">
+								<div class="news-title" th:text="${newsImgList.ne_title}"></div>
+								<div class="news-mini-text">
+									<span th:text="${#dates.format(newsImgList.ne_datetime, 'MM월 dd일')} + ' · '"></span>
+									<span th:text="${newsImgList.np_name}"></span>
+								</div>
 							</div>
 						</a>
 					</div> <!-- end main-row -->
 				</div>
 				<div class="main-news-mini">
-					<div class="news-row">
+					<div class="news-row" th:each="newsList : ${newsList}">
 						<a href="/newspaper">
 							<div class="news-img">
 								<div class="news-title">
-									<span>[뉴욕증시] 다우, 엿새 만에 반등...나스닥, 3일 연속 상승</span>
-									<span class="news-mini-text">3시간 전 · 파이낸셜뉴스</span>
-								</div>
-							</div>
-						</a>
-					</div> <!-- end news-row -->
-					<div class="news-row">
-						<a href="/newspaper">
-							<div class="news-img">
-								<div class="news-title">
-									<span>트럼프, “대만 미 반도체 섹터 훔쳐가”, TSMC 4.3%↓</span>
-									<span class="news-mini-text">1시간 전 · 연합인포맥스</span>
-								</div>
-							</div>
-						</a>
-					</div> <!-- end news-row -->
-					<div class="news-row">
-						<a href="/newspaper">
-							<div class="news-img">
-								<div class="news-title">
-									<span>국내 증시, 본격적인 ‘종목 장세’ 전망…바이오·수출주 주목</span>
-									<span class="news-mini-text">1시간 전 · 이투데이</span>
-								</div>
-							</div>
-						</a>
-					</div> <!-- end news-row -->
-					<div class="news-row">
-						<a href="/newspaper">
-							<div class="news-img">
-								<div class="news-title">
-									<span>위기의 폭스바겐, 獨공장 3곳 폐쇄 계획…“생산성 낮아”</span>
-									<span class="news-mini-text">1시간 전 · 이데일리</span>
+									<span th:text="${newsList.ne_title}">[뉴욕증시] 다우, 엿새 만에 반등...나스닥, 3일 연속 상승</span>
+									<span class="news-mini-text">
+										<span th:text="${#dates.format(newsList.ne_datetime, 'MM월 dd일')} + ' · '"></span>
+										<span th:text="${newsList.np_name}"></span>
+									</span>
 								</div>
 							</div>
 						</a>
