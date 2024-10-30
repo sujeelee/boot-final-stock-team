@@ -45,16 +45,4 @@ public interface StockDAO {
 
 	List<StockPriceVO> getStockInfoListDate(@Param("code")String st_code, @Param("to")String to_date, @Param("from")String from_date);
 
-	List<HotStockDTO> getHotStockList();
-
-	List<DashListDTO> getMyStock(@Param("mb_id")String mb_id);
-
-	List<DashListDTO> getMyWish(@Param("mb_id")String mb_id);
-
-	StockJisuVO getOldJisu(@Param("date")String date, @Param("type")String type);
-
-	boolean insertStockJisu(@Param("ji")StockJisuVO jisu);
-
-	List<StockJisuVO> jisuConfig(@Param("type")String type);
-
 }

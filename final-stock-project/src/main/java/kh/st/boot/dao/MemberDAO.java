@@ -21,8 +21,4 @@ public interface MemberDAO {
 	boolean updateUserAccount(@Param("account")String mb_account, @Param("id")String mb_id);
 
 	void insertAccount(String mb_id);
-
-    void updateStopTime(@Param("id")String username);
-
-    void reset_stop_time(@Param("id")String username);
 }

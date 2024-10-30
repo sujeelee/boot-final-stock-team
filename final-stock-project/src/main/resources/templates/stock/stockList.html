@@ -1,179 +1,112 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout.html}">
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" th:href="@{/css/stock.css}">
-<style>
-.form-group {
-	padding: 7px;
-}
-
-.use_td_set {
-	text-align: center;
-	border: 1px solid #d6dce7;
-	padding: 5px;
-}
-
-.btn_st {
-	font-size: 13px;
-	height: 25px;
-	width: 48px;
-}
-
-.btn_inp {
-	width: 61px;
-	border: none;
-	height: 25px;
-}
-.btn_ateg {
-	display: inline-block;
-	width: 74px;
-	height: 25px;
-	padding: 0px;
-	margin-left: 9px;
-	font-size: 16px;
-	padding-top: 3px;
-	position: absolute;
-}
-
-.btn_ateg2 {
-	display: inline-block;
-	width: 74px;
-	height: 25px;
-	padding: 0px;
-	margin-left: 9px;
-	font-size: 16px;
-	padding-top: 3px;
-}
-
-.btn_bt{
-    padding: 3px;
-    padding-left: 0px;
-    margin-left: 12px;
-    width: 132px;
-}
-
-
-</style>
 </head>
 <body>
-	<main id="wrapper">
-		<div id="container">
-			<h1 id="container_title">주식시세관리</h1>
-			<div id="container_main" class="content">
-				<div class="form-search center">
-					<form th:action="@{/admin/stock}" method="get"
-						onsubmit="return fsearchstocksubmit(this);">
-						<input type="hidden" name="st_type" th:value="${param.st_type}">
-						<div class="form-group">
-							<span>주식타입 : </span> 
-							<label for="all" class="form-check-label">전체</label>
-							<input type="checkbox" value="" id="all"> 
-							<span
-								class="separator">|</span> 
-								<label for="KOSPI"
-								class="form-check-label">KOSPI</label> 
-								<input type="checkbox"
-								class="chk" value="KOSPI" id="KOSPI" onclick="chk_value();">
-							<span class="separator">|</span> 
-							<label for="KOSDAQ"
-								class="form-check-label">KOSDAQ</label> 
-								<input type="checkbox"
-								class="chk" value="KOSDAQ" id="KOSDAQ" onclick="chk_value();">
-							<span class="separator">|</span> <label for="KONEX"
-								class="form-check-label">KONEX</label> 
-								<input type="checkbox"
-								class="chk" value="KONEX" id="KONEX" onclick="chk_value();">
-						</div>
-						<div class="form-group">
-							<label for="type_all">전체</label> <input type="radio" name="state"
-								value="" id="type_all" checked> <span class="separator">|</span>
-							<label for="type_close">상장폐지</label> <input type="radio"
-								name="state" value="상장폐지" id="type_close"
-								th:checked="${#strings.equals(param.state, '상장폐지')}"> <span
-								class="separator">|</span> <label for="type_nomal">정상</label> <input
-								type="radio" name="state" value="정상" id="type_nomal"
-								th:checked="${#strings.equals(param.state, '정상')}">
-						</div>
-						<div class="form-group">
-							<select name="sfl" style="height: 25px;">
-								<option value="">전체</option>
-								<option value="st_name"
-									th:selected="${#strings.equals(param.sfl, 'st_name')}">주식회사명</option>
-								<option value="st_code"
-									th:selected="${#strings.equals(param.sfl, 'st_code')}">주식코드</option>
-							</select> <input type="text" placeholder="검색어를 입력하세요" name="stx"
-								style="height: 25px;" th:value="${param.stx}">
-						</div>
-						<div class="form-group" style="padding-right: 111px;">
-							<button class="btn_submit btn btn_st" type="submit"
-								style="height: 25px;">검색</button>
-							<a class="btn_submit btn btn_ateg" th:href="@{/admin/stock}">초기화</a>
-						</div>
-					</form>
+	<main layout:fragment="content">
+		<h2 class="center">주식시세관리</h2>
+		<div class="btn-list">
+			<a class="btn btn-info" th:href="@{/admin/stock/getListStock}">주식회사 등록</a> 
+		</div>
+		<div class="form-search center">
+			<form th:action="@{/admin/stock}" method="get" onsubmit="return fsearchstocksubmit(this);">
+				<input type="hidden" name="st_type" th:value="${param.st_type}">
+				<div class="form-group">
+					<span>주식타입 : </span>
+					<label for="all" class="form-check-label">전체</label>
+					<input type="checkbox" value="" id="all">
+					<span class="separator">|</span>
+					<label for="KOSPI" class="form-check-label">KOSPI</label>
+					<input type="checkbox" class="chk" value="KOSPI" id="KOSPI" onclick="chk_value();">
+					<span class="separator">|</span>
+					<label for="KOSDAQ" class="form-check-label">KOSDAQ</label>
+					<input type="checkbox" class="chk" value="KOSDAQ" id="KOSDAQ" onclick="chk_value();">
+					<span class="separator">|</span>
+					<label for="KONEX" class="form-check-label">KONEX</label>
+					<input type="checkbox" class="chk" value="KONEX" id="KONEX" onclick="chk_value();">
 				</div>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>주식코드</th>
-							<th>주식회사명</th>
-							<th>보유주식정보</th>
-							<th>주식타입</th>
-							<th>상태</th>
-							<th>주식 가격 상세</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="list:${list}">
-							<td th:text="${list.st_code}"></td>
-							<td th:text="${list.st_name}"></td>
-							<td><span
-								th:text="${#numbers.formatInteger(list.st_price_cnt,0,'COMMA')}"></span>개
-								<button th:if="${list.st_price_cnt == 0}" type="button"
-									class="btn btn-light btn_submit btn btn_bt" th:value="${list.st_code}"
-									th:onclick="get_new_data_list(this.value);">주식정보 가져오기</button></td>
-							<td th:text="${list.st_type}"></td>
-							<td th:text="${list.st_status}"></td>
-							<td class="use_td_set"><a class="btn_submit btn btn_ateg2"
-								th:href="@{/admin/stock/stockInfo/{code}(code=*{list.st_code})}">상세</a></td>
-						</tr>
-						<tr th:if="${list == null or #lists.isEmpty(list)}">
-							<td colspan="6">주식 리스트가 존재하지 않습니다.</td>
-						</tr>
-					</tbody>
-				</table>
-				<div id="display_box">
-				<ul class="pagination justify-content-center center"
-					th:object="${pm}" th:if="${pm.endPage != 0}">
-					<li class="page-item" th:if="*{prev}"><a class="page-link"
-						th:href="@{/admin/stock(page=*{startPage-1},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}">이전</a>
-					</li>
-					<li class="page-item"
-						th:each="i : *{#numbers.sequence(startPage, endPage)}"
-						th:classappend="*{cri.page} == ${i} ? 'active' : ''"><a
-						class="page-link"
-						th:href="@{/admin/stock(page=${i},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}"
-						th:text="${i}"></a></li>
-					<li class="page-item" th:if="*{next}"><a class="page-link"
-						th:href="@{/admin/stock(page=*{endPage+1},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}">다음</a>
-					</li>
-				</ul>
+				<div class="form-group">
+					<label for="type_all">전체</label>
+					<input type="radio" name="state" value="" id="type_all" checked>
+					<span class="separator">|</span>
+					<label for="type_close">상장폐지</label>
+					<input type="radio" name="state" value="상장폐지" id="type_close" th:checked="${#strings.equals(param.state, '상장폐지')}">
+					<span class="separator">|</span>
+					<label for="type_nomal">정상</label>
+					<input type="radio" name="state" value="정상" id="type_nomal" th:checked="${#strings.equals(param.state, '정상')}">
+				</div> 
+				<div class="form-group">
+				  <select name="sfl">
+				  	<option value="">전체</option>
+				  	<option value="st_name" th:selected="${#strings.equals(param.sfl, 'st_name')}">주식회사명</option>
+            		<option value="st_code" th:selected="${#strings.equals(param.sfl, 'st_code')}">주식코드</option>
+				  </select>
+				  <input type="text" placeholder="검색어를 입력하세요" name="stx" th:value="${param.stx}">
 				</div>
-				<!-- Modal (숨긴 상태로 시작) -->
-				<div id="loadingModal" class="modal" tabindex="-1" role="dialog"
-					style="display: none; position: fixed; top: 35%; z-index: 1050;">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-body text-center">
-								<div class="spinner-border text-info"></div>
-								<p>데이터를 불러오는 중입니다...</p>
-							</div>
-						</div>
-					</div>
+				<div class="form-group">
+				  <button class="btn btn-info" type="submit">검색</button>
+				  <a class="btn btn-info" th:href="@{/admin/stock}">초기화</a>
 				</div>
-			</div>
+			</form>
+		</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>주식코드</th>
+					<th>주식회사명</th>
+					<th>보유주식정보</th>
+					<th>주식타입</th>
+					<th>상태</th>
+					<th>주식 가격 상세</th>
+				</tr>
+			</thead>
+		    <tbody>
+				<tr th:each="list:${list}">
+					<td th:text="${list.st_code}"></td>
+					<td th:text="${list.st_name}"></td>
+					<td>
+						<span th:text="${#numbers.formatInteger(list.st_price_cnt,0,'COMMA')}"></span>개
+						<button th:if="${list.st_price_cnt == 0}" type="button" class="btn btn-light" th:value="${list.st_code}" th:onclick="get_new_data_list(this.value);">주식정보 가져오기</button>
+					</td>
+					<td th:text="${list.st_type}"></td>
+					<td th:text="${list.st_status}"></td>
+					<td><a th:href="@{/admin/stock/stockInfo/{code}(code=*{list.st_code})}">상세</a></td>
+				</tr>
+				<tr th:if="${list == null or #lists.isEmpty(list)}">
+					<td colspan="6">주식 리스트가 존재하지 않습니다.</td>
+				</tr>
+		    </tbody>
+	    </table>
+		<ul class="pagination justify-content-center center" 
+			th:object="${pm}" 
+			th:if="${pm.endPage != 0}">
+		    <li class="page-item" th:if="*{prev}">
+		    	<a class="page-link" th:href="@{/admin/stock(page=*{startPage-1},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}">이전</a>
+		    </li>
+		    <li class="page-item" 
+		    	th:each="i : *{#numbers.sequence(startPage, endPage)}"
+		    	th:classappend="*{cri.page} == ${i} ? 'active' : ''">
+		    	<a class="page-link" th:href="@{/admin/stock(page=${i},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}" th:text="${i}"></a>
+		    </li>
+		    <li class="page-item" th:if="*{next}">
+		    	<a class="page-link" th:href="@{/admin/stock(page=*{endPage+1},st_type=${param.st_type},sfl=${param.sfl},stx=${param.stx},state=${param.state})}">다음</a>
+		    </li>
+		</ul>
+		<!-- Modal (숨긴 상태로 시작) -->
+		<div id="loadingModal" class="modal" tabindex="-1" role="dialog" style="display: none; position: fixed; top: 35%; z-index: 1050;">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body text-center">
+		        <div class="spinner-border text-info"></div>
+		        <p>데이터를 불러오는 중입니다...</p>
+		      </div>
+		    </div>
+		  </div>
 		</div>
 		<script th:inline="javascript">
 			$(document).ready(function() {
@@ -241,9 +174,9 @@
 				return true;
 			}
 		</script>
-
+		
 		<!-- 타임리프를 이용한 조건부 스크립트 실행 -->
-		<script th:if="${param.st_type}" th:inline="javascript">
+	    <script th:if="${param.st_type}" th:inline="javascript">
 	        $(document).ready(function() {
 	            const inputValue = $('input[name="st_type"]').val();
 	            // 모든 체크박스 해제

@@ -19,7 +19,7 @@ public class MemberDetailService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberVO member = memberDao.findById(username);
 
-		return new CustomUser(member);
+		return member == null ? null : new CustomUser(member);
 	}
 
 }

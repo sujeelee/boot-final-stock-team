@@ -128,6 +128,9 @@ public class MemberController {
 
     }
 
+
+
+
     //쿠키 사용할 일이 많아지면 Cookie Manager class를 만들어서 사용하자
     public void deleteCookie(HttpServletResponse response, String cookie_name){
         //받아온 쿠키이름을 가진 쿠키를 값 null이 들어간 상태로 생성
@@ -137,12 +140,4 @@ public class MemberController {
         //화면에 쿠키를 저장(기존의 쿠키와 같은 이름으로) -> 쿠키 값과, 기간이 0으로 되서 삭제됨
         response.addCookie(cookie);
     }
-
-    @GetMapping("/findPwView")
-    public String findPw(){
-
-
-        return "member/findPwView";
-    }
-
 }

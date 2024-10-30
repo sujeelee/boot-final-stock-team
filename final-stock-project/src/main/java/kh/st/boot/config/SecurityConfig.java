@@ -3,14 +3,10 @@ package kh.st.boot.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import kh.st.boot.auth.CustomAuthenticationProvider;
-import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.handler.LoginFailHandler;
 import kh.st.boot.handler.LoginSuccessHandler;
 import kh.st.boot.model.util.UserRole;
@@ -22,14 +18,7 @@ public class SecurityConfig{
 	
 	@Autowired
 	private MemberDetailService memberDetailService;
-
-    @Autowired
-    private CustomAuthenticationProvider customAuthenticationProvider;
-
-    @Autowired
-    private MemberDAO memberDao;
-	
-	@Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // CSRF 비활성화 및 모든 URL 접근을 허용
         http.csrf(csrf -> csrf.disable())
@@ -38,12 +27,10 @@ public class SecurityConfig{
             )
             .formLogin((form) -> form
                 .loginPage("/member/login")  // 커스텀 로그인 페이지 설정
-                .permitAll()           // 로그인 페이지는 접근 허용
-                .loginProcessingUrl("/member/login") //실제 로그인 되는 곳
-//                .usernameParameter("userId") //아이디 파라미터 명
-//                .passwordParameter("password") // 비밀번호 파라미터 명
-                .successHandler(new LoginSuccessHandler(memberDao))
-                .failureHandler(new LoginFailHandler(memberDao))
+                .permitAll()                 // 로그인 페이지 접근 허용
+                .loginProcessingUrl("/member/login")
+                .defaultSuccessUrl("/")      // 로그인 성공 시 리다이렉트
+                .successHandler(new LoginSuccessHandler())
             )
             .rememberMe((rm) -> rm
                 .key("team1")
@@ -61,13 +48,5 @@ public class SecurityConfig{
                 .permitAll()
             );
         return http.build();
-
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-        auth.authenticationProvider(customAuthenticationProvider);
-        return auth.build();
     }
 }
