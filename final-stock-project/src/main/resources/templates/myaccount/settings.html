@@ -446,9 +446,9 @@
 			            $('#demo').collapse('hide');
 			            // 서버 응답에 따라 추가 작업 수행 가능
 			        },
-			        error: function(error) {
-			        	console.log(jqXHR);
-			        }
+			        error : function(jqXHR, textStatus, errorThrown){
+						console.log(jqXHR);
+					}
 			    });
 			}
 			
