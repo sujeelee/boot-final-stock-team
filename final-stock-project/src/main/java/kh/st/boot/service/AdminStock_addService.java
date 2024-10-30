@@ -36,4 +36,9 @@ public class AdminStock_addService {
 		
 	}
 
+	public List<AdminStock_addVO> search(String mb_id) {
+		
+		return adminStock_addDAO.search(mb_id);
+	}
+
 }

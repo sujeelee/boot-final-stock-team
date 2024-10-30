@@ -107,4 +107,31 @@
 	<delete id="deleteStockMember">
 		DELETE FROM STOCK_MEMBER WHERE MB_NO = #{mb_no}
 	</delete>
+	<select id="selectMyStockList" resultType="kh.st.boot.model.dto.MyAccountStocksDTO">
+		SELECT 
+		    a.st_code AS stockCode, 
+		    a.st_name AS stockName, 
+		    c.total_qty AS stocksQty, 
+		    c.total_price AS stockOrignPrice
+		FROM 
+		    stock a
+		JOIN (
+		    SELECT 
+		        od_st_code, 
+		        COALESCE(SUM(CASE WHEN od_status LIKE '매수%' THEN od_qty ELSE 0 END), 0) - 
+		        COALESCE(SUM(CASE WHEN od_status LIKE '매도%' THEN od_qty ELSE 0 END), 0) AS total_qty, 
+		        COALESCE(SUM(CASE WHEN od_status LIKE '매수%' THEN od_st_price * od_qty + od_percent_price ELSE 0 END), 0) - 
+		        COALESCE(SUM(CASE WHEN od_status LIKE '매도%' THEN od_st_price * od_qty + od_percent_price  ELSE 0 END), 0) AS total_price  
+		    FROM 
+		        `order`
+		    WHERE 
+		        mb_id = #{mb_id}
+		    GROUP BY 
+		        od_st_code
+		    HAVING 
+		        total_qty > 0
+		) c ON a.st_code = c.od_st_code
+		ORDER BY 
+		    a.st_name ASC;
+	</select>
 </mapper>

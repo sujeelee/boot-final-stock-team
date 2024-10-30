@@ -15,6 +15,8 @@
 		WHERE od_name = #{od_name}
 		AND mb_id = #{mb_id} AND od_id = #{od_id}
 	</select>
+	
+	<select id="selectCountList" resultType="int"> select count(*) from order</select>
 
 
 	<select id="deletOrder" resultType="admOrderPageVO">

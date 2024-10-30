@@ -144,6 +144,17 @@
 		    <artifactId>jsoup</artifactId>
 		    <version>1.15.3</version> <!-- 최신 버전을 사용하세요 -->
 		</dependency>
+		
+		<!-- 스프링부트 webflux -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		 <!-- 외부로그인 oauth2 사용 -->
+	      <dependency>
+	         <groupId>org.springframework.boot</groupId>
+	         <artifactId>spring-boot-starter-oauth2-client</artifactId>
+	      </dependency>
 	</dependencies>
 
 	<build>

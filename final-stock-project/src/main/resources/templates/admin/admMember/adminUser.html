@@ -47,17 +47,14 @@
 							<td th:text="${user.mb_id}" class="use_td"></td>
 							<td th:text="${user.mb_name}" class="use_td"></td>
 							<td th:text="${user.mb_nick}" class="use_td"></td>
-							<td th:text="${user.mb_hp}" class="use_td"></td>
+							<td th:text="${user.mb_ph}" class="use_td"></td>
 							<td th:text="${user.mb_level}" class="use_td"></td>
-							<td th:text="${#dates.format(user.mb_datetime, 'yyyy-MM-dd')}"
-								class="use_td"></td>
-							<td th:text="${#dates.format(user.mb_edit_date, 'yyyy-MM-dd')}"
-								class="use_td"></td>
-							<td th:text="${#dates.format(user.mb_stop_date, 'yyyy-MM-dd')}"
-								class="use_td"></td>
+							<td th:text="${#dates.format(user.mb_datetime, 'yyyy-MM-dd')}" class="use_td"></td>
+							<td th:text="${#dates.format(user.mb_edit_date, 'yyyy-MM-dd')}" class="use_td"></td>
+							<td th:text="${#dates.format(user.mb_stop_date, 'yyyy-MM-dd')}" class="use_td"></td>
 							<td class="use_td_set">
-								<form action="/admin/admMember/admUserSelect" method="post"
-									class="use_form">
+								<form action="/admin/admMember/admUserSelect"
+									method="post" class="use_form">
 									<input type="hidden" name="mb_no" th:value="${user.mb_no}" />
 									<input type="submit" value="수정" class="btn_submit btn "
 										onclick="location.href='/admin/admMember/admUserSelect'">
@@ -113,5 +110,4 @@
 	</div>
 
 </body>
-
 </html>

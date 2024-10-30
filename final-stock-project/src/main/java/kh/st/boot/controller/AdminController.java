@@ -1,8 +1,10 @@
 package kh.st.boot.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +64,9 @@ public class AdminController {
 	@Autowired
 	private AdmPointService admPointService;
 
+	@Autowired
+	private AdminStock_addService adminStock_addService;
+	
 	// 관리자 기본 페이지
 
 	// 관리자 설정 페이지 값 전송 코드
@@ -92,9 +97,9 @@ public class AdminController {
 	}
 
 	// -------------------------------------------------------------------------------
-	// -------------------------- 회원 정보 수정 -------------------------------
+	// -------------------------- 회원관리 회원정보 정보 수정 -------------------------------
 	// -------------------------------------------------------------------------------
-
+	
 	@GetMapping("/admMember/adminUser")
 	public String admUser(Model model, Criteria cri) {
 		cri.setPerPageNum(12);
@@ -246,6 +251,8 @@ public class AdminController {
 		return "/admin/admNews/news";
 
 	}
+	
+
 
 	// -------------------------------------------------------------------------------
 	// -------------------------- LV 관리 컨트롤러 -------------------------------
@@ -286,6 +293,18 @@ public class AdminController {
 		sltAdmLevelPageService.dltAdmLvService(dltAdm);
 		return "redirect:/admin/admLevel/admLevelPage";
 	}
+	
+	// 회원 정보 상세페이지 조회
+		@PostMapping("/admLevel/admLevSel")
+		public String admlevSel(Model model, int lv_num) {
+			AdminLevelPageVO admlevSel = sltAdmLevelPageService.getAdmlevSel(lv_num);
+			
+			model.addAttribute("admlevSel", admlevSel);
+			
+			return "/admin//admLevel/admLevSel";
+		}
+		
+	
 
 	// 회원 정보 상세페이지 조회
 	@PostMapping("/admLevel/admLevSel")
@@ -310,21 +329,16 @@ public class AdminController {
 		}
 		return "redirect:/admin/admLevel/admLevelPage";
 	}
-
-//	// 수정하기
-	@PostMapping("/admLevel/admLevelPage/update")
-	public String udtAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
-			@RequestParam char lv_auto_use, @RequestParam int lv_up_limit) {
-
-		sltAdmLevelPageService.udtAdmLvService(lv_name, lv_num, lv_alpha, lv_auto_use, lv_up_limit);
-		return "redirect:/admin/admLevel/admLevelPage";
-	}
+	
 
 	// -------------------------------------------------------------------------------
-	// -------------------------- 포인트 적립내역 검색 컨트롤러
-	// -----------------------------------
+	// ------------------- 출석체크  포인트 적립내역 검색 컨트롤러 -------------------
 	// -------------------------------------------------------------------------------
 
+	// 검색하기랑 
+	// 불러오기  페이지네이션 , 날짜 합쳐서 출력하기 
+	
+	
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
 	public String sltAdmPointPage(Model model, Criteria cri) {
@@ -356,10 +370,11 @@ public class AdminController {
 		PageMaker pm_ord = adminOrderService.getPageMaker(cri);
 		model.addAttribute("pm_ord", pm_ord);
 		model.addAttribute("list", sltAdminOrder);
+		model.addAttribute("pm_ord", pm_ord);
 		return "/admin/admOrder/orderAdm";
 	}
 
-	// 이름 + 아이디로 검색
+	// 주문내역 검색 
 
 	@PostMapping("/admOrder/orderAdm/search")
 	public String searchIdName(@RequestParam String od_name, @RequestParam String mb_id, @RequestParam String od_id,
@@ -367,10 +382,10 @@ public class AdminController {
 
 		List<admOrderPageVO> searchOrder = adminOrderService.searchNameId(od_name, mb_id, od_id);
 		model.addAttribute("list", searchOrder);
+		model.addAttribute("pm_ord", pm_ord);
 		return "/admin/admOrder/orderAdm";
 
 	}
-
 	// 주문번호로 삭제
 
 	@PostMapping("/admOrder/orderAdm/delet")
@@ -444,9 +459,11 @@ public class AdminController {
 
 	// 아이디로 사용자 검색
 	@PostMapping("admPoint/admPointPage/Id")
-	public String idSelect(@RequestParam String mb_id, Model model) {
+	public String idSelect(@RequestParam String mb_id, Model model,Criteria cri) {
 		List<AdmPointVO> idSlt = admPointService.idSelect(mb_id);
+		PageMaker pm_point = admPointService.getPageMaker(cri);
 		model.addAttribute("list", idSlt);
+		model.addAttribute("pm_point", pm_point);
 		return "/admin/admPoint/admPointPage";
 	}
 
@@ -483,4 +500,56 @@ public class AdminController {
 
 	}
 
+	//		이거 vo 랑 html 이랑 서비스 다오 메퍼 까지 다 없음  그럼 어떡하지? 
+	
+	// 		
+	
+	//-------------------------------------------------------------------------------
+	// --------------------------주식주 증/감 여부 승인  ----------------------------
+	// ------------------------------------------------------------------------------
+
+	
+	// 페이지 이동시 리스트 당겨옴
+	@GetMapping("/admStock/admStock_add")
+	public String stock_add(Model model) {
+		List<AdminStock_addVO> selecte = adminStock_addService.nullSelect();
+		model.addAttribute("list", selecte); 
+		return "/admin/admStock/admStock_add";
+	}
+
+	// 검색하기
+	@PostMapping("/admStock/admStock_add/search")
+	public String Stock_addSearch(Model model, String mb_id) {
+		System.out.println(mb_id);
+		List<AdminStock_addVO> search = adminStock_addService.search (mb_id);
+		System.out.println(mb_id);
+		model.addAttribute("list",search);
+		return "/admin/admStock/admStock_add";
+	}
+	
+	
+
+
+	// 상세페이지에서  승인/거절시 update 하고 리스트 페이지로 이동
+	@PostMapping("/admStock/admStock_add/choose")
+	public String chooseStock_add( int sa_no, String sa_yn, String sa_feedback) {
+//		sa_yn 체크시 : on // 아니면 "null" 		
+		System.out.println("int sa_no : " + sa_no);
+		System.out.println("String sa_yn : " + sa_yn);
+		System.out.println("String sa_feedback : " + sa_feedback);
+		adminStock_addService.update(sa_no,sa_yn,sa_feedback);
+		
+		return "redirect:/admin/admStock/admStock_add";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

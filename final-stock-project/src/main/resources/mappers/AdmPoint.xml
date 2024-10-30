@@ -8,6 +8,9 @@
 		SELECT * FROM point limit
 		#{pageStart}, #{perPageNum}
 	</select>
+	
+	<select id="selectCountList" resultType="int"> select count(*) from point</select>
+	
 
 	<select id="selectCountList" resultType="int"> select count(*) from
 		point</select>
