@@ -202,11 +202,11 @@ public class MyAccountServiceImp implements MyAccountService {
 	}
 
 	@Override
-	public boolean insertStockAdd(String mb_id, int stockAmount, String sa_content) {
+	public boolean insertStockAdd(String mb_id, int sa_qty, String sa_content) {
 		if(mb_id == null) {
 			return false;
 		}
-		return myAccountDao.insertStockAdd(mb_id, stockAmount, sa_content);
+		return myAccountDao.insertStockAdd(mb_id, sa_qty, sa_content);
 	}
 
 }

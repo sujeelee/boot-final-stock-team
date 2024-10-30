@@ -158,6 +158,6 @@
 	</delete>
 	<insert id="insertStockAdd">
 		INSERT INTO STOCK_ADD (SA_QTY, MB_ID, SA_DATETIME, SA_CONTENT) VALUES
-		(#{mb_id}, #{stockAmount}, NOW(), #{sa_content})
+		(#{sa_qty}, #{mb_id}, NOW(), #{sa_content})
 	</insert>
 </mapper>

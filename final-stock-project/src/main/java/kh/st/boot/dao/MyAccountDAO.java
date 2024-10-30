@@ -40,6 +40,6 @@ public interface MyAccountDAO {
 
 	boolean deleteMemberStatus(int mb_no, String status);
 
-	boolean insertStockAdd(String mb_id, int stockAmount, String sa_content);
+	boolean insertStockAdd(String mb_id, int sa_qty, String sa_content);
 
 }

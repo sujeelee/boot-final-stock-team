@@ -354,9 +354,9 @@ public class MyAccountController {
 	
 	@ResponseBody
 	@PostMapping("/applyStock")
-	public boolean applyStock(Principal principal, @RequestParam int stockAmount, @RequestParam String sa_content){
+	public boolean applyStock(Principal principal, @RequestParam int sa_qty, @RequestParam String sa_content){
 		String mb_id = principal.getName();
-		boolean res = myAccountService.insertStockAdd(mb_id, stockAmount, sa_content);
+		boolean res = myAccountService.insertStockAdd(mb_id, sa_qty, sa_content);
 		return res;
 	}
 	

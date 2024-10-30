@@ -385,7 +385,7 @@
 							</div>
 							<div id="demo" class="collapse">
 		                    	<form onsubmit="return false;">
-			                    	<input class="mb-2" type="number" id="stockAmount" placeholder="숫자만 입력해주세요" required>
+			                    	<input class="mb-2" type="number" id="sa_qty" placeholder="숫자만 입력해주세요" required>
 			                    	<textarea class="form-control" id="sa_content" name="sa_content" style="min-height: 400px; height: auto;" placeholder="관리자한테 보낼 메시지를 입력해주세요"></textarea>
 			                    	<div class="d-flex my-details">
 			                    		<div class="mr-auto"></div>
@@ -430,10 +430,9 @@
 			});
 			
 			function applyStock() {
-			    const stockAmount = $('#stockAmount').val();
+			    const sa_qty = $('#sa_qty').val();
 			    const sa_content = $('#sa_content').val();
-			    console.log(stockAmount);
-			    if (stockAmount === '' || isNaN(stockAmount) || stockAmount == 0) {
+			    if (sa_qty === '' || isNaN(sa_qty) || sa_qty == 0) {
 			        alert('올바른 값을 입력해주세요');
 			        return;
 			    }
@@ -443,13 +442,14 @@
 			        url : '/myaccount/applyStock',
 			        type : 'post',
 			        data : {
-			            stockAmount : stockAmount,
+			        	sa_qty : sa_qty,
 			            sa_content : sa_content
 			        },
 			        success: function(data) {
 			            alert('주식 요청이 성공적으로 전달되었습니다.');
 			            $('#stockAmount').val('');
 			            $('#sa_content').val('');
+			            $('#demo').collapse('hide');
 			            // 서버 응답에 따라 추가 작업 수행 가능
 			        },
 			        error: function(error) {
