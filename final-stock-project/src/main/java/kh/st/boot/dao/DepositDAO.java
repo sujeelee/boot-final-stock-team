@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kh.st.boot.model.dto.AccountChkDTO;
 import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.OrderVO;
+import kh.st.boot.model.vo.SendVO;
 import kh.st.boot.pagination.TransCriteria;
 
 public interface DepositDAO {
@@ -47,5 +49,9 @@ public interface DepositDAO {
 	List<OrderVO> getOrderMemberByDate(@Param("mb_id")String mb_id, @Param("now")String now);
 
 	int getCountByPoint(@Param("cri")TransCriteria cri, @Param("mb_id")String mb_id);
+
+	AccountChkDTO chkAccount(@Param("account")String account);
+
+	boolean insertSend(@Param("se")SendVO send);
 
 }
