@@ -11,37 +11,32 @@
 <body>
 	<div id="wrapper">
 		<div id="container">
-			<h1 id="container_title">출석체크 포인트 관리 페이지</h1>
+			<h1 id="container_title">글쓰기 권한 수정  페이지</h1>
 			<div id="container_main" class="content">
 				<div id="select_left">
-					<form action="/admin/admMember/adminUser/userSearch" method="get"
+					<form action="/admin/admApproval/admApprovalPage/search" method="Post"
 						class="local_sch">
-						<select name="use_sh" style="height: 25px">
-							<option value="mb_id">고유번호</option>
-							<option value="mb_name">회원 번호</option>
-							<option value="mb_nick">뉴스사/상장사</option>
-						</select> <input type="text" name="search" required class="in_sch"
+						<select name="ID" style="height: 25px">
+							<option value="mp_company">요청사 ID</option>
+						</select> <input type="text" name="mp_company" required class="in_sch"
 							style="height: 25px">
 						<button type="submit" class="btn_submit btn">검색</button>
-						<a type="submit" th:href="@{/admin/admMember/admUserInsert}"
+						<a type="submit" th:href="@{/admin/admApproval/admApprovalPage/search}"
 							class="btn_submit btn btn_ateg">추가</a>
 					</form>
 				</div>
 				<table>
 					<thead>
 						<tr>
-							<th>고유번호</th>
-							<th>회원 고유번호</th>
-							<th>주식인지 뉴스인지 타입</th>
-							<th>뉴스사/상장사 이름</th>
+							<th>요청 타입</th>
+							<th>요청사 이름</th>
 							<th>신청일자</th>
 							<th>승인/거절</th>
+							<th>승인여부</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="list : ${list}">
-							<td th:text="${list.mp_no}"></td>
-							<td th:text="${list.mb_no}"></td>
 							<td th:text="${list.mp_type}"></td>
 							<td th:text="${list.mp_company}"></td>
 							<td th:text="${list.mp_datetime}"></td>
@@ -49,23 +44,22 @@
 								<!-- 승인 버튼 폼 -->
 								<form th:action="@{/admin/admApproval/admApprovalPage/slt}"
 									method="post">
-									<input type="hidden" name="mp_no" th:value="${list.mp_no}" />
-									<input type="hidden" name="mp_type" th:value="${list.mp_no}" />
-									<input type="hidden" name="mp_company" th:value="${list.mp_no}" />
-									<input type="hidden" name="mp_yn" value="y" /> <input
-										type="hidden" name="mb_no" th:value="${list.mb_no}" />
+									<input type="hidden" name="mp_yn" value="y" /> 
+									<input type="hidden" name="mb_no" th:value="${list.mb_no}" />
+									<input type="hidden" name="mp_type" th:value="${list.mp_type}" />
+									<input type="hidden" name="mp_company" th:value="${list.mp_company}" />
 									<button type="submit">승인</button>
 								</form> <!-- 거절 버튼 폼 -->
 								<form th:action="@{/admin/admApproval/admApprovalPage/slt}"
 									method="post">
-									<input type="hidden" name="mp_no" th:value="${list.mp_no}" />
-									<input type="hidden" name="mp_type" th:value="${list.mp_no}" />
-									<input type="hidden" name="mp_company" th:value="${list.mp_no}" />
-									<input type="hidden" name="mp_yn" value="n" /> <input
-										type="hidden" name="mb_no" th:value="${list.mb_no}" />
+									<input type="hidden" name="mp_yn" value="n" /> 
+									<input type="hidden" name="mb_no" th:value="${list.mb_no}" />
+									<input type="hidden" name="mp_type" th:value="${list.mp_type}" />
+									<input type="hidden" name="mp_company" th:value="${list.mp_company}" />
 									<button type="submit">거절</button>
 								</form>
 							</td>
+								<td th:text="${list.mp_yn}"></td>
 						</tr>
 					</tbody>
 				</table>
