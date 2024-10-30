@@ -30,12 +30,13 @@ public class AdminApprovalService {
 			adminApprovalDAO.nyUPDATE(mb_no, mp_yn);
 
 			if (mp_type.equals("news")) {
-				System.out.println(" 뉴스");
-				adminApprovalDAO.newsInsert(mb_no,mp_company);
+				adminApprovalDAO.newsInsert( mb_no,mp_company);
+				adminApprovalDAO.newsLvUp(mb_no);
 			}
 			else if (mp_type.equals("stock")) {
 				System.out.println(" 주식");
 				adminApprovalDAO.stockInsert(mb_no,mp_company);
+				adminApprovalDAO.stockLvUp(mb_no);
 			}
 		}
 
