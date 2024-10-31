@@ -228,7 +228,7 @@
 		        GROUP BY st_code
 		    ) si2 ON si1.st_code = si2.st_code AND si1.si_date = si2.max_date
 		) si ON s.st_code = si.st_code
-		ORDER BY o.cnt DESC limit 100;
+		ORDER BY o.cnt DESC limit #{limit};
 	</select>
 	<select id="getMyStock" resultType="kh.st.boot.model.dto.DashListDTO">
 		SELECT a.st_code as code, a.st_name as stockName, b.si_vs as vs, b.si_fltRt as flt, c.total_qty as stocksQty, SUM(c.total_qty * b.si_price) as price

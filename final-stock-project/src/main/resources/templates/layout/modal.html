@@ -11,49 +11,13 @@
 					<div class="search-modal-sub-title">인기 주식 TOP 5</div>
 				</div>
 				<div class="search-modal-table">
-					<div class="search-modal-row">
-						<div>
-							<span>1</span>
-							<span>트럼프 미디어 & 테크놀로지 그룹</span>
+					<div class="search-modal-row" th:each="tops : ${top5list}" th:onclick="modal_link([[${tops.code}]]);">
+						<div class="modal-left">
+							<span class="search-modal-rank" th:text="${tops.ranks}"></span>
+							<span th:text="${tops.st_name}"></span>
 						</div>
 						<div class="modal-right">
 							<span>-5.9%</span>
-						</div>
-					</div> <!-- end search-modal-row -->
-					<div class="search-modal-row">
-						<div>
-							<span>2</span>
-							<span>삼성전자</span>
-						</div>
-						<div class="modal-right">
-							<span>+0.1%</span>
-						</div>
-					</div> <!-- end search-modal-row -->
-					<div class="search-modal-row">
-						<div>
-							<span>3</span>
-							<span>NVD</span>
-						</div>
-						<div class="modal-right">
-							<span>+5.5%</span>
-						</div>
-					</div> <!-- end search-modal-row -->
-					<div class="search-modal-row">
-						<div>
-							<span>4</span>
-							<span>슈퍼 마이크로 컴퓨터</span>
-						</div>
-						<div class="modal-right">
-							<span>-5.5%</span>
-						</div>
-					</div> <!-- end search-modal-row -->
-					<div class="search-modal-row">
-						<div>
-							<span>5</span>
-							<span>엔비디아</span>
-						</div>
-						<div class="modal-right">
-							<span>-2.1%</span>
 						</div>
 					</div> <!-- end search-modal-row -->
 				</div>
