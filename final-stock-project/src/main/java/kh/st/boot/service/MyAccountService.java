@@ -10,6 +10,7 @@ import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.SendVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
@@ -61,5 +62,9 @@ public interface MyAccountService {
 	PageMaker getPageMakerByPoint(TransCriteria cri, String mb_id);
 
 	List<MyAccountStocksDTO> getMyStockList(String mb_id);
+
+	SendVO getSendInfo(String ds_no);
+
+	String setContentView(DepositVO tmps);
 
 }
