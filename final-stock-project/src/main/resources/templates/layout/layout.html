@@ -101,17 +101,12 @@
 	    	action_search("show");
 	    }
 	});
-	function updateTranslateValue() {
-		var windowWidth = $(window).width() / 2; // 현재 창의 너비
-		var translateXValue = `calc(-50% + ${windowWidth}px)`;
-		$(':root').css('--translate-x', translateXValue);
-	}
-	updateTranslateValue();
-    $(window).resize(updateTranslateValue);
+	
 	function action_search(type){
 		if(type == "show"){
 			if($(".search-modal").hasClass("active") === false){
 				$(".search-modal").fadeIn(300, function() {
+					$(".mstx").focus();
 					$('body').append('<div class="modal-backdrop" onclick="action_search(\'hide\')"></div>'); // 새로운 backdrop 추가
 					$(".search-modal").addClass("active");
 				});
@@ -124,14 +119,35 @@
 				});
 			} else {
 				$(".search-modal").fadeIn(300, function() {
+					$(".mstx").focus();
 					$('body').append('<div class="modal-backdrop" onclick="action_search(\'hide\')"></div>'); // 새로운 backdrop 추가
 					$(".search-modal").addClass("active");
 				});
 			}
 		}
 	}
-	function modal_link(code){
+	function updateTranslateValue() {
+		var windowWidth = $(window).width() / 2; // 현재 창의 너비
+		var translateXValue = `calc(-50% + ${windowWidth}px)`;
+		$(':root').css('--translate-x', translateXValue);
+	}
+	updateTranslateValue();
+    $(window).resize(updateTranslateValue);
+    
+    function modal_link(code){
 		location.href = "/stock/" + code;
+	}
+	function search_mstx(stx){
+		if(stx != ""){
+			$(".search-modal-table-div").fadeOut(300, function() {
+				$(".search-modal-result-div").fadeIn(300);
+			});
+		} else {
+			$(".search-modal-result-div").fadeOut(300, function() {
+				$(".search-modal-table-div").fadeIn(300);
+			});
+		}
+		
 	}
 	</script>
   </body>
