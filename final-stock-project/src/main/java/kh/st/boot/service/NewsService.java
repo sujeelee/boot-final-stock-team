@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
+import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 
@@ -47,6 +48,8 @@ public interface NewsService {
 	List<NewsVO> getNewsListByImg();
 
 	List<NewsVO> getNewsListByNoImg();
+
+	NewsMemberVO getNewsMember(int mb_no);
 
 }
 

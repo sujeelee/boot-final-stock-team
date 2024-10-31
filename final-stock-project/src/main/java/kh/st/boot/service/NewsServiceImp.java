@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kh.st.boot.dao.NewsDAO;
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
+import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.utils.UploadFileUtils;
@@ -222,5 +223,10 @@ public class NewsServiceImp implements NewsService{
 	@Override
 	public List<NewsVO> getNewsListByNoImg() {
 		return newsDao.selectNewsListByNoImg();
+	}
+
+	@Override
+	public NewsMemberVO getNewsMember(int mb_no) {
+		return newsDao.selectNewsMember(mb_no);
 	}
 }

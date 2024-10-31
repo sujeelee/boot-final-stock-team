@@ -128,12 +128,18 @@
 					<div class="news-row" th:each="newsList : ${newsList}">
 						<a href="/newspaper">
 							<div class="news-img">
-								<div class="news-title">
-									<span th:text="${newsList.ne_title}">[뉴욕증시] 다우, 엿새 만에 반등...나스닥, 3일 연속 상승</span>
-									<span class="news-mini-text">
-										<span th:text="${#dates.format(newsList.ne_datetime, 'MM월 dd일')} + ' · '"></span>
-										<span th:text="${newsList.np_name}"></span>
-									</span>
+								<div>
+									<div class="d-flex">
+										<div class="mr-auto">
+											<span th:text="${newsList.ne_title.length() > 36 ? newsList.ne_title.substring(0, 36) + '...' : newsList.ne_title}">[뉴욕증시] 다우, 엿새 만에 반등...나스닥, 3일 연속 상승</span>
+										</div>
+										<div>
+											<span class="news-mini-text">
+												<span th:text="${#dates.format(newsList.ne_datetime, 'MM월 dd일')} + ' · '"></span>
+												<span th:text="${newsList.np_name}"></span>
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</a>

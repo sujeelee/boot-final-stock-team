@@ -137,14 +137,14 @@
 	<select id="selectMemberStatus" resultType="String">
 	    SELECT 
 	        CASE 
-	            WHEN EXISTS (SELECT 1 FROM news_member WHERE mb_id = #{mb_id}) THEN 'news'
-	            WHEN EXISTS (SELECT 1 FROM stock_member WHERE mb_id = #{mb_id}) THEN 'stock'
+	            WHEN EXISTS (SELECT 1 FROM news_member WHERE mb_no = #{mb_no}) THEN 'news'
+	            WHEN EXISTS (SELECT 1 FROM stock_member WHERE mb_no = #{mb_no}) THEN 'stock'
 	            ELSE 'none'
 	        END AS member_status
 	    FROM
 	        MEMBER
 	    WHERE
-	        mb_id = #{mb_id}
+	    	MB_ID = #{mb_id}
 	</select>
 	<delete id="deleteMemberStatus">
 		<choose>

@@ -413,9 +413,21 @@
 		        let data = new google.visualization.DataTable();
 		        data.addColumn('date', '');
 		        data.addColumn('number', '');
-				
-		        // 초기 데이터
-		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
+		        data.addColumn({ type: 'string', role: 'tooltip' });
+
+		        data.addRows(
+		            graphData.map(item => [
+		                new Date(item.date), 
+		                item.amount,
+		                `${new Intl.DateTimeFormat('ko-KR', {
+			                month: '2-digit',
+			                day: '2-digit',
+			                hour: '2-digit',
+			                minute: '2-digit',
+			                hour12: false
+			            }).format(new Date(item.date)).replace('.', '월 ').replace('.', '일 ')}\n${item.amount.toLocaleString()}원`
+		            ])
+		        );
 
 		        let options = {
 	        	    width: 920,
@@ -426,7 +438,7 @@
 	        	    hAxis: {
 	        	        gridlines: { color: 'none' },      // 수평축의 눈금선 제거
 	        	        textPosition: 'none',              // 수평축의 라벨 제거
-	        	        baselineColor: 'transparent'       // 수평 기준선을 투명하게 설정
+	        	        baselineColor: 'transparent',      // 수평 기준선을 투명하게 설정
 	        	    },
 	        	    vAxis: {
 	        	        gridlines: { color: 'none' },      // 수직축의 눈금선 제거
@@ -447,12 +459,24 @@
 
 		    // 차트를 업데이트하는 함수
 		    function updateChart(graphData) {
-		        let data = new google.visualization.DataTable();
-		        data.addColumn('date', '');
-		        data.addColumn('number', '');
-
-		        // 서버에서 받은 데이터를 사용하여 차트를 업데이트
-		        data.addRows(graphData.map(item => [new Date(item.date), item.amount]));
+		    	let data = new google.visualization.DataTable();
+				data.addColumn('date', ''); 
+				data.addColumn('number', '');
+				data.addColumn({ type: 'string', role: 'tooltip' });
+				
+				data.addRows(
+				    graphData.map(item => [
+				        new Date(item.date), 
+				        item.amount,
+				        `${new Intl.DateTimeFormat('ko-KR', {
+				         month: '2-digit',
+				         day: '2-digit',
+				         hour: '2-digit',
+				         minute: '2-digit',
+				         hour12: false
+				     }).format(new Date(item.date)).replace('.', '월 ').replace('.', '일 ')}\n${item.amount.toLocaleString()}원`
+				    ])
+				);
 
 		        let options = {
 	        	    width: 920,

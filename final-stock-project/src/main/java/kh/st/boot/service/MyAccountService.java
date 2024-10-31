@@ -65,10 +65,11 @@ public interface MyAccountService {
 
 	List<MyAccountStocksDTO> getMyStockList(String mb_id);
 
+	String getMemberStatus(int mb_no, String mb_id);
+
 	SendVO getSendInfo(String ds_no);
 
 	String setContentView(DepositVO tmps);
-	String getMemberStatus(String mb_id);
 
 	boolean deleteMemberStatus(int mb_no, String status);
 

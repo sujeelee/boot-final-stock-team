@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,18 +19,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.st.boot.model.vo.FileVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
+import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
+import kh.st.boot.service.MemberService;
+import kh.st.boot.service.MyAccountService;
 import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/newspaper")
 public class NewsController {
+	
 	private NewsService newsService;
+	private MemberService memberService;
 	
 	@GetMapping("")
 	public String newspaperList(Model model) {
@@ -56,12 +60,24 @@ public class NewsController {
 	}
 	
 	@GetMapping("/newsList/{np_no}/{ne_datetime}")
-	public String newsList(Model model, @PathVariable int np_no, @PathVariable String ne_datetime) {
+	public String newsList(Model model, Principal principal, @PathVariable int np_no, @PathVariable String ne_datetime) {
 		NewsPaperVO newspaper = newsService.getNewsPaper(np_no);
 		List<NewsVO> newsList = newsService.getNewsList(np_no, ne_datetime);
+		MemberVO user = null;
+		if(principal != null) {
+			String mb_id = principal.getName();
+			user = memberService.findById(mb_id);
+		}
+		if(user != null) {
+			NewsMemberVO news = newsService.getNewsMember(user.getMb_no());
+			if(news != null) {
+				user.setMb_news(news.getMb_news());
+			}
+		}
 		model.addAttribute("newspaper",newspaper);
 		model.addAttribute("newsList", newsList);
 		model.addAttribute("ne_datetime", ne_datetime);
+		model.addAttribute("user", user);
 		return "newspaper/newsList";
 	}
 	
