@@ -48,6 +48,23 @@
 		WHERE lv_num = #{lv_num}
 	</update>
 
+<!-- 
+	<update id="updateAdmLv">
+		UPDATE member_lv
+		SET lv_name = #{lv_name},
+		lv_alpha = #{lv_alpha},
+		lv_auto_use = #{lv_auto_use},
+		lv_up_limit = #{lv_up_limit}
+		WHERE lv_num = #{lv_num}
+	</update>
+ -->
+
+
+	<!-- ===================== 아래는 가져온거 ===================== ===================== 
+		아래는 가져온거 ===================== ===================== 아래는 가져온거 ===================== -->
+
+
+
 	<insert id="insertNewspaper">
 		INSERT INTO newspaper (np_name, np_use)
 		VALUES

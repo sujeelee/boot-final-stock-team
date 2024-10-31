@@ -43,17 +43,21 @@
 
 	<select id="searchNews" resultType="NewspaperVO">
 		SELECT * FROM newspaper
-		WHERE np_name LIKE CONCAT('%', #{np_name}, '%')
-		LIMIT #{cri.pageStart}, #{cri.perPageNum}
+		WHERE np_name LIKE CONCAT('%',#{np_name},'%')
+		LIMIT #{pageStart}, #{perPageNum}
 	</select>
 
 	<select id="selectTotalCount" resultType="int">
 		select count(*) from
-		newspaper WHERE np_name = #{np_name}
+		newspaper WHERE np_name LIKE CONCAT('%',#{np_name},'%')
 	</select>
 
 
-
+	<update id="UseChange">
+		UPDATE newspaper
+		SET np_use = #{useByte}
+		WHERE np_no = #{np_no}
+	</update>
 
 
 </mapper>

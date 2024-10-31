@@ -15,7 +15,7 @@
 		WHERE od_name = #{od_name}
 		AND mb_id = #{mb_id} AND od_id = #{od_id}
 	</select>
-	
+
 
 	<select id="deletOrder" resultType="admOrderPageVO">
 		DELETE 
