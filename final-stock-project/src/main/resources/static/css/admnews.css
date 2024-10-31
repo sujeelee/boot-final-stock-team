@@ -1,27 +1,23 @@
 .btn_submit{
-	margin-top: 2px;
-	padding: 0 15px;
     border: 0;
-    height: 30px;
+    height: 25px;
     color: #fff;
+    width: 52px;
 }
 
 .local_sch{
 	margin-bottom: 10px;
 }
 
-.in_sch{
-	
-	padding: 5px;
-}
 
 .ins{
 	margin-top: 10px;
 }
 
-td {
-	border: 1px solid #e6e6e6;
-	border: 1px solid #e6e6e6;
-	padding: 10px;
-	text-align: left;
+
+.btn_a{
+    width: 56px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
 }

@@ -63,3 +63,13 @@ tr {
 	padding: 0 5px;
 	margin-bottom: 7px;
 }
+
+.btn_a{
+	text-align: center;
+    width: 58px;
+    padding-top: 4px;
+    display: inline-flex;
+    align-content: center;
+    flex-direction: column;
+    height: 24px;
+}
