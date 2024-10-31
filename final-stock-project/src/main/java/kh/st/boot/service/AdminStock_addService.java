@@ -27,11 +27,6 @@ public class AdminStock_addService {
 	}
 
 	public void update(int sa_no, String sa_yn, String sa_feedback) {
-		if (sa_yn == null) {
-			sa_yn = "n";
-		} else {
-			sa_yn = "y";
-		}
 		adminStock_addDAO.updateAll(sa_no, sa_yn, sa_feedback);
 		
 	}
