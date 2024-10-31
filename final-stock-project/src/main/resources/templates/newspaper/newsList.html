@@ -16,7 +16,7 @@
 			<div class="d-flex">
 				<h1 class="ml-3" th:text="${newspaper.np_name}"></h1>
 				<div class="ml-auto insert-news">
-					<span sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.mb_level == 7}" >
+					<span sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.mb_level == 7 and (user.mb_news != null ? user.mb_news eq newspaper.np_name : false)}" >
 		            	<a th:href="@{/newspaper/newsInsert/{np_no}(np_no=${newspaper.np_no})}" class="btn">뉴스 등록</a>
 		            </span>
 	            </div>
