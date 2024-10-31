@@ -3,16 +3,20 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <nav id="menu" class="menu_large" th:fragment="sidebar">
 	<ul id="menu_ul" onclick="toggleSubMenu('memberManagement')">
+		<li id="menu_li"><a href="/admin/adminHome"
+			class="sidefont"> <i class='bx bx-cog' id="nav_icon">
+					기본환경설정 </i>
+		</a></li>
 		<li id="menu_li"><a href="/admin/admMember/adminUser"
 			class="sidefont"> <i class="bx bx-user-check" id="nav_icon">
-					회원 관리 </i>
+					회원관리 </i>
 		</a></li>
-		<li id="menu_li"><a href="/admin/admApproval/admApprovalPage" class="sidefont"> <i
-				class="bx bx-store-alt" id="nav_icon"> 주식 승인 </i>
+		<li id="menu_li"><a href="/admin/admApproval/admApprovalPage"
+			class="sidefont"> <i class="bx bx-store-alt" id="nav_icon">
+					글쓰기권한 </i>
 		</a></li>
 		<li id="menu_li"><a href="/admin/admOrder/orderAdm"
-			class="sidefont"> <i class='bx bx-edit-alt' id="nav_icon"> 주문
-					내역 </i></a></li>
+			class="sidefont"> <i class='bx bx-edit-alt' id="nav_icon"> 주문내역 </i></a></li>
 		<li id="menu_li"><a href="/admin/admPoint/admPointPage"
 			class="sidefont"> <i class='bx bx-credit-card' id="nav_icon">
 					포인트 </i></a></li>
@@ -21,9 +25,9 @@
 					레벨 </i></a></li>
 		<li id="menu_li"><a href="/admin/admDaycheck/daycheckAdm"
 			class="sidefont"> <i class='bx bx-list-ul' id="nav_icon">
-					Daily List </i></a></li>
+					회원출석 </i></a></li>
 		<li id="menu_li"><a href="/admin/admNews/news" class="sidefont">
-				<i class='bx bx-news' id="nav_icon"> Newspaper </i>
+				<i class='bx bx-news' id="nav_icon"> 신문사정보 </i>
 		</a></li>
 		<li id="menu_li">
 			<div class="menu-item">
@@ -36,8 +40,7 @@
 						style="font-size: 15px; color: black;">주식회사관리</a>
 				</div>
 				<div class="sub-menu-item">
-					<a th:href="@{/admin/stock}"
-						style="font-size: 15px; color: black;">주식시세관리</a>
+					<a th:href="@{/admin/stock}" style="font-size: 15px; color: black;">주식시세관리</a>
 				</div>
 			</div>
 		</li>
