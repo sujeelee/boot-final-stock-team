@@ -3,6 +3,7 @@ package kh.st.boot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +17,19 @@ import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
-import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
+import kh.st.boot.pagination.AdmDayCheckCriteria;
+import kh.st.boot.pagination.AdmNewsCriteria;
+import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.OrderCriteria;
+import kh.st.boot.pagination.PageMaker;
+import kh.st.boot.pagination.UserCriteria;
 import kh.st.boot.service.AdmPointService;
 import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
-import kh.st.boot.service.AdminStock_addService;
 import kh.st.boot.service.AdminUserService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
@@ -90,25 +95,99 @@ public class AdminController {
 		}
 
 		return "redirect:/admin/adminHome";
-		
-		
-	
-		
-		
 	}
+
 	// -------------------------------------------------------------------------------
-	// -------------------------- 회원 관리 컨트롤러 -------------------------------
+	// -------------------------- 회원 정보 수정 -------------------------------
 	// -------------------------------------------------------------------------------
-	
-	
-	@GetMapping("/admMember/admUser")
-	public String user(Model model) {
-		List <AdmMemberVO> userlist = adminUserService.getUserSearch();
-		System.out.println(userlist);
-		model.addAttribute("userlist", userlist);
-		return "admin/admMember/admUser";
-		
-		
+
+	@GetMapping("/admMember/adminUser")
+	public String admUser(Model model, Criteria cri) {
+		cri.setPerPageNum(12);
+		List<AdmMemberVO> user = admUserService.getAdminMem(cri);
+		PageMaker pm_use = admUserService.getPageMaker(cri);
+		model.addAttribute("user", user);
+		model.addAttribute("pm_use", pm_use);
+
+		return "/admin/admMember/adminUser";
+	}
+
+	// 회원 정보 상세페이지 조회
+	@PostMapping("/admMember/admUserSelect")
+	public String admUserSelUpd(Model model, int mb_no) {
+		AdmMemberVO admUseSel = admUserService.getAdmUseSel(mb_no);
+
+		model.addAttribute("admUseSel", admUseSel);
+
+		return "/admin/admMember/admUserSelect";
+	}
+
+	// 회원 정보 상세페이지 업데이트
+	@PostMapping("/admMember/admUserSelect/Update")
+	public String admUserUpdate(Model model, AdmMemberVO admMemberVO) {
+		boolean res = admUserService.getAdmUserUpd(admMemberVO);
+		System.out.println(res);
+		if (res == false) {
+			model.addAttribute("msg", "실패");
+			model.addAttribute("url", "/admin/adminHome");
+			return "util/msg";
+		}
+		System.out.println("수정값 보내기");
+		return "redirect:/admin/admMember/adminUser";
+	}
+
+	// 회원 정보 삭제
+	// 이건 잘 모르겠음
+	@PostMapping("/admMember/adminUser/delete")
+	public String admUserDelete(int mb_no) {
+		boolean admimUserDel = admUserService.getAdmUseDel(mb_no);
+
+		return "redirect:/admin/admMember/adminUser";
+	}
+
+	// 회원등록 페이지 불러오기
+	@GetMapping("/admMember/admUserInsert")
+	public String admUserInsertPage() {
+		return "/admin/admMember/admUserInsert";
+	}
+
+	// 회원 등록
+	@PostMapping("/admMember/admUserInsert/AdminUserInsert")
+	public String admUserInsert(Model model, AdmMemberVO admMemberVO,
+			@RequestParam(value = "mb_emailing", required = false) String mb_emailing) {
+		admMemberVO.setMb_emailing("on".equals(mb_emailing) ? 1 : 0);
+		boolean res = admUserService.getAdmUserIns(admMemberVO);
+		System.out.println(res);
+		if (res == false) {
+			model.addAttribute("msg", "실패");
+			model.addAttribute("url", "/admin/adminHome");
+			return "util/msg";
+		}
+
+		return "redirect:/admin/admMember/adminUser";
+	}
+
+	@GetMapping("/admMember/adminUser/userSearch")
+	public String admuseSearch(@RequestParam("use_sh") String use_sh, @RequestParam("search") String search,
+			@RequestParam(value = "page", defaultValue = "1") int page, Model model, UserCriteria cri) { // UserCriteria
+
+		// 한 페이지당 게시물 숫자
+		cri.setPerPageNum(12);
+		// cri로 넘겨줄 페이지
+		cri.setPage(page);
+		// 검색 매퍼에서 사용
+		cri.setSearch(search);
+
+		List<AdmMemberVO> searchUser = admUserService.getSearchUser(use_sh, cri);
+
+		PageMaker pm_use = admUserService.getPageMakerSearch(cri, use_sh);
+
+		model.addAttribute("user", searchUser);
+		model.addAttribute("pm_use", pm_use);
+		model.addAttribute("use_sh", use_sh);
+		model.addAttribute("search", search);
+
+		return "/admin/admMember/adminUser";
 	}
 	
 	
@@ -175,6 +254,24 @@ public class AdminController {
 
 		return "redirect:/admin/admNews/news";
 	}
+	
+	// 사용여부 변경
+	@PostMapping("/admNews/newspapers/usechange")
+	public String NewsPaperUseChange(@RequestParam(required = false) String np_no,
+			@RequestParam(required = false) String np_use, Model model) {
+		// np_use를 byte로 변환 (1 또는 0)
+		byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 0 : (byte) 1;
+
+		boolean res = newspaperService.getUseChange(np_no, useByte);
+
+		if (res == false) {
+			model.addAttribute("msg", "이미 존재하는 신문사 입니다.");
+			model.addAttribute("url", "/admin/admNews/news");
+			return "util/msg";
+		}
+
+		return "redirect:/admin/admNews/news";
+	}
 
 	// 뉴스삭제
 	@PostMapping("/admNews/newspapers/delete")
@@ -189,21 +286,23 @@ public class AdminController {
 		return "redirect:/admin/admNews/news";
 	}
 
-	// 뉴스검색
-	@PostMapping("/admNews/newspapers/search")
-	public String searchNewspapers(@RequestParam(required = false) String np_name,
-			@RequestParam(required = false) String np_use, @RequestParam(required = false) Integer np_no, Model model) {
+	@GetMapping("/admNews/news/search")
+	public String searchNewspapers(Model model, @RequestParam("np_name") String np_name, AdmNewsCriteria cri,
+			@RequestParam(value = "page", defaultValue = "1") int page) {
 
-		int intNpNo = (np_no != null) ? np_no.intValue() : 0; // np_no가 null이면 기본값 0 사용
-		System.out.println("컨트롤러");
+		cri.setPerPageNum(7);
+		cri.setPage(page);
+		cri.setNp_name(np_name);
 
-		// np_use를 byte로 변환 (1 또는 0)
-		byte useByte = (np_use != null && np_use.equals("1")) ? (byte) 1 : (byte) 0;
-		List<NewsPaperVO> newspapers = newspaperService.searchNewspapers(np_name, useByte, intNpNo);
+		List<AdmMemberVO> newspapers = newspaperService.getSearchNews(cri);
+		PageMaker pm_news = newspaperService.getPageMakerSearch(cri);
 
 		model.addAttribute("newspapers", newspapers);
-		System.out.println("컨트롤러2");
-		return "/admin/admNews/news"; // admin/news.html로 이동
+		model.addAttribute("pm_news", pm_news);
+		model.addAttribute("np_name", np_name);
+
+		return "/admin/admNews/news";
+
 	}
 
 	// -------------------------------------------------------------------------------
@@ -246,6 +345,16 @@ public class AdminController {
 		return "redirect:/admin/admLevel/admLevelPage";
 	}
 
+	// 회원 정보 상세페이지 조회
+	@PostMapping("/admLevel/admLevSel")
+	public String admlevSel(Model model, int lv_num) {
+		AdminLevelPageVO admlevSel = sltAdmLevelPageService.getAdmlevSel(lv_num);
+
+		model.addAttribute("admlevSel", admlevSel);
+
+		return "/admin//admLevel/admLevSel";
+	}
+
 	// 수정하기
 	@PostMapping("/admLevel/admLevelPage/update")
 	public String udtAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
@@ -262,9 +371,12 @@ public class AdminController {
 
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
-	public String sltAdmPointPage(Model model) {
-		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllPoint();
+	public String sltAdmPointPage(Model model, Criteria cri) {
+		cri.setPerPageNum(12);
+		List<AdmDaycheckVO> sltPoint = pointSltIdPageService.sltAllDay(cri);
+		PageMaker pm_daycheck = pointSltIdPageService.getPageMaker(cri);
 		model.addAttribute("list", sltPoint);
+		model.addAttribute("pm_daycheck", pm_daycheck);
 		return "/admin/admDaycheck/daycheckAdm";
 	}
 
@@ -272,26 +384,31 @@ public class AdminController {
 
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
-		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOnePoint(mb_id);
-		// 1 갯수 새는 서비스 불러옴 
-		int onesCount = pointSltIdPageService.countOnesInDays(mb_id);
-		
-		// 모델을 하나 더 해서 갯수샌걸 보내줍니다 
+		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOneDay(mb_id);
+
 		model.addAttribute("list", sltPointOne);
 		model.addAttribute("onesCount", onesCount);  
 		return "/admin/admDaycheck/daycheckAdm";
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/admDaycheck/daycheckAdm/Search")
+	public String daycheckSearch(@RequestParam String mb_id, Model model,
+			@RequestParam(value = "page", defaultValue = "1") int page, AdmDayCheckCriteria cri) {
+		cri.setPerPageNum(12);
+		cri.setPage(page);
+		cri.setMb_id(mb_id);
+		List<AdmDaycheckVO> daycheck = pointSltIdPageService.daychSearch(cri);
+		PageMaker pm_daycheck = pointSltIdPageService.getPageMakerSearch(cri);
+		
+		model.addAttribute("list", daycheck);
+		model.addAttribute("pm_daycheck", pm_daycheck);
+		model.addAttribute("mb_id", mb_id);
+		
+		return "/admin/admDaycheck/daycheckAdm";
+	}
+
+
 	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 주문내역 조회 컨트롤러 ----------------------------------
@@ -316,7 +433,6 @@ public class AdminController {
 
 	}
 
-
 	// 주문번호로 삭제
 
 	@PostMapping("/admOrder/orderAdm/delet")
@@ -329,7 +445,7 @@ public class AdminController {
 	// -------------------------------------------------------------------------------
 	// --------------------------주식/뉴스 회원승인 ----------------------------------
 	@GetMapping("/admOrder/orderAdm/AdmOrderSearch")
-	public String rderSearch(@RequestParam("od_sh") String od_sh, @RequestParam("od_search") String od_search,
+	public String orderSearch(@RequestParam("od_sh") String od_sh, @RequestParam("od_search") String od_search,
 			@RequestParam(value = "page", defaultValue = "1") int page, Model model, OrderCriteria cri) {
 //		페이지에 보여주는 리스트 수
 		cri.setPerPageNum(8);
