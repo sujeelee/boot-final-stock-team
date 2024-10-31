@@ -118,10 +118,6 @@ public class DepositService {
 		MemberVO sendMb = memberService.findById(form.get("mb_id"));
 		MemberVO resvMb = memberService.findById(form.get("resv_id"));
 		
-		AccountVO resvAc = depositDao.getAccount(resvMb.getMb_no());
-		
-		
-		
 		DepositVO sendDeposit = new DepositVO();
 		DepositVO resvDeposit = new DepositVO();
 		
@@ -137,32 +133,36 @@ public class DepositService {
 		boolean chkSend = depositDao.insertSend(send);
 		
 		if(chkSend == true) {
-			sendDeposit.setDe_content("예치금 송금 : -" + sendPrice + "원 ");
+			sendDeposit.setDe_content("예치금 송금 : -" + sendPrice + "원 송금고유번호 : " + send.getDs_no());
 			sendDeposit.setDe_num(-sendPrice);
+			sendDeposit.setMb_id(sendMb.getMb_id());
+			sendDeposit.setDe_before_num(oldDeposit);
 			
-			resvDeposit.setDe_content("예치금 입금 : " + sendPrice + "원 ");
+			AccountVO resvAc = depositDao.getAccount(resvMb.getMb_no());
+			AccountVO sendAc = depositDao.getAccount(sendMb.getMb_no());
+			
+			resvDeposit.setDe_before_num(0);
+			
+			if(resvAc == null) {
+				AccountVO newResvAc = new AccountVO();
+				newResvAc.setMb_no(resvMb.getMb_no());
+				newResvAc.setAc_deposit(sendPrice);
+				depositDao.insertAccountDeposit(newResvAc);
+			} else {
+				resvDeposit.setDe_before_num(resvMb.getDeposit());
+				depositDao.updateAccountDeposit(resvAc, sendPrice);
+			}
+			
+			depositDao.updateAccountDeposit(sendAc, -sendPrice);
+			
+			resvDeposit.setDe_content("예치금 입금 : " + sendPrice + "원 송금고유번호 : " + send.getDs_no());
 			resvDeposit.setDe_num(sendPrice);
-			/*
-		
-		deposit.setDe_content("예치금 충전 : " + chk.getDo_price() + "원 주문번호 : " + upOrder.getDo_od_id());
-		deposit.setDe_num(chk.getDo_price());
-		deposit.setMb_id(mb.getMb_id());
-		deposit.setDe_before_num(0);
-		
-		if(resvAc == null) {
-			AccountVO newaAc = new AccountVO();
-			newaAc.setMb_no(mb.getMb_no());
-			newaAc.setAc_deposit(chk.getDo_price());
-			depositDao.insertAccountDeposit(newaAc);
-		} else {
-			deposit.setDe_before_num(ac.getAc_deposit());
-			depositDao.updateAccountDeposit(ac, chk.getDo_price());
+			resvDeposit.setMb_id(resvMb.getMb_id());
+			
+			depositDao.insertDepositLog(sendDeposit);
+			depositDao.insertDepositLog(resvDeposit);
 		}
 		
-		depositDao.insertDepositLog(deposit);
-			 * */
-		}
-		
-		return false;
+		return chkSend;
 	}
 }

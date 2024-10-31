@@ -32,7 +32,7 @@
 	<div class="container">
 		<div class="prev-arrow" data-tag="" onclick="show_next(this);"><i class="fa-solid fa-chevron-left"></i></div>
 		<div class="div-deposit-send">
-			<form name="fdepositorder" action="" method="post" onsubmit="return fdepositorder_submit(this);">
+			<form name="fdepositorder" action="" method="post" onsubmit="return fdepositorder_submit(this);" autocomplete="off">
 				<input type="hidden" name="price" value="0">
 				<input type="hidden" name="resv_acc" value="">
 				<input type="hidden" name="resv_id" value="">
@@ -93,11 +93,23 @@
 				    <button type="button" class="btn btn-outline-info" data-tag="send" onclick="show_next(this);">보내기</button>
 				</div>
 			</form>
+			<div class="send-end account-row last-account-row" style="display: none;">
+				<div class="last-account-member">
+					<span class="account-title resv-name"></span>
+					<span class="account-title">님에게</span>
+					<div class="last-won"></div>
+					<div>보내기를</div>
+					<div>완료했습니다:)</div>
+				</div>
+				<div class="now-deposit">
+					<span class="last-left-resv">잔액 : </span>
+					<span class="my-deposit">1252원</span>
+				</div>
+				<button type="button" class="btn btn-outline-info center" onclick="close();">창 닫기</button>
+			</div>
 		</div>
 		<script th:inline="javascript">
-			account_chk("66-655334"); //난쥬 지우기
-			$("input[name=send_name]").val(/*[[${member.mb_name}]]*/);
-			
+			$("input[name=send_name]").val([[${member.mb_name}]]);
 			function addCommas(num) {
 				return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			}
@@ -106,8 +118,9 @@
 				var account = val.replace(/^[^0-9]+/, '').replace(/[^0-9\-]/g, '');
 				//숫자와 - 만 허용할게요
 				$("#account").val(account);
-				$("input[type=hidden]").val("");
+				$("input[type=hidden]").not("[name='send_name']").val("");
 				$(".resv-name").text("");
+				$("input[name=send_deposit]").val("");
 				if(account != ''){
 					$(".start-acc").show();
 					var url = "/deposit/chkAccount";
@@ -170,7 +183,7 @@
 					} else {
 						$(".last-won").text( addCommas(price) + "원을");
 						$(".resv-row, .resv-chk").fadeOut(300, function() {
-						    $(".last-account-row").fadeIn(300);
+						    $(".last-account-row:not(.send-end)").fadeIn(300);
 						    $(".form-footer").fadeIn(300);
 						});
 					}
@@ -184,18 +197,25 @@
 				    	datas[item.name] = item.value;
 				    });
 				    datas["mb_id"] = /*[[${member.mb_id}]]*/;
-					console.log(datas);
-					return;
+				    
 					var url = "/deposit/sendInsert";
 					
 					$.ajax({
 			            url: url,
 			            type: 'post',
-			            data: order_data,
+			            data: datas,
 			            dataType : 'json',
 			            async: false, 
 			            success: function (data) {
-			                f.do_od_id.value = data;
+			            	if(data.res == "err"){
+			                	alert(data.msg);
+			            	} else {
+				                $(".prev-arrow, form[name=fdepositorder]").fadeOut(300, function() {
+								    $(".send-end").fadeIn(300);
+								});
+				                var now = parseInt([[${member.deposit}]]) - parseInt($("input[name=price]").val());
+				                $(".my-deposit").text(addCommas(now) + "원");
+			            	}
 			            }
 			        });
 				}
@@ -216,7 +236,9 @@
 				}
 				// price가 소지 금액을 넘는지
 			    if (parseInt(price) > deposit) {
-			        alert("출금 가능한 금액이 부족합니다.");
+			        $(".msg-resv").addClass("msg-error");
+					$(".msg-resv").text("출금 가능한 금액이 부족합니다 :(");
+					$("input[name=send_deposit]").focus();
 			        price = deposit;
 			    }
 				
@@ -262,6 +284,10 @@
 					    $(".last-fake-click").fadeIn(300);
 					});	
 				}
+			}
+			
+			function close(){
+				window.open('about:blank', '_self').close();
 			}
 			
 			function doNotReload() {

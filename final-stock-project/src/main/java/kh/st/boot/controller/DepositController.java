@@ -180,7 +180,14 @@ public class DepositController {
     	}
     	
     	boolean check = depositService.sendInsert(form); 
-    			
+    	
+    	if(check == false) {
+    		result.put("res", "err");
+			result.put("msg", "보내기에 실패했습니다:(");
+    	} else {
+    		result.put("res", "success");
+			result.put("msg", form.get("resv_name") + "님에게 보내기가 완료되었어요:)");
+    	}
     	return result;
     }
 }

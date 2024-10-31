@@ -180,7 +180,7 @@
 		from member
 		where mb_account = #{account}
 	</select>
-	<insert id="insertSend">
+	<insert id="insertSend" useGeneratedKeys="true" keyColumn="ds_no" keyProperty="se.ds_no">
 		insert into deposit_send
 		set ds_send_name = #{se.ds_send_name},
 			ds_receive_name = #{se.ds_receive_name},
@@ -190,4 +190,8 @@
 			ds_send_price = #{se.ds_send_price},
 			ds_datetime = NOW()
 	</insert>
+	<select id="getSendInfo" resultType="SendVO">
+		select * from deposit_send 
+		where ds_no = #{no}
+	</select>
 </mapper>
