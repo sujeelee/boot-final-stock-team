@@ -20,30 +20,29 @@
 				<form action="/admin/admPoint/admPointPage/pointSearch" method="get"
 					class="local_sch">
 					<input type="text" name="mb_id" placeholder="사용자 ID" required
-						class="in_sch">
-					<button type="submit" class="btn_submit btn">검색</button>
+						class="in_sch" th:placeholder="${mb_id}" style="margin-top: 2px;">
+					<button type="submit" class="btn_submit btn in_sch">검색</button>
+					<a type="submit" href="/admin/admPoint/admPointPage" class="btn_submit btn btn_a" style="padding-top: 5px;">초기화</a>
 				</form>
 				<div class="tbl_col">
 
 					<table>
 						<thead>
 							<tr>
-								<th>등록번호</th>
+								<th>회원ID</th>
 								<th>포인트</th>
 								<th>지급사유</th>
 								<th>지급일</th>
-								<th>회원ID</th>
 								<th>관리</th>
 							</tr>
 						</thead>
 						<tbody>
 							<!-- 값 불러오기 -->
 							<tr th:each="list : ${list}">
-								<td th:text="${list.po_no}"></td>
+								<td th:text="${list.mb_id}"></td>
 								<td th:text="${list.po_num}"></td>
 								<td th:text="${list.po_content}"></td>
 								<td th:text="${list.po_datetime}"></td>
-								<td th:text="${list.mb_id}"></td>
 								<td class="point_set">
 									<form action="/admin/admPoint/admPointPage/delete"
 										method="post">
@@ -53,7 +52,7 @@
 								</td>
 							</tr>
 							<tr th:if="${#lists.isEmpty(list)}">
-								<td colspan="6" class="no-data">검색 결과가 없습니다.</td>
+								<td colspan="6" class="no-data not_search">검색 결과가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

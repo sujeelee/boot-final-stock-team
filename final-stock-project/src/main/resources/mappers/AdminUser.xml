@@ -30,16 +30,32 @@
 		mb_no = #{mb_no}
 	</delete>
 
-    <select id="selectUser" resultType="AdmMemberVO">
-        SELECT * FROM member
-        WHERE ${use_sh} LIKE CONCAT('%', #{cri.search}, '%')
-        LIMIT #{cri.pageStart}, #{cri.perPageNum}
-    </select>
-    
-    <select id="selectUserCount" resultType="int">
-        SELECT count(*) FROM member
-        WHERE ${use_sh} LIKE CONCAT('%', #{cri.search}, '%')
-    </select>
-    
-    
+	<select id="selectUser" resultType="AdmMemberVO">
+		SELECT * FROM member
+		WHERE
+		${use_sh} LIKE CONCAT('%', #{cri.search}, '%')
+		LIMIT #{cri.pageStart},
+		#{cri.perPageNum}
+	</select>
+
+	<select id="selectUserCount" resultType="int">
+		SELECT count(*) FROM
+		member
+		WHERE ${use_sh} LIKE CONCAT('%', #{cri.search}, '%')
+	</select>
+
+	<insert id="UserInsert"> INSERT INTO member (
+		mb_id, mb_password, mb_name,
+		mb_nick, mb_ph, mb_email, mb_zip, mb_addr,
+		mb_addr2, mb_birth,
+		mb_level, mb_datetime, mb_stop_date, mb_out_date, mb_cookie,
+		mb_cookie_limit,
+		mb_point, mb_emailing, mb_account
+		) VALUES
+		(#{mb_id},#{mb_password},#{mb_name},#{mb_nick},#{mb_ph},#{mb_email},#{mb_zip},
+		#{mb_addr},#{mb_addr2},#{mb_birth},
+		#{mb_level},NOW(),NULL,NULL,NULL,NULL,0,#{mb_emailing},#{mb_account})
+	</insert>
+
+
 </mapper>

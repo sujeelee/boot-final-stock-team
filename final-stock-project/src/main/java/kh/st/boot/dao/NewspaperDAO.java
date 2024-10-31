@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
+import kh.st.boot.pagination.AdmNewsCriteria;
 import kh.st.boot.pagination.Criteria;
 
 @Mapper
@@ -30,9 +31,11 @@ public interface NewspaperDAO {
 
 	int selectCountList(Criteria cri);
 
-	List<AdmMemberVO> searchNews(Criteria cri, String np_name);
+	List<AdmMemberVO> searchNews(AdmNewsCriteria cri);
 
-	int selectTotalCount(Criteria cri, String np_name);
+	int selectTotalCount(AdmNewsCriteria cri);
+
+	void UseChange(String np_no, byte useByte);
 
 	
 	//  NewspaperVO 로 결과() 보내줌 

@@ -18,6 +18,7 @@
 		<div id="container">
 			<h1 id="container_title">주문내역</h1>
 			<div id="container_main" class="content">
+			<div id="select_left">
 				<!-- 검색기능 form -->
 				<form action="/admin/admOrder/orderAdm/AdmOrderSearch" method="get"
 					class="local_sch" style="text-align: left;">
@@ -25,14 +26,15 @@
 						<option value="od_id">주문번호</option>
 						<option value="mb_id">회원아이디</option>
 						<option value="od_name">주문자명</option>
-					</select> <input type="text" name="od_search" required class="in_sch">
-					<button type="submit" class="btn_submit btn">검색</button>
+					</select> <input type="text" name="od_search" required class="in_sch" th:placeholder="${od_search}">
+					<button type="submit" class="btn_submit btn in_sch">검색</button>
+					<a type="submit" href="/admin/admOrder/orderAdm" class="btn_submit btn btn_a" style="padding-top: 5px;">초기화</a>
 				</form>
+				</div>
 				<div class="tbl_col">
 					<table>
 						<thead>
 							<tr>
-								<th>주문번호</th>
 								<th>회원아이디</th>
 								<th>주문자명</th>
 								<th>결제금액</th>
@@ -46,7 +48,6 @@
 						<tbody>
 							<!-- 값 불러오기 -->
 							<tr th:each="list : ${list}">
-								<td th:text="${list.od_id}"></td>
 								<td th:text="${list.mb_id}"></td>
 								<td th:text="${list.od_name}"></td>
 								<td th:text="${list.od_price}"></td>
@@ -64,7 +65,7 @@
 								</td>
 							</tr>
 							<tr th:if="${#lists.isEmpty(list)}">
-								<td colspan="9" class="no-data">검색 결과가 없습니다.</td>
+								<td colspan="9" class="no-data not_search">검색 결과가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>

@@ -34,3 +34,5 @@ input:disabled {color: #17a2b8;background-color: #fff;}
 .account-row {margin-top: 3%;}
 .prev-arrow{font-size: 30px; color: #17a2b8; margin-top: 5%; margin-left: 8%;cursor: pointer;}
 .account-chk, .resv-chk{margin-top: 5%;}
+.send-end{margin-top: 15%}
+.now-deposit{margin-bottom: 2%;margin-top: 5%;}

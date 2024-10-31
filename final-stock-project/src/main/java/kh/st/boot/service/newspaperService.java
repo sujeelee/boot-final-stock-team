@@ -1,6 +1,5 @@
 package kh.st.boot.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.NewspaperDAO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
+import kh.st.boot.pagination.AdmNewsCriteria;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 
@@ -48,14 +48,18 @@ public class newspaperService {
 		return new PageMaker(10, cri, count);
 	}
 
-	public List<AdmMemberVO> getSearchNews(String np_name, Criteria cri) {
-		return newspaperDAO.searchNews(cri, np_name);
+	public List<AdmMemberVO> getSearchNews(AdmNewsCriteria cri) {
+		return newspaperDAO.searchNews(cri);
 	}
 
-	public PageMaker getPageMakerSearch(Criteria cri, String np_name) {
-		int totalCount = newspaperDAO.selectTotalCount(cri, np_name);
+	public PageMaker getPageMakerSearch(AdmNewsCriteria cri) {
+		int totalCount = newspaperDAO.selectTotalCount(cri);
 		return new PageMaker(10, cri, totalCount);
 	}
 
+	public boolean getUseChange(String np_no, byte useByte) {
+		newspaperDAO.UseChange(np_no, useByte);
+		return true;
+	}
 
 }
