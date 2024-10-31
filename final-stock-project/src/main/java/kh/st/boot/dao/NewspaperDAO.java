@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.pagination.AdmNewsCriteria;
 import kh.st.boot.pagination.Criteria;
@@ -12,7 +13,7 @@ import kh.st.boot.pagination.Criteria;
 @Mapper
 public interface NewspaperDAO {
 
-	List<NewsPaperVO> selectAllNewspapers(); // 모든 신문사 조회
+	List<NewsPaperVO> selectAllNewspapers(Criteria cri); // 모든 신문사 조회
 
 	boolean insertNewspaper(@Param("np_name")String np_name, @Param("np_use") byte np_use); // 신문사 등록
 

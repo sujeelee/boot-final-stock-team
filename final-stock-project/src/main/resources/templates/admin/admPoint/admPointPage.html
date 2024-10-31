@@ -3,14 +3,14 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
 <head>
+<script src="https://kit.fontawesome.com/3f892a70ad.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
+<link href="/css/admpoint.css" rel='stylesheet'>
 <meta charset="UTF-8">
-<title>Admin Level Page</title>
-<link th:href="@{/css/admnews.css}" rel="stylesheet" />
-
-<!--  스타일 적용 했음  -->
+<title>관리자 페이지</title>
 </head>
-<style>
-</style>
 <body>
 	<div id="wrapper">
 		<div id="container">
@@ -76,17 +76,17 @@
 						<ul class="pagination" th:object="${pm_point}"
 							th:if="${pm_point != null && pm_point.endPage != 0 && mb_id == null}">
 							<li th:if="${pm_point.prev}"><a
-								th:href="@{/admin/admPoint/admPointPage(mb_id=${mb_id}, page=${pm_point.startPage - 1})}">◀</a>
+								th:href="@{/admin/admPoint/admPointPage(page=${pm_point.startPage - 1})}">◀</a>
 							</li>
 							<li
 								th:each="i : ${#numbers.sequence(pm_point.startPage, pm_point.endPage)}"
 								th:classappend="${pm_point.cri.page} == ${i} ? 'active' : ''">
 								<a
-								th:href="@{/admin/admPoint/admPointPage(mb_id=${mb_id}, page=${i})}"
+								th:href="@{/admin/admPoint/admPointPage(page=${i})}"
 								th:text="${i}"></a>
 							</li>
 							<li th:if="${pm_point.next}"><a
-								th:href="@{/admin/admPoint/admPointPage(mb_id=${mb_id}, page=${pm_point.endPage + 1})}">▶</a>
+								th:href="@{/admin/admPoint/admPointPage(page=${pm_point.endPage + 1})}">▶</a>
 							</li>
 						</ul>
 					</div>
@@ -127,40 +127,7 @@
 				<p>Copyright © demo.sir.kr. All rights reserved.</p>
 			</footer>
 		</div>
-		<form action="/admin/admPoint/admPointPage/point" method="post">
-			<input type="text" name="mb_id" placeholder="회원 ID" required>
-			<input type="text" name="po_num" placeholder="+ / - 포인트" required>
-			<input type="text" name="po_content" placeholder="지급사유" required>
-			<button type="submit">저장</button>
-		</form>
+	</div>
 
-		<div class="register-form">
-
-			<form action="/admin/admPoint/admPointPage/delete" method="post">
-				<input type="text" name="po_no" placeholder="등록번호" required>
-				<button type="submit">내역삭제</button>
-			</form>
-
-		<table>
-			<thead>
-				<tr>
-					<th>등록번호</th>
-					<th>포인트</th>
-					<th>지급사유</th>
-					<th>지급일</th>
-					<th>회원 ID</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="list : ${list}">
-					<td th:text="${list.po_no}"></td>
-					<td th:text="${list.po_num}"></td>
-					<td th:text="${list.po_content}"></td>
-					<td th:text="${list.po_datetime}"></td>
-					<td th:text="${list.mb_id}"></td>
-
-				</tr>
-			</tbody>
-		</table>
 </body>
 </html>

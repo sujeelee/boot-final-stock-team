@@ -14,19 +14,4 @@ private int sa_no; // sa_no						// 증/감가 기본키
 	private String sa_yn; // sa_yn				// 승인여부 
 	private String sa_content; // sa_content	// 요청사유 
 	private String sa_feedback; // sa_feedback	// 관리자 피드백 
-	
-	
-	
-	
-	
-	
-	// 안들어간게 
-	
-	// 승인여부 버튼으로
-	// 관리자 피드벡 
-
-	
-	
-	
 }
-	
