@@ -228,6 +228,7 @@ public class MyAccountServiceImp implements MyAccountService {
 			}
 		}
 		return content_view;
+	}
 	public String getMemberStatus(String mb_id) {
 		return myAccountDao.selectMemberStatus(mb_id);
 	}
