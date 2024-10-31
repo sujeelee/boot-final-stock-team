@@ -149,12 +149,8 @@ public class AdminController {
 		return "/admin/admMember/admUserInsert";
 	}
 
-	// 회원 등록
-	@PostMapping("/admMember/admUserInsert")
-	public String admUserInsert() {
-		return "/admin/admMember/admUserInsert";
-	}
 
+	// 회원 등록 
 	@PostMapping("/admMember/admUserInsert/AdminUserInsert")
 	public String admUserInsert(Model model, AdmMemberVO admMemberVO, String mb_emailing) {
 		int eamiling = mb_emailing != null ? 1 : 0;
