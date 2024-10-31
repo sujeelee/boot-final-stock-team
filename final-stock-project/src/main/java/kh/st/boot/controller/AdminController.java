@@ -22,6 +22,7 @@ import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
 import kh.st.boot.pagination.AdmDayCheckCriteria;
 import kh.st.boot.pagination.AdmNewsCriteria;
+import kh.st.boot.pagination.AdmPointCriteria;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.OrderCriteria;
 import kh.st.boot.pagination.PageMaker;
@@ -153,10 +154,15 @@ public class AdminController {
 	}
 
 	// 회원 등록
+	@PostMapping("/admMember/admUserInsert")
+	public String admUserInsert() {
+		return "/admin/admMember/admUserInsert";
+	}
 	@PostMapping("/admMember/admUserInsert/AdminUserInsert")
-	public String admUserInsert(Model model, AdmMemberVO admMemberVO,
-			@RequestParam(value = "mb_emailing", required = false) String mb_emailing) {
-		admMemberVO.setMb_emailing("on".equals(mb_emailing) ? 1 : 0);
+	public String admUserInsert(Model model, AdmMemberVO admMemberVO, String mb_emailing) {
+		int eamiling = mb_emailing != null ? 1 : 0;
+		admMemberVO.setMb_emailing(eamiling);
+		System.out.println(eamiling);
 		boolean res = admUserService.getAdmUserIns(admMemberVO);
 		System.out.println(res);
 		if (res == false) {
@@ -164,17 +170,10 @@ public class AdminController {
 			model.addAttribute("url", "/admin/adminHome");
 			return "util/msg";
 		}
-
 		return "redirect:/admin/admMember/adminUser";
 	}
 
 	
-	@PostMapping("/admMember/admUserInsert")
-	public String admUserInsert() {
-		
-		
-		return "/admin/admMember/admUserInsert";
-	}
 
 	@GetMapping("/admMember/adminUser/userSearch")
 	public String admuseSearch(@RequestParam("use_sh") String use_sh, @RequestParam("search") String search,
@@ -190,7 +189,6 @@ public class AdminController {
 		List<AdmMemberVO> searchUser = admUserService.getSearchUser(use_sh, cri);
 
 		PageMaker pm_use = admUserService.getPageMakerSearch(cri, use_sh);
-
 		model.addAttribute("user", searchUser);
 		model.addAttribute("pm_use", pm_use);
 		model.addAttribute("use_sh", use_sh);
@@ -549,13 +547,14 @@ public class AdminController {
 	}
 
 	@GetMapping("admPoint/admPointPage/pointSearch")
-	public String pointSearch(Model model, @RequestParam("mb_id") String mb_id, Criteria cri,
+	public String pointSearch(Model model, String mb_id, AdmPointCriteria cri,
 			@RequestParam(value = "page", defaultValue = "1") int page) {
 		cri.setPerPageNum(7);
 		cri.setPage(page);
+		cri.setMb_id(mb_id);
 
-		List<AdmPointVO> Slt = admPointService.getPointUserSearch(cri, mb_id);
-		PageMaker pm_point = admPointService.getPageMaker(cri, mb_id);
+		List<AdmPointVO> Slt = admPointService.getPointUserSearch(cri);
+		PageMaker pm_point = admPointService.getPageMaker(cri);
 
 		model.addAttribute("list", Slt);
 		model.addAttribute("pm_point", pm_point);
