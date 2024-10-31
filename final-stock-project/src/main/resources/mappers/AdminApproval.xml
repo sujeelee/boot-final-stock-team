@@ -10,7 +10,6 @@
 
 	<select id="selectCountList" resultType="int"> SELECT COUNT(*) FROM
 		member_approve
-		WHERE (mp_yn IS NULL)
 	</select>
 
 	<update id="nyUPDATE">
@@ -35,19 +34,23 @@
 	<select id="searchApproval" resultType="AdmApprovalVO">
 		SELECT * FROM
 		member_approve
-		WHERE mp_company = #{mp_company}
+		WHERE mp_company LIKE CONCAT('%', #{mp_company}, '%')
+		LIMIT #{pageStart}, #{perPageNum}
+	</select>
+	<select id="selectTotalCount" resultType="int"> SELECT COUNT(*) FROM
+		member_approve
+		WHERE mp_company LIKE CONCAT('%', #{mp_company}, '%')
 	</select>
 
-	
 	<update id="stockLvUp">
 		UPDATE member
 		SET mb_level = 8
 		WHERE mb_no = #{mb_no}
 	</update>
-	
 
-	
-    <update id="newsLvUp">
+
+
+	<update id="newsLvUp">
 		UPDATE member
 		SET mb_level = 7
 		WHERE mb_no = #{mb_no}
@@ -59,16 +62,16 @@
 		SET mb_level = 1
 		WHERE mb_no = #{mb_no}
 	</update>
-	
+
 
 	<delete id="newsDelete">
-	DELETE FROM news_member 
-	WHERE  mb_no = #{mb_no}
+		DELETE FROM news_member
+		WHERE mb_no = #{mb_no}
 	</delete>
 
 	<delete id="stockDelete">
-	DELETE FROM stock_member
-	WHERE  mb_no = #{mb_no}
+		DELETE FROM stock_member
+		WHERE mb_no = #{mb_no}
 	</delete>
 
 

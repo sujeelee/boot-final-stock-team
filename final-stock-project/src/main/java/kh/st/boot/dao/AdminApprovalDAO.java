@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import kh.st.boot.model.vo.AdmApprovalVO;
+import kh.st.boot.pagination.AdmApprovalCriteria;
 import kh.st.boot.pagination.Criteria;
 
 @Mapper
@@ -22,7 +23,7 @@ public interface AdminApprovalDAO {
 
 	int selectCountList(Criteria cri);
 
-	List<AdmApprovalVO> searchApproval(String mp_company);
+	List<AdmApprovalVO> searchApproval(AdmApprovalCriteria cri);
 
 	void stockLvUp(int mb_no);
 
@@ -33,5 +34,7 @@ public interface AdminApprovalDAO {
 	void stockDelete(int mb_no);
 
 	void memberLvDown(int mb_no);
+
+	int selectTotalCount(AdmApprovalCriteria cri);
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdminApprovalDAO;
 import kh.st.boot.model.vo.AdmApprovalVO;
+import kh.st.boot.pagination.AdmApprovalCriteria;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import lombok.AllArgsConstructor;
@@ -57,10 +58,14 @@ public class AdminApprovalService {
 		return new PageMaker(10, cri, count);
 	}
 
-	public List<AdmApprovalVO> search(String mp_company) {
+	public List<AdmApprovalVO> search(AdmApprovalCriteria  cri) {
 		
-		return adminApprovalDAO.searchApproval(mp_company);
+		return adminApprovalDAO.searchApproval(cri);
 		
+	}
+	public PageMaker getPageMakersearch(AdmApprovalCriteria cri) {
+		int totalcount = adminApprovalDAO.selectTotalCount(cri);
+		return new PageMaker(10, cri, totalcount);
 	}
 
 }
