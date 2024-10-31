@@ -47,6 +47,8 @@ public class AdminUserService {
 
     // 페이지네이션이 적용된 검색 결과 가져오기
     public List<AdmMemberVO> getSearchUser(String use_sh, UserCriteria cri) {
+    	
+    	
         return adminuserDAO.selectUser(use_sh, cri);
     }
 
