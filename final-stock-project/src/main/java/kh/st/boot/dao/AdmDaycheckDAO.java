@@ -8,7 +8,7 @@ import kh.st.boot.pagination.Criteria;
 
 public interface AdmDaycheckDAO {
 
-	List<AdmDaycheckVO> AllSelect();
+	List<AdmDaycheckVO> AllSelect(Criteria cri);
 
 	List<AdmDaycheckVO> OneSelect(String mb_id);
 

@@ -7,7 +7,6 @@
 	crossorigin="anonymous">
 	
 </script>
-<link href="/css/admhome.css" rel='stylesheet'>
 <link href="/css/admnews.css" rel='stylesheet'>
 <script
 	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
@@ -35,7 +34,7 @@
 					<table>
 						<thead>
 							<tr>
-								<th style="width: 420px">신문사명</th>
+								<th>신문사명</th>
 								<th>사용여부</th>
 								<th>사용여부변경</th>
 								<th>관리</th>
@@ -61,8 +60,8 @@
 											th:value="${newspaper.np_no}" /> <input type="hidden"
 											name="np_name" th:value="${newspaper.np_name}" /> <input
 											type="hidden" name="np_use" th:value="${newspaper.np_use}" />
-										<button type="submit" style="font-size: 12px;"
-											onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+										<input type="submit" value="삭제" class="btn_submit btn"
+											accesskey="5" onclick="return confirm('정말 삭제하시겠습니까?');">
 									</form>
 
 								</td>
@@ -105,8 +104,9 @@
 						</ul>
 					</div>
 					<section id="sec_ing">
-						<h2 id="point_ins_txt">신문사 추가</h2>
-						<form action="/admin/admNews/newspapers/register" method="post">
+						<h2 id="point_ins_txt" style="text-align: left;">신문사 추가</h2>
+						<form action="/admin/admNews/newspapers/register" method="post"
+							style="text-align: left;">
 							<table>
 								<colgroup>
 									<col id="grid_4">
@@ -115,12 +115,12 @@
 								<tbody>
 									<tr>
 										<th><label>신문사명</label></th>
-										<td><input type="text" name="np_name" value="dd"
-											id="mb_id" class="point_ins"></td>
+										<td><input type="text" name="np_name" required id="mb_id"
+											class="point_ins in_sch"></td>
 									</tr>
 									<tr>
 										<th><label>사용중 사용안함</label></th>
-										<td><select name="np_use" required>
+										<td><select name="np_use" required class="in_sch">
 												<option value="1">사용 중</option>
 												<option value="0">사용 안 함</option>
 										</select></td>
@@ -128,7 +128,7 @@
 
 								</tbody>
 							</table>
-							<input type="submit" value="확인" class="btn_submit btn"
+							<input type="submit" value="추가" class="btn_submit btn ins"
 								accesskey="5">
 						</form>
 

@@ -2,11 +2,15 @@ package kh.st.boot.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdmPointDAO;
 import kh.st.boot.model.vo.AdmPointVO;
+import kh.st.boot.pagination.AdmPointCriteria;
+import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.PageMaker;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -17,8 +21,8 @@ public class AdmPointService {
 	private AdmPointDAO admPointDAO;
 
 	
-	public List<AdmPointVO> allselect() {
-		return 	admPointDAO.selectAll();
+	public List<AdmPointVO> allselect(Criteria cri) {
+		return 	admPointDAO.selectAll(cri);
 	}
 
 
@@ -35,5 +39,23 @@ public class AdmPointService {
 	public void delete(int po_no) {
 		admPointDAO.deletPoint(po_no);
 	}
+
+
+	public PageMaker getPageMaker(Criteria cri) {
+		int count = admPointDAO.selectCountList(cri);
+		return new PageMaker(10, cri, count);
+	}
+
+
+	public List<AdmPointVO> getPointUserSearch(AdmPointCriteria cri) {
+		return 	admPointDAO.pointUserSearch(cri);
+	}
+
+
+	public PageMaker getPageMaker(AdmPointCriteria cri) {
+		int totalCount = admPointDAO.selectTotalCount(cri);
+		return new PageMaker(10, cri, totalCount);
+	}
+
 
 }
