@@ -42,6 +42,7 @@
     ></script>
   </head>
   <body scroll="no">
+    <div th:replace="~{layout/modal.html}"></div>
     <!--/* 고정 헤더 */-->
     <div th:replace="~{layout/header.html :: header}"></div>
     <!-- 헤더 불러오기 -->
@@ -52,44 +53,83 @@
 
     <div class="home-section container">
       <main layout:fragment="content"></main>
+      <div th:replace="~{layout/modal.html}"></div>
     </div>
+    
     <div th:replace="~{layout/footer.html :: footer}"></div>
     <!-- 푸터 불러오기 -->
     <!-- 컨텐츠 영역 (각 페이지에서 변경될 부분) -->
 
-    <script th:inline="javascript">
-      <!-- URL에 따라 container 클래스 제거하는 스크립트 -->
-      $(document).ready(function () {
-        // 현재 URL 가져오기
-        let currentUrl = window.location.href;
-        // container 없애고 싶은 url 아래에 추가 하시면 됩니다.
-        let urlNames = ["myaccount"];
-        // URL에 'myaccount'가 포함되어 있는지 확인
-        for (item of urlNames) {
-          if (currentUrl.includes(item)) {
-            // 'container' 클래스를 가진 div 요소에서 클래스 제거
-            $(".home-section").removeClass("container");
-          }
-        }
-      }); // 특정 url에 container를 삭제하는 함수
-
-      function isEmptyCheck(data) {
-        if (
-          data == "" ||
-          data == null ||
-          data == undefined ||
-          (data != null &&
-            typeof data == "object" &&
-            !Object.keys(data).length)
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-		function addCommas(num) {
-			return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	<script th:inline="javascript">
+	<!-- URL에 따라 container 클래스 제거하는 스크립트 -->
+	$(document).ready(function () {
+	  // 현재 URL 가져오기
+	  let currentUrl = window.location.href;
+	  // container 없애고 싶은 url 아래에 추가 하시면 됩니다.
+	  let urlNames = ["myaccount"];
+	  // URL에 'myaccount'가 포함되어 있는지 확인
+	  for (item of urlNames) {
+	    if (currentUrl.includes(item)) {
+	      // 'container' 클래스를 가진 div 요소에서 클래스 제거
+	      $(".home-section").removeClass("container");
+	    }
+	  }
+	}); // 특정 url에 container를 삭제하는 함수
+	
+	function isEmptyCheck(data) {
+		if (data == "" ||data == null ||data == undefined || (data != null &&typeof data == "object" &&!Object.keys(data).length)) {
+			return true;
 		}
-    </script>
+		return false;
+	}
+	
+	function addCommas(num) {
+		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	function open_window() {
+		var url = "/deposit/send";
+		const width = 500;
+		const height = 500;
+		const left = (window.screen.width / 2) - (width / 2);
+		const top = (window.screen.height / 2) - (height / 2);
+	
+		window.open(url, '_blank', `width=${width},height=${height},scrollbars=no,left=${left},top=${top}`);
+	}
+	$(document).on("keydown", function(event) {
+	    if (event.key === "/") {
+	    	action_search("show");
+	    }
+	});
+	function updateTranslateValue() {
+		var windowWidth = $(window).width() / 2; // 현재 창의 너비
+		var translateXValue = `calc(-50% + ${windowWidth}px)`;
+		$(':root').css('--translate-x', translateXValue);
+	}
+	updateTranslateValue();
+    $(window).resize(updateTranslateValue);
+	function action_search(type){
+		if(type == "show"){
+			if($(".search-modal").hasClass("active") === false){
+				$(".search-modal").fadeIn(300, function() {
+					$('body').append('<div class="modal-backdrop" onclick="action_search(\'hide\')"></div>'); // 새로운 backdrop 추가
+					$(".search-modal").addClass("active");
+				});
+			}
+		} else {
+			if($(".search-modal").hasClass("active")){
+				$(".search-modal").fadeOut(300, function() {
+					$('.modal-backdrop').remove(); // 백드롭 제거
+					$(".search-modal").removeClass("active");
+				});
+			} else {
+				$(".search-modal").fadeIn(300, function() {
+					$('body').append('<div class="modal-backdrop" onclick="action_search(\'hide\')"></div>'); // 새로운 backdrop 추가
+					$(".search-modal").addClass("active");
+				});
+			}
+		}
+	}
+	</script>
   </body>
 </html>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
+import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 
@@ -54,5 +55,7 @@ public interface NewsDAO {
 	List<NewsVO> selectNewsListByImg();
 
 	List<NewsVO> selectNewsListByNoImg();
+
+	NewsMemberVO selectNewsMember(int mb_no);
 
 }

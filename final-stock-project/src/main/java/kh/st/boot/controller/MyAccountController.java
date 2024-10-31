@@ -325,7 +325,9 @@ public class MyAccountController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String mb_id = principal.getName();
 		MemberVO user = memberService.findById(mb_id);
-		String status = myAccountService.getMemberStatus(user.getMb_id());
+		String status = myAccountService.getMemberStatus(user.getMb_no(), user.getMb_id());
+		System.out.println(user.getMb_no());
+		System.out.println(status);
 		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
 		if(res) {
 			if(myAccountService.deleteMemberStatus(user.getMb_no(), status)) {
