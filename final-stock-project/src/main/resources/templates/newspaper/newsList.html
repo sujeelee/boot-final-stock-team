@@ -13,7 +13,14 @@
 			<link rel="stylesheet" th:href="@{/css/newsList.css}" >
 		</th:block>
 		<div class="container">
-			<h1 th:text="${newspaper.np_name}" class="text-center mt-4 mb-4"></h1>
+			<div class="d-flex">
+				<h1 class="ml-3" th:text="${newspaper.np_name}"></h1>
+				<div class="ml-auto insert-news">
+					<span sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.mb_level == 7}" >
+		            	<a th:href="@{/newspaper/newsInsert/{np_no}(np_no=${newspaper.np_no})}" class="btn">뉴스 등록</a>
+		            </span>
+	            </div>
+			</div>
 			<input type="hidden" name="np_num" th:value="${newspaper.np_no}">
 			<div class="main_wrap">
 		        <!-- 날짜 선택 버튼 영역 -->
@@ -23,11 +30,8 @@
 		            <input type="hidden" name="ne_datetime" th:value="${ne_datetime}">
 		            <button id="next-date-btn" class="date-btn">▶</button>
 		        </div>
-		        <div class="explanatory-text d-flex">
-	            	<span class="mr-auto">뉴스를 누른 채 이동하면 순서 변경이 가능합니다.</span>
-	            	<span sec:authorize="isAuthenticated()" th:if="${#authentication.principal.member.mb_level == 7}">
-	            		<a th:href="@{/newspaper/newsInsert/{np_no}(np_no=${newspaper.np_no})}" class="btn btn-outline-secondary">뉴스 등록</a>
-	            	</span>
+		        <div class="explanatory-text">
+	            	<span>뉴스를 누른 채 이동하면 순서 변경이 가능합니다.</span>
 	       		</div>
 		        <!-- 뉴스 리스트 박스 -->
 		        <div class="news-container">

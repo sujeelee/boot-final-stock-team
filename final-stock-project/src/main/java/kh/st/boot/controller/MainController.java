@@ -24,7 +24,6 @@ public class MainController {
 		mo.addAttribute("user", user);
 		List<NewsVO> newsImgList = newsService.getNewsListByImg(); 	// 썸네일 있는 뉴스 최신순으로 4개
 		List<NewsVO> newsList = newsService.getNewsListByNoImg();	// 썸네일 없는 뉴스 최신순으로 4개 
-		System.out.println(newsList);
 		mo.addAttribute("newsImgList", newsImgList);
 		mo.addAttribute("newsList" ,newsList);
 		return "home";

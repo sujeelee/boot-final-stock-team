@@ -23,6 +23,7 @@ import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
+import kh.st.boot.service.MemberService;
 import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,7 +32,9 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 @RequestMapping("/newspaper")
 public class NewsController {
+	
 	private NewsService newsService;
+	private MemberService memberService;
 	
 	@GetMapping("")
 	public String newspaperList(Model model) {
