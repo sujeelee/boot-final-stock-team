@@ -196,8 +196,9 @@ public class MyAccountServiceImp implements MyAccountService {
 	@Override
 	public String getMemberStatus(int mb_no, String mb_id) {
 		return myAccountDao.selectMemberStatus(mb_no, mb_id);
-
-  @Override
+	}
+	
+    @Override
 	public SendVO getSendInfo(String ds_no) {
 		SendVO send = depositDao.getSendInfo(ds_no);
 		return send;
