@@ -1,6 +1,5 @@
 package kh.st.boot.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +55,10 @@ public class AdminUserService {
         return new PageMaker(10, cri, totalCount); // PageMaker 생성 (displayPageNum을 10으로 설정)
     }
 
+	public boolean getAdmUserIns(AdmMemberVO admMemberVO) {
+		adminuserDAO.UserInsert(admMemberVO);
+		return true;
+	}
+
 	
 }
-
