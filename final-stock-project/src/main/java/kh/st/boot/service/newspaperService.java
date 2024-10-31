@@ -1,14 +1,15 @@
 package kh.st.boot.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.NewspaperDAO;
+import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.pagination.AdmNewsCriteria;
-import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 
 @Service
