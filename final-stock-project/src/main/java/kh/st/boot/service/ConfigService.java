@@ -25,8 +25,8 @@ public class ConfigService {
 		return adminDao.selectAdmin();
 	}
 
-	public List<HotStockDTO> getHotStockList() {
-		return stockDao.getHotStockList();
+	public List<HotStockDTO> getHotStockList(int limit) {
+		return stockDao.getHotStockList(limit);
 	}
 
 	public List<DashListDTO> getDashList(Map<String, Object> param) {
