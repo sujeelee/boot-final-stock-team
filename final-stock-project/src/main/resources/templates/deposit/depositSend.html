@@ -59,7 +59,9 @@
 						<input class="account-control" type="text" name="send_deposit" value="" placeholder="얼마나 보낼까요?" size="40" onkeyup="get_price(this.value);">
 						<button type="button" class="btn start-acc" style="display: none;" onclick="get_price(0);"><i class="fa-regular fa-circle-xmark"></i></button>
 					</div>
-					<div class="account-tiny center" th:text="'최대 출금가능 금액 ' + ${#numbers.formatInteger(member.deposit,0,'COMMA')} + '원'" th:onclick="get_price([[${member.deposit}]])"></div>
+					<div class="account-tiny center" th:onclick="get_price([[${member.deposit > 1000000 ? 1000000 : member.deposit}]])">
+						<span th:text="'최대 송금가능 금액 ' + ${#numbers.formatInteger(member.deposit > 1000000 ? 1000000 : member.deposit,0,'COMMA')} + '원'"></span>
+					</div>
 					<div class="msg-resv center"></div>
 				</div>
 				<div class="resv-chk center" style="display: none;">
@@ -248,6 +250,14 @@
 					$(".msg-resv").text("출금 가능한 금액이 부족합니다 :(");
 					$("input[name=send_deposit]").focus();
 			        price = deposit;
+			    }
+				
+			 // price가 소지 금액을 넘는지
+			    if (parseInt(price) > 1000001) {
+			        $(".msg-resv").addClass("msg-error");
+					$(".msg-resv").text("1회 송금 한도는 100만원 입니다:(");
+					$("input[name=send_deposit]").focus();
+			        price = 1000000;
 			    }
 				
 			    var text_price = addCommas(price) + "원";
