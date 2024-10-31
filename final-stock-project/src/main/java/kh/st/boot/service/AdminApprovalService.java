@@ -26,6 +26,15 @@ public class AdminApprovalService {
 		// 거절한 경우 n값만 넣어주면 됨
 		if (mp_yn.equals("n")) {
 			adminApprovalDAO.nyUPDATE(mb_no, mp_yn); // n/y 와 승인시간 저장
+			if(mp_type.equals("news")) {
+				adminApprovalDAO.newsDelete(mb_no);   // 테이블 딜리트 
+				adminApprovalDAO.memberLvDown(mb_no);   // 멤버 레벨 1로 
+			}
+			else if (mp_type.equals("stock")){
+				adminApprovalDAO.stockDelete(mb_no);   // 테이블 딜리트 
+				adminApprovalDAO.memberLvDown(mb_no);   // 멤버lv 1로 
+			}
+
 		}
 
 		else if (mp_yn.equals("y")) {

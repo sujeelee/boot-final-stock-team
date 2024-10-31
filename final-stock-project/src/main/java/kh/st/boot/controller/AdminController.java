@@ -3,7 +3,6 @@ package kh.st.boot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,7 @@ import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
+import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
@@ -30,6 +30,7 @@ import kh.st.boot.service.AdmPointService;
 import kh.st.boot.service.AdminApprovalService;
 import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
+import kh.st.boot.service.AdminStock_addService;
 import kh.st.boot.service.AdminUserService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
@@ -167,28 +168,6 @@ public class AdminController {
 		return "redirect:/admin/admMember/adminUser";
 	}
 
-	@GetMapping("/admMember/adminUser/userSearch")
-	public String admuseSearch(@RequestParam("use_sh") String use_sh, @RequestParam("search") String search,
-			@RequestParam(value = "page", defaultValue = "1") int page, Model model, UserCriteria cri) { // UserCriteria
-
-		// 한 페이지당 게시물 숫자
-		cri.setPerPageNum(12);
-		// cri로 넘겨줄 페이지
-		cri.setPage(page);
-		// 검색 매퍼에서 사용
-		cri.setSearch(search);
-
-		List<AdmMemberVO> searchUser = admUserService.getSearchUser(use_sh, cri);
-
-		PageMaker pm_use = admUserService.getPageMakerSearch(cri, use_sh);
-
-		model.addAttribute("user", searchUser);
-		model.addAttribute("pm_use", pm_use);
-		model.addAttribute("use_sh", use_sh);
-		model.addAttribute("search", search);
-
-		return "/admin/admMember/adminUser";
-	}
 	
 	@PostMapping("/admMember/admUserInsert")
 	public String admUserInsert() {
@@ -359,18 +338,6 @@ public class AdminController {
 		sltAdmLevelPageService.dltAdmLvService(dltAdm);
 		return "redirect:/admin/admLevel/admLevelPage";
 	}
-	
-	// 회원 정보 상세페이지 조회
-		@PostMapping("/admLevel/admLevSel")
-		public String admlevSel(Model model, int lv_num) {
-			AdminLevelPageVO admlevSel = sltAdmLevelPageService.getAdmlevSel(lv_num);
-			
-			model.addAttribute("admlevSel", admlevSel);
-			
-			return "/admin//admLevel/admLevSel";
-		}
-		
-	
 
 	// 회원 정보 상세페이지 조회
 	@PostMapping("/admLevel/admLevSel")
@@ -603,7 +570,7 @@ public class AdminController {
 	// 		
 	
 	//-------------------------------------------------------------------------------
-	// --------------------------주식주 증/감 여부 승인  ----------------------------
+	// -------------------------- 주식   발행/소각  요청 승인  ----------------------------
 	// ------------------------------------------------------------------------------
 
 	

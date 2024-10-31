@@ -54,4 +54,24 @@
 	</update>
 
 
+	<update id="memberLvDown">
+		UPDATE member
+		SET mb_level = 1
+		WHERE mb_no = #{mb_no}
+	</update>
+	
+
+	<delete id="newsDelete">
+	DELETE FROM news_member 
+	WHERE  mb_no = #{mb_no}
+	</delete>
+
+	<delete id="stockDelete">
+	DELETE FROM stock_member
+	WHERE  mb_no = #{mb_no}
+	</delete>
+
+
+
+
 </mapper>

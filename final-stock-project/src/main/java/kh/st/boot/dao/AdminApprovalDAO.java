@@ -28,4 +28,10 @@ public interface AdminApprovalDAO {
 
 	void newsLvUp(int mb_no);
 
+	void newsDelete(int mb_no);
+
+	void stockDelete(int mb_no);
+
+	void memberLvDown(int mb_no);
+
 }
