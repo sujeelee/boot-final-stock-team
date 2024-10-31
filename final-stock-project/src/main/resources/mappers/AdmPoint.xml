@@ -34,11 +34,11 @@
 	<select id="pointUserSearch" resultType="AdmPointVO">
 		SELECT * FROM point
         WHERE mb_id LIKE CONCAT('%', #{mb_id}, '%')
-        LIMIT #{cri.pageStart}, #{cri.perPageNum}
+        LIMIT #{pageStart}, #{perPageNum}
 	</select>
 
 	<select id="selectTotalCount" resultType="int">
-		select count(*) from point WHERE mb_id = #{mb_id}
+		select count(*) from point WHERE mb_id LIKE CONCAT('%', #{mb_id}, '%')
 	</select>
 
 
