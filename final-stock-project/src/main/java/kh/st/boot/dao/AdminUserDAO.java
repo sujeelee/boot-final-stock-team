@@ -29,6 +29,8 @@ public interface AdminUserDAO {
 
 	int selectUserCount(@Param("use_sh") String use_sh, @Param("cri") UserCriteria cri // UserCriteria로 변경
 	);
+
+	void UserInsert(AdmMemberVO admMemberVO);
 	
 	
 }
