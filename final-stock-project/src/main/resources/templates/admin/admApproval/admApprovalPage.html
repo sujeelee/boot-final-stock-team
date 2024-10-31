@@ -58,7 +58,11 @@
 									<button type="submit" class="btn_submit btn">거절</button>
 								</form>
 							</td>
-							<td th:text="${list.mp_yn}"></td>
+							<td>
+							    <span th:if="${list.mp_yn == 'y'}">승인 상태입니다</span>
+							    <span th:if="${list.mp_yn == 'n'}">거절 상태입니다</span>
+							    <span th:if="${list.mp_yn != 'y' && list.mp_yn != 'n'}">처리 대기중입니다</span> <!-- 필요시 추가 -->
+							</td>
 						</tr>
 					</tbody>
 				</table>
