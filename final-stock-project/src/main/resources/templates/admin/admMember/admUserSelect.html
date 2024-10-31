@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
+<head>
+
+<link href="/css/admhome.css" rel='stylesheet'>
+
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
+</head>
+<body>
+
+	<div id="wrapper">
+		<div id="container">
+			<h1 id="container_title">회원 정보 수정</h1>
+			<div id="container_main" class="content">
+				<form action="/admin/admMember/admUserSelect/Update" method="post">
+					<section>
+						<h2 id="main_h2">회원 정보 상세 페이지</h2>
+						<div class="tbl_main">
+							<table>
+								<colgroup>
+									<col class="grid_4">
+									<col>
+									<col class="grid_4">
+									<col>
+								</colgroup>
+								<tbody>
+									<tr>
+										<th><label>회원 아이디</label></th>
+										<td><input type="text" name="mb_id"
+											th:value="${admUseSel.mb_id}" required class="menu_input"
+											size="40"><input type="hidden" name="mb_no"
+											th:value="${admUseSel.mb_no}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>비밀번호</label></th>
+										<td><input type="text" name="mb_password"
+											th:value="${admUseSel.mb_password}" required
+											class="menu_input" size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 이름</label></th>
+										<td><input type="text" name="mb_name"
+											th:value="${admUseSel.mb_name}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 닉네임</label></th>
+										<td><input type="text" name="mb_nick"
+											th:value="${admUseSel.mb_nick}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 전화번호</label></th>
+										<td><input type="text" name="mb_ph"
+											th:value="${admUseSel.mb_ph}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 이메일</label></th>
+										<td><input type="text" name="mb_email"
+											th:value="${admUseSel.mb_email}" required class="menu_input"
+											size="40"></td>
+									</tr>
+									<tr>
+										<th><label>주소</label></th>
+										<!-- 우편번호와 기본주소 사이 간격 조정 가능한지~~? -->
+										<td><input type="text" name="mb_zip"
+											th:value="${admUseSel.mb_zip}" required class="menu_input"
+											size="40" style="margin-bottom: 4px"> <input
+											type="text" name="mb_addr2" th:value="${admUseSel.mb_addr2}"
+											required class="menu_input" size="40"
+											style="margin-bottom: 4px"> <input type="text"
+											name="mb_addr" th:value="${admUseSel.mb_addr}" required
+											class="menu_input" size="87"></td>
+									</tr>
+									<tr>
+										<th><label>생년월일</label></th>
+										<td><input type="text" name="mb_birth"
+											th:value="${#dates.format(admUseSel.mb_birth, 'yyyy-MM-dd')}"
+											readonly="readonly" class="menu_input" size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 레벨</label></th>
+										<td><input type="text" name="mb_level"
+											th:value="${admUseSel.mb_level}" required class="menu_input"
+											size="1"></td>
+									</tr>
+									<tr>
+										<th><label>회원가입일</label></th>
+										<td><input type="text" name="mb_datetime"
+											th:value="${#dates.format(admUseSel.mb_datetime, 'yyyy-MM-dd')}"
+											readonly="readonly" class="menu_input" size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 수정일</label></th>
+										<td><input type="text" name="mb_edit_date"
+											th:value="${#dates.format(admUseSel.mb_edit_date, 'yyyy-MM-dd')}"
+											readonly="readonly" class="menu_input" size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 정지일</label></th>
+										<td><input type="text" name="mb_stop_date"
+											th:value="${#dates.format(admUseSel.mb_stop_date, 'yyyy-MM-dd')}"
+											readonly="readonly" class="menu_input" size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 탈퇴일</label></th>
+										<td><input type="text" name="mb_out_date"
+											th:value="${#dates.format(admUseSel.mb_out_date, 'yyyy-MM-dd')}"
+											readonly="readonly" class="menu_input" size="40"></td>
+									</tr>
+									<tr>
+										<th><label>회원 쿠키</label></th>
+										<td><textarea readonly="readonly" name="mb_cookie"
+												th:text="${admUseSel.mb_cookie}"></textarea></td>
+									</tr>
+									<tr>
+										<th><label>회원쿠키만료</label></th>
+										<td><textarea readonly="readonly" name="mb_cookie_limit"
+												th:text="${admUseSel.mb_cookie_limit}"></textarea></td>
+									</tr>
+									<tr>
+										<th><label>회원 포인트</label></th>
+										<td><input type="text" name="mb_point"
+											th:value="${admUseSel.mb_point}" required class="menu_input"
+											size="1"> 점</td>
+									</tr>
+									<tr>
+										<th><label>이메일수집동의여부</label></th>
+										<td><input type="checkbox" name="mb_emailing"
+											th:checked="${admUseSel.mb_emailing == 1 ? true : false}"
+											class="menu_input" size="1">사용 여부</td>
+									</tr>
+									<tr>
+										<th><label>회원주식전용계좌</label></th>
+										<td><input type="text" name="mb_account"
+											th:value="${admUseSel.mb_account}" required
+											class="menu_input" size="40"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</section>
+					<div class="btn_fixed_top btn_confirm">
+						<input type="submit" value="확인" class="btn_submit btn"
+							accesskey="5">
+					</div>
+				</form>
+			</div>
+			<footer id="ft">
+				<p>Copyright © demo.sir.kr. All rights reserved.</p>
+				<br>
+			</footer>
+		</div>
+	</div>
+
+</body>
+</html>

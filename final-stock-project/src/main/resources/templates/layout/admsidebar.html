@@ -3,9 +3,8 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <nav id="menu" class="menu_large" th:fragment="sidebar">
 	<ul id="menu_ul" onclick="toggleSubMenu('memberManagement')">
-		<li id="menu_li"><a href="/admin/adminHome"
-			class="sidefont"> <i class='bx bx-cog' id="nav_icon">
-					기본환경설정 </i>
+		<li id="menu_li"><a href="/admin/adminHome" class="sidefont">
+				<i class='bx bx-cog' id="nav_icon"> 기본환경설정 </i>
 		</a></li>
 		<li id="menu_li"><a href="/admin/admMember/adminUser"
 			class="sidefont"> <i class="bx bx-user-check" id="nav_icon">
@@ -16,7 +15,8 @@
 					글쓰기권한 </i>
 		</a></li>
 		<li id="menu_li"><a href="/admin/admOrder/orderAdm"
-			class="sidefont"> <i class='bx bx-edit-alt' id="nav_icon"> 주문내역 </i></a></li>
+			class="sidefont"> <i class='bx bx-edit-alt' id="nav_icon">
+					주문내역 </i></a></li>
 		<li id="menu_li"><a href="/admin/admPoint/admPointPage"
 			class="sidefont"> <i class='bx bx-credit-card' id="nav_icon">
 					포인트 </i></a></li>
@@ -26,6 +26,9 @@
 		<li id="menu_li"><a href="/admin/admDaycheck/daycheckAdm"
 			class="sidefont"> <i class='bx bx-list-ul' id="nav_icon">
 					회원출석 </i></a></li>
+		<li id="menu_li"><a href="/admin/admStock/admStock_add"
+			class="sidefont"> <i class='bx bxl-bitcoin' id="nav_icon">
+					주식발행 </i></a></li>
 		<li id="menu_li"><a href="/admin/admNews/news" class="sidefont">
 				<i class='bx bx-news' id="nav_icon"> 신문사정보 </i>
 		</a></li>

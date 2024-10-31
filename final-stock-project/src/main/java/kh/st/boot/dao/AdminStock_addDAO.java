@@ -12,5 +12,8 @@ public interface AdminStock_addDAO {
 
 	void updateAll(int sa_no, String sa_yn, String sa_feedback);
 
+	List<AdminStock_addVO> search(String mb_id);
+
 
 }
+

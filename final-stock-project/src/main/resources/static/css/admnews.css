@@ -5,28 +5,17 @@
     width: 52px;
 }
 
-h1 {
-	color: #003366;
-	font-size: 28px;
-	text-align: left;
-	margin-bottom: 20px; /* 제목과 콘텐츠 간격 */
-}
-
-.form-container {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 20px;
-}
-
-.search-form, .register-form {
-	display: flex;
-	justify-content: flex-start;
+.local_sch{
 	margin-bottom: 10px;
 }
 
 
-button:hover {
-	background-color: #00509E;
+.ins{
+	margin-top: 10px;
+}
+
+.in_sch{
+	height: 25px;
 }
 
 

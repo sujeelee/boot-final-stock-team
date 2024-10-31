@@ -28,6 +28,13 @@
 
 
 
+	<select id="search" resultType="AdminStock_addVO">
+		SELECT * FROM
+		stock_add
+		WHERE
+		mb_id = #{mb_id} AND sa_yn IS NULL;
+	</select>
+
 </mapper>
  
  
