@@ -14,15 +14,14 @@
 			<h1 id="container_title">글쓰기 권한 수정  페이지</h1>
 			<div id="container_main" class="content">
 				<div id="select_left">
-					<form action="/admin/admApproval/admApprovalPage/search" method="Post"
+					<form action="/admin/admApproval/admApprovalPage/search" method="get"
 						class="local_sch">
 						<select name="ID" style="height: 25px">
 							<option value="mp_company">요청사 ID</option>
 						</select> <input type="text" name="mp_company" required class="in_sch"
 							style="height: 25px">
-						<button type="submit" class="btn_submit btn">검색</button>
-						<a type="submit" th:href="@{/admin/admApproval/admApprovalPage/search}"
-							class="btn_submit btn btn_ateg">추가</a>
+						<button type="submit" class="btn_submit btn" style="margin-left: 2px;">검색</button>
+						<a type="submit" href="/admin/admApproval/admApprovalPage" class="btn_submit btn btn_a" style="padding-top: 5px;">초기화</a>
 					</form>
 				</div>
 				<table>
@@ -43,20 +42,20 @@
 							<td>
 								<!-- 승인 버튼 폼 -->
 								<form th:action="@{/admin/admApproval/admApprovalPage/slt}"
-									method="post">
+									method="post" class="apo_btn">
 									<input type="hidden" name="mp_yn" value="y" /> 
 									<input type="hidden" name="mb_no" th:value="${list.mb_no}" />
 									<input type="hidden" name="mp_type" th:value="${list.mp_type}" />
 									<input type="hidden" name="mp_company" th:value="${list.mp_company}" />
-									<button type="submit">승인</button>
+									<button type="submit" class="btn_submit btn">승인</button>
 								</form> <!-- 거절 버튼 폼 -->
 								<form th:action="@{/admin/admApproval/admApprovalPage/slt}"
-									method="post">
+									method="post" class="apo_btn">
 									<input type="hidden" name="mp_yn" value="n" /> 
 									<input type="hidden" name="mb_no" th:value="${list.mb_no}" />
 									<input type="hidden" name="mp_type" th:value="${list.mp_type}" />
 									<input type="hidden" name="mp_company" th:value="${list.mp_company}" />
-									<button type="submit">거절</button>
+									<button type="submit" class="btn_submit btn">거절</button>
 								</form>
 							</td>
 								<td th:text="${list.mp_yn}"></td>
@@ -65,7 +64,23 @@
 				</table>
 				<div id="display_box">
 					<ul class="pagination" th:object="${pm_Approval}"
-						th:if="${pm_Approval.endPage != 0}">
+						th:if="${pm_Approval != null && pm_Approval.endPage != 0 && mp_company != null}">
+						<li th:if="${pm_Approval.prev}"><a
+							th:href="@{/admin/admApproval/admApprovalPage/search(mp_company=${mp_company}, page=${pm_Approval.startPage - 1})}">◀</a>
+						</li>
+						<li
+							th:each="i : ${#numbers.sequence(pm_Approval.startPage, pm_Approval.endPage)}"
+							th:classappend="${pm_Approval.cri.page} == ${i} ? 'active' : ''">
+							<a
+							th:href="@{/admin/admApproval/admApprovalPage/search(mp_company=${mp_company}, page=${i})}"
+							th:text="${i}"></a>
+						</li>
+						<li th:if="${pm_Approval.next}"><a
+							th:href="@{/admin/admApproval/admApprovalPage/search(mp_company=${mp_company}, page=${pm_Approval.endPage + 1})}">▶</a>
+						</li>
+					</ul>
+					<ul class="pagination" th:object="${pm_Approval}"
+						th:if="${pm_Approval != null && pm_Approval.endPage != 0 && mp_company == null}">
 						<li th:if="${pm_Approval.prev}"><a
 							th:href="@{/admin/admApproval/admApprovalPage(page=${pm_Approval.startPage - 1})}">◀</a>
 						</li>
