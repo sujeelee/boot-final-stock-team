@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdmPointDAO;
 import kh.st.boot.model.vo.AdmPointVO;
+import kh.st.boot.pagination.AdmPointCriteria;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import lombok.AllArgsConstructor;
@@ -46,13 +47,13 @@ public class AdmPointService {
 	}
 
 
-	public List<AdmPointVO> getPointUserSearch(@Param("cri") Criteria cri, String mb_id) {
-		return 	admPointDAO.pointUserSearch(cri, mb_id);
+	public List<AdmPointVO> getPointUserSearch(AdmPointCriteria cri) {
+		return 	admPointDAO.pointUserSearch(cri);
 	}
 
 
-	public PageMaker getPageMaker(@Param("cri") Criteria cri, String mb_id) {
-		int totalCount = admPointDAO.selectTotalCount(cri, mb_id);
+	public PageMaker getPageMaker(AdmPointCriteria cri) {
+		int totalCount = admPointDAO.selectTotalCount(cri);
 		return new PageMaker(10, cri, totalCount);
 	}
 
