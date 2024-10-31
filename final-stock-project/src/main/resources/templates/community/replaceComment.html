@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<!--/* colist 반복 할 구간 + replaced 할 공간 */-->
+	<div th:each="comment : ${colist}" >
+			<div class="comment-header ml-4" >
+				<blockquote th:text="${comment.mb_id}">ID</blockquote>
+				<div>
+				<button class="btn-retouch"
+					th:if="${userInfo != null and comment.mb_id == userInfo}"
+					th:onclick="'enableEditMode(' + ${comment.co_id} + ', \'comment\',this)'">
+					<i class='bx bx-edit-alt'></i>
+				</button>
+				<button class="btn-delete"
+					th:if="${userInfo != null and comment.mb_id == userInfo}"
+					th:attr="data-wr-no=${comment.wr_no}, data-co-id=${comment.co_id}"					
+					onclick="comment_action(this, 'deleteComment')">
+					<i class='bx bx-message-rounded-x'></i>
+				</button>		
+				<button class="btn-like">
+					<i class='bx bxs-heart'></i>
+			    	<span></span>
+				</button>		
+				<button class="btn-report">
+					<i class='bx bx-x-circle'></i>				
+			    	<span></span>
+				</button>		
+				</div>	
+			</div>
+		<div class="comment-body ml-4">
+			<blockquote class="comment-text" th:text="${comment.co_content}">content</blockquote>
+			   <button class="btn-save" style="display:none;"
+                    th:attr="data-co-id=${comment.co_id},data-wr-no=${comment.wr_no}" 
+            		onclick="comment_action(this.closest('.comment-body'), 'updataComment')">
+                    <i class='bx bx-edit-alt'></i>
+               </button>
+		</div>				
+	</div>
+	<!--/* colist == 0 이면 없다고 이야기할 공간 */-->
+	<div th:if="${colist == null or #lists.isEmpty(colist)}" class="comment-item" style="text-align: center;">
+		<span>아직 댓글이 없습니다. 첫 댓글의 영광을 누리세요!</span>
+	</div>
+</html>
+<!--/* colist 반복 할 구간 종료 */-->
