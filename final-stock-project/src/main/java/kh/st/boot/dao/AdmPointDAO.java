@@ -3,8 +3,8 @@ package kh.st.boot.dao;
 import java.util.List;
 
 import kh.st.boot.model.vo.AdmPointVO;
+import kh.st.boot.pagination.AdmPointCriteria;
 import kh.st.boot.pagination.Criteria;
-import lombok.Data;
 
 
 public interface AdmPointDAO {
@@ -19,9 +19,9 @@ public interface AdmPointDAO {
 
 	int selectCountList(Criteria cri);
 
-	List<AdmPointVO> pointUserSearch(Criteria cri, String mb_id);
+	List<AdmPointVO> pointUserSearch(AdmPointCriteria cri);
 
-	int selectTotalCount(Criteria cri, String mb_id);
+	int selectTotalCount(AdmPointCriteria cri);
 
 	
 }
