@@ -42,7 +42,6 @@
     ></script>
   </head>
   <body scroll="no">
-    <div th:replace="~{layout/modal.html}"></div>
     <!--/* 고정 헤더 */-->
     <div th:replace="~{layout/header.html :: header}"></div>
     <!-- 헤더 불러오기 -->
@@ -53,7 +52,9 @@
 
     <div class="home-section container">
       <main layout:fragment="content"></main>
+      <div th:replace="~{layout/modal.html}"></div>
     </div>
+    
     
     <div th:replace="~{layout/footer.html :: footer}"></div>
     <!-- 푸터 불러오기 -->
@@ -100,6 +101,13 @@
 	    	action_search("show");
 	    }
 	});
+	function updateTranslateValue() {
+		var windowWidth = $(window).width() / 2; // 현재 창의 너비
+		var translateXValue = `calc(-50% + ${windowWidth}px)`;
+		$(':root').css('--translate-x', translateXValue);
+	}
+	updateTranslateValue();
+    $(window).resize(updateTranslateValue);
 	function action_search(type){
 		if(type == "show"){
 			if($(".search-modal").hasClass("active") === false){
