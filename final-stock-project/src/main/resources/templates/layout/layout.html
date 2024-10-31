@@ -42,6 +42,7 @@
     ></script>
   </head>
   <body scroll="no">
+    <div th:replace="~{layout/modal.html}"></div>
     <!--/* 고정 헤더 */-->
     <div th:replace="~{layout/header.html :: header}"></div>
     <!-- 헤더 불러오기 -->
@@ -53,6 +54,7 @@
     <div class="home-section container">
       <main layout:fragment="content"></main>
     </div>
+    
     <div th:replace="~{layout/footer.html :: footer}"></div>
     <!-- 푸터 불러오기 -->
     <!-- 컨텐츠 영역 (각 페이지에서 변경될 부분) -->
@@ -92,6 +94,33 @@
 		const top = (window.screen.height / 2) - (height / 2);
 	
 		window.open(url, '_blank', `width=${width},height=${height},scrollbars=no,left=${left},top=${top}`);
+	}
+	$(document).on("keydown", function(event) {
+	    if (event.key === "/") {
+	    	action_search("show");
+	    }
+	});
+	function action_search(type){
+		if(type == "show"){
+			if($(".search-modal").hasClass("active") === false){
+				$(".search-modal").fadeIn(300, function() {
+					$('body').append('<div class="modal-backdrop" onclick="action_search(\'hide\')"></div>'); // 새로운 backdrop 추가
+					$(".search-modal").addClass("active");
+				});
+			}
+		} else {
+			if($(".search-modal").hasClass("active")){
+				$(".search-modal").fadeOut(300, function() {
+					$('.modal-backdrop').remove(); // 백드롭 제거
+					$(".search-modal").removeClass("active");
+				});
+			} else {
+				$(".search-modal").fadeIn(300, function() {
+					$('body').append('<div class="modal-backdrop" onclick="action_search(\'hide\')"></div>'); // 새로운 backdrop 추가
+					$(".search-modal").addClass("active");
+				});
+			}
+		}
 	}
 	</script>
   </body>
