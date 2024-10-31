@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.AdmDaycheckDAO;
 import kh.st.boot.dao.NewspaperDAO;
 import kh.st.boot.model.vo.AdmDaycheckVO;
+import kh.st.boot.pagination.AdmDayCheckCriteria;
+import kh.st.boot.pagination.Criteria;
+import kh.st.boot.pagination.PageMaker;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -30,22 +33,34 @@ public class PointSltIdPageService {
 		return admDaycheckDAO.OneSelect(mb_id);
 	}
 
-	// 1 갯수새는 서비스 
-	public int countOnesInDays(String mb_id) {
-	        List<AdmDaycheckVO> daycheckList = sltOnePoint(mb_id);
-	        int count = 0;
+	// '1'제거한 길이를 원본에서 빼서 1이 몇개인지 확인
+	private int countOnes(String dcDays) {
+		return (dcDays.length() - dcDays.replace("1", "").length());
+	}
 
-	        for (AdmDaycheckVO daycheck : daycheckList) {
-	            // dc_days 값이 "1"인지 확인
-	            if ("1".equals(daycheck.getDc_days())) {
-	                count++;
-	            }
-	        }
-	        return count;  // 1의 개수 반환
-	    }
+	public PageMaker getPageMaker(Criteria cri) {
+		int count = admDaycheckDAO.selectCountList(cri);
+		return new PageMaker(10, cri, count);
+	}
 	
-	
-	
+	public List<AdmDaycheckVO> daychSearch(AdmDayCheckCriteria cri) {
+		
+		List<AdmDaycheckVO> searchDay = admDaycheckDAO.searchDaycheck(cri);
+		
+		for (AdmDaycheckVO dayNum : searchDay) {
+			String dcDays = dayNum.getDc_days();
 
-
+			if (dcDays != null) {
+				int count = countOnes(dcDays); // dc_days의 1 개수 세기
+				dayNum.setCountDay(count); // countList에 추가
+			}
+		}
+		return searchDay;
+		
+	}
+	public PageMaker getPageMakerSearch(AdmDayCheckCriteria cri) {
+		int totalcount = admDaycheckDAO.selectTotalCount(cri);
+		return new PageMaker(10, cri, totalcount);
+	}
+	
 }
