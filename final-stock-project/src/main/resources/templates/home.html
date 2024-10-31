@@ -170,7 +170,7 @@
 										<span th:text="${#numbers.formatInteger(hotm.price, 0, 'COMMA')} + '원'"></span>
 									</td>
 									<td>
-										<span th:class="${hotm.flt == '0' ? 'dash-grey' : hotm.flt.contains('-') ? 'dash-blue' :'dash-red' } + ' dash-font'" th:text="${#numbers.formatInteger(hotm.vs, 0, 'COMMA')}+'원 ('+ ${#numbers.formatDecimal(hotm.flt, 1, 2)}+'%)'"></span>
+										<span th:class="${hotm.flt == '0' ? 'dash-grey' : hotm.flt.contains('-') ? 'dash-blue' :'dash-red' } " th:text="${#numbers.formatInteger(hotm.vs, 0, 'COMMA')}+'원 ('+ ${#numbers.formatDecimal(hotm.flt, 1, 2)}+'%)'"></span>
 									</td>
 									<td class="table-black">
 										<span th:text="${hotm.price_text}"></span>
