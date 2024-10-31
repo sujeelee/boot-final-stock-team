@@ -132,7 +132,7 @@
 									<tr>
 										<th><label>이메일수집동의여부</label></th>
 										<td><input type="checkbox" name="mb_emailing"
-											th:value="${admUseSel.mb_emailing}" checked
+											th:checked="${admUseSel.mb_emailing == 1 ? true : false}"
 											class="menu_input" size="1">사용 여부</td>
 									</tr>
 									<tr>
