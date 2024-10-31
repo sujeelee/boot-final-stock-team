@@ -54,4 +54,6 @@ public interface DepositDAO {
 
 	boolean insertSend(@Param("se")SendVO send);
 
+	SendVO getSendInfo(@Param("no")String ds_no);
+
 }

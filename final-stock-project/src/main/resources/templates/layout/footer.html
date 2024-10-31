@@ -65,13 +65,15 @@
 	<div class="container">
 	<div class="footerdivider"></div> <!-- 줄 추가 -->
 	<div class="footer-links" style="display: flex; align-items: center; margin-left: 24%;">
-	        <a href="https://corp.tossinvest.com/contents/terms/?id=29" target="_blank">개인정보 처리방침</a>
+	        <a th:href="@{/terms/privacy}" target="_blank">개인정보 처리방침</a>
 	        <span>|</span>
-	        <a href="/investment-disclaimers">투자 유의사항</a>
+	        <a th:href="@{/terms/stock}" target="_blank">투자 유의사항</a>
 	        <span>|</span>
-	        <a href="https://corp.tossinvest.com/contents/terms/?id=53" target="_blank">이용자권리 및 유의사항</a>
+	        <a th:href="@{/terms/info}" target="_blank">이용약관</a>
 	        <span>|</span>
-	        <a href="https://corp.tossinvest.com/contents/terms/?id=31" target="_blank">신용정보 활용체제</a>
+	        <a th:href="@{/terms/noemail}" target="_blank">이메일 무단수집거부</a>
+	        <span>|</span>
+	        <a th:href="@{/terms}" target="_blank">처리방침 리스트</a>
 	        <span>|</span>
 	        <a th:href="@{/}" class="footer-logo-a">
 		        <span th:text="${config.cf_title}"></span>

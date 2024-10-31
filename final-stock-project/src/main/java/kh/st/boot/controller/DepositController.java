@@ -54,12 +54,6 @@ public class DepositController {
         String resultMsg = request.getParameter("resultMsg");
         String resultCode = request.getParameter("resultCode"); 
         model.addAttribute("resultMsg", resultMsg);
-        //응답 request body 로그 확인
-        /*Enumeration<String> params = request.getParameterNames(); 
-        while(params.hasMoreElements()){
-        	String paramName = params.nextElement();
-        	System.out.println(paramName+" : "+request.getParameter(paramName));
-        }        */
 
         if (resultCode.equalsIgnoreCase("0000")) {
             // 결제 성공 비즈니스 로직 구현
@@ -90,7 +84,7 @@ public class DepositController {
     @PostMapping("/insertOrder")
     @ResponseBody
     public String insertOrder(@RequestParam Map<String, Object> params, Model model, Principal principal, HttpServletRequest req, HttpServletResponse res){ 
-    	String id = depositService.getOrderId("");
+    	String id = depositService.getOrderId(null);
     	DepositOrderVO newOrder = new DepositOrderVO();
     	// VO 클래스의 필드 목록을 가져옴
         Field[] fields = newOrder.getClass().getDeclaredFields();
@@ -180,7 +174,14 @@ public class DepositController {
     	}
     	
     	boolean check = depositService.sendInsert(form); 
-    			
+    	
+    	if(check == false) {
+    		result.put("res", "err");
+			result.put("msg", "보내기에 실패했습니다:(");
+    	} else {
+    		result.put("res", "success");
+			result.put("msg", form.get("resv_name") + "님에게 보내기가 완료되었어요:)");
+    	}
     	return result;
     }
 }

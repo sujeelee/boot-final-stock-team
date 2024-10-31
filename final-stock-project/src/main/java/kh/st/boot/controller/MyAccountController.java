@@ -27,6 +27,7 @@ import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.SendVO;
 import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.Criteria;
@@ -392,20 +393,9 @@ public class MyAccountController {
 		AccountVO ac = myAccountService.getAccountAmt(mb_id);
 		
 		for(DepositVO tmps : list) {
-			String content_view = "";
-			if(tmps.getDe_stock_code() == null || tmps.getDe_stock_code() == "") {
-				String od_id = tmps.getDe_content().trim().split("주문번호 : ")[1];
-				DepositOrderVO dov = myAccountService.getDepositOrder(od_id); 
-				content_view = dov.getDo_name();
-			} else {
-				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
-				content_view = stock.getSt_name();
-				if(tmps.getDe_content().contains("매수 :")) {
-					content_view += tmps.getDe_content().trim().split("매수 :")[1];
-				} else {
-					content_view += tmps.getDe_content().trim().split("매도 :")[1];
-				}
-			}
+			
+			String content_view = myAccountService.setContentView(tmps);
+			
 			tmps.setContent_view(content_view);
 			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
 		}
@@ -435,20 +425,7 @@ public class MyAccountController {
 		AccountVO ac = myAccountService.getAccountAmt(mb_id);
 		
 		for(DepositVO tmps : list) {
-			String content_view = "";
-			if(tmps.getDe_stock_code() == null || tmps.getDe_stock_code() == "") {
-				String od_id = tmps.getDe_content().trim().split("주문번호 : ")[1];
-				DepositOrderVO dov = myAccountService.getDepositOrder(od_id); 
-				content_view = dov.getDo_name();
-			} else {
-				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
-				content_view = stock.getSt_name();
-				if(tmps.getDe_content().contains("매수 :")) {
-					content_view += tmps.getDe_content().trim().split("매수 :")[1];
-				} else {
-					content_view += tmps.getDe_content().trim().split("매도 :")[1];
-				}
-			}
+			String content_view = myAccountService.setContentView(tmps);;
 			tmps.setContent_view(content_view);
 			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
 		}

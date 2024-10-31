@@ -1,0 +1,64 @@
+.local_sch{
+	margin-bottom: 4px;
+	padding: 3px;
+}
+
+
+
+
+tbody {
+	background: white;
+}
+
+tbody td {
+	border: 1px solid #d6dce7;
+	padding: 5px;
+	text-align: left;
+}
+
+
+
+#grid_4 {
+	width: 220px;
+}
+
+
+#po_content{
+padding: 0 5px;
+height: 35px;
+line-height: 32px;
+border: 1px solid #dcdcdc;
+width: 436px;
+}
+
+.point_ins{
+padding: 0 5px;
+height: 35px;
+line-height: 32px;
+border: 1px solid #dcdcdc;
+}
+
+.btn_submit{
+	margin-top: 2px;
+	padding: 0 15px;
+    border: 0;
+    height: 25px;
+    color: #fff;
+}
+
+
+.content{
+	text-align: left !important;
+}
+
+.point_set{
+	text-align: center;
+}
+
+.tbl_col{
+	text-align: center;
+}
+
+#display_box{
+display: inline-block;
+}

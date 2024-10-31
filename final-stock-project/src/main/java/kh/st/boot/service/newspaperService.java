@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.NewspaperDAO;
+import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
+import kh.st.boot.pagination.AdmNewsCriteria;
+import kh.st.boot.pagination.PageMaker;
 
 @Service
 public class newspaperService {
@@ -57,6 +60,20 @@ public class newspaperService {
 		}
 
 		return filteredNewspapers; // 필터링된 신문사 목록 반환
+	}
+
+	public List<AdmMemberVO> getSearchNews(AdmNewsCriteria cri) {
+		return newspaperDAO.searchNews(cri);
+	}
+
+	public PageMaker getPageMakerSearch(AdmNewsCriteria cri) {
+		int totalCount = newspaperDAO.selectTotalCount(cri);
+		return new PageMaker(10, cri, totalCount);
+	}
+
+	public boolean getUseChange(String np_no, byte useByte) {
+		newspaperDAO.UseChange(np_no, useByte);
+		return true;
 	}
 
 }

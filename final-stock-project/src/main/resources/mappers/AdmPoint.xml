@@ -8,6 +8,10 @@
 		SELECT * FROM point
 	</select>
 
+	<select id="selectCountList" resultType="int"> select count(*) from
+		point</select>
+
+
 	<select id="selectId" resultType="AdmPointVO">
 		SELECT * FROM point
 		WHERE mb_id = #{mb_id}
