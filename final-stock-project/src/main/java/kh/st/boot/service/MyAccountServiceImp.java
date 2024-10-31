@@ -194,6 +194,10 @@ public class MyAccountServiceImp implements MyAccountService {
 	}
 
 	@Override
+	public String getMemberStatus(int mb_no, String mb_id) {
+		return myAccountDao.selectMemberStatus(mb_no, mb_id);
+
+  @Override
 	public SendVO getSendInfo(String ds_no) {
 		SendVO send = depositDao.getSendInfo(ds_no);
 		return send;
@@ -229,10 +233,7 @@ public class MyAccountServiceImp implements MyAccountService {
 		}
 		return content_view;
 	}
-	
-	public String getMemberStatus(String mb_id) {
-		return myAccountDao.selectMemberStatus(mb_id);
-	}
+
 
 	@Override
 	public boolean deleteMemberStatus(int mb_no, String status) {

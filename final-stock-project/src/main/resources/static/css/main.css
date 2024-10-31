@@ -15,7 +15,7 @@
 .more-link > a{color: #888;}
 .main-news > .main-title{display: flex;justify-content: space-between;align-items: center; width: 111%;}
 .news-mini-text{color: #888; font-size: 13px;}
-.news-title{font-size: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal;}
+.news-title{font-size: 16px; height: 48px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal;}
 .news-img > div {margin-bottom: 1%;margin-top: 2%;}
 thead{border-bottom: 1px solid #888 !important; border-top: 1px solid #888 !important;}
 tbody > tr:hover:not(.last-td){background-color:  rgba(9, 108, 138, 0.2) !important; cursor: pointer;}
@@ -24,7 +24,7 @@ th.left, td.left {text-align: left;}
 .table-black{color: #000;}
 .hot-main-rank, .comm-main-rank{color:#0d7cd1; margin-right: 20px;}
 .hot-chart-main{margin-top: 2%; width: 111%;}
-.hot-chart-main > .main-row{scrollbar-width: thin;scrollbar-color: #17a2b8 #f8f9fa;height: 300px;box-sizing: border-box; overflow: auto; overflow-x: hidden;white-space: nowrap;}
+.hot-chart-main > .main-row{scrollbar-width: thin;scrollbar-color: #17a2b8 #f8f9fa;height: 300px;box-sizing: border-box; overflow: auto; overflow-x: hidden; white-space: nowrap;}
 .comm-main-list{scrollbar-width: thin;scrollbar-color: #17a2b8 #f8f9fa;height: 530px;box-sizing: border-box; overflow: auto; overflow-x: hidden;white-space: nowrap;}
 .hot-chart-main > .main-row::-webkit-scrollbar, .comm-main-list::-webkit-scrollbar{display: block !important;}
 .main-header-sticky, .comm-left{position: sticky;top: -1px;z-index: 2; background-color: #fff;}

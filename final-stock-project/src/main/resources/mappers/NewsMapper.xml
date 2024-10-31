@@ -187,4 +187,12 @@
 		ORDER BY NEWS.NE_DATETIME DESC
 		LIMIT 0, 4
 	</select>
+	
+	<select id="selectNewsMember" resultType="NewsMemberVO">
+		SELECT *
+		FROM
+			NEWS_MEMBER
+		WHERE
+			MB_NO = #{mb_no}
+	</select>
 </mapper>
