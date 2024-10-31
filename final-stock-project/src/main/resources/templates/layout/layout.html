@@ -42,6 +42,7 @@
     ></script>
   </head>
   <body scroll="no">
+    <div th:replace="~{layout/modal.html}"></div>
     <!--/* 고정 헤더 */-->
     <div th:replace="~{layout/header.html :: header}"></div>
     <!-- 헤더 불러오기 -->
@@ -54,6 +55,7 @@
       <main layout:fragment="content"></main>
       <div th:replace="~{layout/modal.html}"></div>
     </div>
+    
     <div th:replace="~{layout/footer.html :: footer}"></div>
     <!-- 푸터 불러오기 -->
     <!-- 컨텐츠 영역 (각 페이지에서 변경될 부분) -->
