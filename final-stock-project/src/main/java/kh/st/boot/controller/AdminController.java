@@ -78,8 +78,6 @@ public class AdminController {
 	public String admin(Model model) {
 		// db에 저장된 값 DAO와 Service를 통해 받아온 값 리스트에 저장
 		AdminVO adminH = adminService.getAdminH();
-		System.out.println("admin홈페이지 DB값 받아오기");
-		System.out.println("admin홈페이지 DB값 받아오기");
 		// 값을 보내주기
 		model.addAttribute("adminH", adminH);
 		return "/admin/adminHome";
@@ -93,7 +91,6 @@ public class AdminController {
 		if (res == false) {
 			model.addAttribute("msg", "실패");
 			model.addAttribute("url", "/admin/adminHome");
-			System.out.println("dadd");
 			return "util/msg";
 		}
 
@@ -129,13 +126,11 @@ public class AdminController {
 	@PostMapping("/admMember/admUserSelect/Update")
 	public String admUserUpdate(Model model, AdmMemberVO admMemberVO) {
 		boolean res = admUserService.getAdmUserUpd(admMemberVO);
-		System.out.println(res);
 		if (res == false) {
 			model.addAttribute("msg", "실패");
 			model.addAttribute("url", "/admin/adminHome");
 			return "util/msg";
 		}
-		System.out.println("수정값 보내기");
 		return "redirect:/admin/admMember/adminUser";
 	}
 
@@ -164,9 +159,7 @@ public class AdminController {
 	public String admUserInsert(Model model, AdmMemberVO admMemberVO, String mb_emailing) {
 		int eamiling = mb_emailing != null ? 1 : 0;
 		admMemberVO.setMb_emailing(eamiling);
-		System.out.println(eamiling);
 		boolean res = admUserService.getAdmUserIns(admMemberVO);
-		System.out.println(res);
 		if (res == false) {
 			model.addAttribute("msg", "실패");
 			model.addAttribute("url", "/admin/adminHome");
@@ -481,7 +474,6 @@ public class AdminController {
 	public String ySltApproval(@RequestParam String mp_yn, @RequestParam String mp_company,
 			@RequestParam String mp_type, @RequestParam int mb_no) {
 		adminApprovalService.ynUPDATE(mp_yn, mp_company, mp_type, mb_no);
-
 		return "redirect:/admin/admApproval/admApprovalPage";
 	}
 

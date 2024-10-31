@@ -74,7 +74,11 @@
 		WHERE mb_no = #{mb_no}
 	</delete>
 
-
+	<select id="ynSearch" resultType="String">
+	 	SELECT mp_yn 
+   		FROM member_approve
+    	WHERE mb_no = #{mb_no}
+	</select>
 
 
 </mapper>

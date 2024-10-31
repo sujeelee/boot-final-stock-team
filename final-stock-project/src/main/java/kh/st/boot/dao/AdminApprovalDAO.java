@@ -37,4 +37,6 @@ public interface AdminApprovalDAO {
 
 	int selectTotalCount(AdmApprovalCriteria cri);
 
+	String ynSearch(int mb_no);
+
 }
