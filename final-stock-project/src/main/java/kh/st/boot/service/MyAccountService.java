@@ -11,7 +11,9 @@ import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.SendVO;
+import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
 
@@ -66,5 +68,15 @@ public interface MyAccountService {
 	SendVO getSendInfo(String ds_no);
 
 	String setContentView(DepositVO tmps);
+	String getMemberStatus(String mb_id);
+
+	boolean deleteMemberStatus(int mb_no, String status);
+
+	boolean insertStockAdd(String mb_id, int sa_qty, String sa_content);
+
+	List<StockAddVO> getStockAddList(String mb_id, Criteria cri);
+
+	PageMaker SelectPageMaker(Criteria cri, String mb_id);
+
 
 }

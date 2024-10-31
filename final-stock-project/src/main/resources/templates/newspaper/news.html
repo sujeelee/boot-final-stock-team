@@ -123,7 +123,7 @@
 				                    		<span th:text="${item.np_name}">신문사</span>
 				                    	</div>
 			                    	</div>
-			                    	<div class="news-image-box">
+			                    	<div class="news-image-box" th:if="${item.fi_path != null}">
 			                    		<img th:src="@{'/uploads' + ${item.fi_path}}" alt="썸네일">
 			                    	</div>
 			                    </div>

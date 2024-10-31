@@ -51,4 +51,8 @@ public interface NewsDAO {
 
 	List<NewsVO> selectNewsList(String st_name);
 
+	List<NewsVO> selectNewsListByImg();
+
+	List<NewsVO> selectNewsListByNoImg();
+
 }

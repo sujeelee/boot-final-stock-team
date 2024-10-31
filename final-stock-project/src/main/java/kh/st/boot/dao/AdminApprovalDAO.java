@@ -9,14 +9,22 @@ import kh.st.boot.model.vo.AdmApprovalVO;
 @Mapper
 public interface AdminApprovalDAO {
 
-	List<AdmApprovalVO> nullSelectAll();
+	List<AdmApprovalVO> SelectAll(Criteria cri);
 
-	List<AdmApprovalVO> updateApprove(int mp_no, String mp_yn);
+	List<AdmApprovalVO> updateApprove(int mb_no, String mp_yn);
 
-	void nyUPDATE(int mp_no, String mp_yn);
+	void nyUPDATE(int mb_no, String mp_yn);
 
 	void newsInsert(int mb_no, String mp_company);
 
 	void stockInsert(int mb_no, String mp_company);
+
+	int selectCountList(Criteria cri);
+
+	List<AdmApprovalVO> searchApproval(String mp_company);
+
+	void stockLvUp(int mb_no);
+
+	void newsLvUp(int mb_no);
 
 }
