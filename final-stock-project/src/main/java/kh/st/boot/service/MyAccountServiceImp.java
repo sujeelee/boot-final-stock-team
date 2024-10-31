@@ -17,7 +17,9 @@ import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
 import kh.st.boot.model.vo.SendVO;
+import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
 import lombok.AllArgsConstructor;
@@ -226,6 +228,38 @@ public class MyAccountServiceImp implements MyAccountService {
 			}
 		}
 		return content_view;
+	public String getMemberStatus(String mb_id) {
+		return myAccountDao.selectMemberStatus(mb_id);
+	}
+
+	@Override
+	public boolean deleteMemberStatus(int mb_no, String status) {
+		if(status == "none") {
+			return false;
+		}
+		return myAccountDao.deleteMemberStatus(mb_no, status);
+	}
+
+	@Override
+	public boolean insertStockAdd(String mb_id, int sa_qty, String sa_content) {
+		if(mb_id == null) {
+			return false;
+		}
+		return myAccountDao.insertStockAdd(mb_id, sa_qty, sa_content);
+	}
+
+	@Override
+	public List<StockAddVO> getStockAddList(String mb_id, Criteria cri) {
+		if(mb_id == null) {
+			return null;
+		}
+		return myAccountDao.selectStockAddList(mb_id, cri);
+	}
+
+	@Override
+	public PageMaker SelectPageMaker(Criteria cri, String mb_id) {
+		int count = myAccountDao.getCountByStockAdd(mb_id);
+		return new PageMaker(5, cri, count);
 	}
 
 }

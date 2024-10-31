@@ -165,6 +165,13 @@
 			color: #333d4b; 
 			font-size: 26px;
 		}
+		
+		input[type="number"] {
+			width: 100%;
+			height: 36px;
+			border-radius: 5px;
+			padding: 6px 12px;
+		}
 	</style>
 </head>
  <body>
@@ -182,7 +189,6 @@
 					<div class="my-details">
 						<div class="my-info-left">
 							<span class="my-text-left">계좌번호</span>
-							
 						</div>
 						<div class="my-info-right">
 							<span class="my-text-right"
@@ -196,6 +202,15 @@
 						<div class="my-info-right">
 							<span class="my-text-right" 
 								  th:text="${#dates.format(#authentication.principal.member.mb_datetime, 'yyyy년 MM월 dd일')}"></span>
+						</div>
+					</div>
+					<div class="my-details">
+						<div class="my-info-left">
+							<span class="my-text-left">회원 레벨</span>
+						</div>
+						<div class="my-info-right">
+							<span class="my-text-right" 
+								  th:text="${user.mb_level} + ' Lv'"></span>
 						</div>
 					</div>
 				</section>
@@ -356,11 +371,44 @@
 								<span class="my-text-right">${mp_app_date}</span>
 							</div>
 						</div>
-						<div class="d-flex mt-2">
-							<div class="mr-auto"></div>
-							<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
-						</div>
 					`;
+					if(mp.mp_type == 'stock') {
+						str += `
+							<div class="my-details">
+								<div class="my-info-left">
+									<span class="my-text-left">주식 요청</span>
+								</div>
+								<div class="my-info-right">
+				                    <a href="#demo" class="btn btn-outline-dark" data-toggle="collapse">요청</a>
+								</div>
+							</div>
+							<div id="demo" class="collapse">
+		                    	<form onsubmit="return false;">
+			                    	<input class="form-control mb-2" type="number" id="sa_qty" placeholder="숫자만 입력해주세요" required>
+			                    	<textarea class="form-control" id="sa_content" name="sa_content" style="min-height: 400px; height: auto;" placeholder="관리자한테 보낼 메시지를 입력해주세요"></textarea>
+			                    	<div class="d-flex my-details">
+			                    		<div class="mr-auto"></div>
+			                    		<button class="btn btn-outline-dark mt-2" type="button" onclick="applyStock()">보내기</button>
+			                    	</div>
+			                    </form>
+		                    </div>
+							<div class="d-flex my-details">
+								<div>
+									<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
+								</div>
+								<div class="mr-auto"></div>
+								<a href="#" class="btn btn-outline-dark" onclick="window.open('/myaccount/stockList', '_blank', 'width=900,height=400,left=500,top=300'); return false;">요청 목록</a>
+					        </div>
+						`;
+					}else{
+						str += `
+							<div class="d-flex my-details">
+								<div>
+									<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
+								</div>
+					        </div>
+						`;
+					}
 					$('.member-success').html(str);
 				} // 승인이 성공했을 때
 				
@@ -374,6 +422,35 @@
 			        $('button[onclick="submitForm()"]').show();
 				} // 승인이 거절 당했을 때
 			});
+			
+			function applyStock() {
+			    const sa_qty = $('#sa_qty').val();
+			    const sa_content = $('#sa_content').val();
+			    if (sa_qty === '' || isNaN(sa_qty) || sa_qty == 0) {
+			        alert('올바른 값을 입력해주세요');
+			        return;
+			    }
+			    
+			    $.ajax({
+			    	async : true, //비동기 : true(비동기), false(동기)
+			        url : '/myaccount/applyStock',
+			        type : 'post',
+			        data : {
+			        	sa_qty : sa_qty,
+			            sa_content : sa_content
+			        },
+			        success: function(data) {
+			            alert('주식 요청이 성공적으로 전달되었습니다.');
+			            $('#sa_qty').val('');
+			            $('#sa_content').val('');
+			            $('#demo').collapse('hide');
+			            // 서버 응답에 따라 추가 작업 수행 가능
+			        },
+			        error : function(jqXHR, textStatus, errorThrown){
+						console.log(jqXHR);
+					}
+			    });
+			}
 			
 			function deleteMember() {
 				if(confirm("탈퇴를 진행하시겠습니까?")){
