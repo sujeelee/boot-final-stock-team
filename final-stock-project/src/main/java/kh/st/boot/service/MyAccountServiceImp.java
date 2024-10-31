@@ -191,8 +191,8 @@ public class MyAccountServiceImp implements MyAccountService {
 	}
 
 	@Override
-	public String getMemberStatus(String mb_id) {
-		return myAccountDao.selectMemberStatus(mb_id);
+	public String getMemberStatus(int mb_no, String mb_id) {
+		return myAccountDao.selectMemberStatus(mb_no, mb_id);
 	}
 
 	@Override
