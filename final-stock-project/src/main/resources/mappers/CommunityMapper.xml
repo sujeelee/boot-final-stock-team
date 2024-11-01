@@ -65,6 +65,7 @@
 	<select id="getCommentList" resultType="CommentVO">
 		SELECT * FROM comment where wr_no = #{wr_no} order by co_id desc 
     </select>
+    
    	<update id="updateCount">
 		UPDATE board b
 		 set b.wr_comment = (
@@ -126,5 +127,36 @@
 	        mb_id = #{mb_id}
 	</select>
 	
-    	
+	<select id="getBoardbyID" resultType="BoardVO">
+		SELECT *
+        FROM board
+        WHERE wr_no = #{wr_no} AND mb_id = #{mb_id}
+	</select>
+    
+    <delete id="deleteBoard">
+        DELETE FROM board WHERE wr_no = #{wr_no}
+    </delete>	
+    
+     <update id="updateBoard">
+        UPDATE board
+        SET wr_content = #{wr_content}
+        WHERE wr_no = #{wr_no} AND mb_id = #{mb_id}
+    </update>
+    
+    <select id="getCommentbyID" resultType="CommentVO">
+      	SELECT *
+        FROM comment
+        WHERE co_id = #{co_id} AND wr_no = #{wr_no} 
+    </select>
+    
+    <delete id="deleteComment">
+    	DELETE FROM comment WHERE wr_no = #{co.wr_no} AND co_id = #{co.co_id} and mb_id = #{co.mb_id}
+    </delete>
+    
+    <update id="updateComment">
+    	UPDATE comment
+        SET co_content = #{co.co_content}
+        WHERE wr_no = #{co.wr_no} AND mb_id = #{co.mb_id} AND co_id = #{co.co_id}
+    </update>
+    
 </mapper>

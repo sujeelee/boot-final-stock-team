@@ -148,13 +148,9 @@ public class AdminController {
 	public String admUserInsertPage() {
 		return "/admin/admMember/admUserInsert";
 	}
-
-
 	// 회원 등록 
 	@PostMapping("/admMember/admUserInsert/AdminUserInsert")
-	public String admUserInsert(Model model, AdmMemberVO admMemberVO, String mb_emailing) {
-		int eamiling = mb_emailing != null ? 1 : 0;
-		admMemberVO.setMb_emailing(eamiling);
+	public String admUserInsert(Model model, AdmMemberVO admMemberVO) { 
 		boolean res = admUserService.getAdmUserIns(admMemberVO);
 		if (res == false) {
 			model.addAttribute("msg", "실패");
