@@ -251,9 +251,9 @@ public class CommunityController {
 	    }
 	    return result; // 삭제 완료 후 결과 반환
 	}
-	@PostMapping("/updataComment")
+	@PostMapping("/updateComment")
 	@ResponseBody
-	public Map<String, Object> updataComment(@RequestParam int wr_no,@RequestParam String co_content, @RequestParam int co_id, Principal principal){
+	public Map<String, Object> updateComment(@RequestParam int wr_no,@RequestParam String co_content, @RequestParam int co_id, Principal principal){
 		Map<String, Object> result = new HashMap<>();
 		
 		String mb_id = null;

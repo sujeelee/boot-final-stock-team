@@ -11,33 +11,25 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/community.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
-
-<style>
-    
-</style>
 </head>
 <body>
 <main layout:fragment="content">    
 <div th:replace="~{layout/stocksHeader.html}"></div>
-
 <!--/* 절취선 */-->
 <div class="d-flex">
     <div class="board-popular-wrapper container">
         <div class="board-section">
             <h2 th:text="${stock.st_name} + ' 커뮤니티'"></h2>
-
-
             <!--/* 개시글 작성 */-->
             <form method="POST" onsubmit="return board_action(this, 'insert')">
                 <div class="board-editor">
                     <!-- hidden 영역 -->
                     <input type="hidden" name="wr_category" th:value="${stock.st_code}">
                     <div class="textarea-container">
-
                         <textarea id="wr_content" name="wr_content" rows="4"
                                   th:placeholder="${not #strings.isEmpty(userInfo) ? '게시글을 입력하세요.' : '로그인 후 이용해 주세요.'}"
-                                  required></textarea>
-
+                                  required>
+                        </textarea>          
                     </div>
                 </div>
                 <div class="board-footer">
@@ -49,20 +41,16 @@
                     </div>
                 </div>
             </form>
-
             <!--/* 절취선 */-->
             <div class="boarddivider"></div>
-
             <th:block th:each="item : ${bolist} ">
-                <!--/* 게시글 유저정보 + 반복 */-->
-                
+                <!--/* 게시글 유저정보 + 반복 */-->              
                 <div class="board-header">
                     <address class="board-author">
                         <span class="author-name" th:text="${item.mb_id}?:_">ID</span>
                         <span class="author-badge" th:text="'Lv' + ${item.mb_level}?:_">Lv 1</span>
                     </address>
-                </div>
-                
+                </div>                
                 <!--/* 게시글 콘텐츠 */-->
                 <div class="board-body" th:data-id="${item.wr_no}">
                     <p class="board-text" th:text="${item.wr_content}?:_"></p>
@@ -73,8 +61,6 @@
                     <i class='bx bx-edit-alt'></i>
                     </button>
                </div>
-
-
                 <!--/* 게시글 추천, 신고 */-->
                 <div class="board-footer">
                 	<!--/* 게시글 수정 버튼 */-->
@@ -83,32 +69,24 @@
 						th:onclick="'enableEditMode(' + ${item.wr_no} + ', \'post\',this)'">
 						<i class='bx bx-edit-alt'></i>
                     </button>
-
-
                     <!--/* 게시글 삭제 버튼 */-->
                     <button class="btn-delete" 
                     	th:if="${userInfo != null and item.mb_id == userInfo}"
                     	th:attr="data-wr-no=${item.wr_no}"
                     	onclick="board_action(this, 'delete')">
                     	<i class='bx bx-message-rounded-x'></i>                        
-                    </button>
-                    
+                    </button>                   
                     <!--/* 게시글 좋아요 버튼 */-->  
                     <button class="btn-like"
 
                     	>
                         <i class='bx bxs-heart'></i>
                     </button>
-
                     <!--/* 게시글 싫어요 버튼 */-->
                     <button class="btn-report">
                         <i class='bx bx-x-circle'></i>
-                    </button>
-                    
+                    </button>                   
                 </div>
-
-
-
                 <!--/* 댓글 버튼 */-->
                 <div>
                     <button class="reply-btn" type="button"
@@ -118,13 +96,8 @@
                     </button>
                     <!--/* 댓글 count */-->
                 </div>
-
-            
-
                 <!--/* 댓글 each */-->
-                <div th:id="'commentColl' + ${item.wr_no}" class="collapse comment">
-                        
-
+                <div th:id="'commentColl' + ${item.wr_no}" class="collapse comment">                        
                     <!--/* 댓글 작성 */-->
                     <div class="input-group">
                         <input type="text"
@@ -137,25 +110,15 @@
                             >등록</button>
                         </div>
                     </div> 
-
-
-
-
                     <!--/* colist 반복 할 구간 + replaced 할 공간 */-->
                     <div th:id="'replace_comment' + ${item.wr_no}" class="comment_item"></div>
                     <!--/* colist 반복 할 구간 종료 */-->
-
-
-                </div>
-                
+                </div>                
                 <div class="boarddivider"></div>
-
             </th:block>
-
             <!--/* 게시글 Done */-->
         </div>
     </div>
-
     <div class="popular-stocks">
         <span>인기 급상승 주식</span>
         <div class="div-ul">
@@ -167,159 +130,138 @@
             </ul>
         </div>
     </div>
-
-
     <section class="order-section">
         <div th:replace="~{layout/stocksOrder.html}"></div>
     </section>
-
 </div>
-
 <input th:id="mb_id" type="hidden" th:value="${not #strings.isEmpty(userInfo) ? userInfo : ''}">
 <script th:inline="javascript">
 	const st_code =  /*[[${stock.st_code}]]*/ '' ;
 	const mb_id = /*[[${member.mb_id}]]*/;
-	//$('#mb_id').val();
-	
+
 	function board_action(form, type){
-		let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-		var param;
-		
-		if(type == "insert"){
-			url += "/community/insert";
-			param = $(form).serialize();
-		} else if(type == "delete") {
-			url += "/community/delete";
-			var no = $(form).data('wr-no');
-			param = {wr_no : no};
-		} else if(type == "update"){
-			url += "/community/update";
-			var no = $(form).find('.btn-save').data('wr-no'); 
-	        const updatedContent = $(form).find('.edit-input').val();
-			param ={ wr_no: no,wr_content: updatedContent }; 
-		}
-		
-		$.ajax({
-			url: url,
-			type: "post",
-			data: param,
-		    async: false, //false : 비동기 / true : 동기
-		    success: function(data) {
-		        if (data.res === "true") {
-		        	location.href = location.href; 
-		        } else {
-		            alert(data.msg);
-		        }
-		    },
-		    error: function(jqXHR, textStatus, errorThrown) {
-		        console.error("AJAX 오류:", textStatus, errorThrown);
-		        alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
-		    }
-		});
-		return false;
-		
-	}
-	
-	function enableEditMode(id, type, button) {
-	    let target, content;
-	    console.log(target); // 선택된 요소 확인
-	    if (type === "post") {
-	        // 게시글인 경우
-	        target = $(`.board-body[data-id="${id}"]`);
-	        content = target.find(".board-text");
-	    } else if (type === "comment") {
-	        // 댓글인 경우
-	        
-	        target = $(`.comment-body[data-comment-id="${id}"]`);	        
-	        content = target.find(".comment-text");
-	        console.log("선택한 ID:", id);  // id 값 출력
-	        console.log("선택된 요소:", target);  // 선택된 요소 출력
-	    }
-
-	    if (content) {
-	        const currentText = content.text();
-	        // 기존 텍스트를 입력 필드로 변경
-	        content.html(`<input type="text" value="${currentText}" class="edit-input">`);
-
-	         $(button).hide(); // 현재 버튼 숨기기
-	        // btn-save 버튼을 보이게 함
-	        target.find(".btn-save").show(); 
-	    }
-	}
-function comment_action(button , type) {
 	let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-	console.log(type);
 	var param;
-	if(type == "insertComment"){
-		url += "/community/insertComment";
-		var content = $(button).closest('.input-group').find('.comment-input').val();
-		var no = $(button).data('wr-no');
-		param = { co_content : content, wr_no : no };
-        if (content.trim() === '') {
-            alert('댓글을 입력하세요.');
-            return;
-        }
 
-	}else if (type == "deleteComment") {
-        url += "/community/deleteComment"; 
-        var no = $(button).data('wr-no'); 
-        var coId = $(button).data('co-id'); 
-        param = { wr_no: no, co_id: coId };
-
-	}else if (type == "updataComment") {
-		url += "/community/updataComment";
-        var no = $(button).data('wr-no'); 
-        var coId = $(button).data('co-id');
-        const updatedContent = $(form).find('.edit-input').val();
-        console.log(coId);
-        param = { wr_no: no, co_id: coId , co_content : updatedContent};
+	if(type == "insert"){
+		url += "/community/insert";
+		param = $(form).serialize();
+	}else if(type == "delete") {
+		url += "/community/delete";
+		var no = $(form).data('wr-no');
+		param = {wr_no : no};
+	} else if(type == "update"){
+		url += "/community/update";
+		var no = $(form).find('.btn-save').data('wr-no'); 
+		const updatedContent = $(form).find('.edit-input').val();
+		param ={ wr_no: no,wr_content: updatedContent }; 
 	}
-		$.ajax({
+
+	$.ajax({
 		url: url,
 		type: "post",
 		data: param,
 		async: false, //false : 비동기 / true : 동기
 		success: function(data) {
 			if (data.res === "true") {
-			// 댓글 입력 필드 초기화
-			if(type == "insertComment"){
-				$(button).closest('.input-group').find('.comment-input').val('');
-				
-			}else if (type == "deleteComment"){
-				$(button).closest('.comment-header').parent().remove(); // 삭제 후 댓글 요소 제거
-				
-			}			
-			// 댓글 목록 갱신
-			replace_comment(no); 
-			} else {
-			  alert(data.msg);
-			}
+				location.href = location.href; 
+				} else {
+				alert(data.msg);
+				}
 		},
-			error: function(jqXHR, textStatus, errorThrown) {
-			console.error("AJAX 오류:", textStatus, errorThrown);
-			alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
-			}
-		});
+		error: function(jqXHR, textStatus, errorThrown) {
+		console.error("AJAX 오류:", textStatus, errorThrown);
+		alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+		}
+	});
+		return false;
+		
+	}
+
+	function enableEditMode(id, type, button) {
+	let target, content;
+	if (type === "post") {        
+		target = $(`.board-body[data-id="${id}"]`);
+		content = target.find(".board-text");
+	} else if (type === "comment") {
+		target = $(`.comment-body[data-coid="${id}"]`);	        
+		content = target.find(".comment-text");
+	}
+	if (content) {
+		const currentText = content.text();	        
+		content.html(`<input type="text" value="${currentText}" class="edit-input">`);
+		 $(button).hide(); 	        
+		target.find(".btn-save").show(); 
+		}
+	}
+	function comment_action(button , type) {
+	let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
+	var param;
+	if(type == "insertComment"){
+	url += "/community/insertComment";
+		var content = $(button).closest('.input-group').find('.comment-input').val();
+		var no = $(button).data('wr-no');
+		param = { co_content : content, wr_no : no };
+			if (content.trim() === '') {
+			alert('댓글을 입력하세요.');
+			return;
+		}
+	}else if (type == "deleteComment") {
+		url += "/community/deleteComment"; 
+		var no = $(button).data('wr-no'); 
+		var coId = $(button).data('co-id'); 
+		param = { wr_no: no, co_id: coId };
+	}else if (type == "updateComment") {
+		url += "/community/updateComment";
+		var no = $(button).data('wr-no'); 
+		var coId = $(button).data('co-id');
+		const updatedContent = $(button).closest('.comment-body').find('.edit-input').val();
+		param = { wr_no: no, co_id: coId, co_content: updatedContent };
+	}
+	$.ajax({
+	url: url,
+	type: "post",
+	data: param,
+	async: false, //false : 비동기 / true : 동기
+	success: function(data) {
+	if (data.res === "true") {
+	// 댓글 입력 필드 초기화
+	if(type == "insertComment"){
+		$(button).closest('.input-group').find('.comment-input').val('');	
+	}else if (type == "deleteComment"){
+		$(button).closest('.comment-header').parent().remove(); // 삭제 후 댓글 요소 제거	
+	}			
+		// 댓글 목록 갱신
+		replace_comment(no); 
+	} else {
+		alert(data.msg);
+		}
+	},
+		error: function(jqXHR, textStatus, errorThrown) {
+		console.error("AJAX 오류:", textStatus, errorThrown);
+		alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+		}
+	});
 		return false;	
 	}
 function replace_comment(wr_no){
+
+	let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
+	url += "/community/replaceComment";
 	
-    let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-    url += "/community/replaceComment";
-    
 	const commentData = { wr_no: wr_no }; // 댓글 ID로 section을 사용
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: commentData,
-        success: function(data) {
-        	$('#replace_comment' + wr_no).html(data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error("댓글 목록 갱신 오류:", textStatus, errorThrown);
-            alert("댓글 목록을 갱신하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
-        }
-    });
+		$.ajax({
+		url: url,
+		type: "POST",
+		data: commentData,
+		success: function(data) {
+			$('#replace_comment' + wr_no).html(data);
+		},
+			error: function(jqXHR, textStatus, errorThrown) {
+			console.error("댓글 목록 갱신 오류:", textStatus, errorThrown);
+			alert("댓글 목록을 갱신하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+			}
+		});
 }
 
 
