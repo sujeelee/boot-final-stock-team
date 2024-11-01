@@ -111,9 +111,18 @@
 										placeholder="지급사유" required></td>
 								</tr>
 								<tr>
-									<th><label>포인트</label></th>
-									<td><input type="text" name="po_num" class="point_ins"
-										placeholder="+ / - 포인트" required></td>
+								    <th><label>포인트</label></th>
+								    <td>
+								        <label>
+								            <input type="radio" name="pointType" value="plus" checked> 
+								            +
+								        </label>
+								        <label>
+								            <input type="radio" name="pointType" value="minus">
+								            -
+								        </label>
+								        <input type="text" name="po_num" class="point_ins" placeholder="포인트" required style="margin-left: 10px;">
+								    </td>
 								</tr>
 							</tbody>
 						</table>
