@@ -1,12 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/modal.css}">
-	<div class="search-modal modal" tabindex="-1" role="dialog" style="display: none;height:600px;">
+	<div class="search-modal modal" tabindex="-1" role="dialog" style="display: none;">
 		<div class="search-modal-box">
 			<div class="search-modal-input">
 				<i class="fa-solid fa-magnifying-glass"></i>
+				<input type="hidden" name="search_type" value="all">
 				<input type="text" name="mstx" class="mstx" onkeyup="search_mstx(this.value);" autocomplete="off">
 			</div>
-			<div class="search-modal-table-div" style="display: none;">
+			<div class="search-modal-table-div">
 				<div class="search-modal-table-title">
 					<div class="search-modal-sub-title">인기 주식 TOP 5</div>
 				</div>
@@ -22,7 +23,7 @@
 					</div> <!-- end search-modal-row -->
 				</div>
 			</div>
-			<div class="search-modal-result-div">
+			<div class="search-modal-result-div" style="display: none;">
 				<div class="search-modal-table-title">
 					<div class="search-modal-sub-title">
 						<ul class="nav nav-tabs">
@@ -38,39 +39,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="search-modal-table search-result">
-					<div class="result-stock">
-						<div class="result-mini-title">종목</div>
-						<div class="search-modal-row" th:onclick="modal_link('/', 'url');" th:each="nums : ${#numbers.sequence(1, 5)}">
-							<div class="modal-left">
-								<span>삼성전자[[${nums}]]</span>
-							</div>
-							<div class="modal-right">
-								<span>59,100원</span>
-								<span>-0.1%</span>
-							</div>
-						</div> <!-- end search-modal-row -->
-						<div class="search-result-line">
-							<div class="dash-table-line" style="width: 80%;"></div>
-							<span class="nav-item" onclick="search_result('stock');">종목 더보기<i class="fa-solid fa-chevron-right"></i></span>
-						</div>
-					</div>
-					<div class="result-news">
-						<div class="result-mini-title">뉴스</div>
-						<div class="search-modal-row" th:onclick="modal_link('/', 'url');" th:each="nums : ${#numbers.sequence(1, 5)}">
-							<div class="modal-left">
-								<span>[프로농구]삼성,매가6전패...현대모비스에 21점차 역전</span>
-							</div>
-							<div class="modal-right">
-								<span>13시간 전 · 뉴스핌</span>
-							</div>
-						</div> <!-- end search-modal-row -->
-						<div class="search-result-line">
-							<div class="dash-table-line" style="width: 80%;"></div>
-							<span class="nav-item" onclick="search_result('news');">뉴스 더보기<i class="fa-solid fa-chevron-right"></i></span>
-						</div>
-					</div>
-				</div>
+				<div class="search-modal-table search-result" id="search-result"></div>
 			</div>
 		</div>
 	</div>
@@ -89,23 +58,50 @@
 			location.href = url;
 		}
 		function search_mstx(stx){
-			return false;
+			
+			var type = $("input[name=search_type]").val();
+			
 			if(stx != ""){
-				$(".search-modal-table-div").fadeOut(300, function() {
-					$(".search-modal").animate({ height:"600px"}, 50); 
-					$(".search-modal-result-div").fadeIn(300);
-				});
+				get_result(type, stx);
+				if ($(".search-modal-table-div").css("display") != "none") {
+					$(".search-modal-table-div").fadeOut(300, function() {
+						$(".search-modal").animate({ height:"600px"}, 50); 
+						$(".search-modal-result-div").fadeIn(300);
+					});
+				}
 			} else {
-				$(".search-modal-result-div").fadeOut(300, function() {
-					$(".search-modal").animate({ height:"400px"}, 50); 
-					$(".search-modal-table-div").fadeIn(300);
-				});
+				type = "all";
+				search_result(type);
+				$("input[name=search_type]").val(type);
+				if ($(".search-modal-result-div").css("display") != "none") {
+					$(".search-modal-result-div").fadeOut(300, function() {
+						$(".search-modal").animate({ height:"400px"}, 50); 
+						$(".search-modal-table-div").fadeIn(300);
+					});
+				}
 			}
 			
 		}
 		function search_result(type){
 			$(".nav-link").removeClass("active");
 			$(".modal-li-tabs-" + type).find("span").addClass("active");
+			$("input[name=search_type]").val(type);
+			var stx = $(".mstx").val();
+			get_result(type, stx);
+		}
+		
+		function get_result(type, stx){
+			$.ajax({
+				url : '/totalSearch',
+				method : "post", //원하는 방식 선택
+				data : { //보낸 데이터를 객체로
+					stx : stx,
+					type : type
+				},
+				success : function(data){
+					$("#search-result").replaceWith(data);
+				}
+			});
 		}
 	</script>
 </html>
