@@ -1,9 +1,7 @@
 package kh.st.boot.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.CommunityDAO;
@@ -123,11 +121,8 @@ public class CommunityService {
 		return communityDao.insertComment(newComment);
 		
 	}
-	public boolean updateCount(CommentVO newComment) {
-		if(newComment == null) {
-			
-		}
-		return communityDao.updateCount(newComment.getWr_no());
+	public void updateCount() {
+		communityDao.updateCount();
 	}
 	public List<CommentVO> getCommentList(int wr_no) {
 
@@ -137,5 +132,34 @@ public class CommunityService {
 	public List<BoardVO> getBoardList(String st_code) {
 		return communityDao.getBoardList(st_code);
 	}
+
+	public BoardVO getBoardbyID(int wr_no, String mb_id) {
+		
+		return communityDao.getBoardbyID(wr_no,mb_id);
+	}
+
+	public boolean deleteBoard(int wr_no) {
+		int board = communityDao.deleteBoard(wr_no);
+	    return board > 0;
+		
+	}
+
+	public boolean updateBoard(BoardVO board) {
+		
+		return communityDao.updateBoard(board) > 0;
+	}
+
+	public CommentVO getCommentbyID(int wr_no, int co_id) {
+		return communityDao.getCommentbyID(wr_no,co_id);
+	}
+
+	public boolean deleteComment(CommentVO comment) {
+	    return communityDao.deleteComment(comment);
+	}
+
+	public boolean updateComment(CommentVO comment) {
+		return communityDao.updateComment(comment) > 0;
+	}
+
 
 }
