@@ -13,8 +13,6 @@ public interface AdmPointDAO {
 
 	List<AdmPointVO> selectId(String mb_id);
 
-	void updatePoint(String mb_id, int po_num, String po_content);
-
 	void deletPoint(int po_no);
 
 	int selectCountList(Criteria cri);
@@ -22,6 +20,10 @@ public interface AdmPointDAO {
 	List<AdmPointVO> pointUserSearch(AdmPointCriteria cri);
 
 	int selectTotalCount(AdmPointCriteria cri);
+
+	void upPoint(String mb_id, int po_num, String po_content);
+
+	void downPoint(String mb_id, int po_num, String po_content);
 
 	
 }

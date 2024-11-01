@@ -19,13 +19,20 @@
 		= #{mb_id}
 	</select>
 
-	<insert id="updatePoint">
+	<insert id="upPoint">
 		INSERT INTO point
 		(mb_id,po_num,po_content,po_datetime )
 		VALUES
 		(#{mb_id},#{po_num},#{po_content},now())
-
 	</insert>
+
+	<insert id="downPoint">
+		INSERT INTO point
+		(mb_id,po_num,po_content,po_datetime )
+		VALUES
+		(#{mb_id},#{po_num},#{po_content},now())
+	</insert>
+
 
 	<delete id="deletPoint">
 		DELETE FROM point WHERE po_no = #{po_no};
