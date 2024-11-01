@@ -1,9 +1,9 @@
 package kh.st.boot.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdminUserDAO;
@@ -14,6 +14,9 @@ import kh.st.boot.pagination.UserCriteria;
 
 @Service
 public class AdminUserService {
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private AdminUserDAO adminuserDAO;
@@ -32,6 +35,16 @@ public class AdminUserService {
 	}
 
 	public boolean getAdmUserUpd(AdmMemberVO admMemberVO) {
+		int emailing;
+		if(admMemberVO.getMb_emailing_test() != null) {
+			emailing = 1;
+		}else {
+			emailing = 0;
+		}
+		
+		String encodePw = passwordEncoder.encode(admMemberVO.getMb_password());
+		admMemberVO.setMb_emailing(emailing);
+		admMemberVO.setMb_password(encodePw);
 		adminuserDAO.UseUpdate(admMemberVO);
 		return true;
 	}
@@ -58,7 +71,17 @@ public class AdminUserService {
         return new PageMaker(10, cri, totalCount); // PageMaker 생성 (displayPageNum을 10으로 설정)
     }
 
+    // 회원정보 등록
 	public boolean getAdmUserIns(AdmMemberVO admMemberVO) {
+		String encodePw = passwordEncoder.encode(admMemberVO.getMb_password());
+		int emailing;
+		if(admMemberVO.getMb_emailing_test() != null) {
+			emailing = 1;
+		}else {
+			emailing = 0;
+		}
+		admMemberVO.setMb_emailing(emailing);
+		admMemberVO.setMb_password(encodePw);
 		adminuserDAO.UserInsert(admMemberVO);
 		return true;
 	}
