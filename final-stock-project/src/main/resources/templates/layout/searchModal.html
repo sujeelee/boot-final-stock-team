@@ -1,0 +1,12 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<div class="search-modal-table search-result">
+		<div class="search-modal-row" th:each="result : ${resultlist}" th:onclick="modal_link([[${result.link}]]);">
+			<div class="modal-left">
+				<span th:text="${tops.title}"></span>
+			</div>
+			<div class="modal-right">
+				<span th:class="${result.flt == '0' ? 'dash-grey' : result.flt.contains('-') ? 'dash-blue' :'dash-red' }" th:text="${#numbers.formatDecimal(result.flt, 1, 2)}+'%'"></span>
+			</div>
+		</div> <!-- end search-modal-row -->
+	</div>
+</html>
