@@ -42,7 +42,6 @@
     ></script>
   </head>
   <body scroll="no">
-    <div th:replace="~{layout/modal.html}"></div>
     <!--/* 고정 헤더 */-->
     <div th:replace="~{layout/header.html :: header}"></div>
     <!-- 헤더 불러오기 -->
@@ -134,22 +133,6 @@
 	}
 	updateTranslateValue();
     $(window).resize(updateTranslateValue);
-    
-    function modal_link(code){
-		location.href = "/stock/" + code;
-	}
-	function search_mstx(stx){
-		if(stx != ""){
-			$(".search-modal-table-div").fadeOut(300, function() {
-				$(".search-modal-result-div").fadeIn(300);
-			});
-		} else {
-			$(".search-modal-result-div").fadeOut(300, function() {
-				$(".search-modal-table-div").fadeIn(300);
-			});
-		}
-		
-	}
 	</script>
   </body>
 </html>
