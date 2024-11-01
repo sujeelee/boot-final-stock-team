@@ -2,7 +2,6 @@ package kh.st.boot.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,15 @@ public class AdmPointService {
 	}
 
 
-	public void plusminus(String mb_id, int po_num, String po_content) {
-		admPointDAO.updatePoint(mb_id,po_num,po_content);
+	public void plusminus(String mb_id, int po_num,String pointType, String po_content) {
+		if(pointType.equals("plus")) {
+			admPointDAO.upPoint(mb_id,po_num,po_content);
+		}else if(pointType.equals("minus")) {
+			po_num = -po_num;
+			System.out.println(po_num);
+			admPointDAO.downPoint(mb_id,po_num,po_content);
+		}
+		
 	}
 
 
