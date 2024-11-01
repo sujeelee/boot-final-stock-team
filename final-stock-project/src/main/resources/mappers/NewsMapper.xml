@@ -156,11 +156,43 @@
 			NEWS
 		JOIN
 			NEWSPAPER ON NEWSPAPER.NP_NO = NEWS.NP_NO
-		JOIN
+		LEFT JOIN
 			FILE ON NE_NO = FI_REG_NO
 		WHERE
 			NE_TITLE LIKE CONCAT('%', #{st_name}, '%')
 			OR NE_CONTENT LIKE CONCAT('%', #{st_name}, '%')
 		ORDER BY NE_DATETIME DESC
+	</select>
+	
+	<select id="selectNewsListByImg" resultType="NewsVO">
+		SELECT *, NP_NAME, FI_PATH
+		FROM
+			NEWS
+		JOIN
+			NEWSPAPER ON NEWSPAPER.NP_NO = NEWS.NP_NO
+		JOIN
+			FILE ON NE_NO = FI_REG_NO
+		ORDER BY NE_DATETIME DESC
+		LIMIT 0,4
+	</select>
+	
+	<select id="selectNewsListByNoImg" resultType="NewsVO">
+		SELECT NEWS.*, NEWSPAPER.NP_NAME
+		FROM 
+			NEWS
+		JOIN 
+			NEWSPAPER ON NEWSPAPER.NP_NO = NEWS.NP_NO
+		WHERE 
+			NOT EXISTS (SELECT 1 FROM FILE WHERE FILE.FI_REG_NO = NEWS.NE_NO)
+		ORDER BY NEWS.NE_DATETIME DESC
+		LIMIT 0, 4
+	</select>
+	
+	<select id="selectNewsMember" resultType="NewsMemberVO">
+		SELECT *
+		FROM
+			NEWS_MEMBER
+		WHERE
+			MB_NO = #{mb_no}
 	</select>
 </mapper>

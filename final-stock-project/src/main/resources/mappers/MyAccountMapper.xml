@@ -134,4 +134,46 @@
 		ORDER BY 
 		    a.st_name ASC;
 	</select>
+	<select id="selectMemberStatus" resultType="String">
+	    SELECT 
+	        CASE 
+	            WHEN EXISTS (SELECT 1 FROM news_member WHERE mb_no = #{mb_no}) THEN 'news'
+	            WHEN EXISTS (SELECT 1 FROM stock_member WHERE mb_no = #{mb_no}) THEN 'stock'
+	            ELSE 'none'
+	        END AS member_status
+	    FROM
+	        MEMBER
+	    WHERE
+	    	MB_ID = #{mb_id}
+	</select>
+	<delete id="deleteMemberStatus">
+		<choose>
+	        <when test="status == 'news'">
+	            DELETE FROM news_member WHERE mb_no = #{mb_no}
+	        </when>
+	        <when test="status == 'stock'">
+	            DELETE FROM stock_member WHERE mb_no = #{mb_no}
+	        </when>
+	    </choose>
+	</delete>
+	<insert id="insertStockAdd">
+		INSERT INTO STOCK_ADD (SA_QTY, MB_ID, SA_DATETIME, SA_CONTENT) VALUES
+		(#{sa_qty}, #{mb_id}, NOW(), #{sa_content})
+	</insert>
+	<select id="selectStockAddList" resultType="StockAddVO">
+		SELECT *
+		FROM
+			STOCK_ADD
+		WHERE
+			MB_ID = #{mb_id}
+		ORDER BY SA_DATETIME DESC
+		LIMIT #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	<select id="getCountByStockAdd" resultType="int">
+		SELECT COUNT(*)
+		FROM
+			STOCK_ADD
+		WHERE
+			MB_ID = #{mb_id}
+	</select>
 </mapper>

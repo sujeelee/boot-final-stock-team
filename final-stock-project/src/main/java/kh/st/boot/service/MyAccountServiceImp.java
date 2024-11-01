@@ -16,7 +16,10 @@ import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.SendVO;
+import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
 import lombok.AllArgsConstructor;
@@ -29,6 +32,8 @@ public class MyAccountServiceImp implements MyAccountService {
 	private PasswordEncoder passwordEncoder;
 	private DepositDAO depositDao;
 	private MemberDAO memberDao;
+	
+	private StockService stockService;
 	
 	@Override
 	public AccountVO getAccountById(String mb_id) {
@@ -186,6 +191,79 @@ public class MyAccountServiceImp implements MyAccountService {
 	@Override
 	public List<MyAccountStocksDTO> getMyStockList(String mb_id) {
 		return myAccountDao.selectMyStockList(mb_id);
+	}
+
+	@Override
+	public String getMemberStatus(int mb_no, String mb_id) {
+		return myAccountDao.selectMemberStatus(mb_no, mb_id);
+	}
+	
+    @Override
+	public SendVO getSendInfo(String ds_no) {
+		SendVO send = depositDao.getSendInfo(ds_no);
+		return send;
+	}
+
+	@Override
+	public String setContentView(DepositVO tmps) {
+		String content_view = "";
+		if(tmps.getDe_stock_code() == null || tmps.getDe_stock_code() == "") {
+			if(tmps.getDe_content().contains("송금") || tmps.getDe_content().contains("입금")) {		
+				String ds_no = tmps.getDe_content().trim().split("고유번호 : ")[1];
+				SendVO send = getSendInfo(ds_no);
+				if(tmps.getDe_content().contains("입금")) {
+					content_view = send.getDs_send_name();
+				} else {
+					content_view = send.getDs_receive_name();
+				}
+				
+			} else {
+				String od_id = tmps.getDe_content().trim().split("주문번호 : ")[1];
+				DepositOrderVO dov = getDepositOrder(od_id); 
+				content_view = dov.getDo_name();
+			}
+			
+		} else {
+			StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
+			content_view = stock.getSt_name();
+			if(tmps.getDe_content().contains("매수 :")) {
+				content_view += tmps.getDe_content().trim().split("매수 :")[1];
+			} else {
+				content_view += tmps.getDe_content().trim().split("매도 :")[1];
+			}
+		}
+		return content_view;
+	}
+
+
+	@Override
+	public boolean deleteMemberStatus(int mb_no, String status) {
+		if(status == "none") {
+			return false;
+		}
+		return myAccountDao.deleteMemberStatus(mb_no, status);
+	}
+
+	@Override
+	public boolean insertStockAdd(String mb_id, int sa_qty, String sa_content) {
+		if(mb_id == null) {
+			return false;
+		}
+		return myAccountDao.insertStockAdd(mb_id, sa_qty, sa_content);
+	}
+
+	@Override
+	public List<StockAddVO> getStockAddList(String mb_id, Criteria cri) {
+		if(mb_id == null) {
+			return null;
+		}
+		return myAccountDao.selectStockAddList(mb_id, cri);
+	}
+
+	@Override
+	public PageMaker SelectPageMaker(Criteria cri, String mb_id) {
+		int count = myAccountDao.getCountByStockAdd(mb_id);
+		return new PageMaker(5, cri, count);
 	}
 
 }

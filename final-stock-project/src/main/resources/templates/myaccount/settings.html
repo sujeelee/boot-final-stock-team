@@ -6,166 +6,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Insert title here</title>
-	<style type="text/css">
-		/* Container */
-		.my-container {
-		    display: grid;
-		    grid-template-columns: 184px minmax(10px, 1fr);
-		    grid-column-gap: 40px;
-		    column-gap: 40px;
-		    padding: 0 40px 40px 24px;
-		    min-width: 940px;
-		    max-width: 1280px;
-		    margin: 0 auto;
-		}
-		
-		/* Sidebar */
-	 	.my-sidebar {
-            position: sticky;
-            top: 60px;
-            padding-top: 30px;
-            border-radius: 50px;
-            background-color: #fff;
-        }
-
-        .my-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .my-list li {
-            margin-bottom: 10px;
-        }
-        
-        .my-item {
-        	list-style: none;
-        }
-
-        .my-btn {
-            background-color: transparent;
-            border: none;
-            text-align: left;
-            cursor: pointer;
-            padding: 10px 15px;
-            border-radius: 50px;
-            transition: background-color 0.2s;
-            width: 100%;
-        }
-
-        .my-list li:hover {
-		    border-radius: 20px;
-		    background-color: #f9fafb;
-        }
-        .my-text {
-        	font-weight: 500;
-            font-size: 17px;
-            color: #888;
-        }
-		/* Header */
-		.my-header {
-		    margin-bottom: 30px;
-		}
-		
-		.header-title {
-		    font-size: 24px;
-		    font-weight: bold;
-		    color: #333d4b;
-		}
-		
-		.sub-header-title {
-			font-size: 20px;
-			font-weight: bold;
-			color: #333d4b;
-		}
-		
-		.my-section {
-			margin-bottom: 60px;
-			
-		}
-		
-		.my-details {
-			flex-grow: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-		}
-		
-		.my-info-left {
-			display: flex;
-            flex-direction: column;
-		}
-		
-		.my-info-right {
-			display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-		}
-		
-		.my-text-left {
-            color: #4e5968;
-            font-size: 17px;
-		}
-		
-		.my-text-left1 {
-            color: #4e5968;
-            font-size: 17px;
-            text-align: left
-		}
-		
-		.my-text-left2 {
-            color: #4e5968;
-            font-size: 14px;
-		}
-		
-		.my-text-right {
-			font-weight: bold;
-			color: #4e5968;
-            font-size: 18px;
-		}
-		
-		.my-button {
-			width:100%; 
-			background-color: transparent;   
-			border: none;
- 			outline: none;
- 			background-color: inherit ;
-  			cursor: pointer;
-		}
-		
-		.my-button:hover{
-			background-color: #f9fafb;
-			border-radius: 10px;
-		}
-		
-		input[type="checkbox"] {
-		    width: 20px;
-		    height: 20px;
-		    cursor: pointer;
-		}
-		
-		input[type="checkbox"]:checked {
-		    background-color: #4e5968;
-		}
-		
-		.drop-btn {
-			width: 100%;
-			border: 0;
- 			background-color: #fff;
-		}
-		
-		.drop-btn:hover {
-			background-color: #f9fafb;
-		}
-		
-		#selected-value {
-			margin-left: 10px; 
-			font-weight: bold; 
-			color: #333d4b; 
-			font-size: 26px;
-		}
-	</style>
+<link rel="stylesheet" type="text/css" th:href="@{/css/accountsettings.css}">
 </head>
  <body>
 	<main layout:fragment="content">
@@ -182,7 +23,6 @@
 					<div class="my-details">
 						<div class="my-info-left">
 							<span class="my-text-left">계좌번호</span>
-							
 						</div>
 						<div class="my-info-right">
 							<span class="my-text-right"
@@ -196,6 +36,15 @@
 						<div class="my-info-right">
 							<span class="my-text-right" 
 								  th:text="${#dates.format(#authentication.principal.member.mb_datetime, 'yyyy년 MM월 dd일')}"></span>
+						</div>
+					</div>
+					<div class="my-details">
+						<div class="my-info-left">
+							<span class="my-text-left">회원 레벨</span>
+						</div>
+						<div class="my-info-right">
+							<span class="my-text-right" 
+								  th:text="${user.mb_level} + ' Lv'"></span>
 						</div>
 					</div>
 				</section>
@@ -231,11 +80,11 @@
 				<section class="my-section">
 					<span class="sub-header-title">이체</span>
 					<hr>
-					<button class="my-button">
+					<button class="my-button" onclick="open_window();">
 						<div class="my-details">
 							<div class="my-info-left">
 								<span class="my-text-left1">송금 한도</span>
-								<span class="my-text-left2">1회 100만원, 1일 100만원</span>
+								<span class="my-text-left2">1회 100만원</span>
 							</div>
 							<div class="my-info-right">
 								<span class="my-text-right">></span>
@@ -356,11 +205,44 @@
 								<span class="my-text-right">${mp_app_date}</span>
 							</div>
 						</div>
-						<div class="d-flex mt-2">
-							<div class="mr-auto"></div>
-							<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
-						</div>
 					`;
+					if(mp.mp_type == 'stock') {
+						str += `
+							<div class="my-details">
+								<div class="my-info-left">
+									<span class="my-text-left">주식 요청</span>
+								</div>
+								<div class="my-info-right">
+				                    <a href="#demo" class="btn btn-outline-dark" data-toggle="collapse">요청</a>
+								</div>
+							</div>
+							<div id="demo" class="collapse">
+		                    	<form onsubmit="return false;">
+			                    	<input class="form-control mb-2" type="number" id="sa_qty" placeholder="숫자만 입력해주세요" required>
+			                    	<textarea class="form-control" id="sa_content" name="sa_content" style="min-height: 400px; height: auto;" placeholder="관리자한테 보낼 메시지를 입력해주세요"></textarea>
+			                    	<div class="d-flex my-details">
+			                    		<div class="mr-auto"></div>
+			                    		<button class="btn btn-outline-dark mt-2" type="button" onclick="applyStock()">보내기</button>
+			                    	</div>
+			                    </form>
+		                    </div>
+							<div class="d-flex my-details">
+								<div>
+									<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
+								</div>
+								<div class="mr-auto"></div>
+								<a href="#" class="btn btn-outline-dark" onclick="window.open('/myaccount/stockList', '_blank', 'width=900,height=400,left=500,top=300'); return false;">요청 목록</a>
+					        </div>
+						`;
+					}else{
+						str += `
+							<div class="d-flex my-details">
+								<div>
+									<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
+								</div>
+					        </div>
+						`;
+					}
 					$('.member-success').html(str);
 				} // 승인이 성공했을 때
 				
@@ -374,6 +256,35 @@
 			        $('button[onclick="submitForm()"]').show();
 				} // 승인이 거절 당했을 때
 			});
+			
+			function applyStock() {
+			    const sa_qty = $('#sa_qty').val();
+			    const sa_content = $('#sa_content').val();
+			    if (sa_qty === '' || isNaN(sa_qty) || sa_qty == 0) {
+			        alert('올바른 값을 입력해주세요');
+			        return;
+			    }
+			    
+			    $.ajax({
+			    	async : true, //비동기 : true(비동기), false(동기)
+			        url : '/myaccount/applyStock',
+			        type : 'post',
+			        data : {
+			        	sa_qty : sa_qty,
+			            sa_content : sa_content
+			        },
+			        success: function(data) {
+			            alert('주식 요청이 성공적으로 전달되었습니다.');
+			            $('#sa_qty').val('');
+			            $('#sa_content').val('');
+			            $('#demo').collapse('hide');
+			            // 서버 응답에 따라 추가 작업 수행 가능
+			        },
+			        error : function(jqXHR, textStatus, errorThrown){
+						console.log(jqXHR);
+					}
+			    });
+			}
 			
 			function deleteMember() {
 				if(confirm("탈퇴를 진행하시겠습니까?")){

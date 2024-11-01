@@ -27,7 +27,10 @@ import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
+import kh.st.boot.model.vo.SendVO;
+import kh.st.boot.model.vo.StockAddVO;
 import kh.st.boot.model.vo.StockVO;
+import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
 import kh.st.boot.service.MemberService;
@@ -202,11 +205,13 @@ public class MyAccountController {
         	model.addAttribute("url", "/member/login");
             return "util/msg";
         }
+        MemberVO user = memberService.findById(principal.getName());
+        model.addAttribute("user", user);
 		return "myaccount/settings";
 	}
 	
 	@PostMapping("/settings")
-	public String settingsPost(MemberApproveVO mp) {
+	public String settingsPost(Model model, Principal principal, MemberApproveVO mp) {
 		if(myAccountService.getMemberApprove(mp.getMb_no()) == null) {
 			myAccountService.insertMemberApprove(mp);
 		}else {
@@ -214,6 +219,8 @@ public class MyAccountController {
 				myAccountService.insertMemberApprove(mp);
 			}
 		}
+        MemberVO user = memberService.findById(principal.getName());
+        model.addAttribute("user", user);
 		return "myaccount/settings";
 	}
 	
@@ -305,7 +312,6 @@ public class MyAccountController {
 				mp.setMp_company(myAccountService.getStockName(mp.getMp_company()));
 			}
 			map.put("mp", mp);
-			
 		}
 		else if(mp.getMp_yn().equals("n")) {
 			map.put("status", "fail");
@@ -319,9 +325,16 @@ public class MyAccountController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String mb_id = principal.getName();
 		MemberVO user = memberService.findById(mb_id);
+		String status = myAccountService.getMemberStatus(user.getMb_no(), user.getMb_id());
+		System.out.println(user.getMb_no());
+		System.out.println(status);
 		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
 		if(res) {
-			map.put("status", true);
+			if(myAccountService.deleteMemberStatus(user.getMb_no(), status)) {
+				map.put("status", true);
+			}else {
+				map.put("status", false);
+			}
 		}else {
 			map.put("status", false);
 		}
@@ -343,6 +356,25 @@ public class MyAccountController {
 		return map;
 	}
 	
+	@ResponseBody
+	@PostMapping("/applyStock")
+	public boolean applyStock(Principal principal, @RequestParam int sa_qty, @RequestParam String sa_content){
+		String mb_id = principal.getName();
+		boolean res = myAccountService.insertStockAdd(mb_id, sa_qty, sa_content);
+		return res;
+	}
+	
+	@GetMapping("/stockList")
+	public String stockList(Model model, Principal principal, Criteria cri) {
+		String mb_id = principal.getName();
+		cri.setPerPageNum(5);
+		List<StockAddVO> list = myAccountService.getStockAddList(mb_id, cri);
+		PageMaker pm = myAccountService.SelectPageMaker(cri, mb_id);
+		model.addAttribute("pm", pm);
+		model.addAttribute("list", list);
+		return "myaccount/stockList";
+	}
+	
 	@GetMapping("/transactions/{type}")
 	public String transactions(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
 		if(principal == null) {
@@ -361,20 +393,9 @@ public class MyAccountController {
 		AccountVO ac = myAccountService.getAccountAmt(mb_id);
 		
 		for(DepositVO tmps : list) {
-			String content_view = "";
-			if(tmps.getDe_stock_code() == null || tmps.getDe_stock_code() == "") {
-				String od_id = tmps.getDe_content().trim().split("주문번호 : ")[1];
-				DepositOrderVO dov = myAccountService.getDepositOrder(od_id); 
-				content_view = dov.getDo_name();
-			} else {
-				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
-				content_view = stock.getSt_name();
-				if(tmps.getDe_content().contains("매수 :")) {
-					content_view += tmps.getDe_content().trim().split("매수 :")[1];
-				} else {
-					content_view += tmps.getDe_content().trim().split("매도 :")[1];
-				}
-			}
+			
+			String content_view = myAccountService.setContentView(tmps);
+			
 			tmps.setContent_view(content_view);
 			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
 		}
@@ -404,20 +425,7 @@ public class MyAccountController {
 		AccountVO ac = myAccountService.getAccountAmt(mb_id);
 		
 		for(DepositVO tmps : list) {
-			String content_view = "";
-			if(tmps.getDe_stock_code() == null || tmps.getDe_stock_code() == "") {
-				String od_id = tmps.getDe_content().trim().split("주문번호 : ")[1];
-				DepositOrderVO dov = myAccountService.getDepositOrder(od_id); 
-				content_view = dov.getDo_name();
-			} else {
-				StockVO stock = stockService.getCompanyOne(tmps.getDe_stock_code());
-				content_view = stock.getSt_name();
-				if(tmps.getDe_content().contains("매수 :")) {
-					content_view += tmps.getDe_content().trim().split("매수 :")[1];
-				} else {
-					content_view += tmps.getDe_content().trim().split("매도 :")[1];
-				}
-			}
+			String content_view = myAccountService.setContentView(tmps);;
 			tmps.setContent_view(content_view);
 			tmps.setDe_content(tmps.getDe_content().trim().split(" :")[0]);
 		}

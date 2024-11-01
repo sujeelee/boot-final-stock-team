@@ -55,7 +55,19 @@ public class GlobalControllerAdvice {
     
     @ModelAttribute("hotlist")
     public List<HotStockDTO> getHotStockList(){
-    	List<HotStockDTO> list = configService.getHotStockList();
+    	List<HotStockDTO> list = configService.getHotStockList(100);
+		
+		for(HotStockDTO tmp : list) {
+			String amount = stocksHeaderService.priceTextChange(Double.parseDouble(tmp.getMrk()));
+			tmp.setPrice_text(amount);
+		}
+		
+		return list;
+    }
+    
+    @ModelAttribute("top5list")
+    public List<HotStockDTO> getHotStockListTop5(){
+    	List<HotStockDTO> list = configService.getHotStockList(5);
 		
 		for(HotStockDTO tmp : list) {
 			String amount = stocksHeaderService.priceTextChange(Double.parseDouble(tmp.getMrk()));

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kh.st.boot.dao.NewsDAO;
 import kh.st.boot.model.vo.FileVO;
 import kh.st.boot.model.vo.NewsEmojiVO;
+import kh.st.boot.model.vo.NewsMemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.utils.UploadFileUtils;
@@ -213,4 +214,19 @@ public class NewsServiceImp implements NewsService{
 	public String removeHTML(String ne_content) {
 		return Jsoup.parse(ne_content).text();
 	} // html 태그들을 없애고 순수 텍스트만 가져오게 하는 메소드
+
+	@Override
+	public List<NewsVO> getNewsListByImg() {
+		return newsDao.selectNewsListByImg();
+	}
+
+	@Override
+	public List<NewsVO> getNewsListByNoImg() {
+		return newsDao.selectNewsListByNoImg();
+	}
+
+	@Override
+	public NewsMemberVO getNewsMember(int mb_no) {
+		return newsDao.selectNewsMember(mb_no);
+	}
 }

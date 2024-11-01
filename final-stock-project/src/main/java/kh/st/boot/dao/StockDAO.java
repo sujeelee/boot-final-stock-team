@@ -48,7 +48,7 @@ public interface StockDAO {
 
 	List<StockPriceVO> getStockInfoListDate(@Param("code")String st_code, @Param("to")String to_date, @Param("from")String from_date);
 
-	List<HotStockDTO> getHotStockList();
+	List<HotStockDTO> getHotStockList(int limit);
 
 	List<DashListDTO> getMyStock(@Param("mb_id")String mb_id);
 

@@ -14,4 +14,5 @@ public class SendVO {
 	private char ds_favorite; //즐겨찾기한 계정인지
 	private String mb_id; //보낸 회원 아이디
 	private String ds_re_mb_id; //받은 회원 아이디
+	private String ds_send_price; //보낸 금액
 }

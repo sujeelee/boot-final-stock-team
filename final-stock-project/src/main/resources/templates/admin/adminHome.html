@@ -12,9 +12,9 @@
 <body>
 
 	<div id="wrapper">
-		<div id="container" class="content">
-			<h1 id="container_title">관리자 메인</h1>
-			<div id="container_main">
+		<div id="container" >
+			<h1 id="container_title">관리자 메인 페이지</h1>
+			<div id="container_main" class="content">
 				<form action="/admin/adminHome/update" method="post">
 					<section>
 						<h2 id="main_h2">홈페이지 기본환경 설정</h2>
@@ -36,7 +36,7 @@
 									<tr>
 										<th><label>대표 번호</label></th>
 										<td><input type="text" name="cf_tel"
-											th:value="${adminH.cf_info}" required class="menu_input"
+											th:value="${adminH.cf_tel}" required class="menu_input"
 											size="40"></td>
 									</tr>
 									<tr>
@@ -90,6 +90,11 @@
 									<tr>
 										<th><label>홈페이지 기본약관</label></th>
 										<td><textarea name="cf_info" required
+												th:text="${adminH.cf_info}"></textarea></td>
+									</tr>
+									<tr>
+										<th><label>주식 기본약관 디비변경되면 th값 변경</label></th>
+										<td><textarea name="cf_stock" required
 												th:text="${adminH.cf_info}"></textarea></td>
 									</tr>
 									<tr>

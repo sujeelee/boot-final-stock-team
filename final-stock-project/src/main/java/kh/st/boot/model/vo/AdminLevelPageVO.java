@@ -10,6 +10,8 @@ public class AdminLevelPageVO {
 	private String lv_name; 
 	private int lv_num;  
 	private String lv_alpha; 
-	private String lv_auto_use;
+	private char lv_auto_use;
 	private int lv_up_limit;
+	
+	
 }

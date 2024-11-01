@@ -1,8 +1,5 @@
-
 <header class="home-section">
-	<th:block layout:fragment="css">
-    	<link rel="stylesheet" th:href="@{/css/header.css}" >
-	</th:block>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
 	<nav class="navbar">
 		<!-- 왼쪽 로고 -->
 		<div class="logo">
@@ -11,18 +8,20 @@
 		<!--/* 가운데 메뉴 */-->
 		<div class="menu">
 			<a th:href="@{/}">홈</a>
-			<a sec:authorize="isAuthenticated()" 
-			th:if="${#authentication.Principal.member.mb_level >= 9}" 
-			th:href="@{/admin/adminHome}">관리자</a>
 			<a th:href="@{/newspaper}">뉴스</a>
 			<a th:href="@{/stock/stockList}">주식 골라보기</a>
 			<a th:href="@{/myaccount/asset}" class="myaccount">내 계좌</a>
-		
 			<a th:href="@{/event/eventhome/Opening}">이벤트</a>
-			<a th:href="@{/admin/stock}">주식 리스트</a>
-			<a th:href="@{/deposit}">예치금결제</a>
-		</div>        
-		  <!--/* 메뉴를 가운데로 고정하기 위한 p 테그 */-->
+			<a sec:authorize="isAuthenticated()" 
+			th:if="${#authentication.Principal.member.mb_level >= 9}" 
+			th:href="@{/admin/adminHome}">관리자</a>
+			<button type="button" class="btn search_head" onclick="action_search();">
+				<span class="btn-inner-icon">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</span>
+				<span class="btn-inner-text slash">/</span>를 눌러 검색하세요
+			</button>		 
+		</div>
 		<div>
 			<a th:href="@{/event/calendar_event}">출석도장</a>
 		</div>

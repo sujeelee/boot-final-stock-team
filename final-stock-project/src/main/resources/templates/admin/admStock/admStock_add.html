@@ -4,86 +4,102 @@
 	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
 <head>
 <meta charset="UTF-8">
-<title>Admin Level Page</title>
-<link th:href="@{/css/admnews.css}" rel="stylesheet" />
+<title>관리자 페이지</title>
 </head>
 <style>
-	.modal {
-	    position: absolute;
-	    display: none;
-	    justify-content: center;
-	    top: 0;
-	    left: 0;
-	    width: 100%;
-	    height: 100%;
-	    background-color: rgba(0, 0, 0, 0.4);
-	}
-	
-	.modal_body {
-        position: absolute;
-        top: 50%;
-	    width:400px;  
-        height:600px;
-        padding: 40px;
-        text-align: center;
-        background-color: rgb(255, 255, 255);
-        border-radius: 10px;
-        box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-        transform: translateY(-50%);
-    }
+.modal {
+	position: absolute;
+	display: none;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal_body {
+	position: absolute;
+	top: 50%;
+	width: 400px;
+	height: 600px;
+	padding: 40px;
+	text-align: center;
+	background-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+	transform: translateY(-50%);
+}
 </style>
 <body>
-	<table>
-		<thead>
-			<tr>
-				<th>고유번호</th>
-				<th>소각/발행값</th>
-				<th>요청사 ID</th>
-				<th>작성일</th>
-			</tr>
-		</thead>
-		<tbody>
-            <tr th:each="item : ${list}">
-                <td th:text="${item.sa_no}"></td>
-                <td th:text="${item.sa_qty}"></td>
-                <td th:text="${item.mb_id}"></td>
-                <td th:text="${item.sa_datetime}"></td>
-                <td>
-                    <button class="btn-open-modal navyBtn" type="button"
-                            th:data-sa_no="${item.sa_no}"
-                            th:data-sa_qty="${item.sa_qty}"
-                            th:data-mb_id="${item.mb_id}"
-                            th:data-sa_content="${item.sa_content}">
-                        처리
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-	</table>
+	<div id="wrapper">
+		<div id="container">
+			<h1 id="container_title">주식 발행/소각</h1>
+			<div id="container_main" class="content">
+				<form th:action="@{/admin/admStock/admStock_add/search}"
+					method="post" style="margin-bottom: 20px;">
+					<input type="text" name="mb_id" placeholder="요청사 ID"
+						style="padding: 5px;" />
+					<button type="submit" style="padding: 5px 10px;">검색</button>
+				</form>
+				<table>
+					<thead>
+						<tr>
+							<th>요청사 ID</th>
+							<th>소각/발행값</th>
+							<th>작성일</th>
+							<th>관리</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${list}">
+							<td th:text="${item.mb_id}"></td>
+							<td th:text="${item.sa_qty}"></td>
+							<td th:text="${item.sa_datetime}"></td>
+							<td>
+								<button class="btn-open-modal navyBtn btn_submit btn"
+									type="button" th:data-sa_no="${item.sa_no}"
+									th:data-sa_qty="${item.sa_qty}" th:data-mb_id="${item.mb_id}"
+									th:data-sa_content="${item.sa_content}">처리</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 
-   <div class="modal">
-       <div class="modal_body">
-            <h2 style="text-align: left">데이터 처리</h2>
-            <p>고유번호: <span id="modal-sa_no"></span></p>
-            <p>소각/발행값: <span id="modal-sa_qty"></span></p>
-            <p>요청사 ID: <span id="modal-mb_id"></span></p>
-            <p>요청사유: <span id="modal-sa_content"></span></p>
-			<form th:action="@{/admin/admStock/admStock_add/choose}" method="post">
-	            <div>
-				    <input type="checkbox" id="sa_yn" name="sa_yn" checked />
-				    <label for="sa_yn"> 승인 </label>
-			    </div>
-			    <p>승인 거절 사유</p>
-				<textarea name="sa_feedback" style="width: 100%; height: 300px"></textarea>
-				<input type="hidden" id="hidden-sa_no" name="sa_no">		
-	            
-	            <button class="close-modal" type="button" style="background-color: red">닫기</button>
-	            <button type="submit">처리</button>
-             </form>
-        </div>
-    </div>
+				<div class="modal">
+					<div class="modal_body">
+						<h2 style="text-align: left">데이터 처리</h2>
+						<p>
+							소각/발행값: <span id="modal-sa_qty"></span>
+						</p>
+						<p>
+							요청사 ID: <span id="modal-mb_id"></span>
+						</p>
+						<p>
+							요청사유: <span id="modal-sa_content"></span>
+						</p>
+						<form th:action="@{/admin/admStock/admStock_add/choose}"
+							method="post">
+							<div>
+								<select id="sa_yn" name="sa_yn">
+									<option value="y">승인</option>
+									<option value="n">거절</option>
+								</select>
+							</div>
+							<p>승인 거절 사유</p>
+							<textarea name="sa_feedback" style="width: 100%; height: 300px"></textarea>
+							<input type="hidden" id="hidden-sa_no" name="sa_no">
 
-    <script>
+							<button class="close-modal" type="button"
+								style="background-color: red">닫기</button>
+							<button type="submit">처리</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
         const modal = document.querySelector('.modal');
         const closeModalBtn = document.querySelector('.close-modal');
         const btnOpenModal = document.querySelectorAll('.btn-open-modal');
@@ -91,7 +107,6 @@
         btnOpenModal.forEach(button => {
             button.addEventListener("click", () => {
                 // 버튼의 data 속성에서 각 값을 가져와 모달에 넣음
-                document.getElementById('modal-sa_no').innerText = button.dataset.sa_no;
                 document.getElementById('modal-sa_qty').innerText = button.dataset.sa_qty;
                 document.getElementById('modal-mb_id').innerText = button.dataset.mb_id;
                 document.getElementById('modal-sa_content').innerText = button.dataset.sa_content;
