@@ -515,9 +515,9 @@ public class AdminController {
 
 	// 포인트 적립, 차감
 	@PostMapping("/admPoint/admPointPage/point")
-	public String plusMinus(@RequestParam String mb_id, @RequestParam int po_num, @RequestParam String po_content) {
-
-		admPointService.plusminus(mb_id, po_num, po_content);
+	public String plusMinus(@RequestParam String mb_id, @RequestParam int po_num,@RequestParam String pointType, @RequestParam String po_content) {
+		 
+		admPointService.plusminus(mb_id, po_num,pointType, po_content);
 		return "redirect:/admin/admPoint/admPointPage";
 	}
 
