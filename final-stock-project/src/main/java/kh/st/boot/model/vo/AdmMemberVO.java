@@ -35,6 +35,7 @@ public class AdmMemberVO {
     private String mb_cookie;
     private String mb_cookie_limit;
     private int mb_point;
+    private String mb_emailing_test;
     private int mb_emailing;
     private String mb_account;
     
