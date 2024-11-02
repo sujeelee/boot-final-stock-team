@@ -2,7 +2,7 @@
 	<div class="search-modal-table search-result" id="search-result">
 		<div class="result-stock" th:if="${(resType == 'all' || resType == 'stock') && search[0].stockCnt > 0}">
 			<div class="result-mini-title">종목</div>
-			<div class="search-modal-row search-result-stock" th:onclick="modal_link([[${res.code}]], 'stock');" th:each="res : ${search}" th:if="${res.type == 'stock'}">
+			<div class="search-modal-row search-result-stock" th:onclick="modal_link([[${res.code}]], 'stock');" th:each="res, num : ${search}" th:if="${res.type == 'stock'}">
 				<div class="modal-left">
 					<span th:text="${res.title}"></span>
 				</div>

@@ -113,6 +113,8 @@
 		} else {
 			if($(".search-modal").hasClass("active")){
 				$(".search-modal").fadeOut(300, function() {
+					$(".mstx").val("");
+					search_mstx("");
 					$('.modal-backdrop').remove(); // 백드롭 제거
 					$(".search-modal").removeClass("active");
 				});
