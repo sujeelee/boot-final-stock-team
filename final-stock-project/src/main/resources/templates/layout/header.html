@@ -12,9 +12,6 @@
 			<a th:href="@{/stock/stockList}">주식 골라보기</a>
 			<a th:href="@{/myaccount/asset}" class="myaccount">내 계좌</a>
 			<a th:href="@{/event/eventhome/Opening}">이벤트</a>
-			<a sec:authorize="isAuthenticated()" 
-			th:if="${#authentication.Principal.member.mb_level >= 9}" 
-			th:href="@{/admin/adminHome}">관리자</a>
 			<button type="button" class="btn search_head" onclick="action_search();">
 				<span class="btn-inner-icon">
 					<i class="fa-solid fa-magnifying-glass"></i>

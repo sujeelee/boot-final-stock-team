@@ -45,6 +45,16 @@
 					</a>
 					<span class="tooltip">회원가입</span>
 				</li>
+				<!-- 관리자 -->
+				<li class="side_icon" sec:authorize="isAuthenticated()">
+					<a sec:authorize="isAuthenticated()" th:if="${#authentication.Principal.member.mb_level >= 9}" 
+						th:href="@{/admin/adminHome}">
+						<i class="fa-solid fa-user-tie"></i>
+						<span class="links_name">&nbsp;관리자</span>
+					</a>
+					<span class="tooltip">관리자</span>
+					
+				</li>
 				<!-- 로그아웃 -->
 				<li class="side_icon" sec:authorize="isAuthenticated()">
 					<a th:href="@{/member/logout}">
