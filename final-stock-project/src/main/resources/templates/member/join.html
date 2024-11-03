@@ -82,8 +82,13 @@
 
 <script>
 	function view_terms(terms){
-		$(".terms-display").hide();
-		$("."+terms).show();
+		if($("."+terms).hasClass("active")){
+			$("."+terms).fadeOut(150);
+			$(".terms-display").removeClass("active");
+		} else {
+			$("."+terms).fadeIn(150);
+			$("."+terms).addClass("active");
+		}
 	}
 $('#email').click(Email_Check);
 function Email_Check(){
