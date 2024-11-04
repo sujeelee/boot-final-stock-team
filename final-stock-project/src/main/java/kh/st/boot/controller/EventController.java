@@ -261,15 +261,17 @@ public class EventController {
 
     @PostMapping("/eventATypeUpdate")
     public String eventATypeUpdate(Model mo ,PrizeVO prize, MultipartFile file){
-        boolean res = eventService.updateEventPrize_withFile(prize, file);
-        if (res) {
-            System.out.println(prize.getPr_name() +", 상품 수정 완료");
-        }
-        
+        boolean res = eventService.updateEventPrize_withFile(prize, file);        
         List<EventDTO> list = eventService.getEventAllList();
         mo.addAttribute("list", list);
         return "/event/eventPrizeList";
     }
 
+    @ResponseBody
+    @PostMapping("/ajax/bannerShow")
+    public boolean bannerShow(@RequestParam("ev_no")int ev_no){
+        boolean res =eventService.changeBannerShow(ev_no);
+        return res;
+    }
 
 }

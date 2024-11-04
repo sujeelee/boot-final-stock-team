@@ -252,6 +252,18 @@ public class EventServiceImp implements EventService {
         return res;
     }
 
+    @Override
+    public boolean changeBannerShow(int ev_no) {
+        EventVO event = eventDao.findEventByNumber(ev_no);
+        boolean res = false;
+        if (event.getEv_bannerShow() == 1) {
+            res = eventDao.changeBannerShow(ev_no, 0);
+        } else if (event.getEv_bannerShow() == 0) {
+            res = eventDao.changeBannerShow(ev_no, 1);
+        }
+        return res;
+    }
+
 
 
     

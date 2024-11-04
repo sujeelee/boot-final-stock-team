@@ -71,6 +71,10 @@ public interface EventDAO {
 
     boolean deletePrizeThumbnailFile(int pr_no);
 
+    EventVO findEventByNumber(int ev_no);
+
+    boolean changeBannerShow(int ev_no, int i);
+
 
     
 }

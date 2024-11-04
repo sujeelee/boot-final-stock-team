@@ -53,6 +53,8 @@ public interface EventService {
 
     boolean updateEventPrize_withFile(PrizeVO prize, MultipartFile file);
 
+    boolean changeBannerShow(int ev_no);
+
     
 
     
