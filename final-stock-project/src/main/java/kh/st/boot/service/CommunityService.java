@@ -37,22 +37,56 @@ public class CommunityService {
 		            // actionStatus가 null이 아닐 경우에만 속성 설정
 		            if (actionStatus != null) {
 		                // 좋아요와 신고 상태를 설정
-		                tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "y" : "n");
-		                tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "y" : "n");
+		                tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "active" : "");
+		                tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "active" : "");
 		            } else {
 		                // actionStatus가 null일 경우 기본값 설정
-		                tmp.setCg_like("n");
-		                tmp.setCg_report("n");
+		                tmp.setCg_like("");
+		                tmp.setCg_report("");
 		            }
 		        } else {
 		            // 로그인하지 않은 사용자에 대해 기본값 설정
-		            tmp.setCg_like("n");
-		            tmp.setCg_report("n");
+		            tmp.setCg_like("");
+		            tmp.setCg_report("");
 		        }
 		}
 		return list;
 	}
+	public List<CommentVO> getCommentList(int co_id, int wr_no ,String mb_id) {
+	    if(co_id == 0) {
+	        return null;
+	    }
+	    
+	    List<CommentVO> colist = communityDao.getCommentList(wr_no); // 댓글 목록 조회
+	    
+	    for(CommentVO tmp : colist) {
+	        CommunityActionVO ca = new CommunityActionVO();
+	        ca.setCg_num(tmp.getWr_no());
+	        ca.setCg_type("comment");
+	        ca.setMb_id(mb_id);
 
+	        // 로그인한 사용자의 경우
+	        if (mb_id != null) {
+	            CommunityActionVO actionStatus = communityDao.checkUserActions(ca);
+	            
+	            // actionStatus가 null이 아닐 경우에만 속성 설정
+	            if (actionStatus != null) {
+	                // 좋아요와 신고 상태를 설정
+	                tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "active" : "");
+	                tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "active" : "");
+	            } else {
+	                // actionStatus가 null일 경우 기본값 설정
+	                tmp.setCg_like("");
+	                tmp.setCg_report("");
+	            }
+	        } else {
+	            // 로그인하지 않은 사용자에 대해 기본값 설정
+	            tmp.setCg_like("");
+	            tmp.setCg_report("");
+	        }
+	    }
+	    return colist; // 항상 댓글 목록 반환
+	}
 	public boolean setFeelAction(CommunityActionVO feel) {
 	    if (feel == null || feel.getMb_id() == null || 
 	            feel.getSt_code() == null || feel.getMb_id().trim().length() == 0) {
@@ -95,7 +129,7 @@ public class CommunityService {
 			}
 	        return tmp;	        
 	}
-
+	
 	private void updateActionCounts(CommunityActionVO feel) {
 	    // 게시글에 대한 좋아요 및 신고 수 업데이트
 	    if ("board".equals(feel.getCg_type())) {
@@ -124,9 +158,35 @@ public class CommunityService {
 	public void updateCount() {
 		communityDao.updateCount();
 	}
-	public List<CommentVO> getCommentList(int wr_no) {
-
-		return communityDao.getCommentList(wr_no);
+	public List<CommentVO> getCommentList(int wr_no, String mb_id) {
+		List<CommentVO> list = communityDao.getCommentList(wr_no);
+		for(CommentVO tmp : list ) {
+			
+			CommunityActionVO ca = new CommunityActionVO();
+			ca.setCg_num(tmp.getWr_no());
+			ca.setCg_type("comment");
+			ca.setMb_id(mb_id);
+			
+			if (mb_id != null) { // 로그인한 사용자
+	            CommunityActionVO actionStatus = communityDao.checkUserActions(ca);
+	
+	            // actionStatus가 null이 아닐 경우에만 속성 설정
+	            if (actionStatus != null) {
+	                // 좋아요와 신고 상태를 설정
+	                tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "active" : "");
+	                tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "active" : "");
+	            } else {
+	                // actionStatus가 null일 경우 기본값 설정
+	                tmp.setCg_like("");
+	                tmp.setCg_report("");
+	            }
+	        } else {
+	            // 로그인하지 않은 사용자에 대해 기본값 설정
+	            tmp.setCg_like("");
+	            tmp.setCg_report("");
+	        }
+		}
+		return list;
 	}
 
 	public List<BoardVO> getBoardList(String st_code) {
@@ -160,6 +220,5 @@ public class CommunityService {
 	public boolean updateComment(CommentVO comment) {
 		return communityDao.updateComment(comment) > 0;
 	}
-
 
 }

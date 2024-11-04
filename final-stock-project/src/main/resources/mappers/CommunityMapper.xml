@@ -22,6 +22,18 @@
     	WHERE wr_category = #{wr_category}
 		ORDER BY wr_no DESC
     </select>
+    
+    <!-- <select id="test닊따바꿔" resultType="BoardVO">
+    	SELECT b.*, c.cg_like, c.cg_report
+		FROM board b join community_action c 
+		on b.wr_no = c.cg_num
+		WHERE b.wr_category = #{wr_category} 
+		<if test="mb_id != null ">
+			and c.mb_id = #{mb_id}
+		</if>
+		group by b.wr_no
+		ORDER BY b.wr_no DESC;
+    </select> -->
 
 	<select id="findBoardByObjBoardVO" resultType="CommunityActionVO">
 		select * from community_action
