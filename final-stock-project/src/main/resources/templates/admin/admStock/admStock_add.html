@@ -78,22 +78,28 @@
 						<p>
 							요청사유: <span id="modal-sa_content"></span>
 						</p>
-						<form th:action="@{/admin/admStock/admStock_add/choose}"
-							method="post">
-							<div>
-								<select id="sa_yn" name="sa_yn">
-									<option value="y">승인</option>
-									<option value="n">거절</option>
-								</select>
-							</div>
-							<p>승인 거절 사유</p>
-							<textarea name="sa_feedback" style="width: 100%; height: 300px"></textarea>
-							<input type="hidden" id="hidden-sa_no" name="sa_no">
-
-							<button class="close-modal" type="button"
-								style="background-color: red">닫기</button>
-							<button type="submit">처리</button>
+						<form action="/admin/admStock/admStock_add/choose" method="post">
+						    <div>
+						        <select id="sa_yn" name="sa_yn">
+						            <option value="y">승인</option>
+						            <option value="n">거절</option>
+						        </select>
+						    </div>
+						    <p>승인 거절 사유</p>
+						    <textarea name="sa_feedback" style="width: 100%; height: 300px"></textarea>
+						    
+						    <!-- sa_qty 값을 전달하기 위한 hidden input 필드 추가 -->
+						    <input type="hidden" id="hidden-sa_qty" name="sa_qty">
+						    <input type="hidden" id="hidden-mb_id" name="mb_id">
+						    
+						    
+						    <!-- 기존 hidden input 필드들 -->
+						    <input type="hidden" id="hidden-sa_no" name="sa_no">
+						    
+						    <button class="close-modal" type="button" style="background-color: red">닫기</button>
+						    <button type="submit">처리</button>
 						</form>
+
 					</div>
 				</div>
 			</div>
@@ -113,6 +119,8 @@
                 
                 // hidden input에 sa_no 값 설정
                 document.getElementById('hidden-sa_no').value = button.dataset.sa_no;
+                document.getElementById('hidden-sa_qty').value = button.dataset.sa_qty;
+                document.getElementById('hidden-mb_id').value = button.dataset.mb_id;
                 
                 // 모달창 열기
                 modal.style.display = "flex";

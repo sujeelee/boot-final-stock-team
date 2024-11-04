@@ -575,14 +575,10 @@ public class AdminController {
 
 	// 상세페이지에서 승인/거절시 update 하고 리스트 페이지로 이동
 	@PostMapping("/admStock/admStock_add/choose")
-	public String chooseStock_add(int sa_no, String sa_yn, String sa_feedback) {
-//		sa_yn 체크시 : on // 아니면 "null" 		
-		System.out.println("int sa_no : " + sa_no);
-		System.out.println("String sa_yn : " + sa_yn);
-		System.out.println("String sa_feedback : " + sa_feedback);
-		adminStock_addService.update(sa_no, sa_yn, sa_feedback);
-
+	public String chooseStock_add(int sa_no, String sa_yn, String sa_feedback, int sa_qty, String mb_id) {
+//		sa_yn 체크시 : on // 아니면 "null" 	
+		adminStock_addService.update(sa_no, sa_yn, sa_feedback, sa_qty,mb_id);
 		return "redirect:/admin/admStock/admStock_add";
 	}
-
+	
 }
