@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import kh.st.boot.model.dto.ComRankDTO;
 import kh.st.boot.model.dto.SearchDTO;
-import kh.st.boot.model.vo.EventVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.service.ConfigService;
@@ -35,11 +35,12 @@ public class MainController {
 		List<NewsVO> newsImgList = newsService.getNewsListByImg(); 	// 썸네일 있는 뉴스 최신순으로 4개
 		List<NewsVO> newsList = newsService.getNewsListByNoImg();	// 썸네일 없는 뉴스 최신순으로 4개 
 //		List<EventVO> eventList = eventService.getEventListForMainBanner();
-
-
+		
+		List<ComRankDTO> comRanks = configService.getCommunityRank();
 		mo.addAttribute("user", user);
 		mo.addAttribute("newsImgList", newsImgList);
 		mo.addAttribute("newsList" ,newsList);
+		mo.addAttribute("comRank", comRanks);
 		return "home";
 	}
 	
