@@ -113,12 +113,9 @@
 					</div>
 					<div class="d-flex mt-2">
 						<div>
-							<button type="button" class="btn btn-outline-dark dropdown-toggle" id="dropdown-toggle" style="display: none;" data-toggle="dropdown">
+							<button type="button" class="btn btn-outline-dark" id="company" style="display: none;" onclick="openCompany()">
 			      				선택
 							</button>
-							<div class="dropdown-menu">
-								<input type="button" class="drop-btn">
-							</div>
 						</div>
 						<div class="mr-auto">
 			        		<span id="selected-value"></span>
@@ -330,12 +327,9 @@
 					</div>
 					<div class="d-flex mt-2">
 						<div>
-							<button type="button" class="btn btn-outline-dark dropdown-toggle" id="dropdown-toggle" style="display: none;" data-toggle="dropdown">
-			      				선택
+							<button type="button" class="btn btn-outline-dark" id="company" style="display: none;" onclick="openCompany()">
+		      					선택
 							</button>
-							<div class="dropdown-menu">
-								<input type="button" class="drop-btn">
-							</div>
 						</div>
 						<div class="mr-auto">
 			        		<span id="selected-value"></span>
@@ -376,16 +370,16 @@
 		
 			function checkOnlyOne(type) {
 			    const checkboxes = document.querySelectorAll("input[name='mp_type']");
-			    const dropdownToggle = document.getElementById('dropdown-toggle');
+			    const company = document.getElementById('company');
 			    if (type.checked) {
 			        checkboxes.forEach((checkbox) => {
 			            checkbox.checked = false;
 			        });
 			        type.checked = true;
-			        dropdownToggle.style.display = 'block';
+			        company.style.display = 'block';
 			    } else {
 			        type.checked = false;
-			        dropdownToggle.style.display = 'none';
+			        company.style.display = 'none';
 			    }
 			    
 			    // selected-value 값을 지우기
