@@ -27,7 +27,7 @@ public class EventVO {
     private int ev_cnt;
     private int ev_bannerShow;
 
-    //이벤트 DB에는 fi_path, fi_path_banner가 없습니다.
+    //이벤트 DB에는 fi_path, fi_path_banner     가 없습니다.
     private String fi_path; // 파일경로가 저장될 위치
     private String fi_path_banner; // 파일경로가 저장될 위치
 
