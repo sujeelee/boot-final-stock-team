@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<table class="table table-borderless" id="comm-main-list">
+		<tr class="comm-main-row-list" th:each="comm : ${commList}">
+			<td>
+				<div class="comm-member">
+					<span th:text="${comm.mb_id}"></span>
+					<span class="member-sticker" th:text="'LV. ' + ${comm.mb_level}"></span>
+					<span class="grey-text" th:text="'· ' + ${#dates.format(comm.wr_datetime, 'MM월 dd일')}"></span>
+				</div>
+				<div class="comm-row-content" th:text="${comm.wr_content}"></div>
+			</td>
+		</tr>
+	</table>
+</html>

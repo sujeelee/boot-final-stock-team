@@ -193,37 +193,26 @@
 						<div class="comm-main-row">
 							<div class="comm-left">
 								<ul>
-									<li onclick="get_board(this);" th:each="nums : ${#numbers.sequence(1,4)}">
+									<li th:data-code="${comLists.code}" onclick="get_board(this);" th:each="comLists : ${comRank}">
 										<div class="comm-stock-li">
-											<span class="comm-main-rank"  th:text="${nums}"></span>
-											<span class="comm-main-title" th:text="${nums} + 'YG PLUS'"></span>
-											<div class="comm-main-vs dash-red">7.5%</div>
+											<div>
+												<span class="comm-main-rank"  th:text="${comLists.ranks}"></span>
+												<span class="comm-main-title" th:text="${comLists.title}"></span>
+											</div>
+											<div th:class="${comLists.flt == '0' ? 'dash-grey' : comLists.flt.contains('-') ? 'dash-blue' :'dash-red'} + ' comm-main-vs'" th:text="${#numbers.formatDecimal(comLists.flt, 1, 2)}+'%'"></div>
 										</div>
 									</li>
 								</ul>
 							</div> <!-- comm-left end -->
 							<div class="comm-rigth">
 								<div class="comm-main-list">
-									<table class="table table-borderless">
-										<tr class="comm-main-row-list" th:each="nums : ${#numbers.sequence(1,5)}">
-											<td>
-												<div class="comm-member">
-													<span>긍정연진</span> 
-													<span class="member-sticker">인플루언서</span>
-													<span class="grey-text">· 17분전</span>
-												</div>
-												<div class="comm-row-content">
-													푼돈 벌어 모할라꼬
-													진득히 조금만 더 기다려 보셔요
-													당장 오늘만 봐도 세시 쇼타임 한방 더 남은거 같은데
-													아니 ㅋㅋㅋㅋㅋㅋㅋ 지금 몇퍼가 올랐는데 오늘 고점대비 4퍼떨어졌다고 죽을라카노 그럴꺼면 그냥 주식 삭제 ㄱㄱ
-												</div>
-											</td>
-										</tr>
-									</table>
+									<table class="table table-borderless" id="comm-main-list"></table>
 								</div>
-								<div class="last-td">
-									<div><span class="comm-last-title">YG PLUS</span>커뮤니티&nbsp;<i class="fa-solid fa-chevron-right"></i></div>
+								<div class="last-td" data-code="" onclick="moveCommunity(this);">
+									<div>
+										<span class="comm-last-title"></span>커뮤니티&nbsp;
+										<i class="fa-solid fa-chevron-right"></i>
+									</div>
 								</div>
 							</div> <!-- comm-rigth end -->
 						</div>
@@ -318,9 +307,26 @@
 			
 			function get_board(target){
 				var title = $(target).find(".comm-main-title").text();
+				var code = $(target).data("code");
 				$(".comm-left ul li").removeClass("on");
 				$(target).addClass("on");
 				$(".comm-last-title").text(title);
+				$(".last-td").data("code", code);
+				$.ajax({
+					url : '/communityAjax',
+					method : "post",
+					async: false, 
+					data : { code : code },
+					success : function(data){
+						//console.log(data);
+						$("#comm-main-list").replaceWith(data);
+					}
+				});
+			}
+			
+			function moveCommunity(target){
+				var url = 'stock/' + $(target).data("code") + '/community';
+				window.open(url, "_blank");
 			}
 		</script>
 	</main>

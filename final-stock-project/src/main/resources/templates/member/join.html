@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>시드키 : 회원가입</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/join.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/jquery.ui.datepicker.monthyearpicker.css}">
+<script type="text/javascript" th:src="@{/js/jquery.ui.datepicker.monthyearpicker.js}"></script>
 </head>
 <body>
 	<main layout:fragment="content">
@@ -47,7 +49,7 @@
                         </div>
                         <input type="text" id="sample3_address" name="addr" placeholder="주소" readonly>
                         <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소">
-                        <input type="date" name="birth" placeholder="birth">
+                        <input type="text" id="birth" name="birth" placeholder="birth">
                         <input type="hidden" id="ec_checked" name="ec" value="f">
                         <input type="hidden" id="mb_loginMethod" name="mb_loginMethod"
                         th:value="${not #strings.isEmpty(userInfo)} ? '${where}'">
@@ -315,6 +317,11 @@ document.onkeydown = NotReload;
         // iframe을 넣은 element를 보이게 한다.
         element_wrap.style.display = 'block';
     }
+    $( "#birth" ).datepicker({
+    	inline: true,
+    	maxDate : "-1d",	//선택할 수 있는 최대 날짜  +1m +1w 은 1달 1주일 뒤 까지 선택가능  [+,-][숫자][y,m,w,d] 
+    	minDate: '-100y'
+    });
 </script>
 
 </main>
