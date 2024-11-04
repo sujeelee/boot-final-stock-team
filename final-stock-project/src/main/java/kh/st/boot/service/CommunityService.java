@@ -160,32 +160,13 @@ public class CommunityService {
 	}
 	public List<CommentVO> getCommentList(int wr_no, String mb_id) {
 		List<CommentVO> list = communityDao.getCommentList(wr_no);
-		for(CommentVO tmp : list ) {
-			
-			CommunityActionVO ca = new CommunityActionVO();
-			ca.setCg_num(tmp.getWr_no());
-			ca.setCg_type("comment");
-			ca.setMb_id(mb_id);
-			
-			if (mb_id != null) { // 로그인한 사용자
-	            CommunityActionVO actionStatus = communityDao.checkUserActions(ca);
-	
-	            // actionStatus가 null이 아닐 경우에만 속성 설정
-	            if (actionStatus != null) {
-	                // 좋아요와 신고 상태를 설정
-	                tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "active" : "");
-	                tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "active" : "");
-	            } else {
-	                // actionStatus가 null일 경우 기본값 설정
-	                tmp.setCg_like("");
-	                tmp.setCg_report("");
-	            }
-	        } else {
-	            // 로그인하지 않은 사용자에 대해 기본값 설정
-	            tmp.setCg_like("");
-	            tmp.setCg_report("");
-	        }
+
+		for(int i = 0 ; i < list.size() ; i++){
+			CommunityActionVO ca = communityDao.findActionByCommentNumber(list.get(i).getCo_id(), mb_id);
+			list.get(i).setCg_like(ca.getCg_like().equals("like") ? "like" : "");
+			list.get(i).setCg_report(ca.getCg_report().equals("report") ? "report" : "");
 		}
+		
 		return list;
 	}
 

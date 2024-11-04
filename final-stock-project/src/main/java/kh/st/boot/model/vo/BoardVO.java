@@ -17,6 +17,7 @@ public class BoardVO {
 	private int wr_good; //좋아요갯수
 	private int wr_singo; //신고갯수
 	private int mb_level;
+	private String mb_nick;
 	private String wr_blind;
 	private Date wr_datetime;
 
