@@ -187,7 +187,8 @@ CREATE TABLE `event` (
 	`ev_end`	DATETIME	NULL,
 	`ev_status`	char(7)	DEFAULT "Ending",
 	`ev_form`	varchar(30)	null,
-	`ev_cnt`	int(11)	NULL
+	`ev_cnt`	int(11)	NULL,
+	`ev_bannerShow` TINYINT null
 );
 
 CREATE TABLE `event_list` (

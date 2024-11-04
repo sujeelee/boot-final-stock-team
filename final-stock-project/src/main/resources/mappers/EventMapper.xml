@@ -26,8 +26,8 @@
     </select>
 
     <insert id="setEvent">
-        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status, ev_datetime, ev_form)
-        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status}, now(), #{ev_form})
+        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status, ev_datetime, ev_form, ev_bannerShow)
+        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status}, now(), #{ev_form}, 0)
     </insert>
 
     <select id="getEventToImportAFile" resultType="EventVO">
@@ -128,7 +128,7 @@
     </select>
 
     <select id="getEventAllList" resultType="kh.st.boot.model.dto.EventDTO">
-        select ev_no, ev_title, ev_start, ev_end, ev_status, ev_form, ev_datetime from event 
+        select ev_no, ev_title, ev_start, ev_end, ev_status, ev_form, ev_datetime, ev_bannerShow from event 
     </select>
 
     <delete id="deletePrize">
@@ -144,5 +144,15 @@
     <delete id="deletePrizeThumbnailFile">
         delete from file where fi_reg_no = #{pr_no} and fi_type = 'prize'
     </delete>
+
+    <select id="findEventByNumber" resultType="EventVO">
+        select * from event where ev_no = #{ev_no}
+    </select>
+
+    <update id="changeBannerShow">
+        update event
+        set ev_bannerShow = #{i}
+        where ev_no = #{ev_no}
+    </update>
 
 </mapper>
