@@ -15,6 +15,7 @@ import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.HotStockDTO;
 import kh.st.boot.model.dto.SearchDTO;
 import kh.st.boot.model.vo.AdminVO;
+import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.model.vo.StockJisuVO;
 import lombok.AllArgsConstructor;
@@ -148,6 +149,10 @@ public class ConfigService {
 		}
 		
 		return list;
+	}
+
+	public List<BoardVO> getCommunityList(String code) {
+		return searchDao.getCommunityList(code);
 	}
 	
 }
