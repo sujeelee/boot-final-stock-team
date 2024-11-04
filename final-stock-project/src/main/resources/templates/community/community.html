@@ -298,15 +298,42 @@ function action(button) {
             	var org_cnt = parseInt($(button).find(".action-count").text().replace(regex, ""));
             	
             	//active가 있으면 지우고 없으면 생성하고 그거에 따른 계산을 시도
-            	if($(button).find("i").hasClass("active")){
-            		org_cnt -= 1;
-            		$(button).find(".action-count").text(addCommas(org_cnt));
-            		$(button).find("i").removeClass("active");
-            	} else {	
-            		org_cnt += 1;
-            		$(button).find(".action-count").text(addCommas(org_cnt));
-            		$(button).find("i").addClass("active");
-            	} 
+                if(type === "comment" && action === "like"){
+                    if($('#comment-like' + no).hasClass("active")){
+                        $('#comment-like' + no).removeClass("active")
+                        $('#comment-like' + no).parent().find("span").text(addCommas(org_cnt - 1))
+                    } else {
+                        $('#comment-like' + no).addClass("active")
+                        $('#comment-like' + no).parent().find("span").text(addCommas(org_cnt + 1))
+                    }
+                }
+
+                if(type === "comment" && action === "report"){
+                    if($('#comment-report' + no).hasClass("active")){
+                        $('#comment-report' + no).removeClass("active")
+                        $('#comment-report' + no).parent().find("span").text(addCommas(org_cnt - 1))
+                    } else {
+                        $('#comment-report' + no).addClass("active")
+                        $('#comment-report' + no).parent().find("span").text(addCommas(org_cnt + 1))
+                    }
+                }
+
+
+                if(type === "board"){
+
+                    if($(button).find("i").hasClass("active")){
+                        org_cnt -= 1;
+                        $(button).find(".action-count").text(addCommas(org_cnt));
+                        $(button).find("i").removeClass("active");
+                    } else {	    
+                        org_cnt += 1;
+                        $(button).find(".action-count").text(addCommas(org_cnt));
+                        $(button).find("i").addClass("active");
+                    } 
+
+                }
+
+
             	alert("정상적으로 처리되었습니다.");
             } else if (data.res === '204') {
                 alert("처리 완료, 변화 없음."); // 빈 알림 대신 명확한 메시지로 수정

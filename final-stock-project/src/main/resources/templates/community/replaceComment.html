@@ -34,13 +34,15 @@
 				<button class="btn-like"
 					th:attr="data-no=${comment.co_id} ,data-action='like', data-type='comment'"
 					th:onclick = "action(this)">
-					<i class='bx bxs-heart' th:classappend="${comment.cg_like}"></i>
+					<i class='bx bxs-heart' th:classappend="${#strings.equals(comment.cg_like, 'like')} ? 'active' : '' "
+					th:id="'comment-like' + ${comment.co_id}"></i>
 			    	<span class="action-count" th:text="${comment.co_good}"></span>
 				</button>		
 				<button class="btn-report"
 					th:attr="data-no=${comment.co_id}, data-action='report', data-type='comment'"
 					th:onclick = "action(this)">
-					<i class='bx bx-x-circle' th:classappend="${comment.cg_report}"></i>				
+					<i class='bx bx-x-circle' th:classappend="${#strings.equals(comment.cg_report, 'report')} ? 'active' : '' "
+					th:id="'comment-report' + ${comment.co_id}"></i>				
 			    	<span class="action-count" th:text="${comment.co_bad}"></span>
 				</button>
 		 	</div>
