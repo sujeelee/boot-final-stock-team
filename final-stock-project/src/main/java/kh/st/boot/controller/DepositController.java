@@ -71,7 +71,7 @@ public class DepositController {
     			model.addAttribute("url" , "/deposit");
         	} else {
 	        	model.addAttribute("msg" , "예치금이 충전되었습니다.");
-				model.addAttribute("url" , "/deposit");
+	        	model.addAttribute("windows", "Y");
         	}
         	
         } else {

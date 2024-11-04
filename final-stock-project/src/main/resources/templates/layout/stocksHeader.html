@@ -6,7 +6,7 @@
 			<span class="stock-name" th:text="${stock.st_name}"></span>
 			<div class="stock-info-price">
 				<span class="stock-price" th:text="${#numbers.formatInteger(today.si_price, 0, 'COMMA')} + '원'"></span>
-				전보다 <span th:class="${today.si_vs  == '0' ? 'stock-before hold' : (today.si_vs.contains('-') ? 'stock-before blue' : 'stock-before red')}" th:text="${#numbers.formatInteger(today.si_vs, 0, 'COMMA')} + '원 ('+${today.si_fltRt}+'%)' "></span>
+				전보다 <span th:class="${today.si_vs  == '0' ? 'stock-before hold' : (today.si_vs.contains('-') ? 'stock-before blue' : 'stock-before red')}" th:text="${#numbers.formatInteger(today.si_vs, 0, 'COMMA')} + '원 ('+${#numbers.formatDecimal(today.si_fltRt, 1, 2)}+'%)' "></span>
 			</div>
 		</div>
 	</section> 
