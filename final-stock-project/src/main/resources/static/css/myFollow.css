@@ -1,0 +1,69 @@
+/* Container */
+.my-container {
+    display: grid;
+    grid-template-columns: 184px minmax(10px, 1fr);
+    grid-column-gap: 40px;
+    column-gap: 40px;
+    padding: 0 40px 40px 24px;
+    min-width: 940px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* Sidebar */
+.my-sidebar {
+    position: sticky;
+    top: 60px;
+    padding-top: 30px;
+    border-radius: 50px;
+    background-color: #fff;
+}
+
+.my-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.my-list li {
+    margin-bottom: 10px;
+}
+
+.my-item {
+	list-style: none;
+}
+
+.my-btn {
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50px;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+     
+/* li 태그에 호버 효과 추가 */
+.my-list li:hover {
+	border-radius: 20px;
+	background-color: #f9fafb;
+}
+.my-text {
+    font-size: 17px;
+    color: #888;
+    transition: color 0.2s; /* 글자 색상 변화에 애니메이션 추가 */
+}
+
+/* Header */
+.mypage-header {
+    margin-bottom: 20px;
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333d4b;
+}
+.follow-table > table {cursor: pointer;text-align: center;width: 50%;}
+.follow-nick{display: flex;justify-content: space-between;align-items: center;}

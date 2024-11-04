@@ -5,6 +5,7 @@ import java.util.List;
 import kh.st.boot.model.dto.ComRankDTO;
 import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.vo.BoardVO;
+import kh.st.boot.model.vo.FollowVO;
 import kh.st.boot.model.vo.NewsVO;
 
 public interface SearchDAO {
@@ -17,4 +18,6 @@ public interface SearchDAO {
 	String getFlt(String code);
 
 	List<BoardVO> getCommunityList(String code);
+
+	List<FollowVO> getFollowList(String mb_id);
 }

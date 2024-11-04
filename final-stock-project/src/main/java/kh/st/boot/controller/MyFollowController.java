@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kh.st.boot.model.vo.FollowVO;
 import kh.st.boot.service.MyFollowService;
 import lombok.AllArgsConstructor;
 
@@ -31,7 +32,9 @@ public class MyFollowController {
         
         mb_id = principal.getName();
         
-        List<>
+        List<FollowVO> list = myFollowService.getFollowList(mb_id);
+        
+        model.addAttribute("follow", list);
         
 		return "myaccount/follow";
 	}
