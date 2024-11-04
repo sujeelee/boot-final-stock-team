@@ -112,7 +112,8 @@
 				</div>
 				<div class="main-table">
 					<div class="main-row news-row" th:each="newsImgList : ${newsImgList}">
-						<a href="/newspaper">
+						<a th:href="@{/stock/detail/{ne_no}(ne_no=${newsImgList.ne_no})}" 
+       					   th:onclick="'window.open(this.href, \'_blank\', \'width=860,height=2150,left=550\'); return false;'" >
 							<div class="news-img">
 								<img th:src="@{'/uploads' + ${newsImgList.fi_path}}" width="300" height="168">
 								<div class="news-title" th:text="${newsImgList.ne_title}"></div>
@@ -126,7 +127,8 @@
 				</div>
 				<div class="main-news-mini">
 					<div class="news-row" th:each="newsList : ${newsList}">
-						<a href="/newspaper">
+						<a th:href="@{/stock/detail/{ne_no}(ne_no=${newsList.ne_no})}" 
+       					   th:onclick="'window.open(this.href, \'_blank\', \'width=860,height=2150,left=550\'); return false;'" >
 							<div class="news-img">
 								<div>
 									<div class="d-flex">
