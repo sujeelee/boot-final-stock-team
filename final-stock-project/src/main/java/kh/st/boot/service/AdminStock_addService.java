@@ -17,7 +17,7 @@ public class AdminStock_addService {
 	@Autowired
 	private AdminStock_addDAO adminStock_addDAO;
 
-	public List<AdminStock_addVO> nullSelect() {
+	public List<AdminStock_addVO> nullSelect() { 
 		System.out.println("서비스 진입");
 		return adminStock_addDAO.nullSelectAll();
 	}

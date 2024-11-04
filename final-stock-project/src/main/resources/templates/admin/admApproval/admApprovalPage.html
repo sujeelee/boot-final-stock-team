@@ -3,6 +3,8 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/admlayout.html}" layout:fragment="content">
 <head>
+<script
+	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
 <meta charset="UTF-8">
 <link href="/css/admmember.css" rel='stylesheet'>
 <title>관리자 페이지</title>
@@ -15,7 +17,7 @@
 			<div id="container_main" class="content">
 				<div id="select_left">
 					<form action="/admin/admApproval/admApprovalPage/search"
-						method="get" class="local_sch">
+						method="get" class="local_sch" onsubmit="return unableform()">
 						<input type="text" name="mp_company" id="mp_company" required placeholder="요청사 ID"
 							class="in_sch" style="height: 25px">
 						<button type="submit" class="btn_submit btn"
@@ -102,6 +104,16 @@
 
 			</div>
 		</div>
+		
+		<script>
+			function unableform() {
+				const mp_company = document.getElementById("mp_company");
+				const approValue = mp_company.value;
+				const appro = approValue.replace(/\s/g, '')
+
+				document.getElementById('mp_company').value = appro;
+			}
+		</script>
 	</div>
 </body>
 </html>
