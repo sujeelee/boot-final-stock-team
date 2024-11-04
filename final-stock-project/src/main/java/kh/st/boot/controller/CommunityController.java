@@ -24,6 +24,7 @@ import kh.st.boot.model.vo.CommunityActionVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.CommunityService;
 import kh.st.boot.service.StocksHeaderService;
+import kh.st.boot.service.newspaperService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -44,7 +45,7 @@ public class CommunityController {
 	        mb_id = principal.getName();
 	        mo.addAttribute("userInfo", mb_id);
 	    }
-		List<BoardVO> list = communityService.getBoardList(st_code,mb_id);
+		List<BoardVO> list = communityService.getBoardList(st_code, mb_id);
 
 		mo.addAttribute("bolist", list);
 		return "community/community";
@@ -154,29 +155,53 @@ public class CommunityController {
 			result.put("msg", "로그인한 회원만 이용 가능합니다.");
 			return result;
 		}
+		
+		
 		//필요한 변수를 먼저 선언 해 줍니다.
 		String mb_id = principal.getName();
 		feel.setMb_id(mb_id);
 		feel.setSt_code(st_code);
+		int co_id = feel.getCg_num();
+		String actions = feel.getAction();
+		
+		//ajax로 받아온 값에 따라 객체에 값을 재정의
+		if(actions.equals("like")) {
+			feel.setCg_like(actions);
+		} else {
+			feel.setCg_report(actions);
+		}
 		
 		//변수들을 이용해서 DB에저장하고 필요한 값을 map에 넣습니다.
 		boolean res = communityService.setFeelAction(feel);
+		
 		if(res){
 			result.put("res", "200"); //다 정상
 		} else {
 			result.put("res", "204"); //DB 에 저장은 되는데 다른곳에 오류가 있음
-		}
+		} //action table update 완료
 		
-		List<BoardVO> list = communityService.getBoardList(st_code);
-		for (BoardVO board : list) {
-		    board.setCg_like(feel.getCg_like());
-		    board.setCg_report(feel.getCg_report());
-		    System.out.println("feel : " + feel);
-		}
-	
-			
-		System.out.println(list);
-		result.put("list", list);
+		/*if(feel.getCg_type().equals("board")) {
+			List<BoardVO> list = communityService.getBoardList(st_code);
+			for (BoardVO board : list) {
+				if(board.getWr_no() == feel.getCg_num()) {
+					board.setCg_like(feel.getCg_like());
+					board.setCg_report(feel.getCg_report());
+				}
+			}
+			result.put("list", list);
+		}else if(feel.getCg_type().equals("comment")){
+			CommentVO comment = communityService.ewqewqewqqw();
+			int wr_no = comment.getWr_no();
+			System.out.println(wr_no);
+			List<CommentVO> colist = communityService.getCommentList(wr_no);
+	        for (CommentVO scomment : colist) {
+	            // 댓글에 대해 좋아요와 신고 상태를 설정
+		        	scomment.setCg_like(feel.getCg_like());
+		        	scomment.setCg_report(feel.getCg_report());
+	        	}
+	        result.put("colist", colist);
+	        System.out.println(colist);
+		}*/
 		return result;
 	}
 	
@@ -290,12 +315,15 @@ public class CommunityController {
 	}
 	@PostMapping("/replaceComment")
 	public String replaceCommentList_post(Model mo, Principal principal, @RequestParam int wr_no) {
-		System.out.println(wr_no);
-	    System.out.println("replaceCommentList_post 호출됨"); // 디버깅용 로그
+		String mb_id = null;
+		
+		if(principal != null) {
+			mb_id = principal.getName();
+		}
 	    
 	    // 댓글 목록 가져오기
-	    List<CommentVO> colist = communityService.getCommentList(wr_no);
-	    System.out.println(colist);
+	    List<CommentVO> colist = communityService.getCommentList(wr_no, mb_id);
+	 
 	    if (principal != null) {
 	        mo.addAttribute("userInfo", principal.getName());
 	    }
