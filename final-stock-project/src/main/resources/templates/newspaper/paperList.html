@@ -17,6 +17,7 @@
 	        <div class="news-date">
 	            <button id="prev-date-btn" class="date-btn">◀</button>
 	            <span id="selected-date"></span>
+	            <section th:replace="~{newspaper/calender.html}"></section>
 	            <button id="next-date-btn" class="date-btn">▶</button>
 	        </div>
 	        <div class="explanatory-text d-flex">
@@ -60,7 +61,6 @@
 			$(document).ready(function(){
 				let today = new Date();
 				let currentDate = new Date(today);
-				console.log(currentDate);
 				$('#selected-date').text(formatDate(currentDate).substr(0,7));
 				
 				function formatDate(date){
@@ -94,7 +94,6 @@
 			    } // 현재 월을 넘어가지 못하게 하기위한 함수
 				
 				function update(){
-			    	console.log(currentDate);
 					$('#selected-date').text(formatDate(currentDate).substr(0,7));
 					fetchNews(currentDate);
 					buttonStatus();
@@ -119,9 +118,6 @@
 						dataType : "json", 
 						success : function (data){
 							displayNewsList(data.newsList);
-						}, 
-						error : function(jqXHR, textStatus, errorThrown){
-							console.log(jqXHR);
 						}
 					});
 				} // ajax 통신하여 기사를 가져오는 함수
@@ -211,6 +207,12 @@
 				        }
 				    });
 				}
+				$("input[name=calender]").change(function(){
+					var new_date = $("input[name=calender]").val();
+					currentDate = new Date(new_date);
+					$("#selected-date").text(new_date);
+					update();
+				});
 			});
 		</script>
 	</main>
