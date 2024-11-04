@@ -63,12 +63,13 @@ public class EventController {
     }
 
     @PostMapping("/write")
-    public String eventWrite_Post(EventVO event, MultipartFile file) {
-        boolean res = eventService.setEvent(event, file);
-        if (event == null && res) {
-            return "redirect:/event/write";
-        } else {
+    public String eventWrite_Post(EventVO event, MultipartFile file, MultipartFile file_banner) {
+        boolean res = eventService.setEvent(event, file, file_banner);
+        
+        if (event != null && res) {
             return "redirect:/event/eventhome/Opening";
+        } else {
+            return "redirect:/event/write";
         }
 
     }
@@ -258,13 +259,19 @@ public class EventController {
 
     @PostMapping("/eventATypeUpdate")
     public String eventATypeUpdate(Model mo ,PrizeVO prize, MultipartFile file){
+
         boolean res = eventService.updateEventPrize_withFile(prize, file);
-        
-        
+
         List<EventDTO> list = eventService.getEventAllList();
         mo.addAttribute("list", list);
         return "/event/eventPrizeList";
     }
 
+    @ResponseBody
+    @PostMapping("/ajax/bannerShow")
+    public boolean bannerShow(@RequestParam("ev_no")int ev_no){
+        boolean res =eventService.changeBannerShow(ev_no);
+        return res;
+    }
 
 }

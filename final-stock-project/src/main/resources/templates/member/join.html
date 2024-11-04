@@ -117,7 +117,7 @@ function getEmailCode(mail){
             $('#email').after('<input type="number" id="code"  placeholder="code">');
             $('#email').attr("disabled", true);
             $('#email').css("background-color", "gray");
-            startTimer(10);  // 5분(300초) 타이머 시작
+            startTimer(300);  // 5분(300초) 타이머 시작
         },
         error: function (data, status, err) {
             alert("이메일 전송 실패! 이메일이 잘못 되었거나 잠시 후 다시 시도해 주세요.")
@@ -126,9 +126,8 @@ function getEmailCode(mail){
 
     });
 }
-// 잘 작동하는 지 확인 ㄱ
 
-$(document).on('click', '#codeCheck' ,checkEmailCode); // 코드확인 
+$(document).on('click', '#codeCheck' ,checkEmailCode);
 $('#codeCheck').click(checkEmailCode);
 function checkEmailCode(){
     const mail = $('#email_input').val();
@@ -147,8 +146,7 @@ function checkEmailCode(){
                 $('#ec_checked').val("t");
                 alert("Email 인증 성공");
 
-                //인터벌을 멈추고 싶은 위치
-                clearInterval(timerInterval);  // 타이머 인터벌 중단
+                clearInterval(timerInterval); 
                 
                 removeEmail_varification(mail);
             }else{

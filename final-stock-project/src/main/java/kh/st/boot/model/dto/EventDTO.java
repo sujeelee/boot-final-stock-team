@@ -28,5 +28,5 @@ public class EventDTO {
     private String ev_status;// Opening, Ending, resUser, Hidden
     private String ev_form;
     private String fi_path; // 파일경로가 저장될 위치
-
+    private int ev_bannerShow;
 }

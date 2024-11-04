@@ -43,7 +43,7 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public boolean setEvent(EventVO event, MultipartFile file) {
+    public boolean setEvent(EventVO event, MultipartFile file, MultipartFile file_banner) {
         if (event == null) {
             return false;
         }
@@ -57,8 +57,9 @@ public class EventServiceImp implements EventService {
         if (res) {
             EventVO tmpEv = eventDao.getEventToImportAFile();//방금 set한 event를 가져온다.
             uploadFile(file, tmpEv.getEv_no(), "event");
+            uploadFile(file_banner, tmpEv.getEv_no(), "eventBanner");
         }
-        return false;
+        return res;
     }
 
     //파일
@@ -248,6 +249,18 @@ public class EventServiceImp implements EventService {
             }
         }
 
+        return res;
+    }
+
+    @Override
+    public boolean changeBannerShow(int ev_no) {
+        EventVO event = eventDao.findEventByNumber(ev_no);
+        boolean res = false;
+        if (event.getEv_bannerShow() == 1) {
+            res = eventDao.changeBannerShow(ev_no, 0);
+        } else if (event.getEv_bannerShow() == 0) {
+            res = eventDao.changeBannerShow(ev_no, 1);
+        }
         return res;
     }
 
