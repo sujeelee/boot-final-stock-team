@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kh.st.boot.dao.AdminDAO;
 import kh.st.boot.dao.SearchDAO;
 import kh.st.boot.dao.StockDAO;
+import kh.st.boot.model.dto.ComRankDTO;
 import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.HotStockDTO;
 import kh.st.boot.model.dto.SearchDTO;
@@ -134,6 +135,16 @@ public class ConfigService {
 			newSearch.setNewsCnt(stockCnt);
 			newSearch.setStockCnt(newsCnt);
 			list.add(newSearch);
+		}
+		
+		return list;
+	}
+
+	public List<ComRankDTO> getCommunityRank() {
+		List<ComRankDTO> list = searchDao.getCommunityRank();
+		
+		for(ComRankDTO tmp : list) {
+			tmp.setFlt(searchDao.getFlt(tmp.getCode()));
 		}
 		
 		return list;
