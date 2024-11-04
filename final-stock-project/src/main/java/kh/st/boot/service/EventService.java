@@ -17,7 +17,7 @@ public interface EventService {
 
     EventVO getEvent(String eventStatus, int ev_no);
 
-    boolean setEvent(EventVO event, MultipartFile file);
+    boolean setEvent(EventVO event, MultipartFile file,MultipartFile file_banner);
 
     boolean updateEventDateAndStatus();
 

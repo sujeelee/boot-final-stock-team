@@ -26,8 +26,8 @@
     </select>
 
     <insert id="setEvent">
-        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status, ev_datetime, ev_form)
-        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status}, now(), #{ev_form})
+        insert into event(ev_title, ev_content, ev_start, ev_end, ev_status, ev_datetime, ev_form, ev_bannerShow)
+        value(#{ev_title}, #{ev_content}, #{ev_start}, #{ev_end}, #{ev_status}, now(), #{ev_form}, 0)
     </insert>
 
     <select id="getEventToImportAFile" resultType="EventVO">

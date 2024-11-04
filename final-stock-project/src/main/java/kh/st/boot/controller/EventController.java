@@ -63,12 +63,13 @@ public class EventController {
     }
 
     @PostMapping("/write")
-    public String eventWrite_Post(EventVO event, MultipartFile file) {
-        boolean res = eventService.setEvent(event, file);
-        if (event == null && res) {
-            return "redirect:/event/write";
-        } else {
+    public String eventWrite_Post(EventVO event, MultipartFile file, MultipartFile file_banner) {
+        boolean res = eventService.setEvent(event, file, file_banner);
+        
+        if (event != null && res) {
             return "redirect:/event/eventhome/Opening";
+        } else {
+            return "redirect:/event/write";
         }
 
     }

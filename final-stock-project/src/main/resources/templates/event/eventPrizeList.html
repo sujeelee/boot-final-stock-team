@@ -27,6 +27,16 @@
             bottom: 10px; /* 아래쪽 여백 */
             right: 10px; /* 오른쪽 여백 */
         }
+        .edit-event-btn {
+            position: absolute; /* 절대 위치 */
+            bottom: 55px; /* 아래쪽 여백 */
+            right: 10px; /* 오른쪽 여백 */
+        }
+        .remove-event-btn {
+            position: absolute; /* 절대 위치 */
+            bottom: 100px; /* 아래쪽 여백 */
+            right: 10px; /* 오른쪽 여백 */
+        }
     </style>
 </head>
 
@@ -39,7 +49,16 @@
         <!-- 이벤트 목록 -->
         <ul class="list-group">
             <!-- 이벤트별 리스트 출력 -->
-            <th:block th:each="event : ${list}">
+            <th:block th:if="${#lists.isEmpty(list)}">
+                <div style="height: 300px; background-color: gray; border: 1px solid black;">
+                    <p style="text-align: center; background-color: bluevioletl; margin-top: 12%; font-size: 20px;">
+                    아직 이벤트가 없습니다!</p>
+                </div>
+                <a th:href="@{/event/write}" class="btn btn-outline-info" style="margin-top: 20px;">이벤트 작성하러 가기</a>
+            </th:block>
+
+
+            <th:block th:if="${!#lists.isEmpty(list)}" th:each="event : ${list}">
                 <li class="list-group-item d-flex justify-content-between align-items-center mb-1"
                     th:data-event-id="${event.ev_no}">
                     <!-- 이벤트 명 클릭 시 AJAX 호출 -->
@@ -47,7 +66,16 @@
                     <a data-toggle="collapse" th:href="'#event' + ${event.ev_no}" 
                        role="button" aria-expanded="false" th:text="${event.ev_title}" 
                        class="event-name"></a>
-                    <span class="badge badge-primary badge-pill" th:text="'상태 : ' + ${event.ev_status}"></span>
+
+                    <div class="custom-control custom-switch" style="font-size: 15px;">
+                        <input type="checkbox" class="custom-control-input" th:id="'sw'+${event.ev_no}" name="ev_bannerShow"
+                        th:onclick="${}">
+                        <label class="custom-control-label" th:for="'sw'+${event.ev_no}">메인 배너 표시 여부</label>
+                        <span class="badge badge-primary badge-pill" th:text="'상태 : ' + ${event.ev_status}"></span>
+                    </div>
+
+                            
+
                 </li>
                 
                 <!-- collapse 영역: 상품 리스트가 들어갈 부분 -->
@@ -59,14 +87,15 @@
                         <br><span><strong>이벤트 기간&nbsp;:&nbsp;</strong>[[${#dates.format(event.ev_start, 'yyyy년 MM월 dd일 ')}]] ~ [[${#dates.format(event.ev_end, 'yyyy년 MM월 dd일')}]] </span>
                         <br><span><strong>이벤트 상태&nbsp;:&nbsp;</strong>[[${event.ev_status}]]</span>
                         <br><span><strong>이벤트 폼 타입&nbsp;:&nbsp;</strong>[[${event.ev_form}]]</span>
-                        
-                        <a 
-                        th:id="'addPrize' + ${event.ev_no}"
+                        <button class="btn btn-danger remove-event-btn" th:onclick="deleteEventPost([[${event.ev_no}]])">이벤트 삭제</button>
+                        <a th:href="@{/event/eventUpdate/{eventStatus}/{ev_no}(ev_no = ${event.ev_no}, eventStatus = ${event.ev_status})}"
+                        class="btn btn-info edit-event-btn">
+                        이벤트 수정</a>
+                        <a th:id="'addPrize' + ${event.ev_no}"
                         th:if="${event.ev_form == 'Participatory'}"
                         th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}"
-                        class="btn btn-success add-product-btn"
-                        
-                        >상품 추가(5개 까지)</a> <!-- 상품 추가 버튼 -->
+                        class="btn btn-success add-product-btn">
+                        상품 추가(5개 까지)</a>
                     </div>
 
 
@@ -164,6 +193,33 @@
         });
     }   
 
+
+
+    function deleteEventPost(ev_no){
+				if(confirm("정말 삭제하시겠습니까?")){
+					const eventNumber = ev_no
+					removeEventPost(eventNumber);
+				} else {
+				}
+			}
+
+
+        function removeEventPost(eventNumber){
+            $.ajax({
+                url: '/event/ajax/deleteEventPost',
+                method: 'post',
+                dataType : 'text',
+                data : {ev_no : eventNumber},
+                success: function (data) {
+					alert("삭제 완료")
+                    location.href = location.href
+                },
+                error: function (data, status, err) {
+                    console.log(data)
+                },
+
+            });
+        }
 
 </script>
 
