@@ -70,4 +70,17 @@
 		order by wr_no DESC
 		limit 10
 	</select>
+	
+	<select id="getFollowList" resultType="kh.st.boot.model.dto.MyFollowDTO">
+		SELECT a.*, b.mb_nick AS fo_mb_nick, b.cnt
+		FROM follow a
+		JOIN (
+		    SELECT mb.mb_nick, mb.mb_id, COUNT(bo.wr_no) AS cnt
+		    FROM member mb
+		    LEFT JOIN board bo ON mb.mb_id = bo.mb_id
+		    GROUP BY mb.mb_nick, mb.mb_id
+		) AS b ON a.fo_mb_id = b.mb_id 
+		where a.mb_id = #{mb_id}
+		order by fo_no ASC
+	</select>
 </mapper>
