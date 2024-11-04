@@ -75,6 +75,8 @@ public interface EventDAO {
 
     boolean changeBannerShow(int ev_no, int i);
 
+    List<EventVO> getEventListForMainBanner();
+
 
     
 }

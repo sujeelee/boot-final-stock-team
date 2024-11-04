@@ -36,7 +36,7 @@ public class MainController {
 		List<NewsVO> newsList = newsService.getNewsListByNoImg();	// 썸네일 없는 뉴스 최신순으로 4개 
 //		List<EventVO> eventList = eventService.getEventListForMainBanner();
 
-
+		mo.addAttribute("eventList", eventList);
 		mo.addAttribute("user", user);
 		mo.addAttribute("newsImgList", newsImgList);
 		mo.addAttribute("newsList" ,newsList);
