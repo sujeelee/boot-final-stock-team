@@ -203,23 +203,7 @@
 							</div> <!-- comm-left end -->
 							<div class="comm-rigth">
 								<div class="comm-main-list">
-									<table class="table table-borderless">
-										<tr class="comm-main-row-list" th:each="nums : ${#numbers.sequence(1,5)}">
-											<td>
-												<div class="comm-member">
-													<span>긍정연진</span> 
-													<span class="member-sticker">인플루언서</span>
-													<span class="grey-text">· 17분전</span>
-												</div>
-												<div class="comm-row-content">
-													푼돈 벌어 모할라꼬
-													진득히 조금만 더 기다려 보셔요
-													당장 오늘만 봐도 세시 쇼타임 한방 더 남은거 같은데
-													아니 ㅋㅋㅋㅋㅋㅋㅋ 지금 몇퍼가 올랐는데 오늘 고점대비 4퍼떨어졌다고 죽을라카노 그럴꺼면 그냥 주식 삭제 ㄱㄱ
-												</div>
-											</td>
-										</tr>
-									</table>
+									<table class="table table-borderless" id="comm-main-list"></table>
 								</div>
 								<div class="last-td" data-code="" onclick="moveCommunity(this);">
 									<div>
@@ -325,6 +309,16 @@
 				$(target).addClass("on");
 				$(".comm-last-title").text(title);
 				$(".last-td").data("code", code);
+				$.ajax({
+					url : '/communityAjax',
+					method : "post",
+					async: false, 
+					data : { code : code },
+					success : function(data){
+						//console.log(data);
+						$("#comm-main-list").replaceWith(data);
+					}
+				});
 			}
 			
 			function moveCommunity(target){

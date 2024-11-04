@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.st.boot.model.dto.ComRankDTO;
 import kh.st.boot.model.dto.DashListDTO;
+import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.NewsVO;
 
 public interface SearchDAO {
@@ -14,4 +15,6 @@ public interface SearchDAO {
 	List<ComRankDTO> getCommunityRank();
 
 	String getFlt(String code);
+
+	List<BoardVO> getCommunityList(String code);
 }

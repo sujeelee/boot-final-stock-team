@@ -62,4 +62,10 @@
 	        GROUP BY st_code
 	    ) si2 ON si1.st_code = si2.st_code AND si1.si_date = si2.max_date
 	</select>
+	<select id="getCommunityList" resultType="BoardVO">
+		select * from board
+		where wr_category = #{code}
+		order by wr_no DESC
+		limit 10
+	</select>
 </mapper>
