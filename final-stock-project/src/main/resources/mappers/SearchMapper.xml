@@ -63,7 +63,9 @@
 	    ) si2 ON si1.st_code = si2.st_code AND si1.si_date = si2.max_date
 	</select>
 	<select id="getCommunityList" resultType="BoardVO">
-		select * from board
+		select a.wr_content, a.wr_datetime, b.mb_level, b.mb_nick as mb_id 
+		from board a
+		join member b on a.mb_id = b.mb_id
 		where wr_category = #{code}
 		order by wr_no DESC
 		limit 10
