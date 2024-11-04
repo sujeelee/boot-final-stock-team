@@ -17,9 +17,9 @@
 			<h1 id="container_title">포인트 관리</h1>
 			<div id="container_main" class="content">
 				<!-- 검색기능 form -->
-				<form action="/admin/admPoint/admPointPage/pointSearch" method="get"
+				<form action="/admin/admPoint/admPointPage/pointSearch" method="get" onsubmit="return unableform()"
 					class="local_sch">
-					<input type="text" name="mb_id" placeholder="사용자 ID" required
+					<input type="text" name="mb_id" placeholder="사용자 ID" required id="point_user"
 						class="in_sch" th:placeholder="${mb_id}" style="margin-top: 2px;">
 					<button type="submit" class="btn_submit btn in_sch">검색</button>
 					<a type="submit" href="/admin/admPoint/admPointPage"
@@ -148,6 +148,12 @@
 				} else {
 					return true; // 폼 제출 허용
 				}
+			}
+		</script>
+		<script>
+			function unableform() {
+				const point_user = document.getElementById("point_user").value.replace(/\s/g, '');
+				document.getElementById('point_user').value = point_user;
 			}
 		</script>
 	</div>

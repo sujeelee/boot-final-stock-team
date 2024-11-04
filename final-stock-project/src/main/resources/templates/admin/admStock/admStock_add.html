@@ -36,9 +36,9 @@
 		<div id="container">
 			<h1 id="container_title">주식 발행/소각</h1>
 			<div id="container_main" class="content">
-				<form th:action="@{/admin/admStock/admStock_add/search}"
+				<form th:action="@{/admin/admStock/admStock_add/search}" onsubmit="return unableform()"
 					method="post" style="margin-bottom: 20px;">
-					<input type="text" name="mb_id" placeholder="요청사 ID"
+					<input type="text" name="mb_id" placeholder="요청사 ID" id="sock_search"
 						style="padding: 5px;" />
 					<button type="submit" style="padding: 5px 10px;">검색</button>
 				</form>
@@ -131,5 +131,12 @@
             modal.style.display = "none";  // 모달창 닫기
         });
     </script>
+    
+    <script>
+			function unableform() {
+				const sock_search = document.getElementById("sock_search").value.replace(/\s/g, '');
+				document.getElementById('sock_search').value = sock_search;
+			}
+		</script>
 </body>
 </html>
