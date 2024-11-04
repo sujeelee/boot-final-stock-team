@@ -155,4 +155,12 @@
         where ev_no = #{ev_no}
     </update>
 
+    <select id="getEventListForMainBanner" resultType="EventVO">
+        select event.*, fi_path fi_path_banner
+        from event
+        left join file on ev_no = fi_reg_no 
+        where fi_type = "eventBanner" and  ev_bannerShow = 1
+        order by ev_start desc
+    </select>
+
 </mapper>
