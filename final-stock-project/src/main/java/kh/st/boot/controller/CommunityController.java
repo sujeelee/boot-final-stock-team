@@ -179,29 +179,6 @@ public class CommunityController {
 		} else {
 			result.put("res", "204"); //DB 에 저장은 되는데 다른곳에 오류가 있음
 		} //action table update 완료
-		
-		/*if(feel.getCg_type().equals("board")) {
-			List<BoardVO> list = communityService.getBoardList(st_code);
-			for (BoardVO board : list) {
-				if(board.getWr_no() == feel.getCg_num()) {
-					board.setCg_like(feel.getCg_like());
-					board.setCg_report(feel.getCg_report());
-				}
-			}
-			result.put("list", list);
-		}else if(feel.getCg_type().equals("comment")){
-			CommentVO comment = communityService.ewqewqewqqw();
-			int wr_no = comment.getWr_no();
-			System.out.println(wr_no);
-			List<CommentVO> colist = communityService.getCommentList(wr_no);
-	        for (CommentVO scomment : colist) {
-	            // 댓글에 대해 좋아요와 신고 상태를 설정
-		        	scomment.setCg_like(feel.getCg_like());
-		        	scomment.setCg_report(feel.getCg_report());
-	        	}
-	        result.put("colist", colist);
-	        System.out.println(colist);
-		}*/
 		return result;
 	}
 	

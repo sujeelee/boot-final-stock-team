@@ -55,6 +55,8 @@ public interface EventService {
 
     boolean changeBannerShow(int ev_no);
 
+    List<EventVO> getEventListForMainBanner();
+
     
 
     
