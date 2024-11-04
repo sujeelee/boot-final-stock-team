@@ -26,8 +26,10 @@ public class AdminStock_addService {
 		return adminStock_addDAO.SelectAll(sa_qty, mb_id);
 	}
 
-	public void update(int sa_no, String sa_yn, String sa_feedback) {
+	public void update(int sa_no, String sa_yn, String sa_feedback, int sa_qty,String mb_id) {
+		System.out.println(sa_qty);
 		adminStock_addDAO.updateAll(sa_no, sa_yn, sa_feedback);
+		adminStock_addDAO.styUpdate(sa_qty,mb_id);
 		
 	}
 
@@ -36,4 +38,6 @@ public class AdminStock_addService {
 		return adminStock_addDAO.search(mb_id);
 	}
 
-}
+		
+	}
+

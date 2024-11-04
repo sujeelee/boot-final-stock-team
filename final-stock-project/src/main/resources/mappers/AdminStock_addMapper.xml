@@ -25,7 +25,12 @@
 		WHERE
 		sa_no = #{sa_no}
 	</update>
-
+	
+ 	<update id="styUpdate">
+  		UPDATE stock
+  		SET st_qty = st_qty + #{sa_qty}
+  		WHERE st_name = #{mb_id}
+	</update>
 
 
 	<select id="search" resultType="AdminStock_addVO">
