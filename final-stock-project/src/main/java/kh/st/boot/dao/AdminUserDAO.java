@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kh.st.boot.model.dto.AdMemberCheckDTO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.UserCriteria;
@@ -31,6 +32,8 @@ public interface AdminUserDAO {
 	);
 
 	void UserInsert(AdmMemberVO admMemberVO);
+
+	int MemberCheck(String mb_id);
 	
 	
 }

@@ -12,6 +12,9 @@
 	<select id="UseSelect" resultType="AdmMemberVO"> select * from member where
 		mb_no = #{mb_no}
 	</select>
+	<select id="MemberCheck" resultType="int">
+	select count(*) from member where mb_id = #{mb_id}
+	</select>
 
 	<update id="UseUpdate"> UPDATE member SET mb_id = #{mb_id}, mb_password =
 		#{mb_password}, mb_name = #{mb_name}, mb_nick = #{mb_nick},

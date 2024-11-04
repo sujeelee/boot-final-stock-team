@@ -22,7 +22,8 @@
 					<input type="text" name="mb_id" placeholder="사용자 ID" required
 						class="in_sch" th:placeholder="${mb_id}" style="margin-top: 2px;">
 					<button type="submit" class="btn_submit btn in_sch">검색</button>
-					<a type="submit" href="/admin/admPoint/admPointPage" class="btn_submit btn btn_a" style="padding-top: 5px;">초기화</a>
+					<a type="submit" href="/admin/admPoint/admPointPage"
+						class="btn_submit btn btn_a" style="padding-top: 5px;">초기화</a>
 				</form>
 				<div class="tbl_col">
 
@@ -81,8 +82,7 @@
 							<li
 								th:each="i : ${#numbers.sequence(pm_point.startPage, pm_point.endPage)}"
 								th:classappend="${pm_point.cri.page} == ${i} ? 'active' : ''">
-								<a
-								th:href="@{/admin/admPoint/admPointPage(page=${i})}"
+								<a th:href="@{/admin/admPoint/admPointPage(page=${i})}"
 								th:text="${i}"></a>
 							</li>
 							<li th:if="${pm_point.next}"><a
@@ -93,7 +93,8 @@
 				</div>
 				<section id="sec_ing">
 					<h2 id="point_ins_txt">개별회원 포인트 추가</h2>
-					<form action="/admin/admPoint/admPointPage/point" method="post">
+					<form action="/admin/admPoint/admPointPage/point" method="post"
+						onsubmit="return unableform()">
 						<table>
 							<colgroup>
 								<col id="grid_4">
@@ -111,18 +112,16 @@
 										placeholder="지급사유" required></td>
 								</tr>
 								<tr>
-								    <th><label>포인트</label></th>
-								    <td>
-								        <label>
-								            <input type="radio" name="pointType" value="plus" checked> 
-								            +
-								        </label>
-								        <label>
-								            <input type="radio" name="pointType" value="minus">
-								            -
-								        </label>
-								        <input type="text" name="po_num" class="point_ins" placeholder="포인트" required style="margin-left: 10px;">
-								    </td>
+									<th><label>포인트</label></th>
+									<td><label> <input type="radio" name="pointType"
+											value="plus" checked> +
+									</label> <label> <input type="radio" name="pointType"
+											value="minus"> -
+									</label> <input type="text" name="po_num" class="point_ins"
+										placeholder="포인트" required style="margin-left: 10px;"
+										id="point"><span id="pointMsg"
+										style="color: red; display: none; font-size: 11px;">+,-와
+											숫자만 입력 가능합니다.</span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -136,6 +135,21 @@
 				<p>Copyright © demo.sir.kr. All rights reserved.</p>
 			</footer>
 		</div>
+		<script>
+			function unableform() {
+				const pattern = /^[0-9]/g; // 숫자 앞에 + 또는 - 기호 가능
+				const pointInput = document.getElementById("point");
+				const pointMsg = document.getElementById("pointMsg");
+				const pointValue = pointInput.value;
+
+				if (!pattern.test(pointValue)) {
+					pointMsg.style.display = "inline";
+					return false; // 폼 제출 막기
+				} else {
+					return true; // 폼 제출 허용
+				}
+			}
+		</script>
 	</div>
 
 </body>

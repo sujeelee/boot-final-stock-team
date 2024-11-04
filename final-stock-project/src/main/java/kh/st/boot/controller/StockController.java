@@ -100,7 +100,6 @@ public class StockController {
 				}
 			}
 		}
-		
 		model.addAttribute("list", list);
 		model.addAttribute("prices", priceList);
 		model.addAttribute("pm", pm); // 페이지 정보 추가

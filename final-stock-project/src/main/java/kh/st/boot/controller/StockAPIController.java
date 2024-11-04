@@ -153,6 +153,9 @@ public class StockAPIController {
 		count = (int) jsonArray.getLast().get("totalCount");
 		PageMaker pm = new PageMaker(10, cri, count);
 		jsonArray.removeLast();
+		System.out.println(jsonArray);
+		System.out.println(params);
+		System.out.println(pm);
 		model.addAttribute("list", jsonArray);
 		model.addAttribute("param", params);
 		model.addAttribute("pm", pm); // 페이지 정보 추가

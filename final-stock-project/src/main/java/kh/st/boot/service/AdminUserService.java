@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdminUserDAO;
+import kh.st.boot.model.dto.AdMemberCheckDTO;
 import kh.st.boot.model.vo.AdmMemberVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
@@ -84,6 +85,10 @@ public class AdminUserService {
 		admMemberVO.setMb_password(encodePw);
 		adminuserDAO.UserInsert(admMemberVO);
 		return true;
+	}
+
+	public int getAdmMemberCheck(String mb_id) {
+		return adminuserDAO.MemberCheck(mb_id);
 	}
 
 	
