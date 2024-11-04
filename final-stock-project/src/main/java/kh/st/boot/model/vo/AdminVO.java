@@ -23,6 +23,7 @@ public class AdminVO {
 	private byte cf_check_use;
 	private int cf_od_point;
 	private int cf_percent;
+	private String cf_stock;
 	
 	
 }
