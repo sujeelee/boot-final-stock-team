@@ -31,13 +31,10 @@
 						<div class="main-row">
 							<div class="swiper">
 								<div class="swiper-wrapper">
-									<div class="swiper-slide" th:each="nums : ${#numbers.sequence(1,4)}">
-										<a href="#">
-											<img alt="" th:src="@{/img/no_event.png}">
+									<div  class="swiper-slide" th:each="event : ${eventList}">
+										<a th:href="@{/event/eventhome/{status}/{ev_no}(ev_no = ${event.ev_no}, status = ${event.ev_status})}">
+											<img alt="" th:src="@{'/uploads' + ${event.fi_path_banner}}">
 										</a>
-									</div>
-									<div class="swiper-slide">
-										<img alt="" th:src="@{/img/no_event.png}">
 									</div>
 								</div>
 								<div class="swiper-pagination"></div>

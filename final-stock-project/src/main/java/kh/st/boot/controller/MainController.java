@@ -37,6 +37,8 @@ public class MainController {
 //		List<EventVO> eventList = eventService.getEventListForMainBanner();
 		
 		List<ComRankDTO> comRanks = configService.getCommunityRank();
+
+		mo.addAttribute("eventList", eventList);
 		mo.addAttribute("user", user);
 		mo.addAttribute("newsImgList", newsImgList);
 		mo.addAttribute("newsList" ,newsList);

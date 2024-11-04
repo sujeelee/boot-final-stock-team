@@ -264,6 +264,12 @@ public class EventServiceImp implements EventService {
         return res;
     }
 
+    @Override
+    public List<EventVO> getEventListForMainBanner() {
+        
+        return eventDao.getEventListForMainBanner();
+    }
+
 
 
     
