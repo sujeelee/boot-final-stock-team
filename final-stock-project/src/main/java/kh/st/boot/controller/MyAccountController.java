@@ -375,6 +375,11 @@ public class MyAccountController {
 		return "myaccount/stockList";
 	}
 	
+    @GetMapping("/company")
+    public String openCompany() {
+        return "myaccount/company";
+    }
+	
 	@GetMapping("/transactions/{type}")
 	public String transactions(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
 		if(principal == null) {
