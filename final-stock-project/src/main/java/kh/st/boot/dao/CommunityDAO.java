@@ -60,10 +60,11 @@ public interface CommunityDAO {
 
 	CommentVO getCommentbyID(int wr_no, int co_id);
 
-
 	boolean deleteComment(@Param("co")CommentVO comment);
 
-	int updateComment(@Param("co") CommentVO comment); 
+	int updateComment(@Param("co") CommentVO comment);
+
+    CommunityActionVO findActionByCommentNumber(int co_id, String mb_id); 
 
 
  

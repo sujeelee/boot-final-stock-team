@@ -290,6 +290,7 @@ public class CommunityController {
 	    }
 		return result;
 	}
+	
 	@PostMapping("/replaceComment")
 	public String replaceCommentList_post(Model mo, Principal principal, @RequestParam int wr_no) {
 		String mb_id = null;
