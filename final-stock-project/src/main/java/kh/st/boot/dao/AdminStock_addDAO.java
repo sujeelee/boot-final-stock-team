@@ -14,6 +14,8 @@ public interface AdminStock_addDAO {
 
 	List<AdminStock_addVO> search(String mb_id);
 
+	void styUpdate(int sa_qty,String mb_id);
+
 
 }
 
