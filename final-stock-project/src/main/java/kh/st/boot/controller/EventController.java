@@ -88,9 +88,7 @@ public class EventController {
     @PostMapping("/eventUpdate")
     public String eventPostUpdate_Post(EventVO event, MultipartFile file) {
         boolean res = eventService.updateEvent_withFile(event, file);
-        if (res) {
-            System.out.println("이벤트 업데이트 성공");
-        }
+
         return "redirect:/event/eventhome/Opening";
     }
 
@@ -130,7 +128,7 @@ public class EventController {
     public String calendar_event(Model mo, Principal principal) {
         // 31칸짜리 배열 생성 (0: 출석 안 함, 1: 출석 완료)
         String storedValue = eventService.getCalenderEventValue(principal.getName()); // null
-        System.out.println(storedValue);
+        
         if (storedValue == null) {
             storedValue = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
         }
@@ -261,7 +259,9 @@ public class EventController {
 
     @PostMapping("/eventATypeUpdate")
     public String eventATypeUpdate(Model mo ,PrizeVO prize, MultipartFile file){
-        boolean res = eventService.updateEventPrize_withFile(prize, file);        
+
+        boolean res = eventService.updateEventPrize_withFile(prize, file);
+
         List<EventDTO> list = eventService.getEventAllList();
         mo.addAttribute("list", list);
         return "/event/eventPrizeList";

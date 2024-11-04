@@ -77,13 +77,17 @@
                     </button>                   
                     <!--/* 게시글 좋아요 버튼 */-->  
                     <button class="btn-like"
-
-                    	>
-                        <i class='bx bxs-heart'></i>
+						th:attr="data-no=${item.wr_no}, data-action='like', data-type='board'"
+                    	th:onclick = "action(this)">
+                        <i class='bx bxs-heart' th:classappend="${item.cg_like}"></i>
+                        <span class="action-count" th:text="${item.wr_good}"></span>
                     </button>
                     <!--/* 게시글 싫어요 버튼 */-->
-                    <button class="btn-report">
-                        <i class='bx bx-x-circle'></i>
+                    <button class="btn-report"
+                    	th:attr="data-no=${item.wr_no}, data-action='report', data-type='board'"
+                    	th:onclick = "action(this)">
+                        <i class='bx bx-x-circle' th:classappend="${item.cg_report}"></i>
+                        <span class="action-count" th:text="${item.wr_singo}"></span>
                     </button>                   
                 </div>
                 <!--/* 댓글 버튼 */-->
@@ -135,137 +139,183 @@
 </div>
 <input th:id="mb_id" type="hidden" th:value="${not #strings.isEmpty(userInfo) ? userInfo : ''}">
 <script th:inline="javascript">
-	const st_code =  /*[[${stock.st_code}]]*/ '' ;
-	const mb_id = /*[[${member.mb_id}]]*/;
+const st_code = /*[[${stock.st_code}]]*/ '';
+const mb_id = /*[[${member.mb_id}]]*/ '';
 
-	function board_action(form, type){
-	let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-	var param;
+function board_action(form, type) {
+    let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
+    var param;
 
-	if(type == "insert"){
-		url += "/community/insert";
-		param = $(form).serialize();
-	}else if(type == "delete") {
-		url += "/community/delete";
-		var no = $(form).data('wr-no');
-		param = {wr_no : no};
-	} else if(type == "update"){
-		url += "/community/update";
-		var no = $(form).find('.btn-save').data('wr-no'); 
-		const updatedContent = $(form).find('.edit-input').val();
-		param ={ wr_no: no,wr_content: updatedContent }; 
-	}
+    if (type == "insert") {
+        url += "/community/insert";
+        param = $(form).serialize();
+    } else if (type == "delete") {
+        url += "/community/delete";
+        var no = $(form).data('wr-no');
+        param = { wr_no: no };
+    } else if (type == "update") {
+        url += "/community/update";
+        var no = $(form).find('.btn-save').data('wr-no');
+        const updatedContent = $(form).find('.edit-input').val();
+        param = { wr_no: no, wr_content: updatedContent };
+    }
 
-	$.ajax({
-		url: url,
-		type: "post",
-		data: param,
-		async: false, //false : 비동기 / true : 동기
-		success: function(data) {
-			if (data.res === "true") {
-				location.href = location.href; 
-				} else {
-				alert(data.msg);
-				}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-		console.error("AJAX 오류:", textStatus, errorThrown);
-		alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
-		}
-	});
-		return false;
-		
-	}
-
-	function enableEditMode(id, type, button) {
-	let target, content;
-	if (type === "post") {        
-		target = $(`.board-body[data-id="${id}"]`);
-		content = target.find(".board-text");
-	} else if (type === "comment") {
-		target = $(`.comment-body[data-coid="${id}"]`);	        
-		content = target.find(".comment-text");
-	}
-	if (content) {
-		const currentText = content.text();	        
-		content.html(`<input type="text" value="${currentText}" class="edit-input">`);
-		 $(button).hide(); 	        
-		target.find(".btn-save").show(); 
-		}
-	}
-	function comment_action(button , type) {
-	let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-	var param;
-	if(type == "insertComment"){
-	url += "/community/insertComment";
-		var content = $(button).closest('.input-group').find('.comment-input').val();
-		var no = $(button).data('wr-no');
-		param = { co_content : content, wr_no : no };
-			if (content.trim() === '') {
-			alert('댓글을 입력하세요.');
-			return;
-		}
-	}else if (type == "deleteComment") {
-		url += "/community/deleteComment"; 
-		var no = $(button).data('wr-no'); 
-		var coId = $(button).data('co-id'); 
-		param = { wr_no: no, co_id: coId };
-	}else if (type == "updateComment") {
-		url += "/community/updateComment";
-		var no = $(button).data('wr-no'); 
-		var coId = $(button).data('co-id');
-		const updatedContent = $(button).closest('.comment-body').find('.edit-input').val();
-		param = { wr_no: no, co_id: coId, co_content: updatedContent };
-	}
-	$.ajax({
-	url: url,
-	type: "post",
-	data: param,
-	async: false, //false : 비동기 / true : 동기
-	success: function(data) {
-	if (data.res === "true") {
-	// 댓글 입력 필드 초기화
-	if(type == "insertComment"){
-		$(button).closest('.input-group').find('.comment-input').val('');	
-	}else if (type == "deleteComment"){
-		$(button).closest('.comment-header').parent().remove(); // 삭제 후 댓글 요소 제거	
-	}			
-		// 댓글 목록 갱신
-		replace_comment(no); 
-	} else {
-		alert(data.msg);
-		}
-	},
-		error: function(jqXHR, textStatus, errorThrown) {
-		console.error("AJAX 오류:", textStatus, errorThrown);
-		alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
-		}
-	});
-		return false;	
-	}
-function replace_comment(wr_no){
-
-	let url = "/stock/"+/*[[${stock.st_code}]]*/ '';
-	url += "/community/replaceComment";
-	
-	const commentData = { wr_no: wr_no }; // 댓글 ID로 section을 사용
-		$.ajax({
-		url: url,
-		type: "POST",
-		data: commentData,
-		success: function(data) {
-			$('#replace_comment' + wr_no).html(data);
-		},
-			error: function(jqXHR, textStatus, errorThrown) {
-			console.error("댓글 목록 갱신 오류:", textStatus, errorThrown);
-			alert("댓글 목록을 갱신하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
-			}
-		});
+    $.ajax({
+        url: url,
+        type: "post",
+        data: param,
+        async: false, // false : 비동기 / true : 동기
+        success: function(data) {
+            if (data.res === "true") {
+                location.href = location.href; 
+            } else {
+                alert(data.msg);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX 오류:", textStatus, errorThrown);
+            alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+        }
+    });
+    return false;
 }
 
+function enableEditMode(id, type, button) {
+    let target, content;
+    if (type === "post") {
+        target = $(`.board-body[data-id="${id}"]`);
+        content = target.find(".board-text");
+    } else if (type === "comment") {
+        target = $(`.comment-body[data-coid="${id}"]`);
+        content = target.find(".comment-text");
+    }
+    if (content) {
+        const currentText = content.text();
+        content.html(`<input type="text" value="${currentText}" class="edit-input">`);
+        $(button).hide();
+        target.find(".btn-save").show(); 
+    }
+}
 
+function comment_action(button, type) {
+    let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
+    var param;
+    
+    if (type == "insertComment") {
+        url += "/community/insertComment";
+        var content = $(button).closest('.input-group').find('.comment-input').val();
+        var no = $(button).data('wr-no');
+        param = { co_content: content, wr_no: no };
+        if (content.trim() === '') {
+            alert('댓글을 입력하세요.');
+            return;
+        }
+    } else if (type == "deleteComment") {
+        url += "/community/deleteComment";
+        var no = $(button).data('wr-no');
+        var coId = $(button).data('co-id');
+        param = { wr_no: no, co_id: coId };
+    } else if (type == "updateComment") {
+        url += "/community/updateComment";
+        var no = $(button).data('wr-no');
+        var coId = $(button).data('co-id');
+        const updatedContent = $(button).closest('.comment-body').find('.edit-input').val();
+        param = { wr_no: no, co_id: coId, co_content: updatedContent };
+    }
 
+    $.ajax({
+        url: url,
+        type: "post",
+        data: param,
+        async: false, // false : 비동기 / true : 동기
+        success: function(data) {
+            if (data.res === "true") {
+                // 댓글 입력 필드 초기화
+                if (type == "insertComment") {
+                    $(button).closest('.input-group').find('.comment-input').val('');
+                } else if (type == "deleteComment") {
+                    $(button).closest('.comment-header').parent().remove(); // 삭제 후 댓글 요소 제거    
+                }
+                // 댓글 목록 갱신
+                replace_comment(no); 
+            } else {
+                alert(data.msg);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX 오류:", textStatus, errorThrown);
+            alert("댓글 등록 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+        }
+    });
+    return false;    
+}
 
+function replace_comment(wr_no) {
+    let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
+    url += "/community/replaceComment";
+
+    const commentData = { wr_no: wr_no }; // 댓글 ID로 section을 사용
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: commentData,
+        success: function(data) {
+            $('#replace_comment' + wr_no).html(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("댓글 목록 갱신 오류:", textStatus, errorThrown);
+            alert("댓글 목록을 갱신하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
+        }
+    });
+}
+
+function action(button) {
+	
+    let no = button.getAttribute('data-no');
+    const action = button.getAttribute('data-action');
+    const type = button.getAttribute('data-type');
+    
+    let url = "/stock/" + /*[[${stock.st_code}]]*/ ''; // 주식 코드 추가
+    url += "/community/action";
+    var feel = {
+       	 cg_num: no,
+         action: action,
+         cg_type : type
+    };
+    $.ajax({
+        type: "POST",
+        url: url,
+        contentType: "application/json",
+        data: JSON.stringify(feel),
+        dataType : "json", 
+        success: function(data) {
+        	if(data.res == '401' ){
+                alert(data.msg);
+                return;
+            } else if (data.res == '200') {
+            	var regex = /[^0-9]/g; //숫자만 정규식 변수
+            	//현재 클릭한 요소의 count값을 받아와 int로 형변환
+            	var org_cnt = parseInt($(button).find(".action-count").text().replace(regex, ""));
+            	
+            	//active가 있으면 지우고 없으면 생성하고 그거에 따른 계산을 시도
+            	if($(button).find("i").hasClass("active")){
+            		org_cnt -= 1;
+            		$(button).find(".action-count").text(addCommas(org_cnt));
+            		$(button).find("i").removeClass("active");
+            	} else {	
+            		org_cnt += 1;
+            		$(button).find(".action-count").text(addCommas(org_cnt));
+            		$(button).find("i").addClass("active");
+            	} 
+            	alert("정상적으로 처리되었습니다.");
+            } else if (data.res === '204') {
+                alert("처리 완료, 변화 없음."); // 빈 알림 대신 명확한 메시지로 수정
+            } else {
+                alert("예상치 못한 응답이 발생했습니다.");
+            }
+        }	
+    });
+}
 </script>
 
 </main>

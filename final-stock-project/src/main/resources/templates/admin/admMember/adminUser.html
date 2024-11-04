@@ -15,12 +15,12 @@
 				<!-- 검색기능 form -->
 				<div id="select_left">
 					<form action="/admin/admMember/adminUser/userSearch" method="get"
-						class="local_sch">
+						class="local_sch" onsubmit="return unableform()">
 						<select name="use_sh" style="height: 25px">
 							<option value="mb_id">회원아이디</option>
 							<option value="mb_name">회원이름</option>
 							<option value="mb_nick">회원닉네임</option>
-						</select> <input type="text" name="search" required class="in_sch"
+						</select> <input type="text" name="search" required class="in_sch" id="use_sh"
 							style="height: 25px" th:placeholder="${search}">
 						<button type="submit" class="btn_submit btn in_sch">검색</button>
 						<a type="submit" th:href="@{/admin/admMember/admUserInsert}"
@@ -114,6 +114,16 @@
 				<p>Copyright © demo.sir.kr. All rights reserved.</p>
 			</footer>
 		</div>
+		<script>
+			function unableform() {
+				const use_sh_select = document.getElementById("use_sh");
+				const userValue = use_sh_select.value;
+				const user = userValue.replace(/\s/g, '')
+
+				document.getElementById('use_sh').value = user;
+			}
+		</script> 
+		
 	</div>
 
 </body>

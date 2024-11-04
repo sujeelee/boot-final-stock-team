@@ -27,6 +27,7 @@
 		        <div class="news-date">
 		            <button id="prev-date-btn" class="date-btn">◀</button>
 		            <span id="selected-date"></span>
+		            <section th:replace="~{newspaper/calender.html}"></section>
 		            <input type="hidden" name="ne_datetime" th:value="${ne_datetime}">
 		            <button id="next-date-btn" class="date-btn">▶</button>
 		        </div>
@@ -122,11 +123,7 @@
 			            contentType: "application/json; charset=utf-8",
 			            dataType: "json",
 			            success: function (data) {
-			            	console.log(data);
 			                displayNewsList(data.newsList);
-			            },
-			            error: function (jqXHR, textStatus, errorThrown) {
-			                console.log(jqXHR);
 			            }
 			        });
 			    }
@@ -215,6 +212,12 @@
 				        }
 				    });
 				}
+				$("input[name=calender]").change(function(){
+					var new_date = $("input[name=calender]").val();
+					currentDate = new Date(new_date);
+					$("#selected-date").text(new_date);
+					update();
+				});
 			});
 		</script>
 	</main>

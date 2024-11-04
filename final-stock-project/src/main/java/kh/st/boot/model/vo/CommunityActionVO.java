@@ -22,4 +22,6 @@ public class CommunityActionVO {
 	
 	private String cg_like; //report 신고 / like 좋아요로 확은
 	private String cg_report;
+	
+	private String action; //html에서 넘겨 받은 값을 넣어주기 위한 변수, DB에는 없는 컬럼
 }

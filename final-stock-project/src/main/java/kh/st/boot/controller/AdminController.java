@@ -7,10 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import groovy.transform.AutoImplement;
+import kh.st.boot.model.dto.AdMemberCheckDTO;
 import kh.st.boot.model.vo.AdmApprovalVO;
 import kh.st.boot.model.vo.AdmDaycheckVO;
 import kh.st.boot.model.vo.AdmMemberVO;
@@ -182,6 +185,17 @@ public class AdminController {
 		return "/admin/admMember/adminUser";
 	}
 
+	@PostMapping("/admMember/admUserSelect/searchid")
+	@ResponseBody
+	public int UserIdCheck(@RequestBody AdMemberCheckDTO request) {
+		String mb_id = request.getMb_id();
+		int userIdCheck = admUserService.getAdmMemberCheck(mb_id);
+		
+		return userIdCheck;
+		
+		
+	}
+	
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
