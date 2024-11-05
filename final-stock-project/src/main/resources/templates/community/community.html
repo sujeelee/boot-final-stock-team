@@ -132,9 +132,9 @@
         <span>인기 급상승 주식</span>
         <div class="div-ul">
             <ul class="stock-list">
-                <li class="stockItem">
-                    <h3>카카오</h3>
-                    <p>67,800원</p>
+                <li th:each="stock : ${top10}" class="stockItem">
+                    <h3 th:text="${stock.title}"></h3>
+                    <p th:text="${stock.price_text}"></p>커뮤니티&nbsp;
                 </li>
             </ul>
         </div>
