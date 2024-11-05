@@ -133,8 +133,9 @@
         <div class="div-ul">
             <ul class="stock-list">
                 <li th:each="stock : ${top10}" class="stockItem">
-                    <h3 th:text="${stock.title}"></h3>
-                    <p th:text="${stock.price_text}"></p>커뮤니티&nbsp;
+                	<p th:text="${stock.ranks}"></p>
+                    <h3 th:text="${stock.st_name}"></h3>
+                    <p th:text="${stock.price}"></p>커뮤니티&nbsp;
                 </li>
             </ul>
         </div>
