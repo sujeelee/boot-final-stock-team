@@ -8,14 +8,18 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.AdminDAO;
+import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.dao.SearchDAO;
+import kh.st.boot.dao.SltAdmLevelPageDAO;
 import kh.st.boot.dao.StockDAO;
 import kh.st.boot.model.dto.ComRankDTO;
 import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.HotStockDTO;
 import kh.st.boot.model.dto.SearchDTO;
+import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.BoardVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.model.vo.StockJisuVO;
 import lombok.AllArgsConstructor;
@@ -27,6 +31,8 @@ public class ConfigService {
 	private AdminDAO adminDao;
 	private StockDAO stockDao;
 	private SearchDAO searchDao;
+	private SltAdmLevelPageDAO levelAdminDao;
+	private MemberDAO memberDao;
 	
 	
 	public AdminVO getConfig() {
@@ -153,6 +159,38 @@ public class ConfigService {
 
 	public List<BoardVO> getCommunityList(String code) {
 		return searchDao.getCommunityList(code);
+	}
+/*
+ * private String lv_name; 
+	private int lv_num;  
+	private String lv_alpha; 
+	private char lv_auto_use;
+	private int lv_up_limit;
+ * */
+	public MemberVO getConfigLv(MemberVO member) {
+		int orgMbLv = member.getMb_level(); //기존 레벨 먼저 가져올게요
+		int followCnt = member.getMb_follow(); //회원을 팔로우하고 있는 회원 수를 가져올게요
+		List<AdminLevelPageVO> lvConfig = levelAdminDao.getAllssltAdminLevelPage(); //일단 모든 레벨을 가져옵니다.
+		int newMbLv = member.getMb_level();
+		if(orgMbLv > 7) {
+			return member;
+		}
+		for(AdminLevelPageVO tmp : lvConfig) {
+			if(tmp.getLv_auto_use() == 'Y') {
+				if(followCnt <= tmp.getLv_up_limit()) {
+					newMbLv = tmp.getLv_num();
+					break;
+				}
+			}
+		}
+		
+		if(orgMbLv != newMbLv) {
+				member.setMb_level(newMbLv);
+			if(memberDao.updateLevel(member) == false) {
+				member.setMb_level(orgMbLv);
+			}
+		}  
+		return member;
 	}
 	
 }
