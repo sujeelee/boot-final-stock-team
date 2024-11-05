@@ -77,6 +77,18 @@ public class GlobalControllerAdvice {
 		return list;
     }
     
+    @ModelAttribute("top10")
+    public List<HotStockDTO> getListTop10(){
+    	List<HotStockDTO> list = configService.getHotStockList(10);
+		
+		for(HotStockDTO tmp : list) {
+			String amount = stocksHeaderService.priceTextChange(Double.parseDouble(tmp.getMrk()));
+			tmp.setPrice_text(amount);
+		}
+		
+		return list;
+    }
+    
     @PostMapping("/dashlist")
     public String getDashList(@RequestParam Map<String, Object> param, Model model){
     	List<DashListDTO> list = configService.getDashList(param);
