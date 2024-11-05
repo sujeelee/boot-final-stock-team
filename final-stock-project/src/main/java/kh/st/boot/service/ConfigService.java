@@ -160,13 +160,7 @@ public class ConfigService {
 	public List<BoardVO> getCommunityList(String code) {
 		return searchDao.getCommunityList(code);
 	}
-/*
- * private String lv_name; 
-	private int lv_num;  
-	private String lv_alpha; 
-	private char lv_auto_use;
-	private int lv_up_limit;
- * */
+
 	public MemberVO getConfigLv(MemberVO member) {
 		int orgMbLv = member.getMb_level(); //기존 레벨 먼저 가져올게요
 		int followCnt = member.getMb_follow(); //회원을 팔로우하고 있는 회원 수를 가져올게요
@@ -176,7 +170,7 @@ public class ConfigService {
 			return member;
 		}
 		for(AdminLevelPageVO tmp : lvConfig) {
-			if(tmp.getLv_auto_use() == 'Y') {
+			if(tmp.getLv_auto_use().equals("Y")) {
 				if(followCnt <= tmp.getLv_up_limit()) {
 					newMbLv = tmp.getLv_num();
 					break;
