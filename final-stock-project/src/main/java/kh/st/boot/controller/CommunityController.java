@@ -317,10 +317,6 @@ public class CommunityController {
     @ResponseBody
     public Map<String, Object> addFoller(@PathVariable String st_code, @RequestParam String fo_mb_id, Principal principal){
         Map<String, Object> result = new HashMap<String, Object>();
-        System.out.println(result);
-        System.out.println(st_code);
-        System.out.println(fo_mb_id);
-        System.out.println(principal);
         
 		if (principal == null) {
 			result.put("res", "false");
@@ -336,9 +332,7 @@ public class CommunityController {
 	    FollowVO follow = new FollowVO();
 		follow.setFo_mb_id(fo_mb_id);
 		follow.setMb_id(mb_id);
-		System.out.println(follow);
 	    boolean FolloworNot = communityService.followorNot(follow);
-	    System.out.println(FolloworNot);
 	    if (FolloworNot) {
 	        result.put("res", "true");
 	        result.put("msg", "팔로우가 추가되었습니다.");

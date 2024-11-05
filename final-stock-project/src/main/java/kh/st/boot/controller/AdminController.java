@@ -311,39 +311,12 @@ public class AdminController {
 		return "/admin/admLevel/admLevelPage";
 	}
 
-	// 등록하기
-	@PostMapping("/admLevel/admLevelPage/insert")
-	public String istAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
-			@RequestParam char lv_auto_use, @RequestParam int lv_up_limit, Model model) {
-		boolean res = sltAdmLevelPageService.addSltAdmLevel(lv_name, lv_num, lv_alpha, lv_auto_use, lv_up_limit);
-		if (res == false) {
-			model.addAttribute("msg", " 이미 존제하는 Lv 정보 입니다 ");
-			model.addAttribute("url", "/admin/admLevel/admLevelPage");
-			return "util/msg";
-		}
-		return "redirect:/admin/admLevel/admLevelPage";
-	}
 
-	// 삭제하기
-	@PostMapping("/admLevel/admLevelPage/delet")
-	public String dltAdmLv(@RequestParam String lv_name, @RequestParam int lv_num, @RequestParam String lv_alpha,
-			@RequestParam char lv_auto_use, @RequestParam int lv_up_limit) {
-		AdminLevelPageVO dltAdm = new AdminLevelPageVO();
-		dltAdm.setLv_name(lv_name); //
-		dltAdm.setLv_num(lv_num);
-		dltAdm.setLv_alpha(lv_alpha);
-		dltAdm.setLv_auto_use(lv_auto_use);
-		dltAdm.setLv_up_limit(lv_up_limit);
-
-		sltAdmLevelPageService.dltAdmLvService(dltAdm);
-		return "redirect:/admin/admLevel/admLevelPage";
-	}
 
 	// 회원 정보 상세페이지 조회
 	@PostMapping("/admLevel/admLevSel")
 	public String admlevSel(Model model, int lv_num) {
 		AdminLevelPageVO admlevSel = sltAdmLevelPageService.getAdmlevSel(lv_num);
-
 		model.addAttribute("admlevSel", admlevSel);
 
 		return "/admin//admLevel/admLevSel";
@@ -353,13 +326,6 @@ public class AdminController {
 	@PostMapping("/admLevel/admLevSel/update")
 	public String udtAdmLv(AdminLevelPageVO admLevVO, Model model) {
 		boolean res = sltAdmLevelPageService.admLevUpdate(admLevVO);
-		System.out.println(admLevVO);
-		if (res == false) {
-			model.addAttribute("msg", "실패");
-			model.addAttribute("url", "/admin/adminHome");
-			System.out.println("dadd");
-			return "util/msg";
-		}
 		return "redirect:/admin/admLevel/admLevelPage";
 	}
 
@@ -603,4 +569,4 @@ public class AdminController {
 		return "redirect:/admin/admStock/admStock_add";
 	}
 	
-}
+}   

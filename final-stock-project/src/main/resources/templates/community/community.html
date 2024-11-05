@@ -58,14 +58,14 @@
 			        th:classappend="${#strings.equals(item.following, 'y')} ? 'follower' : ''"
 			        onclick="follower(this)"
 			        th:text="${#strings.equals(item.following, 'y')} ? '팔로우 중' : '팔로우'"></button>                  
-                    <button class="btn-save" style="display:none;"
-                    th:attr="data-wr-no=${item.wr_no}" 
+                    <button class="btn-save" style="display:none; margin-top: auto;"
+                    th:attr="data-wr-no=${item.wr_no}"                     
             		onclick="board_action(this.closest('.board-body'), 'update')">
                     <i class='bx bx-edit-alt'></i>
                     </button>
                </div>
                 <!--/* 게시글 추천, 신고 */-->
-                <div class="board-footer">
+                <div class="board-footer" id="board-footer">
                 	<!--/* 게시글 수정 버튼 */-->
 					<button class="btn-retouch"
 						th:if="${userInfo != null and item.mb_id == userInfo}"
@@ -95,11 +95,12 @@
                     </button>                   
                 </div>
                 <!--/* 댓글 버튼 */-->
-                <div>
+                <div class="dreply-btn">
                     <button class="reply-btn" type="button"
-                    data-toggle="collapse" th:data-target="'#commentColl' + ${item.wr_no}" th:onclick="replace_comment([[${item.wr_no}]]);">
+                    data-toggle="collapse" th:data-target="'#commentColl' + ${item.wr_no}" 
+                    th:onclick="replace_comment([[${item.wr_no}]]);">
                         <i class='bx bx-comment'></i>                                
-	                    <span class="commnet-count" th:text="${item.wr_comment}"></span>
+	                    <span th:id="'commentCount'+${item.wr_no}" class="comment-count" th:text="${item.wr_comment}"></span>
                     </button>
                     <!--/* 댓글 count */-->
                 </div>
@@ -113,6 +114,7 @@
                         <div class="input-group-append">                    
                             <button type="button" class="btn comment-btn"
                             th:attr="data-wr-no=${item.wr_no}"
+                            th:data-comment-count="${item.wr_comment}"
                             onclick="comment_action(this, 'insertComment')"
                             >등록</button>
                         </div>
@@ -220,7 +222,7 @@ function enableEditMode(id, type, button) {
     }
     if (content) {
         const currentText = content.text();
-        content.html(`<input type="text" value="${currentText}" class="edit-input">`);
+        content.html(`<textarea class="edit-input" rows="4">${currentText}</textarea>`);
         $(button).hide();
         target.find(".btn-save").show(); 
     }
@@ -229,8 +231,7 @@ function enableEditMode(id, type, button) {
 function comment_action(button, type) {
     let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
     var param;
-    var org_cmcnt = parseInt($(button).find(".comment-count").text().replace(regex,""));
-    var regex = /[^0-9]/g;
+    
     if (type == "insertComment") {
         url += "/community/insertComment";
         var content = $(button).closest('.input-group').find('.comment-input').val();
@@ -252,7 +253,7 @@ function comment_action(button, type) {
         const updatedContent = $(button).closest('.comment-body').find('.edit-input').val();
         param = { wr_no: no, co_id: coId, co_content: updatedContent };
     }
-
+    
     $.ajax({
         url: url,
         type: "post",
@@ -263,16 +264,13 @@ function comment_action(button, type) {
                 // 댓글 입력 필드 초기화
                 if (type == "insertComment") {
                     $(button).closest('.input-group').find('.comment-input').val('');
-                    
-                    org_cmcnt += 1;
-                    $(button).closest('.input-group').find(".comment-count").text(addCommas(org_cmcnt));
+                    let addText = parseInt($('#commentCount' + $(button).data('wr-no')).text());
+                    $('#commentCount' + $(button).data('wr-no')).text(addText + 1);
                 } else if (type == "deleteComment") {
                     $(button).closest('.comment-header').parent().remove(); // 삭제 후 댓글 요소 제거
-                    
-                    org_cmcnt -= 1;
-                    $(button).closest('.input-group').find(".comment-count").text(addCommas(org_cmcnt));
+                    let addText = parseInt($('#commentCount' + $(button).data('wr-no')).text());
+                    $('#commentCount' + $(button).data('wr-no')).text(addText - 1);
                 }
-                // 댓글 목록 갱신
                 replace_comment(no); 
             } else {
                 alert(data.msg);

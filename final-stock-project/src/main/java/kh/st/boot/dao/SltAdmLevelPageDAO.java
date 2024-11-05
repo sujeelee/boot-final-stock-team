@@ -24,11 +24,11 @@ public interface SltAdmLevelPageDAO {
 	void dltAdmLvdao(AdminLevelPageVO adminLevelPageVO);
 
 
-	void updateAdmLv(AdminLevelPageVO level);
+	
 
 	AdminLevelPageVO selectAdmLev(int lv_num);
 
-	void updateAdmLev(AdminLevelPageVO admLevVO);
+	boolean updateAdmLev(AdminLevelPageVO admLevVO);
 
 	
 
