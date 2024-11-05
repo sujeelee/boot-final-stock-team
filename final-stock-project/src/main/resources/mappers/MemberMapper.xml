@@ -81,6 +81,7 @@
             mb_id = #{id}
     </update>
 
+
     <select id="findByEmail" resultType="MemberVO">
         select * from member where mb_email = #{email}
     </select>
@@ -90,5 +91,12 @@
         set mb_password = #{pw}
         where mb_id = #{id}
     </update>
+
+
+	<update id="updateLevel">
+		update member
+		set mb_level = #{mb.mb_level}
+		where mb_id = #{mb.mb_id}
+	</update>
 
 </mapper>

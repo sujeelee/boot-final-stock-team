@@ -54,7 +54,10 @@
                 <div class="board-body" th:data-id="${item.wr_no}">
                     <p class="board-text" th:text="${item.wr_content}?:_"></p>
                     <button class="follower-btn" th:data-mbid="${item.mb_id}"
-                    th:onclick=follower(this)>팔로워</button>                    
+			        th:if="${item.mb_id != userInfo}"
+			        th:classappend="${#strings.equals(item.following, 'y')} ? 'follower' : ''"
+			        onclick="follower(this)"
+			        th:text="${#strings.equals(item.following, 'y')} ? '팔로우 중' : '팔로우'"></button>                  
                     <button class="btn-save" style="display:none;"
                     th:attr="data-wr-no=${item.wr_no}" 
             		onclick="board_action(this.closest('.board-body'), 'update')">
@@ -96,7 +99,7 @@
                     <button class="reply-btn" type="button"
                     data-toggle="collapse" th:data-target="'#commentColl' + ${item.wr_no}" th:onclick="replace_comment([[${item.wr_no}]]);">
                         <i class='bx bx-comment'></i>                                
-	                    <span th:text="${item.wr_comment}"></span>
+	                    <span class="commnet-count" th:text="${item.wr_comment}"></span>
                     </button>
                     <!--/* 댓글 count */-->
                 </div>
@@ -146,30 +149,32 @@ const mb_id = /*[[${member.mb_id}]]*/ '';
 function follower(button) {
 	
     const mb_id = $(button).data("mbid");
-    let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
-    url += "/follower/addfollower"
+    var thisBtn = button;
+    
+    let url = "/stock/" + st_code + "/community/followorNot";
+    var button = $(this);
     $.ajax({
         url: url, 
         type: "POST",
-        data: { mb_id: mb_id },
+        async: false,
+        data: { fo_mb_id: mb_id },
         success: function(response) {
-            
-            if (response.success) {
-                
-            } else {
-                alert("팔로우 요청에 실패했습니다.");
-            }
+	       	alert(response.msg);
+	       	
+	       	var color = '';
+	    	if(response.text == '팔로우 중'){
+	    		color = 'grey';
+	    	}
+			$(thisBtn).text(response.text).css('background-color', color);
         },
         error: function(xhr, status, error) {
             alert("오류가 발생했습니다. 다시 시도해주세요.");
         }
     });
 }
-
 function board_action(form, type) {
     let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
     var param;
-
     if (type == "insert") {
         url += "/community/insert";
         param = $(form).serialize();
@@ -224,7 +229,8 @@ function enableEditMode(id, type, button) {
 function comment_action(button, type) {
     let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
     var param;
-    
+    var org_cmcnt = parseInt($(button).find(".comment-count").text().replace(regex,""));
+    var regex = /[^0-9]/g;
     if (type == "insertComment") {
         url += "/community/insertComment";
         var content = $(button).closest('.input-group').find('.comment-input').val();
@@ -257,8 +263,14 @@ function comment_action(button, type) {
                 // 댓글 입력 필드 초기화
                 if (type == "insertComment") {
                     $(button).closest('.input-group').find('.comment-input').val('');
+                    
+                    org_cmcnt += 1;
+                    $(button).closest('.input-group').find(".comment-count").text(addCommas(org_cmcnt));
                 } else if (type == "deleteComment") {
-                    $(button).closest('.comment-header').parent().remove(); // 삭제 후 댓글 요소 제거    
+                    $(button).closest('.comment-header').parent().remove(); // 삭제 후 댓글 요소 제거
+                    
+                    org_cmcnt -= 1;
+                    $(button).closest('.input-group').find(".comment-count").text(addCommas(org_cmcnt));
                 }
                 // 댓글 목록 갱신
                 replace_comment(no); 
@@ -367,8 +379,8 @@ function action(button) {
         }	
     });
 }
-</script>
 
+</script>
 </main>
 </body>
 </html>

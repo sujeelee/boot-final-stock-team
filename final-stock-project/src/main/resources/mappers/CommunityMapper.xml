@@ -17,7 +17,7 @@
 	</select>
 	
     <select id="getBoardList" resultType="BoardVO">
-    	SELECT board.*, mb_nick, mb_level
+    	SELECT board.*, member.mb_nick, member.mb_level
     	FROM board
 		left join member on member.mb_id = board.mb_id
     	WHERE wr_category = #{wr_category}
@@ -116,16 +116,16 @@
     
 	<!-- 좋아요 및 신고 여부 확인 -->
 	<select id="checkUserActions" resultType="CommunityActionVO">
-	    SELECT 
-	        IF(cg_like = 'like', 'like', 'n') AS cg_like,
-	        IF(cg_report = 'report', 'report', 'n') AS cg_report,
-	        cg_num 
-	    FROM 
-	        community_action 
-	    WHERE 
-	        cg_num = #{cg_num} AND 
-	        cg_type = #{cg_type} AND 
-	        mb_id = #{mb_id}
+		SELECT 
+		    IF(cg_like = 'like', 'like', 'n') AS cg_like,
+		    IF(cg_report = 'report', 'report', 'n') AS cg_report,
+		    cg_num 
+		FROM 
+		    community_action 
+		WHERE 
+		    cg_num = #{cg_num} AND 
+		    cg_type = #{cg_type} AND 
+		    mb_id = #{mb_id}
 	</select>
 	
 	<select id="getBoardbyID" resultType="BoardVO">
@@ -163,5 +163,31 @@
 	<select id="findActionByCommentNumber" resultType="CommunityActionVO">
 		select * from community_action where cg_num = #{co_id} and cg_type = 'comment' and mb_id = #{mb_id}
 	</select>
+	
+		<!-- 현재 사용자가 팔로우하는지 확인하는 쿼리 -->	
+	<select id="followorNot" resultType="int">
+        SELECT COUNT(*) 
+        FROM follow 
+        WHERE mb_id = #{mb_id} AND fo_mb_id = #{fo_mb_id}
+    </select>
 
+    <insert id="insertFollower">
+        INSERT INTO follow (mb_id, fo_mb_id)
+        VALUES (#{mb_id}, #{fo_mb_id})
+    </insert>
+
+    <delete id="deleteFollower">
+        DELETE FROM follow 
+        WHERE mb_id = #{mb_id} AND fo_mb_id = #{fo_mb_id}
+    </delete>
+	
+	<select id="followingStatus" resultType="String">
+        SELECT 
+            IF(COUNT(*) > 0, 'y', 'n') AS follow_status
+        FROM 
+            follow 
+        WHERE 
+            mb_id = #{mb_id} AND fo_mb_id = #{fo_mb_id}
+    </select>
+	
 </mapper>
