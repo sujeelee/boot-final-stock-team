@@ -45,15 +45,15 @@
 						th:object="${pm}" 
 						th:if="${pm.endPage != 0}">
 					    <li class="page-item" th:if="*{prev}">
-					    	<a class="page-link" th:href="@{/myaccount/follow(page=*{startPage-1})}">이전</a>
+					    	<a class="page-link" th:href="@{/myaccount/follow/views/{fo_id}(fo_id=${fo_mb_id}, page=*{startPage-1})}">이전</a>
 					    </li>
 					    <li class="page-item" 
 					    	th:each="i : *{#numbers.sequence(startPage, endPage)}"
 					    	th:classappend="*{cri.page} == ${i} ? 'active' : ''">
-					    	<a class="page-link" th:href="@{/myaccount/follow(page=${i})}" th:text="${i}"></a>
+					    	<a class="page-link" th:href="@{/myaccount/follow/views/{fo_id}(fo_id=${fo_mb_id}, page=${i})}" th:text="${i}"></a>
 					    </li>
 					    <li class="page-item" th:if="*{next}">
-					    	<a class="page-link" th:href="@{/myaccount/follow(page=*{endPage+1})}">다음</a>
+					    	<a class="page-link" th:href="@{/myaccount/follow/views/{fo_id}(fo_id=${fo_mb_id}, page=*{endPage+1})}">다음</a>
 					    </li>
 					</ul>
 				</div>

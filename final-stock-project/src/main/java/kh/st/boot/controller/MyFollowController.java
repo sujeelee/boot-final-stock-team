@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import kh.st.boot.model.dto.FollowInfoDTO;
 import kh.st.boot.model.vo.FollowVO;
 import kh.st.boot.model.vo.MemberVO;
-import kh.st.boot.model.vo.WishVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.service.MyFollowService;
@@ -62,6 +61,7 @@ public class MyFollowController {
         	
             return "util/msg";
         }
+        
         PageMaker pm = myFollowService.getPageMaker("view", cri, fo_id);
         mb_id = principal.getName();
         
