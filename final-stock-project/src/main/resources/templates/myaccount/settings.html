@@ -346,6 +346,7 @@
 						        $('#stock').replaceWith('<input type="checkbox" name="mp_type" id="stock" value="stock" onclick="checkOnlyOne(this);"/>');
 						        $('#news, #stock').prop('disabled', false);
 						        $('button[onclick="submitForm()"]').show();
+						        window.location.href = '/myaccount/settings';
 							} else {
 								alert('요청 취소 중 문제가 발생하였습니다. 잠시 후에 다시 시도해 주세요');
 							}
