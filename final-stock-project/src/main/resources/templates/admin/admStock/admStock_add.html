@@ -48,6 +48,7 @@
 							<th>요청사 ID</th>
 							<th>소각/발행값</th>
 							<th>작성일</th>
+							<th>처리 여부</th>
 							<th>관리</th>
 						</tr>
 					</thead>
@@ -56,6 +57,7 @@
 							<td th:text="${item.mb_id}"></td>
 							<td th:text="${item.sa_qty}"></td>
 							<td th:text="${item.sa_datetime}"></td>
+							<td th:text="${item.sa_yn == null ? '대기' : item.sa_yn == 'y' ? '승인' : '거절'}"></td>
 							<td>
 								<button class="btn-open-modal navyBtn btn_submit btn"
 									type="button" th:data-sa_no="${item.sa_no}"
@@ -85,7 +87,7 @@
 						            <option value="n">거절</option>
 						        </select>
 						    </div>
-						    <p>승인 거절 사유</p>
+						    <p>관리자 코멘트</p>
 						    <textarea name="sa_feedback" style="width: 100%; height: 300px"></textarea>
 						    
 						    <!-- sa_qty 값을 전달하기 위한 hidden input 필드 추가 -->
