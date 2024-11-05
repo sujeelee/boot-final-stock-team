@@ -65,5 +65,14 @@
     font-weight: bold;
     color: #333d4b;
 }
-.follow-table > table {cursor: pointer;text-align: center;width: 50%;}
+.follow-table > table {cursor: pointer;width: 50%;}
 .follow-nick{display: flex;justify-content: space-between;align-items: center;}
+.page_div{margin-top: 5%;}
+.fo-view-row{border-top: 1px solid #17a2b8; padding: 2%;cursor: pointer;}
+.fo-view-row:hover{background-color: #ccebf0;border-radius: 15px;}
+.fo-content{white-space: pre-wrap; margin-top: 1%;}
+.fo-div{display: flex; align-items: center;gap: 1%;}
+.fo-stock{color: #17a2b8;}
+.fo-date, .fo-info{color: #888;}
+.fo-nick{font-size: 20px;}
+.fo-info{display: flex; align-items: center;gap: 1%;margin-bottom: 2%;}
