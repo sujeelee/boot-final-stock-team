@@ -53,5 +53,3 @@ public class AdminOrderService {
 	
 }
 
-
-// 근데 이름 동일한 값 전부 가져와야하면 저거 두개만 가져오면 안되잖아?

@@ -33,7 +33,6 @@ public class PointSltIdPageService {
 		}
 		return allDay;
 	}
-// ddddd
 	public List<AdmDaycheckVO> sltOneDay(String mb_id) {  
 
 		List<AdmDaycheckVO> allDay = admDaycheckDAO.OneSelect(mb_id);
@@ -49,7 +48,6 @@ public class PointSltIdPageService {
 		return allDay;
 	}
 
-	// '1'제거한 길이를 원본에서 빼서 1이 몇개인지 확인
 	private int countOnes(String dcDays) {
 		return (dcDays.length() - dcDays.replace("1", "").length());
 	}
@@ -67,8 +65,8 @@ public class PointSltIdPageService {
 			String dcDays = dayNum.getDc_days();
 
 			if (dcDays != null) {
-				int count = countOnes(dcDays); // dc_days의 1 개수 세기
-				dayNum.setCountDay(count); // countList에 추가
+				int count = countOnes(dcDays); 
+				dayNum.setCountDay(count); 
 			}
 		}
 		return searchDay;

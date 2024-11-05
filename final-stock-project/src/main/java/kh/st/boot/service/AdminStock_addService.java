@@ -18,7 +18,6 @@ public class AdminStock_addService {
 	private AdminStock_addDAO adminStock_addDAO;
 
 	public List<AdminStock_addVO> nullSelect() { 
-		System.out.println("서비스 진입");
 		return adminStock_addDAO.nullSelectAll();
 	}
 
@@ -27,7 +26,6 @@ public class AdminStock_addService {
 	}
 
 	public void update(int sa_no, String sa_yn, String sa_feedback, int sa_qty,String mb_id) {
-		System.out.println(sa_qty);
 		adminStock_addDAO.updateAll(sa_no, sa_yn, sa_feedback);
 		adminStock_addDAO.styUpdate(sa_qty,mb_id);
 		
