@@ -32,23 +32,6 @@ public class SltAdmLevelPageService {
 		sltAdmLevelPageDAO.dltAdmLvdao(AdminLevelPageVO);
 	}
 
-//	public void udtAdmLvService(String lv_name, int lv_num, String lv_alpha, String lv_auto_use, int lv_up_limit) {
-//
-//		// 전체lv 데이터 가져와서 향상된 for문 돌릴꺼임
-//		List<AdminLevelPageVO> allNums = sltAdmLevelPageDAO.getAllssltAdminLevelPage();
-//
-//		for (AdminLevelPageVO level : allNums) {
-//			if (level.getLv_num() == lv_num) { // 검색한 값이 lv_num 이면
-//				level.setLv_name(lv_name);
-//				level.setLv_alpha(lv_alpha);
-//				level.setLv_auto_use(lv_auto_use);
-//				level.setLv_up_limit(lv_up_limit);
-//				sltAdmLevelPageDAO.updateAdmLv(level);
-//			}
-//		}
-//
-//	}
-
 	public boolean admLevUpdate(AdminLevelPageVO admLevVO) {
 		sltAdmLevelPageDAO.updateAdmLev(admLevVO);
 		return true;
@@ -56,7 +39,6 @@ public class SltAdmLevelPageService {
 
 	public void udtAdmLvService(String lv_name, int lv_num, String lv_alpha, char lv_auto_use, int lv_up_limit) {
 
-		// 전체lv 데이터 가져와서 향상된 for문 돌릴꺼임
 		List<AdminLevelPageVO> allNums = sltAdmLevelPageDAO.getAllssltAdminLevelPage();
 
 		for (AdminLevelPageVO level : allNums) {

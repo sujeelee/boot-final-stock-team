@@ -106,7 +106,7 @@ public class AdminController {
 	}
 
 	// -------------------------------------------------------------------------------
-	// -------------------------- 회원 정보 수정 -------------------------------
+	// -----------------------------    회원 정보 수정 -------------------------------
 	// -------------------------------------------------------------------------------
 
 	@GetMapping("/admMember/adminUser")
@@ -367,8 +367,6 @@ public class AdminController {
 	// ------------------- 출석체크 포인트 적립내역 검색 컨트롤러 -------------------
 	// -------------------------------------------------------------------------------
 
-	// 검색하기랑
-	// 불러오기 페이지네이션 , 날짜 합쳐서 출력하기
 
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
@@ -468,7 +466,6 @@ public class AdminController {
 	// -------------------------------------------------------------------------------
 
 	// 접속시
-
 	@GetMapping("/admApproval/admApprovalPage")
 	public String nullSltApproval(Model model, Criteria cri) {
 		cri.setPerPageNum(8);
@@ -480,7 +477,6 @@ public class AdminController {
 	}
 
 	// 승인/거절 했을때
-
 	@PostMapping("/admApproval/admApprovalPage/slt")
 	public String ySltApproval(@RequestParam String mp_yn, @RequestParam String mp_company,
 			@RequestParam String mp_type, @RequestParam int mb_no) {
@@ -575,9 +571,7 @@ public class AdminController {
 
 	}
 
-	// 이거 vo 랑 html 이랑 서비스 다오 메퍼 까지 다 없음 그럼 어떡하지?
 
-	//
 
 	// -------------------------------------------------------------------------------
 	// -------------------------- 주식 발행/소각 요청 승인 ----------------------------
