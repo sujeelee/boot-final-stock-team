@@ -28,7 +28,11 @@ public class MyFollowService {
 	}
 
 	public boolean unfollow(String fo_no, String mb_id) {
-		return searchDao.unfollow(fo_no, mb_id);
+		boolean res = searchDao.unfollow(fo_no, mb_id);
+		if(res == true) {
+			searchDao.memberFollow(fo_no, -1); //fo_no는 팔로우한 아이디
+		}
+		return res;
 	}
 
 	public List<FollowVO> getFollowViews(String fo_id, Criteria cri) {
@@ -43,7 +47,11 @@ public class MyFollowService {
 	}
 
 	public boolean follow(String fo_no, String mb_id) {
-		return searchDao.follow(fo_no, mb_id);
+		boolean res = searchDao.follow(fo_no, mb_id);
+		if(res == true) {
+			searchDao.memberFollow(fo_no, 1); //fo_no는 팔로우한 아이디
+		}
+		return res;
 	}
 	
 }
