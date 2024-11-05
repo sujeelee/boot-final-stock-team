@@ -70,7 +70,14 @@
 		order by wr_no DESC
 		limit 10
 	</select>
-	
+	<select id="getCount" resultType="int">
+		<if test="type == 'list'">
+			select count(*) from follow
+		</if>
+		<if test="type == 'view'">
+			select count(*) from board where mb_id = #{mb_id} and wr_blind = 'N'
+		</if>
+	</select>
 	<select id="getFollowList" resultType="kh.st.boot.model.dto.MyFollowDTO">
 		SELECT a.*, b.mb_nick AS fo_mb_nick, b.cnt
 		FROM follow a
@@ -82,5 +89,37 @@
 		) AS b ON a.fo_mb_id = b.mb_id 
 		where a.mb_id = #{mb_id}
 		order by fo_no ASC
+		<if test="cri != null">
+			limit #{cri.pageStart}, #{cri.perPageNum}
+		</if>
 	</select>
+	<delete id="unfollow">
+		delete from follow where fo_no = #{fo_no} and mb_id = #{mb_id}
+	</delete>
+	<select id="getFollowViews" resultType="kh.st.boot.model.dto.FollowViewDTO">
+		select  a.wr_no, a.wr_content, a.wr_category as st_code, a.wr_datetime, b.st_name 
+		from board a 
+		join stock b on a.wr_category = b.st_code
+	    where a.mb_id = #{fo_id} and a.wr_blind = 'N'
+		order by a.wr_no DESC
+		<if test="cri != null">
+			limit #{cri.pageStart}, #{cri.perPageNum} 
+		</if>
+	</select>
+	<select id="getFollowInfo" resultType="kh.st.boot.model.dto.FollowInfoDTO">
+		SELECT 
+		    (SELECT COUNT(*) FROM follow WHERE mb_id = #{fo_id}) AS following,
+		    (SELECT COUNT(*) FROM follow WHERE fo_mb_id = #{fo_id}) AS follower,
+		    b.mb_nick
+		FROM member b
+		WHERE b.mb_id = #{fo_id};
+	</select>
+	<select id="getFollowNo" resultType="int">
+		SELECT COALESCE((SELECT fo_no FROM follow WHERE mb_id = #{mb_id} AND fo_mb_id = #{fo_id}), 0)
+	</select>
+	<insert id="follow">
+		insert into follow
+		set	mb_id = #{mb_id},
+			fo_mb_id = #{fo_no}
+	</insert>
 </mapper>

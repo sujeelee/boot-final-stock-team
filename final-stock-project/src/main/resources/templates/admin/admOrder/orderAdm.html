@@ -20,12 +20,12 @@
 			<div id="container_main" class="content">
 			<div id="select_left">
 				<!-- 검색기능 form -->
-				<form action="/admin/admOrder/orderAdm/AdmOrderSearch" method="get"
+				<form action="/admin/admOrder/orderAdm/AdmOrderSearch" method="get" onsubmit="return unableform()"
 					class="local_sch" style="text-align: left;">
 					<select name="od_sh">
 						<option value="mb_id">회원아이디</option>
 						<option value="od_name">주문자명</option>
-					</select> <input type="text" name="od_search" required class="in_sch" th:placeholder="${od_search}">
+					</select> <input type="text" name="od_search" required class="in_sch" th:placeholder="${od_search}" id="od_search">
 					<button type="submit" class="btn_submit btn in_sch">검색</button>
 					<a type="submit" href="/admin/admOrder/orderAdm" class="btn_submit btn btn_a" style="padding-top: 5px;">초기화</a>
 				</form>
@@ -110,6 +110,13 @@
 				<p>Copyright © demo.sir.kr. All rights reserved.</p>
 			</footer>
 		</div>
+		
+		<script>
+			function unableform() {
+				const od_search = document.getElementById("od_search").value.replace(/\s/g, '');
+				document.getElementById('od_search').value = od_search;
+			}
+		</script>
 	</div>
 
 </body>
