@@ -46,14 +46,15 @@
                 <!--/* 게시글 유저정보 + 반복 */-->              
                 <div class="board-header">
                     <address class="board-author">
-                        <span class="author-name" th:text="${item.mb_id}?:_">ID</span>
+                        <span class="author-name" th:text="${item.mb_nick}?:_">ID</span>
                         <span class="author-badge" th:text="'Lv' + ${item.mb_level}?:_">Lv 1</span>
                     </address>
                 </div>                
                 <!--/* 게시글 콘텐츠 */-->
                 <div class="board-body" th:data-id="${item.wr_no}">
                     <p class="board-text" th:text="${item.wr_content}?:_"></p>
-                    
+                    <button class="follower-btn" th:data-mbid="${item.mb_id}"
+                    th:onclick=follower(this)>팔로워</button>                    
                     <button class="btn-save" style="display:none;"
                     th:attr="data-wr-no=${item.wr_no}" 
             		onclick="board_action(this.closest('.board-body'), 'update')">
@@ -141,6 +142,29 @@
 <script th:inline="javascript">
 const st_code = /*[[${stock.st_code}]]*/ '';
 const mb_id = /*[[${member.mb_id}]]*/ '';
+
+function follower(button) {
+	
+    const mb_id = $(button).data("mbid");
+    let url = "/stock/" + /*[[${stock.st_code}]]*/ '';
+    url += "/follower/addfollower"
+    $.ajax({
+        url: url, 
+        type: "POST",
+        data: { mb_id: mb_id },
+        success: function(response) {
+            
+            if (response.success) {
+                
+            } else {
+                alert("팔로우 요청에 실패했습니다.");
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("오류가 발생했습니다. 다시 시도해주세요.");
+        }
+    });
+}
 
 function board_action(form, type) {
     let url = "/stock/" + /*[[${stock.st_code}]]*/ '';

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,15 +23,12 @@ import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.dto.MyAccountStocksDTO;
 import kh.st.boot.model.util.DateUtil;
 import kh.st.boot.model.vo.AccountVO;
-import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.MemberApproveVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.PointVO;
-import kh.st.boot.model.vo.SendVO;
 import kh.st.boot.model.vo.StockAddVO;
-import kh.st.boot.model.vo.StockVO;
 import kh.st.boot.pagination.Criteria;
 import kh.st.boot.pagination.PageMaker;
 import kh.st.boot.pagination.TransCriteria;
@@ -343,17 +342,19 @@ public class MyAccountController {
 	
 	@ResponseBody
 	@PostMapping("/cancel")
-	public Map<String, Object> cancel(Principal principal){
+	public ResponseEntity<Map<String, Object>> cancel(Principal principal){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String mb_id = principal.getName();
 		MemberVO user = memberService.findById(mb_id);
 		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
 		if(res) {
 			map.put("status", true);
+			return ResponseEntity.ok(map);
 		}else {
 			map.put("status", false);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
 		}
-		return map;
+		
 	}
 	
 	@ResponseBody
@@ -374,6 +375,11 @@ public class MyAccountController {
 		model.addAttribute("list", list);
 		return "myaccount/stockList";
 	}
+	
+    @GetMapping("/company")
+    public String openCompany() {
+        return "myaccount/company";
+    }
 	
 	@GetMapping("/transactions/{type}")
 	public String transactions(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
