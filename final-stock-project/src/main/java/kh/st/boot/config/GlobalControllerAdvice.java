@@ -20,8 +20,6 @@ import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.service.ConfigService;
 import kh.st.boot.service.MemberService;
 import kh.st.boot.service.StocksHeaderService;
-import kh.st.boot.service.ConfigService;
-import kh.st.boot.service.MemberService;
 
 @ControllerAdvice
 @Controller
@@ -48,7 +46,9 @@ public class GlobalControllerAdvice {
     		member.setMb_id(null);
         } else {
         	member = memberService.findById(principal.getName());
-        }     
+        	//회원 팔로우에 따른 증감식
+        	member = configService.getConfigLv(member);
+        }
     	
         return member;
     }

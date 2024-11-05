@@ -39,6 +39,9 @@ public class MemberVO {
     //팔로워 관련
     private int mb_followers;
     
+    //팔로워 관련 > DB명 이거이에요
+    private int mb_follow;
+    
     // 뉴스회원 테이블
     private String mb_news; // 회원 신문사명
 

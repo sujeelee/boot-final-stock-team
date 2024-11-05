@@ -23,7 +23,6 @@ public class newspaperService {
 	}
 
 	public boolean addNewspaper(String np_name, byte np_use) {
-		// 왜 이렇게 했는지 분석 해서 주석 달기
 		NewsPaperVO oldNews = newspaperDAO.getNewsOne(np_name);
 		if (oldNews != null) {
 			return false;

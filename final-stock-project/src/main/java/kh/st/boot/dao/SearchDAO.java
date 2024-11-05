@@ -2,6 +2,8 @@ package kh.st.boot.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import kh.st.boot.model.dto.ComRankDTO;
 import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.FollowInfoDTO;
@@ -34,4 +36,6 @@ public interface SearchDAO {
 	int getFollowNo(String fo_id, String mb_id);
 
 	boolean follow(String fo_no, String mb_id);
+
+	void memberFollow(@Param("id")String fo_mb_id, int cnt);
 }

@@ -25,4 +25,6 @@ public interface MemberDAO {
     void updateStopTime(@Param("id")String username);
 
     void reset_stop_time(@Param("id")String username);
+
+	boolean updateLevel(@Param("mb")MemberVO member);
 }

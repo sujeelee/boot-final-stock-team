@@ -50,9 +50,6 @@ public class AdminUserService {
 		return true;
 	}
 
-//	public AdmMemberVO getAdmUseDel(int mb_no) {
-//		return adminuserDAO.UserDelete(mb_no);
-//	}
 
 	public boolean getAdmUseDel(int mb_no) {
 		int result = adminuserDAO.UserDelete(mb_no);
