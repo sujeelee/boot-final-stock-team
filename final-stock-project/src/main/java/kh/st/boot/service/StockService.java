@@ -14,6 +14,7 @@ import kh.st.boot.dao.OrderDAO;
 import kh.st.boot.dao.StockDAO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.OrderVO;
 import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.model.vo.StockPriceVO;
@@ -32,6 +33,7 @@ public class StockService {
 	private OrderDAO orderDao;
 	
 	private OrderService orderService;
+	private DepositService depositService;
 	
 	public StockVO getCompanyOne(String st_code) {
 		StockVO stock = stockDao.getStockCompany(st_code);
@@ -159,6 +161,7 @@ public class StockService {
 
 	public void updateReservation(StockPriceVO stockPrice) {
 		String st_code = stockPrice.getSt_code();
+		StockVO stock = stockDao.getStockCompany(st_code);
 		int nowPrice = stockPrice.getSi_price();
 		List<ReservationVO> list = stockDao.getReservation(st_code);
 		if(list != null) {
@@ -187,27 +190,56 @@ public class StockService {
 							continue;
 						} else {
 							//구매로직 넣기
-							tmp.setRe_state("매수성공");
+							tmp.setRe_state("매수완료");
 							orderDao.updateReservation(tmp);
-							Map<String, Object> orders =  new HashMap<>();
-							orders.put("st_code", st_code);
-							orders.put("percentPrice", percentPrice);
-							orders.put("mb_id", mb.getMb_id());
-							orders.put("od_name", mb.getMb_name());
-							orders.put("od_price", totalPrice);
-							orders.put("od_st_price", wantQty * nowPrice);
-							orders.put("point", point);
-							orderService.reservationOrder(orders);
+							
+							OrderVO orders = new OrderVO();
+							orders.setOd_id(depositService.getOrderId("order"));
+							orders.setOd_name(mb.getMb_name());
+							orders.setMb_id(mb.getMb_id());
+							orders.setOd_price(totalPrice);
+							orders.setOd_point(point);
+							orders.setOd_status("매수완료");
+							orders.setOd_st_code(st_code);
+							orders.setOd_st_name(stock.getSt_name());
+							orders.setOd_qty(wantQty);
+							orders.setOd_st_price(nowPrice);
+							orders.setOd_percent_price(percentPrice);
+							
+							orderService.reservationBuyOrder(orders);
 						}
 					} else if(state.contains("매도")) { //판매이면
 						totalPrice =- percentPrice;
+						int haveQty = orderDao.totalMyStock(st_code, mb.getMb_id()).getStocksQty();
+						if(wantQty > haveQty) {
+							tmp.setRe_state("매도실패");
+							orderDao.updateReservation(tmp);
+							continue;
+						} else {
+							//판매로직 넣기
+							tmp.setRe_state("매도완료");
+							orderDao.updateReservation(tmp);
+							
+							OrderVO orders = new OrderVO();
+							orders.setOd_id(depositService.getOrderId("order"));
+							orders.setOd_name(mb.getMb_name());
+							orders.setMb_id(mb.getMb_id());
+							orders.setOd_price(totalPrice);
+							orders.setOd_point(0);
+							orders.setOd_status("매도완료");
+							orders.setOd_st_code(st_code);
+							orders.setOd_st_name(stock.getSt_name());
+							orders.setOd_qty(wantQty);
+							orders.setOd_st_price(nowPrice);
+							orders.setOd_percent_price(percentPrice);
+							
+							orderService.reservationSellOrder(orders);
+						}
 					}
 				} else {
 					continue;
 				}
 			}
 		}
-		//stockDao.updateReservation(stockPrice);
-		
 	}
 }
