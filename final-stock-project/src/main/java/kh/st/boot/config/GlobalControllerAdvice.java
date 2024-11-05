@@ -85,7 +85,6 @@ public class GlobalControllerAdvice {
 			String amount = stocksHeaderService.priceTextChange(Double.parseDouble(tmp.getMrk()));
 			tmp.setPrice_text(amount);
 		}
-		
 		return list;
     }
     

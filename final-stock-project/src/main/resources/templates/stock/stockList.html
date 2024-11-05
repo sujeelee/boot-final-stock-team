@@ -54,7 +54,13 @@
     margin-left: 12px;
     width: 132px;
 }
-
+.admin-stock-info-btn > button{
+	padding: 1%;
+}
+.admin-stock-info-btn{
+	margin-bottom: 8px;    
+	text-align: right;
+}
 
 </style>
 </head>
@@ -113,6 +119,14 @@
 							<a class="btn_submit btn btn_ateg" th:href="@{/admin/stock}">초기화</a>
 						</div>
 					</form>
+				</div>
+				<div class="admin-stock-info-btn">
+					<button class="btn_submit" type="button" th:onclick="get_stock_today([[${date}]], 'jisu');">
+						지수정보 업데이트
+					</button>
+					<button class="btn_submit" type="button" th:onclick="get_stock_today([[${date}]], 'info');">
+						오늘의 주식정보 업데이트
+					</button>
 				</div>
 				<table class="table table-striped">
 					<thead>
@@ -226,6 +240,33 @@
 			            }
 			        });
 		        }, 1000);  // 1초 딜레이
+			}
+			
+			function get_stock_today(date, type){
+				var url = '/admin/stock/';
+				if(type == 'jisu'){
+					url += 'getStockJisu';
+				} else {					
+					url += 'updateAllStockInfo';
+				}
+				var param = {date : date};
+				$.ajax({
+		            url: url,
+		            type: 'post',
+		            data: param,
+		            dataType : 'json',
+		            async: false, 
+		            success: function (data) {
+		                if(data.res == "fail"){
+		                	$('#loadingModal').hide();
+		                	$('.modal-backdrop').remove(); // 백드롭 제거
+		                	alert("잘못된 요청입니다.");
+		                } else {
+		                	alert("새 정보 가져오기를 성공했습니다.");
+		                	location.reload();
+		                }
+		            }
+		        });
 			}
 			
 			function fsearchstocksubmit(f) {

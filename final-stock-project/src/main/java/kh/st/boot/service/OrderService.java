@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import kh.st.boot.dao.DepositDAO;
+import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.dao.OrderDAO;
 import kh.st.boot.model.dto.MyStocksDTO;
 import kh.st.boot.model.vo.AccountVO;
@@ -25,6 +26,7 @@ public class OrderService {
 	
 	private OrderDAO orderDao;
 	private DepositDAO depositDao;
+	private MemberDAO memberDao;
 
 	private DepositService depositService;
 	private StockService stockService;
@@ -115,7 +117,7 @@ public class OrderService {
 				PointVO point = new PointVO();
 				
 				point.setMb_id(member.getMb_id());
-				point.setPo_content("주문번호 : " + od_id + " 구매 지급 포인트 : " + totalPrice);
+				point.setPo_content("주문번호 : " + od_id + " 구매 지급 포인트 : " + totalPoint);
 				point.setPo_num(totalPoint);
 				orderDao.setPointBuy(point);
 				orderDao.updateMemberPoint(point);
@@ -168,6 +170,75 @@ public class OrderService {
 
 	public boolean deleteReservation(String st_code, String re_no) {
 		return orderDao.deleteReservation(st_code, re_no);
+	}
+
+	public void reservationBuyOrder(OrderVO order) {
+		//구매면 마이너스로 처리
+		int totalPrice = -order.getOd_price();
+		int totalQty = -order.getOd_qty();
+		String od_id = depositService.getOrderId("order");
+		
+		if(!od_id.equals(order.getOd_id())) {
+			order.setOd_id(od_id);
+		}
+		
+		orderDao.insertOrder(order);
+		
+		//구매일때만 포인트 지급
+		PointVO point = new PointVO();
+		MemberVO member = memberDao.findById(order.getMb_id());
+		
+		point.setMb_id(order.getMb_id());
+		point.setPo_content("주문번호 : " + order.getOd_id() + " 구매 지급 포인트 : " + order.getOd_point());
+		point.setPo_num(order.getOd_point());
+		
+		orderDao.setPointBuy(point);
+		orderDao.updateMemberPoint(point);
+		
+		DepositVO deposit = new DepositVO();
+		deposit.setDe_content("매수 : " + order.getOd_qty() + "주");
+		deposit.setDe_num(totalPrice);
+		deposit.setMb_id(order.getMb_id());
+		deposit.setDe_before_num(member.getDeposit());
+		deposit.setDe_stock_code(order.getOd_st_code());
+		
+		orderDao.stockQty(totalQty, order.getOd_st_code());
+		
+		AccountVO ac = depositDao.getAccount(member.getMb_no());
+		
+		depositDao.updateAccountDeposit(ac, totalPrice);
+		depositDao.insertDepositLog(deposit);
+	}
+
+	public void reservationSellOrder(OrderVO order) {
+		
+		int totalPrice = order.getOd_price();
+		int totalQty = order.getOd_qty();
+		
+		MemberVO member = memberDao.findById(order.getMb_id());
+		
+		DepositVO deposit = new DepositVO();
+		AccountVO ac = depositDao.getAccount(member.getMb_no());
+		
+		String od_id = depositService.getOrderId("order");
+		
+		if(!od_id.equals(order.getOd_id())) {
+			order.setOd_id(od_id);
+		}
+		
+		orderDao.insertOrder(order);
+		
+		deposit.setDe_content("매도 : " + order.getOd_qty() + "주");
+		deposit.setDe_num(totalPrice);
+		deposit.setMb_id(order.getMb_id());
+		deposit.setDe_before_num(member.getDeposit());
+		deposit.setDe_stock_code(order.getOd_st_code());
+		
+		orderDao.stockQty(totalQty, order.getOd_st_code());
+
+		depositDao.updateAccountDeposit(ac, totalPrice);
+		depositDao.insertDepositLog(deposit);
+		
 	}
 	
 }

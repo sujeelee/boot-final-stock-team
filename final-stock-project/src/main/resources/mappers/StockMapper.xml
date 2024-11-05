@@ -329,4 +329,7 @@
 		</choose>
 		order by ji_date asc
 	</select>
+	<select id="getReservation" resultType="ReservationVO">
+		select * from reservation where re_st_code = #{code} and re_state like '%대기%'
+	</select>
 </mapper>

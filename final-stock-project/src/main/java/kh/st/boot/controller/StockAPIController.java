@@ -225,6 +225,7 @@ public class StockAPIController {
 		        }
 			}
 			stockService.insertStockCompany(newStock);
+			getAllStockInfo(req, res, newStock.getSt_code());
 			result.put("res", "success");
 			result.put("msg", "주식회사 등록이 완료되었습니다.");
 		}
@@ -519,6 +520,71 @@ public class StockAPIController {
 		        
 			}
 		return result;
+	}
+	
+	@PostMapping("/updateAllStockInfo")
+	@ResponseBody
+	public Map<String, String> updateAllStockInfo(HttpServletRequest req, HttpServletResponse res, @RequestParam("date") String date) {
+			String apiUrl = "http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey="
+					+ encodeKey
+					/* + "&isinCd=" + st_code */
+					+ "&endBasDt=" + date
+					+ "&resultType=json";
+			List<StockVO> allStocks = stockService.getCompanyList(null, null);
+			Map<String, String> result = new HashMap<>();
+			for(StockVO stOrg : allStocks) {
+				String st_code = stOrg.getSt_code();
+				apiUrl += "&isinCd=" + st_code;
+				List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
+				if(jsonArray == null) {
+					result.put("res", "fail"); 
+					//return result;
+				}
+				Map<String, String> field = new HashMap<>();
+				field.put("basDt", "si_date");
+				field.put("clpr", "si_price");
+				field.put("isinCd", "st_code");
+				field.put("vs", "si_vs");
+				field.put("fltRt", "si_fltRt");
+				field.put("mrktTotAmt", "si_mrkTotAmt");
+				field.put("hipr", "si_hipr");
+				field.put("lopr", "si_lopr");
+				field.put("trqu", "si_trqu");
+				
+				boolean chk = false;
+				 // jsonArray 값을 확인하기 위한 for문
+				int lastIndex = jsonArray.size() - 1; // 마지막 인덱스 계산
+				int currentIndex = 0;
+		        for (Map<String, Object> item : jsonArray) {
+		        	 StockPriceVO stockPrice = new StockPriceVO(); // 새로운 StockVO 객체 생성
+		        	 boolean isLastElement = (currentIndex == lastIndex); // 현재 요소가 마지막인지 여부
+		            for (Map.Entry<String, Object> entry : item.entrySet()) {
+		            	String jsonKey = entry.getKey();
+		                Object value = entry.getValue();
+		                String voFieldName = field.get(jsonKey);
+		                if (voFieldName != null) {
+		                	Field fields;
+							try {
+								fields = StockPriceVO.class.getDeclaredField(voFieldName);
+								fields.setAccessible(true); // private 필드 접근
+								if(voFieldName == "si_price") {
+									value = Integer.parseInt((String) value); 
+								}
+			                    fields.set(stockPrice, value); // 필드에 값 설정
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+		                }
+		            }
+		            stockService.insertPrice(stockPrice);
+		            if (isLastElement) {
+		            	stockService.updateReservation(stockPrice);
+		            }
+		        }
+			}
+	        
+			result.put("res", "success");
+			return result;
 	}
 	
 }
