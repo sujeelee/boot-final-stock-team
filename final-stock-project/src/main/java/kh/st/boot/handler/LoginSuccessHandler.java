@@ -36,7 +36,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         
         if (prevPage != null && !prevPage.equals("")) {
             // 회원가입 - 로그인으로 넘어온 경우 "/"로 redirect
-            if (prevPage.contains("/member/join")) {
+            // 비밀번호 찾기 > 로그인 인경우 메인으로
+            if (prevPage.contains("/member/join") || prevPage.contains("/member/findPwView")) {
                 uri = "/";
             } else {
                 uri = prevPage;

@@ -1,5 +1,8 @@
 package kh.st.boot.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import jakarta.mail.internet.MimeMessage;
 
 import kh.st.boot.model.util.CustomUtil;
 import kh.st.boot.service.MailService;
+import kh.st.boot.service.MemberService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -25,6 +29,8 @@ public class MailController {
     private JavaMailSender mailSender;
 
     private MailService mailService;
+
+    private MemberService memberService;
 
     //코드를 이메일로 보내는 일
     @PostMapping("/ajax/set_check")
@@ -80,6 +86,24 @@ public class MailController {
         boolean res = mailSend("bnbz201@naver.com", "SID 인증 이메일", "<p>test 이메일입니다.<p> 이건 태그 안들어감 <p>받아온 코드 : " + code + "</p>");
         System.out.println(res);
         return "redirect:/";
+    }
+
+    @ResponseBody
+    @PostMapping("/ajax/sendCustomPw")
+    public Map<String, Object> sendCustomPw(@RequestParam Map<String, String> params){
+        Map<String, Object> map = new HashMap<>();
+        String option = customUtil.generatedString(13, true,true, true);
+        boolean res = memberService.setTemporaryPassword(params.get("email"), option);
+        res = mailSend(params.get("email"), "시드키 임시 비밀번호 발송",
+            "<h1>시드키 임시 비밀번호 발송</h1>"
+            + "<p>해당 임시 비밀번호는 타인에게 반드시 공개하지 마십시오.</p>"
+            + "<p>임시 비밀번호 또는 비밀번호와 그와 유사한 개인정보를 타인과 공유할 경우 발생하는 불이익은 귀사는 책임지지 않습니다.</p>"
+            + "<p>또한 비밀번호가 노출 될 시 반드시 비밀번호를 변경하시기 바랍니다..</p>"
+            + "<h3 style='color= red;'>임시 비밀번호 :  "+ option +" </h3>"
+            );
+        
+        map.put("res", res);
+        return map;
     }
 
 

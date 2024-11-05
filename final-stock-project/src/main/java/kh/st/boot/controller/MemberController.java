@@ -1,5 +1,8 @@
 package kh.st.boot.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -7,8 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
+import kh.st.boot.model.util.CustomUtil;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.MemberService;
 
@@ -169,5 +173,30 @@ public class MemberController {
 
         return "member/findPwView";
     }
+
+    @ResponseBody
+    @PostMapping("/find")
+    public Map<String, Object> find(@RequestParam  Map<String, String> params){
+        Map<String, Object> map = new HashMap<>();
+        MemberVO user = memberService.findByEmail(params.get("email"));
+        if (user == null) {
+            map.put("res", "NotFound");
+            return map;
+        }
+        if(params.get("findType").equals("findId")){
+            map.put("userId", user.getMb_id());
+            map.put("res", "sendId");
+            return map;
+        }
+        if(params.get("findType").equals("findPassword")){
+            map.put("res","sendPw");
+            return map;
+        }
+        map.put("res", "error");
+        return map;
+    }
+
+
+
 
 }
