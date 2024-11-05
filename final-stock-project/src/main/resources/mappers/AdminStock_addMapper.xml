@@ -5,7 +5,6 @@
 	<select id="nullSelectAll" resultType="AdminStock_addVO">
 		SELECT * FROM
 		stock_add
-		WHERE sa_yn IS NULL
 	</select>
 
 
