@@ -17,7 +17,7 @@
 	</select>
 	
     <select id="getBoardList" resultType="BoardVO">
-    	SELECT board.*, mb_nick, mb_level
+    	SELECT board.*, member.mb_nick, member.mb_level
     	FROM board
 		left join member on member.mb_id = board.mb_id
     	WHERE wr_category = #{wr_category}
