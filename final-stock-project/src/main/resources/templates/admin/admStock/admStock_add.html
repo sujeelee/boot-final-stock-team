@@ -82,7 +82,7 @@
                     <td th:text="${item.mb_id}"></td>
                     <td th:text="${item.sa_qty}"></td>
                     <td th:text="${item.sa_datetime}"></td>
-                    <td th:text="${item.sa_yn == null ? '대기' : item.sa_yn == 'y' ? '승인' : '거절'}"></td>
+                    <td th:text="${item.sa_yn == null ? '승인 대기중' : item.sa_yn == 'y' ? '승인' : '거절'}"></td>
                     <td>
                        <button class="btn-open-modal navyBtn btn_submit btn"
 				            type="button" th:data-sa_no="${item.sa_no}"
