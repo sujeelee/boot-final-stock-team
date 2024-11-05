@@ -38,7 +38,7 @@
 									<td th:text="${list.lv_num}" style="width: 90px;"></td>
 									<td th:text="${list.lv_alpha}"></td>
 									<td
-										th:text="${list.lv_auto_use.equals('0') ? '자동 승급' : '관리자 승인 필요'}"></td>
+										th:text="${list.lv_auto_use.equals('N') ? '자동 승급' : '관리자 승인 필요'}"></td>
 									<td th:text="${list.lv_up_limit}"></td>
 									<td id="level_inp" class="td_upd" style="text-align: center;">
 										<form action="/admin/admLevel/admLevSel" method="post">
