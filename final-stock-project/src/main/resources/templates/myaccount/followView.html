@@ -62,7 +62,7 @@
 		<script th:inline="javascript">
 			function follow_action(fo_id, action){
 				if(action == "stock"){
-					window.open('/stock/' + fo_id, '_blank');
+					window.open('/stock/' + fo_id + '/community', '_blank');
 				} else {
 					var text = "언팔로우";
 					if(action == "follow"){
