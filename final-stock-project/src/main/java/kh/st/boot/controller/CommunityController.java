@@ -21,6 +21,7 @@ import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
+import kh.st.boot.model.vo.FollowVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.CommunityService;
 import kh.st.boot.service.StocksHeaderService;
@@ -311,4 +312,45 @@ public class CommunityController {
 	    // HTML 댓글용 템플릿 반환
 	    return "community/replaceComment";
 	}
+	
+    @PostMapping("/followorNot")
+    @ResponseBody
+    public Map<String, Object> addFoller(@PathVariable String st_code, @RequestParam String fo_mb_id, Principal principal){
+        Map<String, Object> result = new HashMap<String, Object>();
+        System.out.println(result);
+        System.out.println(st_code);
+        System.out.println(fo_mb_id);
+        System.out.println(principal);
+        
+		if (principal == null) {
+			result.put("res", "false");
+			result.put("msg", "회원만 가능합니다.");
+			return result;
+		}		
+		String mb_id = principal.getName();
+	    if (mb_id.equals(fo_mb_id)) {
+	        result.put("res", "false");
+	        result.put("msg", "자기 자신을 팔로우할 수 없습니다.");
+	        return result;
+	    }
+	    FollowVO follow = new FollowVO();
+		follow.setFo_mb_id(fo_mb_id);
+		follow.setMb_id(mb_id);
+		System.out.println(follow);
+	    boolean FolloworNot = communityService.followorNot(follow);
+	    System.out.println(FolloworNot);
+	    if (FolloworNot) {
+	        result.put("res", "true");
+	        result.put("msg", "팔로우가 추가되었습니다.");
+	        result.put("text", "언팔로우");
+	    } else {
+	        result.put("res", "false");
+	        result.put("msg", "팔로우 삭제하셨습니다..");
+	        result.put("text", "팔로우");
+	    }
+	    
+
+
+        return result;
+    }
 }
