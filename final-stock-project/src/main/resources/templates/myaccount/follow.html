@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout.html}">
+<head>
+<meta charset="UTF-8" />
+<title>거래 내역</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/myFollow.css}">
+</head>
+ <body>
+	<main layout:fragment="content">
+		<div class="my-container mt-5">
+			<div th:replace="~{layout/mySide.html}"></div>
+			<div>
+				<!-- Header -->
+				<div class="mypage-header">
+					<h1 class="header-title">팔로우 목록</h1>
+				</div>
+				<div class="follow-table">
+					<table class="table table-borderless">
+						<tr th:each="fo : ${follow}">
+							<td>
+								<div class="follow-nick">
+									<div th:text="${fo.fo_mb_nick}"></div>
+									<div class="unfollow-btn">
+										<button class="btn btn-outline-danger" th:onclick="follow_action([[${fo.fo_no}]], 'unfollow');">
+											언팔로우
+										</button>
+									</div>
+								</div>
+							</td>
+							<td>
+								<button class="btn btn-outline-info" th:onclick="follow_action([[${fo.fo_mb_id}]], 'views');">
+									팔로우 게시글 [[${#numbers.formatInteger(fo.cnt, 0, 'COMMA')}]]개 모아보기
+								</button>
+							</td>
+						</tr>
+						<tr th:if="${follow == null or #lists.isEmpty(follow)}">
+							<td colspan="2">
+								팔로우를 한 사람이 없습니다.
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>	
+		</div>
+		<script th:inline="javascript">
+			function follow_action(fo_id, action){
+				if(action == "views"){
+					alert("기능 준비중입니다.");
+				} else if(action == "unfollow"){
+					alert("삭제 구현 예정");
+				}
+			}
+		</script>
+	</main>
+</body>
+</html>

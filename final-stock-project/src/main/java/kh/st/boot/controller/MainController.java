@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import kh.st.boot.model.dto.ComRankDTO;
 import kh.st.boot.model.dto.SearchDTO;
+import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsVO;
 import kh.st.boot.service.ConfigService;
+import kh.st.boot.service.EventService;
 import kh.st.boot.service.NewsService;
 import lombok.AllArgsConstructor;
 
@@ -25,15 +28,22 @@ public class MainController {
 	
 	private NewsService newsService;
 	private ConfigService configService;
+	private EventService eventService;
 
 	@GetMapping("/")
 	public String home(Model mo, HttpSession session) {
 		MemberVO user = (MemberVO)session.getAttribute("user");
-		mo.addAttribute("user", user);
 		List<NewsVO> newsImgList = newsService.getNewsListByImg(); 	// 썸네일 있는 뉴스 최신순으로 4개
 		List<NewsVO> newsList = newsService.getNewsListByNoImg();	// 썸네일 없는 뉴스 최신순으로 4개 
+		//List<EventVO> eventList = eventService.getEventListForMainBanner();
+		
+		List<ComRankDTO> comRanks = configService.getCommunityRank();
+
+		//mo.addAttribute("eventList", eventList);
+		mo.addAttribute("user", user);
 		mo.addAttribute("newsImgList", newsImgList);
 		mo.addAttribute("newsList" ,newsList);
+		mo.addAttribute("comRank", comRanks);
 		return "home";
 	}
 	
@@ -57,6 +67,13 @@ public class MainController {
 		model.addAttribute("search", list);
 		model.addAttribute("mstx", (String)param.get("stx"));
     	return "layout/searchModal :: #search-result";
+	}
+	
+	@PostMapping("/communityAjax")
+	public String communityList(@RequestParam String code, Model model) {
+		List<BoardVO> list = configService.getCommunityList(code);
+		model.addAttribute("commList", list);
+    	return "layout/mainRank :: #comm-main-list";
 	}
 
 }

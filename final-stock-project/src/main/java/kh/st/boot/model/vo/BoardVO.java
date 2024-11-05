@@ -1,5 +1,7 @@
 package kh.st.boot.model.vo;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +17,9 @@ public class BoardVO {
 	private int wr_good; //좋아요갯수
 	private int wr_singo; //신고갯수
 	private int mb_level;
+	private String mb_nick;
 	private String wr_blind;
+	private Date wr_datetime;
 
 	//DB 상 존제하지 않습니다.
 	//report 신고, like 좋아요로 확은

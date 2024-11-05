@@ -46,9 +46,6 @@ create table `email_Verification`(
 );
 
 
-
-
-
 CREATE TABLE `config` (
 	`cf_title`	varchar(255)	NULL,
 	`cf_info`	longtext	NULL,
@@ -92,16 +89,15 @@ CREATE TABLE `stock` (
 );
 
 
-
 CREATE TABLE `board` (
 	`wr_no`	INT(11) primary key	 AUTO_INCREMENT	NOT NULL,
 	`wr_category`	varchar(255)	NULL,
 	`wr_content`	text	NULL,
 	`mb_id`	varchar(255)	NULL,
-	`mb_level`	int(4)	NULL,
 	`wr_comment`	int(11)	NULL	DEFAULT 0,
 	`wr_good`	int(11)	NULL	DEFAULT 0,
-	`wr_singo`	int(11)	NULL	DEFAULT 0
+	`wr_singo`	int(11)	NULL	DEFAULT 0,
+	`wr_datetime` datetime DEFAULT now()
 );
 
 CREATE TABLE `stock_info` (
@@ -117,7 +113,8 @@ CREATE TABLE `comment` (
 	`co_good` int(5) DEFAULT 0,
 	`co_bad` int(5) DEFAULT 0,
 	`co_content`	text	NULL,
-	`mb_id`	varchar(255)	NULL
+	`mb_id`	varchar(255)	NULL,
+	`co_datetime`	datetime DEFAULT now()
 );
 
 CREATE TABLE `wish_stock` (
@@ -187,7 +184,8 @@ CREATE TABLE `event` (
 	`ev_end`	DATETIME	NULL,
 	`ev_status`	char(7)	DEFAULT "Ending",
 	`ev_form`	varchar(30)	null,
-	`ev_cnt`	int(11)	NULL
+	`ev_cnt`	int(11)	NULL,
+	`ev_bannerShow` TINYINT null
 );
 
 CREATE TABLE `event_list` (

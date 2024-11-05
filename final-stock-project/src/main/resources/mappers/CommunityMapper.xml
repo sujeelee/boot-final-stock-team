@@ -3,8 +3,8 @@
 <mapper namespace="kh.st.boot.dao.CommunityDAO"> 
 
     <insert id="insertBoard">
-        INSERT INTO board (wr_category, mb_id, wr_content, mb_level)
-        VALUES (#{wr_category}, #{mb_id}, #{wr_content}, #{mb_level}) 
+        INSERT INTO board (wr_category, mb_id, wr_content)
+        VALUES (#{wr_category}, #{mb_id}, #{wr_content}) 
     </insert>
 	
 	<select id="selectCommunityAction" resultType="CommunityActionVO">
@@ -17,23 +17,12 @@
 	</select>
 	
     <select id="getBoardList" resultType="BoardVO">
-    	SELECT *
+    	SELECT board.*, mb_nick, mb_level
     	FROM board
+		left join member on member.mb_id = board.mb_id
     	WHERE wr_category = #{wr_category}
 		ORDER BY wr_no DESC
-    </select>
-    
-    <!-- <select id="test닊따바꿔" resultType="BoardVO">
-    	SELECT b.*, c.cg_like, c.cg_report
-		FROM board b join community_action c 
-		on b.wr_no = c.cg_num
-		WHERE b.wr_category = #{wr_category} 
-		<if test="mb_id != null ">
-			and c.mb_id = #{mb_id}
-		</if>
-		group by b.wr_no
-		ORDER BY b.wr_no DESC;
-    </select> -->
+    </select>    
 
 	<select id="findBoardByObjBoardVO" resultType="CommunityActionVO">
 		select * from community_action
@@ -135,7 +124,7 @@
 	        community_action 
 	    WHERE 
 	        cg_num = #{cg_num} AND 
-	        cg_type = 'board' AND 
+	        cg_type = #{cg_type} AND 
 	        mb_id = #{mb_id}
 	</select>
 	
@@ -171,4 +160,8 @@
         WHERE wr_no = #{co.wr_no} AND mb_id = #{co.mb_id} AND co_id = #{co.co_id}
     </update>
     
+	<select id="findActionByCommentNumber" resultType="CommunityActionVO">
+		select * from community_action where cg_num = #{co_id} and cg_type = 'comment' and mb_id = #{mb_id}
+	</select>
+
 </mapper>
