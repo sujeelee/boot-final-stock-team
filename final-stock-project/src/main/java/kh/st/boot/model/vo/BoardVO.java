@@ -26,5 +26,6 @@ public class BoardVO {
 	//join해서 가져올 것
 	private String cg_like; //좋아요 눌렀는지 확인
 	private String cg_report; // 신고 눌렀는지 확인
+	private String following;
 	
 }
