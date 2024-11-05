@@ -30,4 +30,8 @@ public interface SearchDAO {
 	List<FollowVO> getFollowViews(String fo_id, Criteria cri);
 
 	FollowInfoDTO getFollowInfo(String fo_id);
+
+	int getFollowNo(String fo_id, String mb_id);
+
+	boolean follow(String fo_no, String mb_id);
 }

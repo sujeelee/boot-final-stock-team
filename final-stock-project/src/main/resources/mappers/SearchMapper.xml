@@ -114,4 +114,12 @@
 		FROM member b
 		WHERE b.mb_id = #{fo_id};
 	</select>
+	<select id="getFollowNo" resultType="int">
+		SELECT COALESCE((SELECT fo_no FROM follow WHERE mb_id = #{mb_id} AND fo_mb_id = #{fo_id}), 0)
+	</select>
+	<insert id="follow">
+		insert into follow
+		set	mb_id = #{mb_id},
+			fo_mb_id = #{fo_no}
+	</insert>
 </mapper>
