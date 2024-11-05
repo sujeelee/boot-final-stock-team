@@ -25,4 +25,6 @@ public interface OrderDAO {
 	MyStocksDTO totalMyStock(@Param("code")String st_code, @Param("mb_id")String mb_id);
 
 	boolean deleteReservation(@Param("code")String st_code, @Param("re_no")String re_no);
+
+	void updateReservation(@Param("re")ReservationVO tmp);
 }

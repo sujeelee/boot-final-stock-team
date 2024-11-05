@@ -553,8 +553,11 @@ public class StockAPIController {
 				
 				boolean chk = false;
 				 // jsonArray 값을 확인하기 위한 for문
+				int lastIndex = jsonArray.size() - 1; // 마지막 인덱스 계산
+				int currentIndex = 0;
 		        for (Map<String, Object> item : jsonArray) {
 		        	 StockPriceVO stockPrice = new StockPriceVO(); // 새로운 StockVO 객체 생성
+		        	 boolean isLastElement = (currentIndex == lastIndex); // 현재 요소가 마지막인지 여부
 		            for (Map.Entry<String, Object> entry : item.entrySet()) {
 		            	String jsonKey = entry.getKey();
 		                Object value = entry.getValue();
@@ -574,6 +577,9 @@ public class StockAPIController {
 		                }
 		            }
 		            stockService.insertPrice(stockPrice);
+		            if (isLastElement) {
+		            	stockService.updateReservation(stockPrice);
+		            }
 		        }
 			}
 	        

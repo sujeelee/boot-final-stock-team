@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.HotStockDTO;
+import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
@@ -59,5 +60,7 @@ public interface StockDAO {
 	boolean insertStockJisu(@Param("ji")StockJisuVO jisu);
 
 	List<StockJisuVO> jisuConfig(@Param("type")String type);
+
+	List<ReservationVO> getReservation(@Param("code")String st_code);
 
 }

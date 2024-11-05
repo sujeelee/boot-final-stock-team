@@ -5,7 +5,7 @@
 	<select id="getReservation" resultType="ReservationVO">
 		select * from reservation 
 		where re_st_code = #{code} and mb_id = #{mb_id} and re_state like '%대기%'
-		order by re_no
+		order by re_no ASC
 	</select>
 	<insert id="insertReservation" useGeneratedKeys="true" keyColumn="re.re_no">
 		insert into reservation 
@@ -63,4 +63,10 @@
 	<delete id="deleteReservation">
 		delete from reservation where re_st_code = #{code} and re_no = #{re_no}
 	</delete>
+	<update id="ReservationVO">
+		update reservation 
+		set re_state = #{re.re_state},
+			re_done_date = NOW()
+		where re_no = #{re.re_no}
+	</update>
 </mapper>
