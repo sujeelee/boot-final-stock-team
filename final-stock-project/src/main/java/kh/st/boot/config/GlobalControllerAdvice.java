@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kh.st.boot.model.dto.DashListDTO;
 import kh.st.boot.model.dto.HotStockDTO;
+import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.service.ConfigService;
 import kh.st.boot.service.MemberService;
 import kh.st.boot.service.StocksHeaderService;
-import kh.st.boot.service.ConfigService;
-import kh.st.boot.service.MemberService;
 
 @ControllerAdvice
 @Controller
@@ -48,7 +47,10 @@ public class GlobalControllerAdvice {
     		member.setMb_id(null);
         } else {
         	member = memberService.findById(principal.getName());
-        }     
+        }
+    	
+    	//회원 팔로우에 따른 증감식
+    	//List<AdminLevelPageVO> lv = configService.getConfigLv(member);
     	
         return member;
     }
