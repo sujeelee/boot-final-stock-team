@@ -122,4 +122,9 @@
 		set	mb_id = #{mb_id},
 			fo_mb_id = #{fo_no}
 	</insert>
+	<update id="memberFollow">
+		update member
+		set mb_follow = mb_follow + #{cnt}
+		where mb_id = #{id}
+	</update>
 </mapper>

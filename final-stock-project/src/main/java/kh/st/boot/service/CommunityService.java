@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.CommunityDAO;
+import kh.st.boot.dao.SearchDAO;
 import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 public class CommunityService {
 
     private CommunityDAO communityDao;
+    private SearchDAO searchDao;
     
 	public void insertBoard(BoardVO newBoard) {
 		communityDao.insertBoard(newBoard);		
@@ -249,9 +251,11 @@ public class CommunityService {
         
         if (connection > 0) { // 팔로우가 존재하는 경우
         	communityDao.deleteFollower(follow);
+        	searchDao.memberFollow(follow.getFo_mb_id(), -1);
             return false; // 팔로우 제거
         } else { // 팔로우가 존재하지 않는 경우
         	communityDao.insertFollower(follow);
+        	searchDao.memberFollow(follow.getFo_mb_id(), 1);
             return true; // 팔로우 추가
         }
     }
