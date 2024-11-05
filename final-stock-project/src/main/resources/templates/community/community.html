@@ -58,8 +58,8 @@
 			        th:classappend="${#strings.equals(item.following, 'y')} ? 'follower' : ''"
 			        onclick="follower(this)"
 			        th:text="${#strings.equals(item.following, 'y')} ? '팔로우 중' : '팔로우'"></button>                  
-                    <button class="btn-save" style="display:none;"
-                    th:attr="data-wr-no=${item.wr_no}" 
+                    <button class="btn-save" style="display:none; margin-top: auto;"
+                    th:attr="data-wr-no=${item.wr_no}"                     
             		onclick="board_action(this.closest('.board-body'), 'update')">
                     <i class='bx bx-edit-alt'></i>
                     </button>
@@ -222,7 +222,7 @@ function enableEditMode(id, type, button) {
     }
     if (content) {
         const currentText = content.text();
-        content.html(`<input type="text" value="${currentText}" class="edit-input">`);
+        content.html(`<textarea class="edit-input" rows="4">${currentText}</textarea>`);
         $(button).hide();
         target.find(".btn-save").show(); 
     }
