@@ -21,6 +21,7 @@ import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
 import kh.st.boot.pagination.AdmApprovalCriteria;
@@ -37,6 +38,7 @@ import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
 import kh.st.boot.service.AdminStock_addService;
 import kh.st.boot.service.AdminUserService;
+import kh.st.boot.service.MemberService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
 import kh.st.boot.service.newspaperService;
@@ -49,6 +51,9 @@ public class AdminController {
 	// 의존성 추가?
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private MemberService memberService;
 
 	@Autowired
 	private AdminUserService admUserService;
@@ -529,10 +534,19 @@ public class AdminController {
 
 	// 포인트 적립, 차감
 	@PostMapping("/admPoint/admPointPage/point")
-	public String plusMinus(@RequestParam String mb_id, @RequestParam int po_num,@RequestParam String pointType, @RequestParam String po_content) {
-		 
-		admPointService.plusminus(mb_id, po_num,pointType, po_content);
-		return "redirect:/admin/admPoint/admPointPage";
+	public String plusMinus(Model model, @RequestParam String mb_id, @RequestParam int po_num,@RequestParam String pointType, @RequestParam String po_content) {
+		MemberVO user = memberService.findById(mb_id);
+		if(user != null) {
+			admPointService.plusminus(user.getMb_id(), po_num,pointType, po_content);
+			model.addAttribute("msg", "정상 처리되었습니다.");
+			model.addAttribute("url", "/admin/admPoint/admPointPage");
+			return "util/msg";
+		}
+		else {
+			model.addAttribute("msg", "없는 회원입니다.");
+			model.addAttribute("url", "/admin/admPoint/admPointPage");
+			return "util/msg";
+		}
 	}
 
 	// 내역 삭제
