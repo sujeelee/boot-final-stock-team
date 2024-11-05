@@ -2,11 +2,19 @@ package kh.st.boot.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import kh.st.boot.dao.AdminDAO;
+import kh.st.boot.dao.MemberDAO;
+import kh.st.boot.dao.OrderDAO;
 import kh.st.boot.dao.StockDAO;
+import kh.st.boot.model.vo.AdminVO;
+import kh.st.boot.model.vo.MemberVO;
+import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.StockJisuVO;
 import kh.st.boot.model.vo.StockPriceVO;
 import kh.st.boot.model.vo.StockVO;
@@ -17,7 +25,13 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor	
 public class StockService {
+	
 	private StockDAO stockDao;
+	private MemberDAO memberDao;
+	private AdminDAO adminDao;
+	private OrderDAO orderDao;
+	
+	private OrderService orderService;
 	
 	public StockVO getCompanyOne(String st_code) {
 		StockVO stock = stockDao.getStockCompany(st_code);
@@ -141,5 +155,59 @@ public class StockService {
 
 	public boolean insertStockJisu(StockJisuVO jisu) {
 		return stockDao.insertStockJisu(jisu);
+	}
+
+	public void updateReservation(StockPriceVO stockPrice) {
+		String st_code = stockPrice.getSt_code();
+		int nowPrice = stockPrice.getSi_price();
+		List<ReservationVO> list = stockDao.getReservation(st_code);
+		if(list != null) {
+			AdminVO config = adminDao.selectAdmin();
+			for(ReservationVO tmp : list) {
+				String state = tmp.getRe_state(); 
+				int wantQty = tmp.getRe_qty();
+				int wantPrice = tmp.getRe_qty();
+				if(nowPrice == wantPrice) {
+					//수수료 포함 금액으로 구해줄게요.
+					int totalPrice = wantQty * nowPrice;
+					int percentPrice = totalPrice * config.getCf_percent() / 100;
+					//일단 회원정보를 가져올게요 여기에는 예치금 잔금도 남아있어요.
+					MemberVO mb = memberDao.findById(tmp.getMb_id());
+					int mbDeposit = mb.getDeposit();
+					
+					if(state.contains("매수")) { //구매이면
+						
+						//구매시 줄 포인트 리턴
+						int point = totalPrice * config.getCf_od_point() / 100;
+						
+						totalPrice =+ percentPrice;
+						if(totalPrice > mbDeposit) {
+							tmp.setRe_state("매수실패");
+							orderDao.updateReservation(tmp);
+							continue;
+						} else {
+							//구매로직 넣기
+							tmp.setRe_state("매수성공");
+							orderDao.updateReservation(tmp);
+							Map<String, Object> orders =  new HashMap<>();
+							orders.put("st_code", st_code);
+							orders.put("percentPrice", percentPrice);
+							orders.put("mb_id", mb.getMb_id());
+							orders.put("od_name", mb.getMb_name());
+							orders.put("od_price", totalPrice);
+							orders.put("od_st_price", wantQty * nowPrice);
+							orders.put("point", point);
+							orderService.reservationOrder(orders);
+						}
+					} else if(state.contains("매도")) { //판매이면
+						totalPrice =- percentPrice;
+					}
+				} else {
+					continue;
+				}
+			}
+		}
+		//stockDao.updateReservation(stockPrice);
+		
 	}
 }

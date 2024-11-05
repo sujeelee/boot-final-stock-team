@@ -9,6 +9,7 @@ import kh.st.boot.model.vo.AccountVO;
 import kh.st.boot.model.vo.DepositOrderVO;
 import kh.st.boot.model.vo.DepositVO;
 import kh.st.boot.model.vo.OrderVO;
+import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.SendVO;
 import kh.st.boot.pagination.TransCriteria;
 
