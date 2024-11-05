@@ -29,4 +29,6 @@ public interface MemberDAO {
     MemberVO findByEmail(@Param("email")String email);
 
     boolean setTemporaryPassword(@Param("pw")String encodingOption, @Param("id")String me_id);
+    
+	boolean updateLevel(@Param("mb")MemberVO member);
 }

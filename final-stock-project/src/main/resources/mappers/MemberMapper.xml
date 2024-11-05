@@ -91,4 +91,10 @@
         where mb_id = #{id}
     </update>
 
+	<update id="updateLevel">
+		update member
+		set mb_level = #{mb.mb_level}
+		where mb_id = #{mb.mb_id}
+	</update>
+    
 </mapper>

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
+import kh.st.boot.model.vo.FollowVO;
 
 public interface CommunityDAO {
 
@@ -66,7 +67,12 @@ public interface CommunityDAO {
 
     CommunityActionVO findActionByCommentNumber(int co_id, String mb_id); 
 
+	int followorNot(FollowVO follow);
 
+	void deleteFollower(FollowVO follow);
+
+	void insertFollower(FollowVO follow);
+
+	String followingStatus(String mb_id, String fo_mb_id);
  
-
 }

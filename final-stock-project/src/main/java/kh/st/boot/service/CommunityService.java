@@ -1,13 +1,16 @@
 package kh.st.boot.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.CommunityDAO;
+import kh.st.boot.dao.SearchDAO;
 import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.CommentVO;
 import kh.st.boot.model.vo.CommunityActionVO;
+import kh.st.boot.model.vo.FollowVO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -15,7 +18,8 @@ import lombok.AllArgsConstructor;
 public class CommunityService {
 
     private CommunityDAO communityDao;
-
+    private SearchDAO searchDao;
+    
 	public void insertBoard(BoardVO newBoard) {
 		communityDao.insertBoard(newBoard);		
 	}
@@ -25,32 +29,46 @@ public class CommunityService {
 			return null;
 		}
 		List<BoardVO> list = communityDao.getBoardList(st_code);
-		for(BoardVO tmp : list) {
+	    if (list == null || list.isEmpty()) {
+	        return list;
+	    }
+		for(BoardVO tmp : list) {	    
 			CommunityActionVO ca = new CommunityActionVO();
 			ca.setCg_num(tmp.getWr_no());
 			ca.setCg_type("board");
 			ca.setMb_id(mb_id);
 			
-		     if (mb_id != null) { // 로그인한 사용자
-		            CommunityActionVO actionStatus = communityDao.checkUserActions(ca);
+			   if (mb_id != null) { // 로그인한 사용자
+			        CommunityActionVO actionStatus = communityDao.checkUserActions(ca);
+			        String fo_mb_id = tmp.getMb_id();
 
-		            // actionStatus가 null이 아닐 경우에만 속성 설정
-		            if (actionStatus != null) {
-		                // 좋아요와 신고 상태를 설정
-		                tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "active" : "");
-		                tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "active" : "");
-		            } else {
-		                // actionStatus가 null일 경우 기본값 설정
-		                tmp.setCg_like("");
-		                tmp.setCg_report("");
-		            }
-		        } else {
-		            // 로그인하지 않은 사용자에 대해 기본값 설정
-		            tmp.setCg_like("");
-		            tmp.setCg_report("");
-		        }
-		}
-		return list;
+			        // tmp.getMb_id()가 null인지 체크
+			        if (fo_mb_id == null) {
+			            tmp.setFollowing("n"); // 기본값 설정
+			        } else {
+			            String followingStatus = communityDao.followingStatus(mb_id, fo_mb_id);
+			            tmp.setFollowing(followingStatus);
+			        }
+
+			        // actionStatus가 null이 아닐 경우에만 속성 설정
+			        if (actionStatus != null) {
+			            // 좋아요와 신고 상태를 설정
+			            tmp.setCg_like(actionStatus.getCg_like().equals("like") ? "active" : "");
+			            tmp.setCg_report(actionStatus.getCg_report().equals("report") ? "active" : "");
+			        } else {
+			            // actionStatus가 null일 경우 기본값 설정
+			            tmp.setCg_like("");
+			            tmp.setCg_report("");
+			        }
+
+			    } else {
+			        // 로그인하지 않은 사용자에 대해 기본값 설정
+			        tmp.setCg_like("");
+			        tmp.setCg_report("");
+			        tmp.setFollowing("n");
+			    }
+			}
+			return list;
 	}
 	public List<CommentVO> getCommentList(int co_id, int wr_no ,String mb_id) {
 	    if(co_id == 0) {
@@ -58,6 +76,9 @@ public class CommunityService {
 	    }
 	    
 	    List<CommentVO> colist = communityDao.getCommentList(wr_no); // 댓글 목록 조회
+	    if (colist == null || colist.isEmpty()) {
+	        return colist; // 비어있는 경우 그냥 반환
+	    }
 	    
 	    for(CommentVO tmp : colist) {
 	        CommunityActionVO ca = new CommunityActionVO();
@@ -161,11 +182,33 @@ public class CommunityService {
 	public List<CommentVO> getCommentList(int wr_no, String mb_id) {
 		List<CommentVO> list = communityDao.getCommentList(wr_no);
 
-		for(int i = 0 ; i < list.size() ; i++){
-			CommunityActionVO ca = communityDao.findActionByCommentNumber(list.get(i).getCo_id(), mb_id);
-			list.get(i).setCg_like(ca.getCg_like().equals("like") ? "like" : "");
-			list.get(i).setCg_report(ca.getCg_report().equals("report") ? "report" : "");
-		}
+
+	    // list가 null인지 확인
+	    if (list == null) {
+	        return new ArrayList<>(); // 빈 목록 반환
+	    }
+
+	    for (int i = 0; i < list.size(); i++) {
+	        CommentVO comment = list.get(i);
+	        
+	        CommunityActionVO ca = communityDao.findActionByCommentNumber(comment.getCo_id(), mb_id);
+	        
+	        // ca가 null인지 확인
+	        if (ca != null) {
+	            // getCg_like()와 getCg_report()의 반환값이 null인지 확인
+	            String likeStatus = ca.getCg_like();
+	            String reportStatus = ca.getCg_report();
+	            
+	            // 좋아요 상태 설정
+	            comment.setCg_like("like".equals(likeStatus) ? "like" : "");
+	            // 신고 상태 설정
+	            comment.setCg_report("report".equals(reportStatus) ? "report" : "");
+	        } else {
+	            // actionStatus가 null일 경우 기본값 설정
+	            comment.setCg_like("");
+	            comment.setCg_report("");
+	        }
+	    }
 		
 		return list;
 	}
@@ -201,5 +244,19 @@ public class CommunityService {
 	public boolean updateComment(CommentVO comment) {
 		return communityDao.updateComment(comment) > 0;
 	}
-
+	
+	public boolean followorNot(FollowVO follow) {
+		
+        int connection = communityDao.followorNot(follow);
+        
+        if (connection > 0) { // 팔로우가 존재하는 경우
+        	communityDao.deleteFollower(follow);
+        	searchDao.memberFollow(follow.getFo_mb_id(), -1);
+            return false; // 팔로우 제거
+        } else { // 팔로우가 존재하지 않는 경우
+        	communityDao.insertFollower(follow);
+        	searchDao.memberFollow(follow.getFo_mb_id(), 1);
+            return true; // 팔로우 추가
+        }
+    }
 }

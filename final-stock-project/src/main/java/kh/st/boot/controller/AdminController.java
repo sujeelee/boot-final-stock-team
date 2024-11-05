@@ -21,6 +21,7 @@ import kh.st.boot.model.vo.AdmPointVO;
 import kh.st.boot.model.vo.AdminLevelPageVO;
 import kh.st.boot.model.vo.AdminStock_addVO;
 import kh.st.boot.model.vo.AdminVO;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.model.vo.NewsPaperVO;
 import kh.st.boot.model.vo.admOrderPageVO;
 import kh.st.boot.pagination.AdmApprovalCriteria;
@@ -37,6 +38,7 @@ import kh.st.boot.service.AdminOrderService;
 import kh.st.boot.service.AdminService;
 import kh.st.boot.service.AdminStock_addService;
 import kh.st.boot.service.AdminUserService;
+import kh.st.boot.service.MemberService;
 import kh.st.boot.service.PointSltIdPageService;
 import kh.st.boot.service.SltAdmLevelPageService;
 import kh.st.boot.service.newspaperService;
@@ -49,6 +51,9 @@ public class AdminController {
 	// 의존성 추가?
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private MemberService memberService;
 
 	@Autowired
 	private AdminUserService admUserService;
@@ -101,7 +106,7 @@ public class AdminController {
 	}
 
 	// -------------------------------------------------------------------------------
-	// -------------------------- 회원 정보 수정 -------------------------------
+	// -----------------------------    회원 정보 수정 -------------------------------
 	// -------------------------------------------------------------------------------
 
 	@GetMapping("/admMember/adminUser")
@@ -362,8 +367,6 @@ public class AdminController {
 	// ------------------- 출석체크 포인트 적립내역 검색 컨트롤러 -------------------
 	// -------------------------------------------------------------------------------
 
-	// 검색하기랑
-	// 불러오기 페이지네이션 , 날짜 합쳐서 출력하기
 
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
@@ -463,7 +466,6 @@ public class AdminController {
 	// -------------------------------------------------------------------------------
 
 	// 접속시
-
 	@GetMapping("/admApproval/admApprovalPage")
 	public String nullSltApproval(Model model, Criteria cri) {
 		cri.setPerPageNum(8);
@@ -475,7 +477,6 @@ public class AdminController {
 	}
 
 	// 승인/거절 했을때
-
 	@PostMapping("/admApproval/admApprovalPage/slt")
 	public String ySltApproval(@RequestParam String mp_yn, @RequestParam String mp_company,
 			@RequestParam String mp_type, @RequestParam int mb_no) {
@@ -529,10 +530,19 @@ public class AdminController {
 
 	// 포인트 적립, 차감
 	@PostMapping("/admPoint/admPointPage/point")
-	public String plusMinus(@RequestParam String mb_id, @RequestParam int po_num,@RequestParam String pointType, @RequestParam String po_content) {
-		 
-		admPointService.plusminus(mb_id, po_num,pointType, po_content);
-		return "redirect:/admin/admPoint/admPointPage";
+	public String plusMinus(Model model, @RequestParam String mb_id, @RequestParam int po_num,@RequestParam String pointType, @RequestParam String po_content) {
+		MemberVO user = memberService.findById(mb_id);
+		if(user != null) {
+			admPointService.plusminus(user.getMb_id(), po_num,pointType, po_content);
+			model.addAttribute("msg", "정상 처리되었습니다.");
+			model.addAttribute("url", "/admin/admPoint/admPointPage");
+			return "util/msg";
+		}
+		else {
+			model.addAttribute("msg", "없는 회원입니다.");
+			model.addAttribute("url", "/admin/admPoint/admPointPage");
+			return "util/msg";
+		}
 	}
 
 	// 내역 삭제
@@ -561,9 +571,7 @@ public class AdminController {
 
 	}
 
-	// 이거 vo 랑 html 이랑 서비스 다오 메퍼 까지 다 없음 그럼 어떡하지?
 
-	//
 
 	// -------------------------------------------------------------------------------
 	// -------------------------- 주식 발행/소각 요청 승인 ----------------------------

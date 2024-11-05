@@ -22,9 +22,9 @@
 			<div id="container_main" class="content">
 			<div id="select_left">
 				<!-- 검색기능 form -->
-				<form action="/admin/admNews/news/search" method="get"
+				<form action="/admin/admNews/news/search" method="get" onsubmit="return unableform()"
 					class="local_sch" style="text-align: left;">
-					<input type="text" name="np_name" required class="in_sch"
+					<input type="text" name="np_name" required class="in_sch" id="newspaper_sh"
 						th:placeholder="${np_name}"> <input type="submit"
 						value="검색" class="btn_submit btn in_sch" accesskey="5">
 						<a type="submit" href="/admin/admNews/news" class="btn_submit btn btn_a" >초기화</a>
@@ -140,6 +140,12 @@
 				<p>Copyright © demo.sir.kr. All rights reserved.</p>
 			</footer>
 		</div>
+		<script>
+		function unableform() {
+				const newspaper_sh = document.getElementById("newspaper_sh").value.replace(/\s/g, '');
+				document.getElementById('newspaper_sh').value = newspaper_sh;
+			}
+		</script>
 	</div>
 
 </body>
