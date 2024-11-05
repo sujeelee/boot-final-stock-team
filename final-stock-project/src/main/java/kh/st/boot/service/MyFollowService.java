@@ -35,8 +35,15 @@ public class MyFollowService {
 		return searchDao.getFollowViews(fo_id, cri);
 	}
 
-	public FollowInfoDTO getFollowInfo(String fo_id) {
-		return searchDao.getFollowInfo(fo_id);
+	public FollowInfoDTO getFollowInfo(String fo_id, String mb_id) {
+		FollowInfoDTO info = searchDao.getFollowInfo(fo_id);
+		int fo_no = searchDao.getFollowNo(fo_id, mb_id);
+		info.setFo_no(fo_no);
+		return info;
+	}
+
+	public boolean follow(String fo_no, String mb_id) {
+		return searchDao.follow(fo_no, mb_id);
 	}
 	
 }

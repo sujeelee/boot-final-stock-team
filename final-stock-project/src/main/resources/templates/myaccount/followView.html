@@ -19,8 +19,11 @@
 						<div class="fo-follower" th:text="${#numbers.formatInteger(foInfo.follower, 0, 'COMMA')}+' 팔로워'"></div>
 						<div class="fo-following" th:text="${#numbers.formatInteger(foInfo.following, 0, 'COMMA')}+' 팔로잉'"></div>
 						<div class="fo-unfollow">
-							<button class="btn btn-outline-danger" th:onclick="follow_action('test', 'unfollow');">
+							<button class="btn btn-outline-danger" th:if="${foInfo.fo_no > 0}" th:onclick="follow_action([[${foInfo.fo_no}]], 'unfollow');">
 								언팔로우
+							</button>
+							<button class="btn btn-outline-info" th:if="${foInfo.fo_no <= 0}" th:onclick="follow_action([[${fo_mb_id}]], 'follow');">
+								팔로우
 							</button>
 						</div>
 					</div>
@@ -60,13 +63,17 @@
 			function follow_action(fo_id, action){
 				if(action == "stock"){
 					window.open('/stock/' + fo_id, '_blank');
-				} else if(action == "unfollow"){
-					if(!confirm("언팔로우 하시겠습니까?")){
-						alert("언팔로우를 취소하였습니다.");
+				} else {
+					var text = "언팔로우";
+					if(action == "follow"){
+						text = "팔로우";
+					}
+					if(!confirm(text + " 하시겠습니까?")){
+						alert(text + "를 취소하였습니다.");
 						return;
 					}
 					$.ajax({
-						url : '/myaccount/follow/unfollow',
+						url : '/myaccount/follow/' + action,
 						method : "post", //원하는 방식 선택
 						data : { //보낸 데이터를 객체로
 							fo_no : fo_id
@@ -74,7 +81,7 @@
 						success : function(data){
 							alert(data.msg);
 							if(data.res == "success"){
-								location.href = "/myaccount/follow";
+								location.reload();
 							}
 						}
 					});

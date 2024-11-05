@@ -66,10 +66,11 @@ public class MyFollowController {
         mb_id = principal.getName();
         
         List<FollowVO> list = myFollowService.getFollowViews(fo_id, cri);
-        FollowInfoDTO foInfo = myFollowService.getFollowInfo(fo_id);
+        FollowInfoDTO foInfo = myFollowService.getFollowInfo(fo_id, mb_id);
         
         model.addAttribute("foInfo", foInfo);
         model.addAttribute("views", list);
+        model.addAttribute("fo_mb_id", fo_id);
         model.addAttribute("pm", pm); // 페이지 정보 추가
 		return "myaccount/followView";
 	}
@@ -99,6 +100,36 @@ public class MyFollowController {
 		} else {
 			result.put("res", "fail");
 			result.put("msg", "언팔로우를 처리하지 못했습니다.");
+		}
+		
+		return result;
+	}
+	
+	@PostMapping("/follow")
+	@ResponseBody
+	public Map<String, String> follow(Model model, @RequestParam String fo_no, HttpServletRequest req, HttpServletResponse res) {
+		
+		Map<String, String> result = new HashMap<String, String>();
+		
+		MemberVO member = (MemberVO) model.getAttribute("member");
+		String mb_id = member.getMb_id();
+		
+		if(mb_id == null) {
+			result.put("res", "fail");
+			result.put("msg", "로그인한 회원만 이용가능합니다.");
+			return result;
+		}
+		
+		boolean boRes = false;
+		
+		boRes = myFollowService.follow(fo_no, mb_id);
+		
+		if(boRes) {
+			result.put("res", "success");
+			result.put("msg", "팔로우 되었습니다.");
+		} else {
+			result.put("res", "fail");
+			result.put("msg", "팔로우를 처리하지 못했습니다.");
 		}
 		
 		return result;
