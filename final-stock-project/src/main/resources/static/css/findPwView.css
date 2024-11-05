@@ -20,7 +20,7 @@ h2 {
 p {
   color: #555;
   font-size: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* 입력 필드 스타일 */
@@ -95,6 +95,18 @@ p {
 
 #passwordForm input[type="reset"]:hover {
   background-color: #7f8e9e;
+}
+
+.btn-goToLogin{
+  width: 100%;
+  padding: 12px; /* 버튼 패딩을 더 크게 */
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-top: 0.2rem;
+  border-radius: 20px; /* 모서리 둥글기 */
+  font-size: 16px; /* 버튼 텍스트 크기 확대 */
+  background-color: #17a2b8;
 }
 
 .error-message {

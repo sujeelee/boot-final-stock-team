@@ -15,14 +15,20 @@
 		<div class="login-wrapper">
 	        <h2 th:text="${where == 'internal'} ? 'Join' : ${where}+' join'">Join</h2>
 	        <div class="divider"></div> <!-- 줄 추가 -->
-	        <form method="post" th:action="@{/member/join}" id="login-form">
+	        <form method="post" onsubmit="return join(this)" name="joinform" id="login-form">
                 <div class="wrapper">
                 <div class="name-wrapper">
-                    <input type="text" name="id" placeholder="ID"
+                    <input type="text" name="id" placeholder="ID" id="id"
+                    title="주의사항" data-toggle="popover"
+                    data-trigger="focus" data-content="영문 숫자 포함 8~20, 중복 될 수 없습니다."
                     th:value="${not #strings.isEmpty(userInfo)} ? ${userInfo}"
                     th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'"
+                    th:onchange="duplicationCheck(this)"
                     >
-                    <input type="password" name="pw" placeholder="Password">
+                    <input type="password" name="pw" placeholder="Password"
+                    title="주의사항" data-toggle="popover"
+                    data-trigger="focus" data-content="영문 대소문자 가능, 숫자 포함 8~20, 특수문자 !@#$ 사용할 수 있습니다."
+                    >
                     <input type="password" name="pw2" placeholder="Password">
                     <input type="text" name="name" placeholder="Name">
                     <input type="text" name="nick" placeholder="Nick Name">
@@ -41,7 +47,7 @@
                     </label>
                     <div class="input-with-button">
                         <input type="text"  onclick="sample3_execDaumPostcode()" id="sample3_postcode" name="zip" placeholder="우편번호 찾기">
-                        <button  type="button" class="search-button" onclick="sample3_execDaumPostcode()">우편번호 찾기</button>
+                        <button type="button" class="search-button" onclick="sample3_execDaumPostcode()">우편번호 찾기</button>
                     </div>
                         <input type="hidden" id="sample3_extraAddress" name="addr2" placeholder="참고항목" readonly>
                         <div id="wrap" style="display:none;border:1px solid;width:100%;height:100%;margin:5px 0;position:relative">
@@ -62,7 +68,7 @@
                     			<i class="fa-solid fa-plus"></i>
                     		</span>
                     	</div>
-						<div class="terms-info terms-display" style="display: none;">
+						<div class="terms-info terms-display active">
 							<div class="terms-content" th:text="${config.cf_info}"></div>
 						</div>
 						<div class="terms-title" onclick="view_terms('terms-privacy');">
@@ -71,7 +77,7 @@
                     			<i class="fa-solid fa-plus"></i>
                     		</span>
                     	</div>
-						<div class="terms-privacy terms-display" style="display: none;">
+						<div class="terms-privacy terms-display active">
 							<div class="terms-content" th:text="${config.cf_privacy}"></div>
 						</div>
                     </div>
@@ -96,6 +102,7 @@ $('#email').click(Email_Check);
 function Email_Check(){
     const pattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
     const mail = $('#email_input').val();
+    $('#timer').text("");
     if(pattern.test(mail) === false) { 
         alert("이메일 형식이 일치하지 않습니다.")
         return false; 
@@ -112,14 +119,19 @@ function getEmailCode(mail){
         $.ajax({
         url: '/mail/ajax/set_check',
         method: 'post',
-        dataType : 'text',
         data : {evc_email : mail},
         success: function (data) {
-            $('#email').after('<input type="button" id="codeCheck" value="이메일 코드 확인" >');
-            $('#email').after('<input type="number" id="code"  placeholder="code">');
-            $('#email').attr("disabled", true);
-            $('#email').css("background-color", "gray");
-            startTimer(300);  // 5분(300초) 타이머 시작
+            console.log(data.res)
+            if(data.res === true){
+                $('#email').after('<input type="button" id="codeCheck" value="이메일 코드 확인" >');
+                $('#email').after('<input type="number" id="code"  placeholder="code">');
+                $('#email').attr("disabled", true);
+                $('#email').css("background-color", "gray");
+                startTimer(300);  // 5분(300초) 타이머 시작
+            } else if (data.send === 'duplication'){
+                $('#timer').text("중복된 이메일 입니다.");
+                $('#email_input').attr("readonly", false);
+            }
         },
         error: function (data, status, err) {
             alert("이메일 전송 실패! 이메일이 잘못 되었거나 잠시 후 다시 시도해 주세요.")
@@ -322,6 +334,43 @@ document.onkeydown = NotReload;
     	maxDate : "-1d",	//선택할 수 있는 최대 날짜  +1m +1w 은 1달 1주일 뒤 까지 선택가능  [+,-][숫자][y,m,w,d] 
     	minDate: '-100y'
     });
+
+function duplicationCheck(that){
+$.ajax({
+    url: '/member/ajax/idCheck',
+    type: 'POST',
+    data: {id : that.value},
+    success: function(data) {
+        console.log(data)
+        if(data.res === true){
+            $('#id').addClass('success-border').removeClass('error-border');
+        } else {
+            $('#id').addClass('error-border').removeClass('success-border');
+            $('#id').data('content', '중복된 아이디 입니다.');
+            $('#id').focus();
+            console.log(that)
+        }
+    },
+    error: function(xhr, status, error) {
+        console.log('error:', error);
+    }
+});
+}
+
+function join(that){
+
+
+
+
+    return false;
+}
+
+
+
+$(document).ready(function(){
+  $('[data-toggle="popover"]').popover();
+});
+
 </script>
 
 </main>

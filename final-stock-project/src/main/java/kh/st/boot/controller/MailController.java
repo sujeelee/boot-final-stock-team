@@ -34,14 +34,21 @@ public class MailController {
 
     //코드를 이메일로 보내는 일
     @PostMapping("/ajax/set_check")
-    public @ResponseBody boolean set_Email_Check(@RequestParam("evc_email") String evc_email){
+    public @ResponseBody Map<String, Object> set_Email_Check(@RequestParam("evc_email") String evc_email){
+        Map<String, Object> map = new HashMap<>();
         //렌덤한 6자리 숫자열
         int code = customUtil.getCustomNumber(6);
         String str = "안녕하세요. S2D KEY 회원 인증 메일입니다. 6자리 코드를 회원가입 창에서 입력해 주세요. <p>인증 코드 :" + code + " </p>";
         boolean res = mailService.setMailCode(evc_email, code);
-        if (res) res = mailSend(evc_email, "SID 인증 이메일", str);
+        if (res){
+            res = mailSend(evc_email, "SID 인증 이메일", str);
+        } else {
+            map.put("send", "duplication");
+        }
+        
         // t, f 보내주면, 코드 6자리 입력할 수 있는 창을 열어주기
-        return res;
+        map.put("res", res);
+        return map;
     }
 
     //유저가 코드를 확인하는 일

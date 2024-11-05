@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kh.st.boot.model.dto.JoinDTO;
 import kh.st.boot.model.dto.LoginDTO;
-import kh.st.boot.model.util.CustomUtil;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.MemberService;
 
@@ -196,7 +195,19 @@ public class MemberController {
         return map;
     }
 
+    @ResponseBody
+    @PostMapping("/ajax/idCheck")
+    public Map<String, Object> idCheck(@RequestParam  Map<String, String> params){
+        Map<String, Object> map = new HashMap<>();
+        MemberVO user = memberService.findById(params.get("id"));
 
+        if (user == null) {
+            map.put("res", true);
+        } else {
+            map.put("res", false);
+        }
+        return map;
+    }
 
 
 }
