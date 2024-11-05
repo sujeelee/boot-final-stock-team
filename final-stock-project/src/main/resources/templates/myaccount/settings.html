@@ -113,14 +113,14 @@
 					</div>
 					<div class="d-flex mt-2">
 						<div>
-							<button type="button" class="btn btn-outline-dark" id="company" style="display: none;" onclick="openCompany()">
+							<button type="button" class="btn btn-outline-info" id="company" style="display: none;" onclick="openCompany()">
 			      				선택
 							</button>
 						</div>
 						<div class="mr-auto">
 			        		<span id="selected-value"></span>
 			        	</div>
-			        	<button class="btn btn-outline-dark" onclick="submitForm()">신청</button>
+			        	<button class="btn btn-outline-info" onclick="submitForm()">신청</button>
 			        </div>
 				</section>
 				<form id="submit-form" action="/myaccount/settings" method="post">
@@ -160,13 +160,13 @@
 			    	}
 				});
 				function displayNews() {
-					$('#news').replaceWith('<button class="btn btn-outline-dark" id="news" onclick="cancel();">요청 중</button>');
+					$('#news').replaceWith('<button class="btn btn-outline-info" id="news" onclick="cancel();">요청 중</button>');
 					$('#stock').attr('disabled', true);
 					$('button[onclick="submitForm()"]').hide();
 				} // 뉴스 회원 승인 요청중일 때
 				
 				function displayStock() {
-					$('#stock').replaceWith('<button class="btn btn-outline-dark" id="stock" onclick="cancel();">요청 중</button>');
+					$('#stock').replaceWith('<button class="btn btn-outline-info" id="stock" onclick="cancel();">요청 중</button>');
 					$('#news').attr('disabled', true);
 					$('button[onclick="submitForm()"]').hide();
 				} // 주식 회원 승인 요청중일 때
@@ -206,7 +206,7 @@
 									<span class="my-text-left">주식 요청</span>
 								</div>
 								<div class="my-info-right">
-				                    <a href="#demo" class="btn btn-outline-dark" data-toggle="collapse">요청</a>
+				                    <a href="#demo" class="btn btn-outline-info" data-toggle="collapse">요청</a>
 								</div>
 							</div>
 							<div id="demo" class="collapse">
@@ -215,23 +215,23 @@
 			                    	<textarea class="form-control" id="sa_content" name="sa_content" style="min-height: 400px; height: auto;" placeholder="관리자한테 보낼 메시지를 입력해주세요"></textarea>
 			                    	<div class="d-flex my-details">
 			                    		<div class="mr-auto"></div>
-			                    		<button class="btn btn-outline-dark mt-2" type="button" onclick="applyStock()">보내기</button>
+			                    		<button class="btn btn-outline-info mt-2" type="button" onclick="applyStock()">보내기</button>
 			                    	</div>
 			                    </form>
 		                    </div>
 							<div class="d-flex my-details">
 								<div>
-									<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
+									<button class="btn btn-outline-info" onclick="deleteMember()">탈퇴</button>
 								</div>
 								<div class="mr-auto"></div>
-								<a href="#" class="btn btn-outline-dark" onclick="window.open('/myaccount/stockList', '_blank', 'width=900,height=400,left=500,top=300'); return false;">요청 목록</a>
+								<a href="#" class="btn btn-outline-info" onclick="window.open('/myaccount/stockList', '_blank', 'width=900,height=400,left=500,top=300'); return false;">요청 목록</a>
 					        </div>
 						`;
 					}else{
 						str += `
 							<div class="d-flex my-details">
 								<div>
-									<button class="btn btn-outline-dark" onclick="deleteMember()">탈퇴</button>
+									<button class="btn btn-outline-info" onclick="deleteMember()">탈퇴</button>
 								</div>
 					        </div>
 						`;
@@ -346,6 +346,7 @@
 						        $('#stock').replaceWith('<input type="checkbox" name="mp_type" id="stock" value="stock" onclick="checkOnlyOne(this);"/>');
 						        $('#news, #stock').prop('disabled', false);
 						        $('button[onclick="submitForm()"]').show();
+						        window.location.href = '/myaccount/settings';
 							} else {
 								alert('요청 취소 중 문제가 발생하였습니다. 잠시 후에 다시 시도해 주세요');
 							}
