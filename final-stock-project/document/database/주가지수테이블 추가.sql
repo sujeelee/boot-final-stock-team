@@ -11,3 +11,6 @@ CREATE TABLE `stockandfund`.`stock_jisu` (
   `ji_trqu` VARCHAR(255) NULL COMMENT '거래량',
   PRIMARY KEY (`ji_no`))
 COMMENT = '코스닥, 코스피, KRX300 정보를 가져와요';
+
+
+--총집편 적용완료
