@@ -34,7 +34,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 
         //아이디 비존재
         if(exception instanceof UsernameNotFoundException){
-            errorMessage = request.getParameter("username") + " 은/(는) 없는 아이디 입니다.";
+            errorMessage = "아이디나 비밀번호가 일치하지 않습니다.";
 
             String encodingErrorMsg = URLEncoder.encode(errorMessage, "UTF-8");
             response.sendRedirect("/member/login?error=true&id=false&pw=false&msg=" + encodingErrorMsg);
@@ -56,17 +56,16 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 
         //비밀번호 불일치
         if(exception instanceof BadCredentialsException){
-            errorMessage = "비밀번호가 일치하지 않습니다.";
+            errorMessage = "아이디나 비밀번호가 일치하지 않습니다.";
             memberDao.add_Fail_Number(request.getParameter("username"));
             
             //4 -> 5 일때 DB에 시간 집어넣기
             if(user.getMb_fail() + 1 >= 5){
-                System.out.println("시간집어넣기!");
                 memberDao.updateStopTime(request.getParameter("username"));
             }
 
             String encodingErrorMsg = URLEncoder.encode(errorMessage, "UTF-8");
-            response.sendRedirect("/member/login?error=true&username=" + request.getParameter("username") + "&pw=false&msg=" + encodingErrorMsg);
+            response.sendRedirect("/member/login?error=true&id=false&pw=false&msg=" + encodingErrorMsg);
         }
 
 

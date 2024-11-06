@@ -20,7 +20,7 @@
 			</button>		 
 		</div>
 		<div>
-			<a th:href="@{/event/calendar_event}">출석도장</a>
+			<a sec:authorize="isAuthenticated()" th:href="@{/event/calendar_event}">출석도장</a>
 		</div>
 
 	</nav>

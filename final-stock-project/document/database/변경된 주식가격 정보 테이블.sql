@@ -7,3 +7,7 @@ ADD COLUMN `si_hipr` VARCHAR(45) NULL COMMENT '하루 최고 고가' AFTER `si_m
 ADD COLUMN `si_lopr` VARCHAR(45) NULL COMMENT '하루 최저가' AFTER `si_hipr`,
 ADD COLUMN `si_trqu` VARCHAR(45) NULL COMMENT '체결수량 누적합계' AFTER `si_lopr`,
 CHANGE COLUMN `si_date` `si_date` VARCHAR(255) NULL DEFAULT NULL ;
+
+ALTER TABLE `stockandfund`.`stock_info` drop column `si_mrktCtq` ;
+
+--총집편 적용 완료
