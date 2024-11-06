@@ -56,3 +56,11 @@ font-size: 15px;
 .sub-menu-item a{
 font-size: 15px;
 }
+
+li a{
+	display: block;
+}
+
+li a:hover, a:active {
+	background-color : rgb(23, 162, 184, 0.2);
+}

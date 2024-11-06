@@ -23,15 +23,16 @@ label, input, button, select, img {
 	vertical-align: middle;
 }
 
+
 /* 링크 설정 */
-a {
+.homea {
 	/* 태그에 걸린 밑줄하고 빨간 색 제거 */
 	text-decoration: none;
 	font-size: 20px;
 }
 
-a:hover, a:active {
-	background-color: #77696985;
+.homea:hover, .homea:active {
+	background-color: #3f51b5;
 }
 
 a:link, a:visited {
@@ -248,7 +249,7 @@ button, input[type="submit"] {
 }
 
 .btn_submit {
-	background: #ff4081;
+	background: #17a2b8;
 	color: #fff;
 }
 
@@ -344,7 +345,7 @@ button, input[type="submit"] {
 }
 
 .btn_submit {
-	background: #ff4081;
+	background: #17a2b8;
 	color: #fff;
 }
 

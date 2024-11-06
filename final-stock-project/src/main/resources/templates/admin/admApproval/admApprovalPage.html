@@ -6,7 +6,7 @@
 <script
 	src="https://demo.sir.kr/gnuboard5/js/jquery.menu.js?ver=2304171"></script>
 <meta charset="UTF-8">
-<link href="/css/admmember.css" rel='stylesheet'>
+<link href="/css/admapproval.css" rel='stylesheet'>
 <title>관리자 페이지</title>
 <!--  스타일 적용 했음  -->
 </head>
@@ -19,7 +19,7 @@
 					<form action="/admin/admApproval/admApprovalPage/search"
 						method="get" class="local_sch" onsubmit="return unableform()">
 						<input type="text" name="mp_company" id="mp_company" required placeholder="요청사 ID"
-							class="in_sch" style="height: 25px">
+							class="in_sch" style="height: 30px">
 						<button type="submit" class="btn_submit btn"
 							style="margin-left: 2px;">검색</button>
 						<a href="/admin/admApproval/admApprovalPage"
@@ -38,10 +38,10 @@
 					</thead>
 					<tbody>
 						<tr th:each="list : ${list}">
-							<td th:text="${list.mp_type}"></td>
-							<td th:text="${list.mp_company}"></td>
-							<td th:text="${list.mp_datetime}"></td>
-							<td>
+							<td th:text="${list.mp_type}" class="app_td"></td>
+							<td th:text="${list.mp_company}" class="app_td"></td>
+							<td th:text="${list.mp_datetime}" class="app_td"></td>
+							<td class="app_btn">
 								<!-- 승인 버튼 폼 -->
 								<form th:action="@{/admin/admApproval/admApprovalPage/slt}"
 									method="post" class="apo_btn">
@@ -60,7 +60,7 @@
 									<button type="submit" class="btn_submit btn">거절</button>
 								</form>
 							</td>
-							<td>
+							<td class="app_td">
 							    <span th:if="${list.mp_yn == 'y'}">승인 상태입니다</span>
 							    <span th:if="${list.mp_yn == 'n'}">거절 상태입니다</span>
 							    <span th:if="${list.mp_yn != 'y' && list.mp_yn != 'n'}">처리 대기중입니다</span> <!-- 필요시 추가 -->
