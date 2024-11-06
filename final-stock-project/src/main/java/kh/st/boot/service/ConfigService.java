@@ -40,7 +40,29 @@ public class ConfigService {
 	}
 
 	public List<HotStockDTO> getHotStockList(int limit) {
-		return stockDao.getHotStockList(limit);
+		List<HotStockDTO> list = stockDao.getHotStockList(limit);
+		for(HotStockDTO tmp : list) {
+			String amount = priceTextChange(Double.parseDouble(tmp.getMrk()));
+			tmp.setPrice_text(amount);
+		}
+		return list;
+	}
+	
+	public String priceTextChange(double amount) {
+		String price_text = null;
+		if (amount >= 1_000_000_000_000L) { // 1조 이상
+		    double trillion = amount / 1_000_000_000_000L; // 조 단위로 변환
+		    price_text = String.format("%.1f조원", trillion); // 소수점 첫째 자리까지 표시
+		} else if (amount >= 1_000_000_000) { // 1억 이상
+		    double hundredMillion = amount / 1_000_000_000; // 억 단위로 변환
+		    price_text = String.format("%.1f억원", hundredMillion); // 소수점 첫째 자리까지 표시
+		} else if (amount >= 1_000) { // 1천 이상
+		    double thousand = amount / 1_000; // 천 단위로 변환
+		    price_text = String.format("%.1f천원", thousand); // 소수점 첫째 자리까지 표시
+		} else { // 그 이하
+		    price_text = String.format("%.0f원", amount); // 원 단위로 표시
+		}
+		return price_text;
 	}
 
 	public List<DashListDTO> getDashList(Map<String, Object> param) {
@@ -160,13 +182,7 @@ public class ConfigService {
 	public List<BoardVO> getCommunityList(String code) {
 		return searchDao.getCommunityList(code);
 	}
-/*
- * private String lv_name; 
-	private int lv_num;  
-	private String lv_alpha; 
-	private char lv_auto_use;
-	private int lv_up_limit;
- * */
+
 	public MemberVO getConfigLv(MemberVO member) {
 		int orgMbLv = member.getMb_level(); //기존 레벨 먼저 가져올게요
 		int followCnt = member.getMb_follow(); //회원을 팔로우하고 있는 회원 수를 가져올게요
@@ -176,7 +192,7 @@ public class ConfigService {
 			return member;
 		}
 		for(AdminLevelPageVO tmp : lvConfig) {
-			if(tmp.getLv_auto_use() == 'Y') {
+			if(tmp.getLv_auto_use().equals("Y")) {
 				if(followCnt <= tmp.getLv_up_limit()) {
 					newMbLv = tmp.getLv_num();
 					break;

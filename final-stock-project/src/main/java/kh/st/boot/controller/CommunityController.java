@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.vo.BoardVO;
 import kh.st.boot.model.vo.CommentVO;
@@ -25,7 +24,6 @@ import kh.st.boot.model.vo.FollowVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.CommunityService;
 import kh.st.boot.service.StocksHeaderService;
-import kh.st.boot.service.newspaperService;
 import lombok.AllArgsConstructor;
 
 @Controller

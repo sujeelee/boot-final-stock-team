@@ -29,8 +29,6 @@ public class GlobalControllerAdvice {
     private ConfigService configService;
     @Autowired
     private MemberService memberService;
-    @Autowired
-    private StocksHeaderService stocksHeaderService;
     
     @ModelAttribute("config")
     public AdminVO globalConfig() {
@@ -57,34 +55,18 @@ public class GlobalControllerAdvice {
     public List<HotStockDTO> getHotStockList(){
     	List<HotStockDTO> list = configService.getHotStockList(100);
 		
-		for(HotStockDTO tmp : list) {
-			String amount = stocksHeaderService.priceTextChange(Double.parseDouble(tmp.getMrk()));
-			tmp.setPrice_text(amount);
-		}
-		
 		return list;
     }
     
     @ModelAttribute("top5list")
     public List<HotStockDTO> getHotStockListTop5(){
     	List<HotStockDTO> list = configService.getHotStockList(5);
-		
-		for(HotStockDTO tmp : list) {
-			String amount = stocksHeaderService.priceTextChange(Double.parseDouble(tmp.getMrk()));
-			tmp.setPrice_text(amount);
-		}
-		
 		return list;
     }
     
     @ModelAttribute("top10")
     public List<HotStockDTO> getListTop10(){
     	List<HotStockDTO> list = configService.getHotStockList(10);
-		
-		for(HotStockDTO tmp : list) {
-			String amount = stocksHeaderService.priceTextChange(Double.parseDouble(tmp.getMrk()));
-			tmp.setPrice_text(amount);
-		}
 		return list;
     }
     
