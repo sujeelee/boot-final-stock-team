@@ -16,5 +16,9 @@ public interface MemberService {
 
 	MemberVO findById(String id);
 
+    MemberVO findByEmail(String email);
+
+	boolean setTemporaryPassword(String email, String option);
+
 }
 

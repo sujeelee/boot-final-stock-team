@@ -430,7 +430,10 @@ blockquote {
   background-color: #218838; /* 호버 시 색상 변경 */
 }
 .div-ul {
-  margin-top: 30px;
+  margin-top: 5px;
+  overflow: auto;
+  white-space: nowrap;
+  max-height: 400px;
 }
 .bxs-heart.active {
   color: #ff0000 !important; /* 좋아요 활성화 시 색상 */
@@ -439,3 +442,6 @@ blockquote {
 .bx-x-circle.active {
   color: #0000ff !important; /* 신고 활성화 시 색상 */
 }
+.comm-stock-hots{color: #17a2b8; text-decoration-line: none;}
+.comm-stock-hots:hover{color: #17a2b8; text-decoration-line: none;}
+.board-none{text-align: center;}

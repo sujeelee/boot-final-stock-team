@@ -15,19 +15,31 @@
 		<div class="login-wrapper">
 	        <h2 th:text="${where == 'internal'} ? 'Join' : ${where}+' join'">Join</h2>
 	        <div class="divider"></div> <!-- 줄 추가 -->
-	        <form method="post" th:action="@{/member/join}" id="login-form">
+	        <form method="post" onsubmit="return join(this)" name="joinform" id="login-form">
                 <div class="wrapper">
                 <div class="name-wrapper">
-                    <input type="text" name="id" placeholder="ID"
+                    <input type="text" name="id" placeholder="ID" id="id"
+                    title="주의사항" data-toggle="popover" data-ok="false"
+                    data-trigger="focus" data-content="영문 숫자 포함 8~20, 중복 될 수 없습니다."
                     th:value="${not #strings.isEmpty(userInfo)} ? ${userInfo}"
                     th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'"
+                    th:onchange="duplicationCheck(this)"
                     >
-                    <input type="password" name="pw" placeholder="Password">
-                    <input type="password" name="pw2" placeholder="Password">
-                    <input type="text" name="name" placeholder="Name">
-                    <input type="text" name="nick" placeholder="Nick Name">
+                    <input type="password" name="pw" placeholder="Password" id="pw"
+                    title="주의사항" data-toggle="popover" data-ok="false"
+                    data-trigger="focus" data-content="영문, 숫자, 특수문자(!@#$)를 포함한 8자리 이상 20자리 이하로 입력해주세요."
+                    th:onchange="passwordCheck(this)"
+                    >
+                    <input type="password" name="pw2" placeholder="Password" id="pw2"
+                    th:onchange="password2Check(this)"
+                    >
+                    <input type="text" name="name" placeholder="Name" id="name">
+                    <input type="text" name="nick" placeholder="Nick Name" id="nickname">
 
-                    <input type="text" name="ph" placeholder="Phone Number">
+                    <input type="text" name="ph" placeholder="Phone Number" id="ph"
+                    title="주의사항" data-toggle="popover"
+                    data-trigger="focus" data-content="전화번호를 중간 - 를 제외하고 입력해 주세요"
+                    th:onchange="phoneNumberCheck(this)" data-ok="false">
                     <input type="email" id="email_input" name="email" placeholder="Email"
                     th:value="${not #strings.isEmpty(userInfo)} ? ${userInfo}"
                     th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'">
@@ -41,11 +53,12 @@
                     </label>
                     <div class="input-with-button">
                         <input type="text"  onclick="sample3_execDaumPostcode()" id="sample3_postcode" name="zip" placeholder="우편번호 찾기">
-                        <button  type="button" class="search-button" onclick="sample3_execDaumPostcode()">우편번호 찾기</button>
+                        <button type="button" class="search-button" onclick="sample3_execDaumPostcode()">우편번호 찾기</button>
                     </div>
                         <input type="hidden" id="sample3_extraAddress" name="addr2" placeholder="참고항목" readonly>
                         <div id="wrap" style="display:none;border:1px solid;width:100%;height:100%;margin:5px 0;position:relative">
-                            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+                            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap"
+                            style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
                         </div>
                         <input type="text" id="sample3_address" name="addr" placeholder="주소" readonly>
                         <input type="text" id="sample3_detailAddress" name="addr2" placeholder="상세주소">
@@ -62,7 +75,7 @@
                     			<i class="fa-solid fa-plus"></i>
                     		</span>
                     	</div>
-						<div class="terms-info terms-display" style="display: none;">
+						<div class="terms-info terms-display active">
 							<div class="terms-content" th:text="${config.cf_info}"></div>
 						</div>
 						<div class="terms-title" onclick="view_terms('terms-privacy');">
@@ -71,31 +84,32 @@
                     			<i class="fa-solid fa-plus"></i>
                     		</span>
                     	</div>
-						<div class="terms-privacy terms-display" style="display: none;">
+						<div class="terms-privacy terms-display active">
 							<div class="terms-content" th:text="${config.cf_privacy}"></div>
 						</div>
                     </div>
                 </div>
                 <div class="divider"></div> <!-- 줄 추가 -->
-                <input type="submit" value="Join">
+                <input type="submit" value="Join" id="joinBtn">
 	        </form>
 	    </div>
 
 
 <script>
-	function view_terms(terms){
-		if($("."+terms).hasClass("active")){
-			$("."+terms).fadeOut(150);
-			$(".terms-display").removeClass("active");
-		} else {
-			$("."+terms).fadeIn(150);
-			$("."+terms).addClass("active");
-		}
-	}
+function view_terms(terms){
+    if($("."+terms).hasClass("active")){
+        $("."+terms).fadeOut(150);
+        $(".terms-display").removeClass("active");
+    } else {
+        $("."+terms).fadeIn(150);
+        $("."+terms).addClass("active");
+    }
+}
 $('#email').click(Email_Check);
 function Email_Check(){
     const pattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
     const mail = $('#email_input').val();
+    $('#timer').text("");
     if(pattern.test(mail) === false) { 
         alert("이메일 형식이 일치하지 않습니다.")
         return false; 
@@ -112,14 +126,18 @@ function getEmailCode(mail){
         $.ajax({
         url: '/mail/ajax/set_check',
         method: 'post',
-        dataType : 'text',
         data : {evc_email : mail},
         success: function (data) {
-            $('#email').after('<input type="button" id="codeCheck" value="이메일 코드 확인" >');
-            $('#email').after('<input type="number" id="code"  placeholder="code">');
-            $('#email').attr("disabled", true);
-            $('#email').css("background-color", "gray");
-            startTimer(300);  // 5분(300초) 타이머 시작
+            if(data.res === true){
+                $('#email').after('<input type="button" id="codeCheck" value="이메일 코드 확인" >');
+                $('#email').after('<input type="number" id="code"  placeholder="code">');
+                $('#email').attr("disabled", true);
+                $('#email').css("background-color", "gray");
+                startTimer(300);  // 5분(300초) 타이머 시작
+            } else if (data.send === 'duplication'){
+                $('#timer').text("중복된 이메일 입니다.");
+                $('#email_input').attr("readonly", false);
+            }
         },
         error: function (data, status, err) {
             alert("이메일 전송 실패! 이메일이 잘못 되었거나 잠시 후 다시 시도해 주세요.")
@@ -210,8 +228,6 @@ function removeEmail_varification(mail){
     if (empty == true){
         mail = $('#email_input').val();
     }
-    console.log(empty)
-    console.log(mail)
     $.ajax({
         url: '/mail/ajax/delete_mail',
         type: 'POST',
@@ -220,10 +236,10 @@ function removeEmail_varification(mail){
             evc_email : mail
         },
         success: function(data) {
-            console.log('성공(true 가나오면 성공):', data);
+            
         },
         error: function(xhr, status, error) {
-            console.log('에러:', error);
+            console.log('error:', error);
             // 에러 처리
         }
     });
@@ -322,6 +338,126 @@ document.onkeydown = NotReload;
     	maxDate : "-1d",	//선택할 수 있는 최대 날짜  +1m +1w 은 1달 1주일 뒤 까지 선택가능  [+,-][숫자][y,m,w,d] 
     	minDate: '-100y'
     });
+
+function duplicationCheck(that){
+$.ajax({
+    url: '/member/ajax/idCheck',
+    type: 'POST',
+    data: {id : that.value},
+    success: function(data) {
+        const pattern = /^[a-zA-z0-9]{8,20}$/
+        if(pattern.test(that.value)){
+            $('#id').addClass('success-border').removeClass('error-border')
+        } else {
+            $('#id').addClass('error-border').removeClass('success-border')
+            return false;
+        }
+        if(data.res === true){
+            $('#id').addClass('success-border').removeClass('error-border');
+            $('#id').attr('data-content', '영문 숫자 포함 8~20, 중복 될 수 없습니다.');
+            $('#id').attr('data-ok', 'true');
+        } else {
+            $('#id').addClass('error-border').removeClass('success-border');
+            $('#id').attr('data-content','중복된 아이디 입니다.')
+            $('#id').attr('data-ok', 'false');
+            $('#id').focus();
+        }
+    },
+    error: function(xhr, status, error) {
+        console.log('error:', error);
+    }
+});
+}
+
+function passwordCheck(that){
+    const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$])[A-Za-z\d!@#$]{8,20}$/
+    if(pattern.test(that.value)){
+        $('#pw').addClass('success-border').removeClass('error-border')
+        $('#pw').attr('data-ok', 'true');
+    } else {
+        $('#pw').addClass('error-border').removeClass('success-border')
+        $('#pw').attr('data-ok', 'false');
+    }
+}
+
+function password2Check(that){
+    if($(pw).val() == that.value){
+        $('#pw2').addClass('success-border').removeClass('error-border')
+    } else {
+        $('#pw2').addClass('error-border').removeClass('success-border')
+    }
+}
+
+function phoneNumberCheck(that){
+    const pattern = /^(?:(010)|(01[1|6|7|8|9]))\d{3,4}(\d{4})$/;
+    if(pattern.test(that.value)){
+        $('#ph').addClass('success-border').removeClass('error-border')
+        $('#ph').attr('data-ok', 'true');
+    } else {
+        $('#ph').addClass('error-border').removeClass('success-border')
+        $('#ph').attr('data-ok', 'false');
+    }
+}
+
+function join(that){
+    $('#alertText').remove();
+    if(that.id.dataset.ok == 'false'){
+        $('#joinBtn').before(alertText('경고!', '아이디가 중복되거나 규칙에 올바르지 않습니다.'));
+        that.id.focus();
+        return false;
+    }
+    if(that.pw.value.trim().length == 0 || that.pw.dataset.ok == 'false'){
+        $('#joinBtn').before(alertText('경고!', '비밀번호를 확인해 주세요.'));
+        that.pw.focus();
+        return false;
+    }
+    if(that.pw.value != that.pw2.value){
+        $('#joinBtn').before(alertText('경고!', '비밀번호와 비밀번호 확인이 일치하지 않습니다.'));
+        that.pw2.focus();
+        return false;
+    }
+    if(that.name.value.trim().length == 0){
+        $('#joinBtn').before(alertText('경고!', '이름을 입력해 주세요.'));
+        that.name.focus();
+        return false;
+    }
+    if(that.nickname.value.trim().length == 0){
+        $('#joinBtn').before(alertText('경고!', '닉네임을 입력해 주세요.'));
+        that.nickname.focus();
+        return false;
+    }
+    if(that.ph.value.trim().length == 0 || that.ph.dataset.ok == 'false'){
+        $('#joinBtn').before(alertText('경고!', '전화번호를 확인해 주세요.'));
+        that.ph.focus();
+        return false;
+    }
+    if(that.ec_checked.value == 'f'){
+        $('#joinBtn').before(alertText('경고!', '이메일 인증이 완료되지 않았습니다.'));
+        return false;
+    }
+    if(that.sample3_address.value.trim().length == 0 || that.sample3_detailAddress.value.trim().length == 0){
+        $('#joinBtn').before(alertText('경고!', '주소지를 입력해 주세요.'));
+        return false;
+    }
+    if(that.birth.value.trim().length == 0){
+        $('#joinBtn').before(alertText('경고!', '생일을 선택해 주세요.'));
+        return false;
+    }
+    return true;
+}
+
+function alertText(title, content){
+    str = `<div class="alert alert-danger alert-dismissible fade show" id="alertText">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>`+ title + `</strong> <small>`+ content +`</small>
+            </div>`
+    return str;
+}
+
+$(document).ready(function(){
+  $('[data-toggle="popover"]').popover();
+});
+
 </script>
 
 </main>

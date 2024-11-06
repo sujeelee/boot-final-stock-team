@@ -21,6 +21,9 @@ public class CommentVO {
 	private String mb_id; //댓글작성회원
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date co_datetime;
+	private String co_blind;
+	
+	private String mb_nick; //댓글작성회원 닉네임
 	
 	//DB 상 존제하지 않습니다.
 	//report 신고, like 좋아요로 확은

@@ -1,5 +1,8 @@
 package kh.st.boot.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import jakarta.mail.internet.MimeMessage;
 
 import kh.st.boot.model.util.CustomUtil;
 import kh.st.boot.service.MailService;
+import kh.st.boot.service.MemberService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -26,16 +30,25 @@ public class MailController {
 
     private MailService mailService;
 
+    private MemberService memberService;
+
     //코드를 이메일로 보내는 일
     @PostMapping("/ajax/set_check")
-    public @ResponseBody boolean set_Email_Check(@RequestParam("evc_email") String evc_email){
+    public @ResponseBody Map<String, Object> set_Email_Check(@RequestParam("evc_email") String evc_email){
+        Map<String, Object> map = new HashMap<>();
         //렌덤한 6자리 숫자열
         int code = customUtil.getCustomNumber(6);
         String str = "안녕하세요. S2D KEY 회원 인증 메일입니다. 6자리 코드를 회원가입 창에서 입력해 주세요. <p>인증 코드 :" + code + " </p>";
         boolean res = mailService.setMailCode(evc_email, code);
-        if (res) res = mailSend(evc_email, "SID 인증 이메일", str);
+        if (res){
+            res = mailSend(evc_email, "SID 인증 이메일", str);
+        } else {
+            map.put("send", "duplication");
+        }
+        
         // t, f 보내주면, 코드 6자리 입력할 수 있는 창을 열어주기
-        return res;
+        map.put("res", res);
+        return map;
     }
 
     //유저가 코드를 확인하는 일
@@ -80,6 +93,24 @@ public class MailController {
         boolean res = mailSend("bnbz201@naver.com", "SID 인증 이메일", "<p>test 이메일입니다.<p> 이건 태그 안들어감 <p>받아온 코드 : " + code + "</p>");
         System.out.println(res);
         return "redirect:/";
+    }
+
+    @ResponseBody
+    @PostMapping("/ajax/sendCustomPw")
+    public Map<String, Object> sendCustomPw(@RequestParam Map<String, String> params){
+        Map<String, Object> map = new HashMap<>();
+        String option = customUtil.generatedString(13, true,true, true);
+        boolean res = memberService.setTemporaryPassword(params.get("email"), option);
+        res = mailSend(params.get("email"), "시드키 임시 비밀번호 발송",
+            "<h1>시드키 임시 비밀번호 발송</h1>"
+            + "<p>해당 임시 비밀번호는 타인에게 반드시 공개하지 마십시오.</p>"
+            + "<p>임시 비밀번호 또는 비밀번호와 그와 유사한 개인정보를 타인과 공유할 경우 발생하는 불이익은 귀사는 책임지지 않습니다.</p>"
+            + "<p>또한 비밀번호가 노출 될 시 반드시 비밀번호를 변경하시기 바랍니다..</p>"
+            + "<h3 style='color= red;'>임시 비밀번호 :  "+ option +" </h3>"
+            );
+        
+        map.put("res", res);
+        return map;
     }
 
 

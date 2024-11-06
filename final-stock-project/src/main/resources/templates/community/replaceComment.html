@@ -5,14 +5,14 @@
 	<div th:each="comment : ${colist}" >
 	<div class="commentdivider"></div>	
 			<div class="comment-header ml-4" >
-				<blockquote th:text="${comment.mb_id}">ID</blockquote>
+				<blockquote th:text="${comment.mb_nick}">ID</blockquote>
 				<div>
-				<button class="btn-retouch"
+				<button th:unless="${comment.co_blind.equals('Y')}" class="btn-retouch"
 					th:if="${userInfo != null and comment.mb_id == userInfo}"
 					th:onclick="'enableEditMode(' + ${comment.co_id} + ', \'comment\',this)'">
 					<i class='bx bx-edit-alt'></i>
 				</button>
-				<button class="btn-delete"
+				<button th:unless="${comment.co_blind.equals('Y')}" class="btn-delete"
 					th:if="${userInfo != null and comment.mb_id == userInfo}"
 					th:attr="data-wr-no=${comment.wr_no}, data-co-id=${comment.co_id}"					
 					onclick="comment_action(this, 'deleteComment')">
@@ -20,14 +20,18 @@
 				</button>				
 				</div>	
 			</div>
-		<div class="comment-body ml-4" th:data-coid="${comment.co_id}">
-			<blockquote class="comment-text" th:text="${comment.co_content}">content</blockquote>
-			   <button class="btn-save" style="display:none;"
-                    th:attr="data-co-id=${comment.co_id}, data-wr-no=${comment.wr_no}" 
-            		onclick="comment_action(this, 'updateComment')">
-                    <i class='bx bx-edit-alt'></i>
-               </button>
-		</div>
+		<div th:class="${comment.co_blind.equals('Y')} ? 'blur':''">
+           <span class="blind-content" th:if="${comment.co_blind.equals('Y')}">
+           	⚠신고로 인하여 댓글이 블라인드처리 되었습니다⚠
+           </span>
+			<div class="comment-body ml-4" th:data-coid="${comment.co_id}">
+				<blockquote class="comment-text" th:text="${comment.co_content}">content</blockquote>
+				   <button class="btn-save" style="display:none;"
+	                    th:attr="data-co-id=${comment.co_id}, data-wr-no=${comment.wr_no}" 
+	            		onclick="comment_action(this, 'updateComment')">
+	                    <i class='bx bx-edit-alt'></i>
+	               </button>
+			</div>
 			<div class="comment-footer">
 				<button class="btn-like"
 					th:attr="data-no=${comment.co_id} ,data-action='like', data-type='comment'"
@@ -43,8 +47,8 @@
 					th:id="'comment-report' + ${comment.co_id}"></i>				
 			    	<span class="action-count" th:text="${comment.co_bad}"></span>
 				</button>
-		 	</div>
-		 			
+		 	</div>	
+		</div>
 	</div>
 	<!--/* colist == 0 이면 없다고 이야기할 공간 */-->
 	<div th:if="${colist == null or #lists.isEmpty(colist)}" class="comment-item" style="text-align: center;">

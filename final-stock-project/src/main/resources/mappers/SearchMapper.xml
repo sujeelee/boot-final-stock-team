@@ -45,8 +45,9 @@
 		FROM (
 		    SELECT 
 		        a.wr_category, (COUNT(*) + SUM(a.wr_comment)) AS total, b.st_name 
-		    FROM board a
+		    FROM board a 
 			Join stock b on a.wr_category = b.st_code
+			where a.wr_blind != 'Y'
 		    GROUP BY a.wr_category
 		) AS board
 		ORDER BY total DESC
@@ -66,7 +67,7 @@
 		select a.wr_content, a.wr_datetime, b.mb_level, b.mb_nick as mb_id 
 		from board a
 		join member b on a.mb_id = b.mb_id
-		where wr_category = #{code}
+		where wr_category = #{code} and wr_blind != 'Y'
 		order by wr_no DESC
 		limit 10
 	</select>
@@ -97,10 +98,10 @@
 		delete from follow where fo_no = #{fo_no} and mb_id = #{mb_id}
 	</delete>
 	<select id="getFollowViews" resultType="kh.st.boot.model.dto.FollowViewDTO">
-		select  a.wr_no, a.wr_content, a.wr_category as st_code, a.wr_datetime, b.st_name 
+		select  a.wr_no, a.wr_content, a.wr_category as st_code, a.wr_datetime, a.wr_blind, b.st_name 
 		from board a 
 		join stock b on a.wr_category = b.st_code
-	    where a.mb_id = #{fo_id} and a.wr_blind = 'N'
+	    where a.mb_id = #{fo_id}
 		order by a.wr_no DESC
 		<if test="cri != null">
 			limit #{cri.pageStart}, #{cri.perPageNum} 

@@ -32,7 +32,7 @@ public class CommunityService {
 	    if (list == null || list.isEmpty()) {
 	        return list;
 	    }
-		for(BoardVO tmp : list) {	    
+		for(BoardVO tmp : list) {	   
 			CommunityActionVO ca = new CommunityActionVO();
 			ca.setCg_num(tmp.getWr_no());
 			ca.setCg_type("board");
@@ -156,19 +156,25 @@ public class CommunityService {
 	    if ("board".equals(feel.getCg_type())) {
 	        int likeCount = communityDao.getLikeCountForBoard(feel.getCg_num());
 	        int reportCount = communityDao.getReportCountForBoard(feel.getCg_num());
-
-
-
 	        boolean success = communityDao.updateBoardCounts(feel.getCg_num(), likeCount, reportCount);
+	        if(success) { //실제로 업데이트가 되면
+	        	if(reportCount > 9) { //신고 수가 N개 초과이면
+	        		//해당 게시물의 wr_blind가 Y로 업데이트 되도록
+	        		communityDao.updateBoardBlind(feel.getCg_num()); 
+	        	}
+	        }
 	    }
 	    // 댓글에 대한 좋아요 및 신고 수 업데이트
 	    else if ("comment".equals(feel.getCg_type())) {
 	        int likeCount = communityDao.getLikeCountForComment(feel.getCg_num());
 	        int reportCount = communityDao.getReportCountForComment(feel.getCg_num());
-
-	        
-
 	        boolean success = communityDao.updateCommentCounts(feel.getCg_num(), likeCount, reportCount);
+	        if(success) { //실제로 업데이트가 되면
+	        	if(reportCount > 9) { //신고 수가 N개 초과이면
+	        		//해당 댓글의 co_blind가 Y로 업데이트 되도록
+	        		communityDao.updateCommentBlind(feel.getCg_num()); 
+	        	}
+	        }
 	    }
     }
 
