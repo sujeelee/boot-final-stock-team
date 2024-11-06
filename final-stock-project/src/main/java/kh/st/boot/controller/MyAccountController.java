@@ -35,7 +35,6 @@ import kh.st.boot.pagination.TransCriteria;
 import kh.st.boot.service.MemberService;
 import kh.st.boot.service.MyAccountService;
 import kh.st.boot.service.NewsService;
-import kh.st.boot.service.StockService;
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -46,7 +45,6 @@ public class MyAccountController {
 	private MyAccountService myAccountService;
 	private MemberService memberService;
 	private NewsService newsService;
-	private StockService stockService;
 	
 	@GetMapping("/asset")
 	public String asset(Model model, Principal principal) {
