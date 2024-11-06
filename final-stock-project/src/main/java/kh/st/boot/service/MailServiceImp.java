@@ -3,7 +3,9 @@ package kh.st.boot.service;
 import org.springframework.stereotype.Service;
 
 import kh.st.boot.dao.MailDAO;
+import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.model.vo.MailVO;
+import kh.st.boot.model.vo.MemberVO;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -11,12 +13,18 @@ import lombok.AllArgsConstructor;
 public class MailServiceImp implements MailService{
 
     private MailDAO mailDao;
-
+	private MemberDAO memberDao;
 	@Override
 	public boolean setMailCode(String evc_email, int code) {
 		if (evc_email == null) {
             return false;
         }
+		MemberVO user = memberDao.findByEmail(evc_email);
+
+		if (user != null) {
+			return false;
+		}
+
 		return mailDao.setMailCode(evc_email, code);
 	}
 
