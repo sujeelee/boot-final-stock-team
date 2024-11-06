@@ -20,7 +20,7 @@
     	SELECT board.*, member.mb_nick, member.mb_level
     	FROM board
 		left join member on member.mb_id = board.mb_id
-    	WHERE wr_category = #{wr_category}
+    	WHERE board.wr_category = #{wr_category}
 		ORDER BY wr_no DESC
     </select>    
 
@@ -64,7 +64,9 @@
 	</insert>
 
 	<select id="getCommentList" resultType="CommentVO">
-		SELECT * FROM comment where wr_no = #{wr_no} order by co_id desc 
+		SELECT * FROM comment 
+		where wr_no = #{wr_no}
+		 order by co_id desc 
     </select>
     
    	<update id="updateCount">
@@ -147,7 +149,7 @@
     <select id="getCommentbyID" resultType="CommentVO">
       	SELECT *
         FROM comment
-        WHERE co_id = #{co_id} AND wr_no = #{wr_no} 
+        WHERE co_id = #{co_id} AND wr_no = #{wr_no}
     </select>
     
     <delete id="deleteComment">
@@ -189,5 +191,14 @@
         WHERE 
             mb_id = #{mb_id} AND fo_mb_id = #{fo_mb_id}
     </select>
-	
+	<update id="updateBoardBlind">
+		update board 
+		set	wr_blind = 'Y'
+		where wr_no = #{wr_no}
+	</update>
+	<update id="updateCommentBlind">
+		update comment
+		set	co_blind = 'Y'
+		where co_id = #{co_id}
+	</update>
 </mapper>

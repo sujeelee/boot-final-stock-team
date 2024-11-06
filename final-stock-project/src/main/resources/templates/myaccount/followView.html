@@ -34,7 +34,12 @@
 							<div class="fo-stock" th:text="${vi.st_name}+'에 쓴 글'"></div>
 							<div class="fo-date" th:text="'· ' + ${#dates.format(vi.wr_datetime, 'MM월 dd일')}"></div>
 						</div>
-						<div class="fo-content" th:text="${vi.wr_content}"></div>
+						<div th:class="${vi.wr_blind.equals('Y')} ? 'blur':''">
+			                <span class="blind-content" th:if="${vi.wr_blind.equals('Y')}">
+			                	⚠신고로 인하여 게시글이 블라인드처리 되었습니다⚠
+			                </span>
+							<div class="fo-content" th:text="${vi.wr_content}"></div>
+						</div>
 					</div>
 					<div class="fo-view-row" th:if="${views == null or #lists.isEmpty(views)}">
 						팔로우한 회원이 작성한 게시글이 없습니다.

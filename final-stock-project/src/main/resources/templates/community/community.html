@@ -11,6 +11,10 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/community.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/stockorder.css}">
+<style type="text/css">
+.blur > div {filter: blur(5px);pointer-events: none;user-select: none;}
+.blind-content{position: relative;top: 37px;left: 36%;color: #c7086c;}
+</style>
 </head>
 <body>
 <main layout:fragment="content">    
@@ -51,58 +55,63 @@
                     </address>
                 </div>                
                 <!--/* 게시글 콘텐츠 */-->
-                <div class="board-body" th:data-id="${item.wr_no}">
-                    <p class="board-text" th:text="${item.wr_content}?:_"></p>
-                    <button class="follower-btn" th:data-mbid="${item.mb_id}"
-			        th:if="${item.mb_id != userInfo}"
-			        th:classappend="${#strings.equals(item.following, 'y')} ? 'follower' : ''"
-			        onclick="follower(this)"
-			        th:text="${#strings.equals(item.following, 'y')} ? '팔로우 중' : '팔로우'"></button>                  
-                    <button class="btn-save" style="display:none; margin-top: auto;"
-                    th:attr="data-wr-no=${item.wr_no}"                     
-            		onclick="board_action(this.closest('.board-body'), 'update')">
-                    <i class='bx bx-edit-alt'></i>
-                    </button>
-               </div>
-                <!--/* 게시글 추천, 신고 */-->
-                <div class="board-footer" id="board-footer">
-                	<!--/* 게시글 수정 버튼 */-->
-					<button class="btn-retouch"
-						th:if="${userInfo != null and item.mb_id == userInfo}"
-						th:onclick="'enableEditMode(' + ${item.wr_no} + ', \'post\',this)'">
-						<i class='bx bx-edit-alt'></i>
-                    </button>
-                    <!--/* 게시글 삭제 버튼 */-->
-                    <button class="btn-delete" 
-                    	th:if="${userInfo != null and item.mb_id == userInfo}"
-                    	th:attr="data-wr-no=${item.wr_no}"
-                    	onclick="board_action(this, 'delete')">
-                    	<i class='bx bx-message-rounded-x'></i>                        
-                    </button>                   
-                    <!--/* 게시글 좋아요 버튼 */-->  
-                    <button class="btn-like"
-						th:attr="data-no=${item.wr_no}, data-action='like', data-type='board'"
-                    	th:onclick = "action(this)">
-                        <i class='bx bxs-heart' th:classappend="${item.cg_like}"></i>
-                        <span class="action-count" th:text="${item.wr_good}"></span>
-                    </button>
-                    <!--/* 게시글 싫어요 버튼 */-->
-                    <button class="btn-report"
-                    	th:attr="data-no=${item.wr_no}, data-action='report', data-type='board'"
-                    	th:onclick = "action(this)">
-                        <i class='bx bx-x-circle' th:classappend="${item.cg_report}"></i>
-                        <span class="action-count" th:text="${item.wr_singo}"></span>
-                    </button>                   
-                </div>
-                <!--/* 댓글 버튼 */-->
-                <div class="dreply-btn">
-                    <button class="reply-btn" type="button"
-                    data-toggle="collapse" th:data-target="'#commentColl' + ${item.wr_no}" 
-                    th:onclick="replace_comment([[${item.wr_no}]]);">
-                        <i class='bx bx-comment'></i>                                
-	                    <span th:id="'commentCount'+${item.wr_no}" class="comment-count" th:text="${item.wr_comment}"></span>
-                    </button>
-                    <!--/* 댓글 count */-->
+                <div th:class="${item.wr_blind.equals('Y')} ? 'blur':''">
+	                <span class="blind-content" th:if="${item.wr_blind.equals('Y')}">
+	                	⚠신고로 인하여 게시글이 블라인드처리 되었습니다⚠
+	                </span>
+	                <div class="board-body" th:data-id="${item.wr_no}">
+	                    <p class="board-text" th:text="${item.wr_content}?:_"></p>
+	                    <button class="follower-btn" th:data-mbid="${item.mb_id}"
+				        th:if="${item.mb_id != userInfo}"
+				        th:classappend="${#strings.equals(item.following, 'y')} ? 'follower' : ''"
+				        onclick="follower(this)"
+				        th:text="${#strings.equals(item.following, 'y')} ? '팔로우 중' : '팔로우'"></button>                  
+	                    <button class="btn-save" style="display:none; margin-top: auto;"
+	                    th:attr="data-wr-no=${item.wr_no}"                     
+	            		onclick="board_action(this.closest('.board-body'), 'update')">
+	                    <i class='bx bx-edit-alt'></i>
+	                    </button>
+	               </div>
+	                <!--/* 게시글 추천, 신고 */-->
+	                <div class="board-footer" id="board-footer">
+	                	<!--/* 게시글 수정 버튼 */-->
+						<button class="btn-retouch"
+							th:if="${userInfo != null and item.mb_id == userInfo}"
+							th:onclick="'enableEditMode(' + ${item.wr_no} + ', \'post\',this)'">
+							<i class='bx bx-edit-alt'></i>
+	                    </button>
+	                    <!--/* 게시글 삭제 버튼 */-->
+	                    <button class="btn-delete" 
+	                    	th:if="${userInfo != null and item.mb_id == userInfo}"
+	                    	th:attr="data-wr-no=${item.wr_no}"
+	                    	onclick="board_action(this, 'delete')">
+	                    	<i class='bx bx-message-rounded-x'></i>                        
+	                    </button>                   
+	                    <!--/* 게시글 좋아요 버튼 */-->  
+	                    <button class="btn-like"
+							th:attr="data-no=${item.wr_no}, data-action='like', data-type='board'"
+	                    	th:onclick = "action(this)">
+	                        <i class='bx bxs-heart' th:classappend="${item.cg_like}"></i>
+	                        <span class="action-count" th:text="${item.wr_good}"></span>
+	                    </button>
+	                    <!--/* 게시글 싫어요 버튼 */-->
+	                    <button class="btn-report"
+	                    	th:attr="data-no=${item.wr_no}, data-action='report', data-type='board'"
+	                    	th:onclick = "action(this)">
+	                        <i class='bx bx-x-circle' th:classappend="${item.cg_report}"></i>
+	                        <span class="action-count" th:text="${item.wr_singo}"></span>
+	                    </button>                   
+	                </div>
+	                <!--/* 댓글 버튼 */-->
+	                <div class="dreply-btn">
+	                    <button class="reply-btn" type="button"
+	                    data-toggle="collapse" th:data-target="'#commentColl' + ${item.wr_no}" 
+	                    th:onclick="replace_comment([[${item.wr_no}]]);">
+	                        <i class='bx bx-comment'></i>                                
+		                    <span th:id="'commentCount'+${item.wr_no}" class="comment-count" th:text="${item.wr_comment}"></span>
+	                    </button>
+	                    <!--/* 댓글 count */-->
+	                </div>
                 </div>
                 <!--/* 댓글 each */-->
                 <div th:id="'commentColl' + ${item.wr_no}" class="collapse comment">                        
