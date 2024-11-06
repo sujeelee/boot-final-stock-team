@@ -104,7 +104,7 @@ CREATE TABLE `board` (
 	`wr_comment`	int(11)	NULL	DEFAULT 0,
 	`wr_good`	int(11)	NULL	DEFAULT 0,
 	`wr_singo`	int(11)	NULL	DEFAULT 0,
-	`wr_blind`	char(4)	NULL,
+	`wr_blind`	char(4)	NULL DEFAULT 'N',
 	`wr_datetime` datetime DEFAULT now()
 );
 
