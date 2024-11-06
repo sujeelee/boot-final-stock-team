@@ -79,8 +79,8 @@ public class AdminController {
 	@Autowired
 	private AdminStock_addService adminStock_addService;
 
+	// hh
 	// 관리자 기본 페이지
-
 	// 관리자 설정 페이지 값 전송 코드
 	@GetMapping("/adminHome")
 	public String admin(Model model) {
@@ -91,6 +91,7 @@ public class AdminController {
 		return "/admin/adminHome";
 	}
 
+	// - hh
 	// 관리자 설정 페이지 값 변경
 	@PostMapping("/adminHome/update")
 	public String admUpdate(AdminVO adminVO, Model model) {
@@ -109,6 +110,7 @@ public class AdminController {
 	// -----------------------------    회원 정보 수정 -------------------------------
 	// -------------------------------------------------------------------------------
 
+	// - hh
 	@GetMapping("/admMember/adminUser")
 	public String admUser(Model model, Criteria cri) {
 		cri.setPerPageNum(12);
@@ -120,6 +122,7 @@ public class AdminController {
 		return "/admin/admMember/adminUser";
 	}
 
+	// - hh
 	// 회원 정보 상세페이지 조회
 	@PostMapping("/admMember/admUserSelect")
 	public String admUserSelUpd(Model model, int mb_no) {
@@ -130,6 +133,7 @@ public class AdminController {
 		return "/admin/admMember/admUserSelect";
 	}
 
+	// - hh
 	// 회원 정보 상세페이지 업데이트
 	@PostMapping("/admMember/admUserSelect/Update")
 	public String admUserUpdate(Model model, AdmMemberVO admMemberVO) {
@@ -142,6 +146,7 @@ public class AdminController {
 		return "redirect:/admin/admMember/adminUser";
 	}
 
+	// - hh
 	// 회원 정보 삭제
 	// 이건 잘 모르겠음
 	@PostMapping("/admMember/adminUser/delete")
@@ -151,11 +156,14 @@ public class AdminController {
 		return "redirect:/admin/admMember/adminUser";
 	}
 
+	// - hh
 	// 회원등록 페이지 불러오기
 	@GetMapping("/admMember/admUserInsert")
 	public String admUserInsertPage() {
 		return "/admin/admMember/admUserInsert";
 	}
+	
+	// -hh
 	// 회원 등록 
 	@PostMapping("/admMember/admUserInsert/AdminUserInsert")
 	public String admUserInsert(Model model, AdmMemberVO admMemberVO) { 
@@ -168,6 +176,7 @@ public class AdminController {
 		return "redirect:/admin/admMember/adminUser";
 	}
 
+	// -hh
 	@GetMapping("/admMember/adminUser/userSearch")
 	public String admuseSearch(@RequestParam("use_sh") String use_sh, @RequestParam("search") String search,
 			@RequestParam(value = "page", defaultValue = "1") int page, Model model, UserCriteria cri) { // UserCriteria
@@ -190,6 +199,7 @@ public class AdminController {
 		return "/admin/admMember/adminUser";
 	}
 
+	// -hh
 	@PostMapping("/admMember/admUserSelect/searchid")
 	@ResponseBody
 	public int UserIdCheck(@RequestBody AdMemberCheckDTO request) {
@@ -204,6 +214,8 @@ public class AdminController {
 	// -------------------------------------------------------------------------------
 	// -------------------------- 뉴스 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
+	
+	// - hh gh
 	// newspaper 뉴스
 	@GetMapping("/admNews/news")
 	public String newsPage(Model model, Criteria cri) {
@@ -215,6 +227,7 @@ public class AdminController {
 		return "/admin/admNews/news"; // admin/news.html로 이동
 	}
 
+	// - gh
 	// 뉴스수정
 	@PostMapping("/admNews/newspapers/edit")
 	public String updateNewspaper(@RequestParam(required = false) String np_name,
@@ -230,6 +243,7 @@ public class AdminController {
 		return "redirect:/admin/admNews/news";
 	}
 
+	// - gh
 	// 뉴스등록
 	@PostMapping("/admNews/newspapers/register")
 	public String registerNewspaper(@RequestParam(required = false) String np_name,
@@ -249,6 +263,7 @@ public class AdminController {
 		return "redirect:/admin/admNews/news";
 	}
 
+	// - gh
 	// 사용여부 변경
 	@PostMapping("/admNews/newspapers/usechange")
 	public String NewsPaperUseChange(@RequestParam(required = false) String np_no,
@@ -267,6 +282,7 @@ public class AdminController {
 		return "redirect:/admin/admNews/news";
 	}
 
+	// -gh
 	// 뉴스삭제
 	@PostMapping("/admNews/newspapers/delete")
 	public String deleteNewspaper(@RequestParam("np_no") int np_no, @RequestParam("np_name") String np_name,
@@ -280,6 +296,7 @@ public class AdminController {
 		return "redirect:/admin/admNews/news";
 	}
 
+	// - gh hh
 	@GetMapping("/admNews/news/search")
 	public String searchNewspapers(Model model, @RequestParam("np_name") String np_name, AdmNewsCriteria cri,
 			@RequestParam(value = "page", defaultValue = "1") int page) {
@@ -303,6 +320,7 @@ public class AdminController {
 	// -------------------------- LV 관리 컨트롤러 -------------------------------
 	// -------------------------------------------------------------------------------
 
+	// gh
 	// 접속시 불러오기
 	@GetMapping("/admLevel/admLevelPage")
 	public String sltAdmLevelPage(Model model) {
@@ -311,8 +329,7 @@ public class AdminController {
 		return "/admin/admLevel/admLevelPage";
 	}
 
-
-
+	// hh
 	// 회원 정보 상세페이지 조회
 	@PostMapping("/admLevel/admLevSel")
 	public String admlevSel(Model model, int lv_num) {
@@ -322,6 +339,7 @@ public class AdminController {
 		return "/admin//admLevel/admLevSel";
 	}
 
+	// hh
 	// 수정하기
 	@PostMapping("/admLevel/admLevSel/update")
 	public String udtAdmLv(AdminLevelPageVO admLevVO, Model model) {
@@ -333,7 +351,7 @@ public class AdminController {
 	// ------------------- 출석체크 포인트 적립내역 검색 컨트롤러 -------------------
 	// -------------------------------------------------------------------------------
 
-
+	// gh
 	// 접속시 불러오기
 	@GetMapping("/admDaycheck/daycheckAdm")
 	public String sltAdmPointPage(Model model, Criteria cri) {
@@ -345,6 +363,7 @@ public class AdminController {
 		return "/admin/admDaycheck/daycheckAdm";
 	}
 
+	// gh
 	@PostMapping("/admDaycheck/daycheckAdm/update")
 	public String sltIdPointPage(@RequestParam String mb_id, Model model) {
 		List<AdmDaycheckVO> sltPointOne = pointSltIdPageService.sltOneDay(mb_id);
@@ -352,6 +371,7 @@ public class AdminController {
 		return "/admin/admDaycheck/daycheckAdm";
 	}
 
+	// hh
 	@GetMapping("/admDaycheck/daycheckAdm/Search")
 	public String daycheckSearch(@RequestParam String mb_id, Model model,
 			@RequestParam(value = "page", defaultValue = "1") int page, AdmDayCheckCriteria cri) {
@@ -372,6 +392,7 @@ public class AdminController {
 	// -------------------------- 주문내역 조회 컨트롤러 ------------------------------------
 	// -------------------------------------------------------------------------------
 
+	// gh hh
 	// 접속시 불러오기
 	@GetMapping("/admOrder/orderAdm")
 	public String sltOrder(Model model, Criteria cri) {
@@ -384,8 +405,8 @@ public class AdminController {
 		return "/admin/admOrder/orderAdm";
 	}
 
+	// hh
 	// 주문내역 검색
-
 	@PostMapping("/admOrder/orderAdm/search")
 	public String searchIdName(@RequestParam String od_name, @RequestParam String mb_id, @RequestParam String od_id,
 			Model model) {
@@ -395,8 +416,9 @@ public class AdminController {
 		return "/admin/admOrder/orderAdm";
 
 	}
+	
+	// gh
 	// 주문번호로 삭제
-
 	@PostMapping("/admOrder/orderAdm/delet")
 	public String orderDelet(@RequestParam String od_id, Model model) {
 		List<admOrderPageVO> deletOrder = adminOrderService.deletOrderNum(od_id);
@@ -406,6 +428,8 @@ public class AdminController {
 
 	// -------------------------------------------------------------------------------
 	// --------------------------주식/뉴스 회원승인 ----------------------------------
+	
+	// gh
 	@GetMapping("/admOrder/orderAdm/AdmOrderSearch")
 	public String orderSearch(@RequestParam("od_sh") String od_sh, @RequestParam("od_search") String od_search,
 			@RequestParam(value = "page", defaultValue = "1") int page, Model model, OrderCriteria cri) {
@@ -431,6 +455,7 @@ public class AdminController {
 	// ------------------------- admApprovalPage ----------------------------
 	// -------------------------------------------------------------------------------
 
+	// gh
 	// 접속시
 	@GetMapping("/admApproval/admApprovalPage")
 	public String nullSltApproval(Model model, Criteria cri) {
@@ -442,6 +467,7 @@ public class AdminController {
 		return "/admin/admApproval/admApprovalPage";
 	}
 
+	// gh
 	// 승인/거절 했을때
 	@PostMapping("/admApproval/admApprovalPage/slt")
 	public String ySltApproval(@RequestParam String mp_yn, @RequestParam String mp_company,
@@ -450,6 +476,7 @@ public class AdminController {
 		return "redirect:/admin/admApproval/admApprovalPage";
 	}
 
+	// hh
 	// 검색기능
 	@GetMapping("/admApproval/admApprovalPage/search")
 	public String searchApproval(String mp_company, Model model,
@@ -473,6 +500,7 @@ public class AdminController {
 	// --------------------------사용자포인트 관리 컨트롤러 --------------------------
 	// -------------------------------------------------------------------------------
 
+	// gh hh
 	// 페이지 이동시 리스트 당겨옴
 	@GetMapping("/admPoint/admPointPage")
 	public String pointSelect(Model model, Criteria cri) {
@@ -484,6 +512,7 @@ public class AdminController {
 		return "/admin/admPoint/admPointPage";
 	}
 
+	// hh
 	// 아이디로 사용자 검색
 	@PostMapping("admPoint/admPointPage/Id")
 	public String idSelect(@RequestParam String mb_id, Model model, Criteria cri) {
@@ -494,6 +523,7 @@ public class AdminController {
 		return "/admin/admPoint/admPointPage";
 	}
 
+	// gh
 	// 포인트 적립, 차감
 	@PostMapping("/admPoint/admPointPage/point")
 	public String plusMinus(Model model, @RequestParam String mb_id, @RequestParam int po_num,@RequestParam String pointType, @RequestParam String po_content) {
@@ -511,6 +541,7 @@ public class AdminController {
 		}
 	}
 
+	// gh
 	// 내역 삭제
 	@PostMapping("admPoint/admPointPage/delete")
 	public String plusMinus(@RequestParam int po_no) {
@@ -519,6 +550,7 @@ public class AdminController {
 		return "redirect:/admin/admPoint/admPointPage";
 	}
 
+	// hh
 	@GetMapping("admPoint/admPointPage/pointSearch")
 	public String pointSearch(Model model, String mb_id, AdmPointCriteria cri,
 			@RequestParam(value = "page", defaultValue = "1") int page) {
@@ -543,6 +575,7 @@ public class AdminController {
 	// -------------------------- 주식 발행/소각 요청 승인 ----------------------------
 	// ------------------------------------------------------------------------------
 
+	// gh
 	// 페이지 이동시 리스트 당겨옴
 	@GetMapping("/admStock/admStock_add")
 	public String stock_add(Model model) {
@@ -551,6 +584,7 @@ public class AdminController {
 		return "/admin/admStock/admStock_add";
 	}
 
+	// gh
 	// 검색하기
 	@PostMapping("/admStock/admStock_add/search")
 	public String Stock_addSearch(Model model, String mb_id) {
@@ -561,6 +595,7 @@ public class AdminController {
 		return "/admin/admStock/admStock_add";
 	}
 
+	// gh
 	// 상세페이지에서 승인/거절시 update 하고 리스트 페이지로 이동
 	@PostMapping("/admStock/admStock_add/choose")
 	public String chooseStock_add(int sa_no, String sa_yn, String sa_feedback, int sa_qty, String mb_id) {
