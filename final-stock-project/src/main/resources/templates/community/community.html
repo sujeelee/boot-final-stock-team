@@ -46,6 +46,9 @@
             </form>
             <!--/* 절취선 */-->
             <div class="boarddivider"></div>
+            <div class="board-none" th:if="${bolist == null or #lists.isEmpty(bolist)}" >
+				<span>아직 게시글이 없습니다. 첫 게시의 영광을 누리세요!</span>
+            </div>
             <th:block th:each="item : ${bolist} ">
                 <!--/* 게시글 유저정보 + 반복 */-->              
                 <div class="board-header">
@@ -142,9 +145,10 @@
         <div class="div-ul">
             <ul class="stock-list">
                 <li th:each="stock : ${top10}" class="stockItem">
-                	<p th:text="${stock.ranks}"></p>
-                    <h3 th:text="${stock.st_name}"></h3>
-                    <p th:text="${stock.price}"></p>커뮤니티&nbsp;
+                	<a class="comm-stock-hots" th:href="@{/stock/} + ${stock.code}" target="_blank">
+	                    <h3 th:text="${stock.ranks} + ' ' + ${stock.st_name}"></h3>
+	                </a>
+	                <p th:text="${#numbers.formatInteger(stock.price, 0, 'COMMA')} + '원'"></p>
                 </li>
             </ul>
         </div>
