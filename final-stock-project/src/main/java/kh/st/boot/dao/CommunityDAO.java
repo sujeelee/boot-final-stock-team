@@ -74,5 +74,9 @@ public interface CommunityDAO {
 	void insertFollower(FollowVO follow);
 
 	String followingStatus(String mb_id, String fo_mb_id);
+
+	void updateBoardBlind(int wr_no);
+
+	void updateCommentBlind(int co_id);
  
 }
