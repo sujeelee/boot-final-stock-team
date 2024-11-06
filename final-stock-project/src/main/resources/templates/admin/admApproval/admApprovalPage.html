@@ -18,7 +18,7 @@
 				<div id="select_left">
 					<form action="/admin/admApproval/admApprovalPage/search"
 						method="get" class="local_sch" onsubmit="return unableform()">
-						<input type="text" name="mp_company" id="mp_company" required placeholder="요청사 ID"
+						<input type="text" name="mp_company" id="mp_company" required placeholder="요청사 이름"
 							class="in_sch" style="height: 30px">
 						<button type="submit" class="btn_submit btn"
 							style="margin-left: 2px;">검색</button>
@@ -30,6 +30,7 @@
 					<thead>
 						<tr>
 							<th>요청 타입</th>
+							<th>요청사 ID</th>
 							<th>요청사 이름</th>
 							<th>신청일자</th>
 							<th>승인/거절</th>
@@ -39,6 +40,7 @@
 					<tbody>
 						<tr th:each="list : ${list}">
 							<td th:text="${list.mp_type}" class="app_td"></td>
+							<td th:text="${list.mb_id}" class="app_td"></td>
 							<td th:text="${list.mp_company}" class="app_td"></td>
 							<td th:text="${list.mp_datetime}" class="app_td"></td>
 							<td class="app_btn">
