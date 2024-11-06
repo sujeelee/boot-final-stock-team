@@ -1,4 +1,8 @@
-﻿drop database if exists stockAndFund;
+-- DB 총집편
+-- 수정일 : 2024.11.06 14:00:12
+-- member 에 팔로워랑 팔로워즈가 있던데 중복인가욤?
+
+drop database if exists stockAndFund;
 
 create database if not exists stockAndFund;
 
@@ -34,7 +38,8 @@ ex) 19960908',
 	`mb_oauthProvider` varchar(30)	NULL,
 	`mb_oauthId` varchar(255)	null,
 	`mb_loginMethod` varchar(50) null default 'internal',
-	`mb_followers` int(4) default 0
+	`mb_followers` int(4) default 0,
+	`mb_follow` INT(11) NULL DEFAULT 0
 );
 
 
@@ -85,7 +90,9 @@ CREATE TABLE `stock` (
 	`st_qty`	int(11)	NULL,
 	`st_board_cnt`	int(11)	NULL,
 	`st_category`	varchar(255)	NULL,
-	`st_status`	varchar(255)	NULL
+	`st_status`	varchar(255)	NULL,
+	`st_issue` VARCHAR(255) NULL,
+	 `st_type` VARCHAR(255) NULL
 );
 
 
@@ -97,15 +104,21 @@ CREATE TABLE `board` (
 	`wr_comment`	int(11)	NULL	DEFAULT 0,
 	`wr_good`	int(11)	NULL	DEFAULT 0,
 	`wr_singo`	int(11)	NULL	DEFAULT 0,
-	`wr_blind`	char(4)	NULL,
+	`wr_blind`	char(4)	NULL DEFAULT 'N',
 	`wr_datetime` datetime DEFAULT now()
 );
 
 CREATE TABLE `stock_info` (
 	`si_id`	INT(11) primary key	 AUTO_INCREMENT	NOT NULL,
-	`si_date`	date	NULL,
+	`si_date` VARCHAR(255) NULL DEFAULT NULL,
 	`si_price`	int(11)	NULL,
-	`st_code`	varchar(255)	NOT NULL
+	`st_code`	varchar(255)	NOT NULL,
+	`si_vs` VARCHAR(50) NULL COMMENT '대비',
+	`si_fltRt` VARCHAR(45) NULL COMMENT '등락율',
+	`si_mrkTotAmt` VARCHAR(45) NULL COMMENT '시가총액',
+	`si_hipr` VARCHAR(45) NULL COMMENT '하루 최고 고가',
+	`si_lopr` VARCHAR(45) NULL COMMENT '하루 최저가',
+	`si_trqu` VARCHAR(45) NULL COMMENT '체결수량 누적합계'
 );
 
 CREATE TABLE `comment` (
@@ -115,7 +128,7 @@ CREATE TABLE `comment` (
 	`co_bad` int(5) DEFAULT 0,
 	`co_content`	text	NULL,
 	`mb_id`	varchar(255)	NULL,
-	`co_blind`	char(4)	NULL,
+	`co_blind`	char(4)	DEFAULT 'N',
 	`co_datetime`	datetime DEFAULT now()
 );
 
@@ -274,12 +287,15 @@ CREATE TABLE `deposit_order` (
 	`do_tno`	varchar(255)	NULL,
 	`do_auth`	varchar(255)	NULL,
 	`do_date`	DATETIME	NULL,
-	`do_status`	varchar(50)	NULL
+	`do_status`	varchar(50)	NULL,
+	`do_tel` VARCHAR(255) NOT NULL,
+	`do_email` VARCHAR(255) NULL
 );
 
 CREATE TABLE `deposit` (
 	`de_no`	INT(11) primary key AUTO_INCREMENT	NOT NULL,
-	`de_num` INT(11) NULL,
+	`de_num` INT(11) NULL ,
+	`de_before_num` INT NULL DEFAULT 0,
 	`de_content`	varchar(255)	NULL,
 	`de_datetime`	DATETIME	NULL,
 	`de_stock_code`	varchar(255)	NULL,
@@ -298,7 +314,8 @@ CREATE TABLE `reservation` (
 	`re_want_price`	int(11)	NULL,
 	`re_st_code`	varchar(255)	NULL,
 	`re_qty`	int(11)	NULL,
-	`re_state`	varchar(255)	NULL
+	`re_state`	varchar(255)	NULL,
+	`re_done_date` DATETIME NULL
 );
 
 CREATE TABLE `member_approve` (
@@ -311,6 +328,43 @@ CREATE TABLE `member_approve` (
 	`mb_no`	INT(11) NOT NULL
 );
 
+CREATE TABLE `deposit_send` (
+  `ds_no` INT NOT NULL AUTO_INCREMENT COMMENT '기본키',
+  `ds_send_name` VARCHAR(255) NULL COMMENT '송금 보낸 사람명칭',
+  `ds_receive_name` VARCHAR(255) NULL COMMENT '받은 이름',
+  `ds_receive_account` VARCHAR(255) NULL COMMENT '받은 계좌번호',
+  `ds_datetime` DATETIME NULL COMMENT '보낸일자',
+  `ds_favorite` CHAR(1) NULL COMMENT '즐겨찾기 여부',
+  `ds_send_price` INT NULL COMMENT '보낸 금액',
+  `mb_id` VARCHAR(255) NULL COMMENT '송금한 회원 아이디',
+  `ds_re_mb_id` VARCHAR(255) NULL COMMENT '송금받은 회원 아이디',
+  PRIMARY KEY (`ds_no`))
+COMMENT = '예치금 보내기 테이블';
+
+CREATE TABLE `stock_jisu` (
+  `ji_no` INT NOT NULL AUTO_INCREMENT,
+  `ji_type` VARCHAR(100) NULL COMMENT '코스닥인지 코스피인지 등 타입 확인 용',
+  `ji_date` VARCHAR(255) NULL COMMENT '기준일자',
+  `ji_clpr` VARCHAR(100) NULL COMMENT '종가',
+  `ji_vs` VARCHAR(100) NULL DEFAULT NULL COMMENT '대비',
+  `ji_fltRt` VARCHAR(100) NULL COMMENT '등락율',
+  `ji_mkp` VARCHAR(100) NULL COMMENT '시가',
+  `ji_hipr` VARCHAR(100) NULL COMMENT '최고치',
+  `ji_lopr` VARCHAR(100) NULL COMMENT '최저치',
+  `ji_trqu` VARCHAR(255) NULL COMMENT '거래량',
+  PRIMARY KEY (`ji_no`))
+COMMENT = '코스닥, 코스피, KRX300 정보를 가져와요';
+
+CREATE TABLE `community_action` (
+    `cg_no` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `cg_num` INT NOT NULL,
+    `cg_type` VARCHAR(50) NOT NULL,
+    `st_code` VARCHAR(50) NOT NULL,
+    `mb_id` VARCHAR(50) NOT NULL,
+    `cg_datetime` DATETIME NOT NULL,
+    `cg_like` VARCHAR(255),
+    `cg_report` VARCHAR(255)
+);
 
 ALTER TABLE `stock_member` ADD CONSTRAINT `FK_member_TO_stock_member_1` FOREIGN KEY (
 	`mb_no`
@@ -335,5 +389,3 @@ REFERENCES `member` (
 
 -- Group By 에러 해결 
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
-
--- 총집편 적용 완료

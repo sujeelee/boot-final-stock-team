@@ -10,3 +10,6 @@ CREATE TABLE `stockandfund`.`deposit_send` (
   `ds_re_mb_id` VARCHAR(255) NULL COMMENT '송금받은 회원 아이디',
   PRIMARY KEY (`ds_no`))
 COMMENT = '예치금 보내기 테이블';
+
+
+--총집편 적용 완료

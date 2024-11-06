@@ -24,7 +24,7 @@ public class MailConfig {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true"); //보안설정
         props.put("mail.smtp.starttls.required", "true"); // 보안설정
-        props.put("mail.debug", "false");  // 디버깅을 위해 true 설정
+        props.put("mail.debug", "false");  // 디버깅
         props.put("mail.smtp.ssl.protocols", "TLSv1.2"); // 보안설정
 
         return mailSender;

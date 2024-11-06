@@ -26,5 +26,9 @@ public interface MemberDAO {
 
     void reset_stop_time(@Param("id")String username);
 
+    MemberVO findByEmail(@Param("email")String email);
+
+    boolean setTemporaryPassword(@Param("pw")String encodingOption, @Param("id")String me_id);
+    
 	boolean updateLevel(@Param("mb")MemberVO member);
 }

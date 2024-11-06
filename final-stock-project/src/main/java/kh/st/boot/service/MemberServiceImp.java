@@ -199,5 +199,22 @@ public class MemberServiceImp implements MemberService{
 		}
 		return "SID-" + first + "-" + second;
 	} // 계좌번호 생성 메소드입니다.
+    @Override
+    public MemberVO findByEmail(String email) {
+        if (email.isBlank()) {
+            return null;
+        }
+        return memberDao.findByEmail(email);
+    }
+
+    @Override
+    public boolean setTemporaryPassword(String email, String option) {
+        MemberVO user = findByEmail(email);
+        if (user == null) {
+            return false;
+        }
+        String encodingOption = passwordEncoder.encode(option);//인코딩해서 저장
+        return memberDao.setTemporaryPassword(encodingOption, user.getMb_id());
+    }
 	
 }

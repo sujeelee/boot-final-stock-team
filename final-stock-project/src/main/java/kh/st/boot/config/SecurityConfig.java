@@ -53,11 +53,6 @@ public class SecurityConfig{
                 .successHandler(new LoginSuccessHandler(memberDao))
                 .failureHandler(new LoginFailHandler(memberDao))
             )
-            // .oauth2Login((oauth2) -> oauth2  // OAuth2 로그인 설정 추가
-            //     .loginPage("/member/login")  
-            //     .defaultSuccessUrl("/")  // 로그인 성공 시 리다이렉트
-            //     .failureUrl("/member/login")  // 로그인 실패 시 리다이렉트
-            // )
             .rememberMe((rm)->rm
             		.key("team1")
             		.rememberMeParameter("re")
