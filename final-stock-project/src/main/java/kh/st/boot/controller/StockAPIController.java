@@ -537,7 +537,6 @@ public class StockAPIController {
 				List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
 				if(jsonArray == null) {
 					result.put("res", "fail"); 
-					//return result;
 				}
 				Map<String, String> field = new HashMap<>();
 				field.put("basDt", "si_date");
