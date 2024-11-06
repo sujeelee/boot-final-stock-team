@@ -64,7 +64,9 @@
 	</insert>
 
 	<select id="getCommentList" resultType="CommentVO">
-		SELECT * FROM comment 
+		SELECT co.*, mb.mb_nick 
+		FROM comment as co
+		left join member mb on mb.mb_id = co.mb_id
 		where wr_no = #{wr_no}
 		 order by co_id desc 
     </select>
@@ -131,9 +133,11 @@
 	</select>
 	
 	<select id="getBoardbyID" resultType="BoardVO">
-		SELECT *
-        FROM board
-        WHERE wr_no = #{wr_no} AND mb_id = #{mb_id}
+		SELECT board.*, member.mb_nick, member.mb_level
+    	FROM board
+		left join member on member.mb_id = board.mb_id
+    	WHERE board.wr_category = #{wr_category}
+		ORDER BY wr_no DESC
 	</select>
     
     <delete id="deleteBoard">
@@ -147,9 +151,11 @@
     </update>
     
     <select id="getCommentbyID" resultType="CommentVO">
-      	SELECT *
-        FROM comment
-        WHERE co_id = #{co_id} AND wr_no = #{wr_no}
+      	SELECT co.*, mb.mb_nick 
+		FROM comment as co
+		left join member mb on mb.mb_id = co.mb_id
+		where wr_no = #{wr_no}
+		 order by co_id desc 
     </select>
     
     <delete id="deleteComment">

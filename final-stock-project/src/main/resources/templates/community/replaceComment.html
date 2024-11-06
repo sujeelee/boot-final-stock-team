@@ -5,7 +5,7 @@
 	<div th:each="comment : ${colist}" >
 	<div class="commentdivider"></div>	
 			<div class="comment-header ml-4" >
-				<blockquote th:text="${comment.mb_id}">ID</blockquote>
+				<blockquote th:text="${comment.mb_nick}">ID</blockquote>
 				<div>
 				<button th:unless="${comment.co_blind.equals('Y')}" class="btn-retouch"
 					th:if="${userInfo != null and comment.mb_id == userInfo}"
