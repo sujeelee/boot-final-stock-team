@@ -1,6 +1,7 @@
 -- DB 총집편
 -- 수정일 : 2024.11.06 14:00:12
 -- member 에 팔로워랑 팔로워즈가 있던데 중복인가욤?
+-- 이거랑 수지 데이터만 집어 넣어주심 됨돠
 
 drop database if exists stockAndFund;
 
@@ -104,7 +105,7 @@ CREATE TABLE `board` (
 	`wr_comment`	int(11)	NULL	DEFAULT 0,
 	`wr_good`	int(11)	NULL	DEFAULT 0,
 	`wr_singo`	int(11)	NULL	DEFAULT 0,
-	`wr_blind`	char(4)	NULL,
+	`wr_blind`	char(4)	NULL DEFAULT 'N',
 	`wr_datetime` datetime DEFAULT now()
 );
 

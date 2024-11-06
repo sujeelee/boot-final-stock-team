@@ -7,8 +7,16 @@
 <meta charset="UTF-8">
 <title>시드키 : 회원가입</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/join.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/jquery.ui.datepicker.monthyearpicker.css}">
-<script type="text/javascript" th:src="@{/js/jquery.ui.datepicker.monthyearpicker.js}"></script>
+
+<!-- 부트스트렙 캘린더 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/greeddatepicker.css}">
+
 </head>
 <body>
 	<main layout:fragment="content">
@@ -337,9 +345,11 @@ document.onkeydown = NotReload;
         element_wrap.style.display = 'block';
     }
     $( "#birth" ).datepicker({
-    	inline: true,
-    	maxDate : "-1d",	//선택할 수 있는 최대 날짜  +1m +1w 은 1달 1주일 뒤 까지 선택가능  [+,-][숫자][y,m,w,d] 
-    	minDate: '-100y'
+        format: 'yyyy-mm-dd',
+    	endDate : "-19y",	//선택할 수 있는 최대 날짜  +1m +1w 은 1달 1주일 뒤 까지 선택가능  [+,-][숫자][y,m,w,d] 
+    	startDate : '-100y',
+        autoclose: true,
+        buttonImageOnly: true
     });
 
 function duplicationCheck(that){
