@@ -57,8 +57,10 @@ public class StockService {
 	} 
 	
 	public List<StockVO> getCompanyList(String type, StockCriteria cri) {
-		if(cri.getMrk() != null) {
-			return stockDao.getCompanyListMrk(type, cri);
+		if(cri != null) {
+			if(cri.getMrk() != null) {
+				return stockDao.getCompanyListMrk(type, cri);
+			}
 		}
 		return stockDao.getCompanyList(type, cri);
 	}
