@@ -43,7 +43,25 @@ public class EventController {
 
     // eventStatus : Opening, Ending, resUser, Hidden
     @GetMapping("/eventhome/{eventStatus}") // principal
-    public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus) {
+    public String eventHome(Model mo, @PathVariable("eventStatus") String eventStatus, Principal principal) {
+
+        if(eventStatus.equals("Hidden")){
+            if (principal == null) {
+                return "redirect:/event/eventhome/Opening";
+            }
+
+            if (principal != null) {
+                int i = principal.toString().indexOf("mb_level=");
+                String s  = principal.toString().substring(i+9, i+11);
+                if(s.contains(",")){
+                    s  = principal.toString().substring(i+9, i+10);
+                }
+                if (9 > Integer.parseInt(s)) {
+                    return "redirect:/event/eventhome/Opening";
+                }
+            }
+        }
+        
         List<EventDTO> list = eventService.getEventList(eventStatus);
         mo.addAttribute("list", list);
         return "/event/eventpage";
