@@ -525,16 +525,15 @@ public class StockAPIController {
 	@PostMapping("/updateAllStockInfo")
 	@ResponseBody
 	public Map<String, String> updateAllStockInfo(HttpServletRequest req, HttpServletResponse res, @RequestParam("date") String date) {
-			String apiUrl = "http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey="
+			String defaultUrl = "http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey="
 					+ encodeKey
-					/* + "&isinCd=" + st_code */
 					+ "&endBasDt=" + date
 					+ "&resultType=json";
 			List<StockVO> allStocks = stockService.getCompanyList(null, null);
 			Map<String, String> result = new HashMap<>();
 			for(StockVO stOrg : allStocks) {
 				String st_code = stOrg.getSt_code();
-				apiUrl += "&isinCd=" + st_code;
+				String apiUrl = defaultUrl + "&isinCd=" + st_code;
 				List<Map<String, Object>> jsonArray = getUrlAPI(apiUrl, "");
 				if(jsonArray == null) {
 					result.put("res", "fail"); 
