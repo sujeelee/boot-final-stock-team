@@ -1,6 +1,6 @@
 .btn_submit{
     border: 0;
-    height: 25px;
+    height: 30px;
     color: #fff;
     width: 52px;
 }
@@ -15,7 +15,7 @@
 }
 
 .in_sch{
-	height: 25px;
+	height: 30px;
 }
 
 
@@ -24,4 +24,9 @@
     display: inline-flex;
     flex-direction: column;
     justify-content: center;
+}
+
+
+.new_td{
+	border: 1px solid #d6dce7
 }
