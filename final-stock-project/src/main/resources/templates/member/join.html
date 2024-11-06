@@ -128,7 +128,6 @@ function getEmailCode(mail){
         method: 'post',
         data : {evc_email : mail},
         success: function (data) {
-            console.log(data.res)
             if(data.res === true){
                 $('#email').after('<input type="button" id="codeCheck" value="이메일 코드 확인" >');
                 $('#email').after('<input type="number" id="code"  placeholder="code">');
@@ -229,8 +228,6 @@ function removeEmail_varification(mail){
     if (empty == true){
         mail = $('#email_input').val();
     }
-    console.log(empty)
-    console.log(mail)
     $.ajax({
         url: '/mail/ajax/delete_mail',
         type: 'POST',
@@ -239,10 +236,10 @@ function removeEmail_varification(mail){
             evc_email : mail
         },
         success: function(data) {
-            console.log('성공(true 가나오면 성공):', data);
+            
         },
         error: function(xhr, status, error) {
-            console.log('에러:', error);
+            console.log('error:', error);
             // 에러 처리
         }
     });
