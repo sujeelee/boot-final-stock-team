@@ -10,3 +10,5 @@ CREATE TABLE stockandfund.community_action (
     cg_like VARCHAR(255),
     cg_report VARCHAR(255)
 );
+
+-- 총집편 적용 완료

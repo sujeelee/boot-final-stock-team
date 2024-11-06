@@ -137,6 +137,9 @@ function getEmailCode(mail){
             } else if (data.send === 'duplication'){
                 $('#timer').text("중복된 이메일 입니다.");
                 $('#email_input').attr("readonly", false);
+            } else if (data.res === false) {
+                $('#timer').text("이메일 전송에 실패하였습니다. 잠시후 시도해 주세요.");
+                $('#email_input').attr("readonly", false);
             }
         },
         error: function (data, status, err) {
