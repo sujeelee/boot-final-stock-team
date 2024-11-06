@@ -43,9 +43,9 @@
 						<tbody>
 							<!-- 값 불러오기 -->
 							<tr th:each="newspaper : ${newspapers}">
-								<td th:text="${newspaper.np_name}"></td>
-								<td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"></td>
-								<td class="td_upd" style="text-align: center;"><form
+								<td th:text="${newspaper.np_name}" class="new_td"></td>
+								<td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}" class="new_td"></td>
+								<td class="td_upd new_td" style="text-align: center;"><form
 										action="/admin/admNews/newspapers/usechange" method="post">
 										<input type="hidden" name="np_no"
 											th:value="${newspaper.np_no}" /> <input type="hidden"
@@ -53,7 +53,7 @@
 											type="submit" value="사용여부변경" class="btn_submit btn btn_use"
 											accesskey="5" style="width: 110px;">
 									</form></td>
-								<td class="td_upd" style="text-align: center;">
+								<td class="td_upd new_td" style="text-align: center;">
 
 									<form action="/admin/admNews/newspapers/delete" method="post">
 										<input type="hidden" name="np_no"

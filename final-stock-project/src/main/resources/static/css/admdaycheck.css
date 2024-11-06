@@ -58,18 +58,18 @@ tr {
 }
 
 .in_sch {
-	height: 25px;
-	border: 1px solid #dcdcdc;
-	padding: 0 5px;
-	margin-bottom: 7px;
+	height: 30px;
+    border: 1px solid #dcdcdc;
+    padding: 0 5px;
+    margin-bottom: 7px;
 }
 
 .btn_a{
 	text-align: center;
-    width: 58px;
-    padding-top: 4px;
+    width: 63px;
+    padding-top: 7px;
     display: inline-flex;
+    height: 29px;
     align-content: center;
     flex-direction: column;
-    height: 24px;
 }
