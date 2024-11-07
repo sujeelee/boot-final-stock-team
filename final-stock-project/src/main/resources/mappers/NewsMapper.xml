@@ -18,6 +18,7 @@
 			NE_DATETIME LIKE CONCAT(#{formatDate}, '%')
 		GROUP BY
 			NEWSPAPER.NP_NO
+		ORDER BY NE_DATETIME DESC
 	</select>
 	
 	<select id="selectNewsPaper" resultType="NewsPaperVO">
@@ -37,6 +38,7 @@
 		WHERE
 			NP_NO = #{np_no}
 			AND NE_DATETIME LIKE CONCAT(SUBSTRING(#{ne_datetime},1,7), '%')
+		ORDER BY NE_DATETIME DESC
 	</select>
 	
 	<select id="selectNews" resultType="NewsVO">
