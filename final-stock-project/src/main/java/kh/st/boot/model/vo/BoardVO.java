@@ -21,11 +21,12 @@ public class BoardVO {
 	private String wr_blind;
 	private Date wr_datetime;
 
-	//DB 상 존제하지 않습니다.
-	//report 신고, like 좋아요로 확은
+	//DB 상 존재하지 않습니다.
+	//report 신고, like 좋아요로 확인
 	//join해서 가져올 것
 	private String cg_like; //좋아요 눌렀는지 확인
 	private String cg_report; // 신고 눌렀는지 확인
 	private String following;
+	private String lv_txt; //회원 레벨에 따른 명칭노출
 	
 }

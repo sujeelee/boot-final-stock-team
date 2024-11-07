@@ -57,7 +57,7 @@ public interface CommunityDAO {
 
 	int deleteBoard(int wr_no);
 
-	int updateBoard(BoardVO board);
+	boolean updateBoard(@Param("bo")BoardVO board);
 
 	CommentVO getCommentbyID(int wr_no, int co_id);
 

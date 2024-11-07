@@ -53,8 +53,8 @@
                 <!--/* 게시글 유저정보 + 반복 */-->              
                 <div class="board-header">
                     <address class="board-author">
-                        <span class="author-name" th:text="${item.mb_nick}?:_">ID</span>
-                        <span class="author-badge" th:text="'Lv' + ${item.mb_level}?:_">Lv 1</span>
+                        <span class="author-name" th:text="${item.mb_nick}?:_"></span>
+                        <span th:class="'member-sticker type-sticker'+${item.mb_level}" th:text="${item.lv_txt}?:_"></span>
                     </address>
                 </div>                
                 <!--/* 게시글 콘텐츠 */-->
@@ -204,7 +204,6 @@ function board_action(form, type) {
         const updatedContent = $(form).find('.edit-input').val();
         param = { wr_no: no, wr_content: updatedContent };
     }
-
     $.ajax({
         url: url,
         type: "post",

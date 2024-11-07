@@ -23,6 +23,7 @@ import kh.st.boot.model.vo.CommunityActionVO;
 import kh.st.boot.model.vo.FollowVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.CommunityService;
+import kh.st.boot.service.ConfigService;
 import kh.st.boot.service.StocksHeaderService;
 import lombok.AllArgsConstructor;
 
@@ -33,6 +34,8 @@ public class CommunityController {
 
 	private CommunityService communityService;
 	private StocksHeaderService stocksHeaderService;//
+	private ConfigService configService;
+	
 	private MemberDAO memberDao;
 
 	@GetMapping
@@ -45,7 +48,10 @@ public class CommunityController {
 	        mo.addAttribute("userInfo", mb_id);
 	    }
 		List<BoardVO> list = communityService.getBoardList(st_code, mb_id);
-
+		for(BoardVO tmp : list) {
+			String txt = configService.getLvTxt(tmp.getMb_level());
+			tmp.setLv_txt(txt);
+		}
 		mo.addAttribute("bolist", list);
 		return "community/community";
 	}
@@ -118,15 +124,16 @@ public class CommunityController {
 	}
 	@PostMapping("/update")
 	@ResponseBody
-	public Map<String, Object> updata(@RequestParam int wr_no,@RequestParam String wr_content, Principal principal) {
+	public Map<String, Object> updata(@RequestParam int wr_no, @RequestParam String wr_content, Principal principal) {
 		Map<String, Object> result = new HashMap<>();
 		String mb_id = principal.getName();
 		BoardVO board = communityService.getBoardbyID(wr_no,mb_id);
 	    if (board != null) {
 	        board.setWr_content(wr_content);
-	        
+	        System.out.println(board);
 	        // 서비스 메서드를 호출하여 업데이트 수행
 	        boolean updateSuccess = communityService.updateBoard(board);
+	        System.out.println(updateSuccess);
 	        
 	        // 결과에 따라 메시지 설정
 	        if (updateSuccess) {

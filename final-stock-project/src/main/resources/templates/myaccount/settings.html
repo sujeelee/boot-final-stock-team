@@ -5,7 +5,7 @@
   layout:decorate="~{layout/layout.html}">
 <head>
 <meta charset="UTF-8" />
-<title>Insert title here</title>
+<title>시드키 : 계좌 관리</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/accountsettings.css}">
 </head>
  <body>
@@ -40,11 +40,11 @@
 					</div>
 					<div class="my-details">
 						<div class="my-info-left">
-							<span class="my-text-left">회원 레벨</span>
+							<span class="my-text-left">회원 등급</span>
 						</div>
 						<div class="my-info-right">
 							<span class="my-text-right" 
-								  th:text="${user.mb_level} + ' Lv'"></span>
+								  th:text="${member.lv_txt}"></span>
 						</div>
 					</div>
 				</section>

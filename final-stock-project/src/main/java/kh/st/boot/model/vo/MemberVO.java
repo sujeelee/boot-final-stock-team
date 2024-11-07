@@ -53,6 +53,8 @@ public class MemberVO {
     
     private int deposit; //계좌에 얼마 있으세요?
     
+    private String lv_txt; //레벨명 가져오기
+    
 	public String getMb_auth() {
 		String auth = "GUEST";
 		int lev = this.mb_level;

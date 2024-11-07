@@ -20,7 +20,7 @@
     	SELECT board.*, member.mb_nick, member.mb_level
     	FROM board
 		left join member on member.mb_id = board.mb_id
-    	WHERE board.wr_category = #{wr_category}
+    	WHERE board.wr_category = #{st_code}
 		ORDER BY wr_no DESC
     </select>    
 
@@ -136,8 +136,8 @@
 		SELECT board.*, member.mb_nick, member.mb_level
     	FROM board
 		left join member on member.mb_id = board.mb_id
-    	WHERE board.wr_category = #{wr_category}
-		ORDER BY wr_no DESC
+    	WHERE board.wr_no = #{wr_no} and board.mb_id = #{mb_id}
+    	limit 1
 	</select>
     
     <delete id="deleteBoard">
@@ -146,16 +146,16 @@
     
      <update id="updateBoard">
         UPDATE board
-        SET wr_content = #{wr_content}
-        WHERE wr_no = #{wr_no} AND mb_id = #{mb_id}
+        SET wr_content = #{bo.wr_content}
+        WHERE wr_no = #{bo.wr_no} AND mb_id = #{bo.mb_id}
     </update>
     
     <select id="getCommentbyID" resultType="CommentVO">
       	SELECT co.*, mb.mb_nick 
 		FROM comment as co
 		left join member mb on mb.mb_id = co.mb_id
-		where wr_no = #{wr_no}
-		 order by co_id desc 
+		WHERE co.co_id = #{co_id} and co.wr_no = #{wr_no}
+		limit 1
     </select>
     
     <delete id="deleteComment">
