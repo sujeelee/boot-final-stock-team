@@ -33,10 +33,12 @@ public class AdmPointService {
 	public void plusminus(String mb_id, int po_num,String pointType, String po_content) {
 		if(pointType.equals("plus")) {
 			admPointDAO.upPoint(mb_id,po_num,po_content);
+			admPointDAO.updateUserPoint(mb_id, po_num);
 		}else if(pointType.equals("minus")) {
 			po_num = -po_num;
 			System.out.println(po_num);
 			admPointDAO.downPoint(mb_id,po_num,po_content);
+			admPointDAO.updateUserPoint(mb_id, po_num);
 		}
 		
 	}
