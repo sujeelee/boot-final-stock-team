@@ -38,6 +38,8 @@ public class AdmMemberVO {
     private String mb_emailing_test;
     private int mb_emailing;
     private String mb_account;
+    private String mb_stop_date_check;
+    private String mb_stop;
     
 	
 }

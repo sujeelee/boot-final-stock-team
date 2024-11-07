@@ -15,7 +15,8 @@
 		<div id="container">
 			<h1 id="container_title">회원 정보 수정</h1>
 			<div id="container_main" class="content">
-				<form action="/admin/admMember/admUserSelect/Update" method="post" onsubmit="return validateForm()">
+				<form action="/admin/admMember/admUserSelect/Update" method="post"
+					onsubmit="return validateForm()">
 					<section>
 						<h2 id="main_h2">회원 정보 상세 페이지</h2>
 						<div class="tbl_main">
@@ -34,7 +35,8 @@
 											size="40"><input type="hidden" name="mb_no"
 											th:value="${admUseSel.mb_no}" required class="menu_input"
 											size="40">
-											<button type="button" id="idCheckBtn" class="btn_submit btn btn_pw">아이디 중복 확인</button> <span
+											<button type="button" id="idCheckBtn"
+												class="btn_submit btn btn_pw">아이디 중복 확인</button> <span
 											id="idCheckBtnY"
 											style="color: red; display: none; margin-top: 4px;">중복된
 												아이디입니다.</span> <span id="idCheckBtnN"
@@ -43,8 +45,8 @@
 									</tr>
 									<tr>
 										<th><label>비밀번호</label></th>
-										<td><input type="password" name="mb_password" id="mb_id"
-											 th:value="${admUseSel.mb_password}" required
+										<td><input type="password" name="mb_password"
+											id="pw_update" th:value="${admUseSel.mb_password}" required
 											class="menu_input" size="40" readonly>
 											<button type="button" onclick="toggleReadonly('pw_update')"
 												class="btn_submit btn btn_pw">비밀번호 수정</button></td>
@@ -110,10 +112,14 @@
 											readonly="readonly" class="menu_input" size="40"></td>
 									</tr>
 									<tr>
-										<th><label>회원 정지일</label></th>
+										<th><label>회원 정지 확인</label></th>
 										<td><input type="text" name="mb_stop_date"
 											th:value="${#dates.format(admUseSel.mb_stop_date, 'yyyy-MM-dd')}"
-											readonly="readonly" class="menu_input" size="40"></td>
+											readonly="readonly" class="menu_input" size="40"> 
+											회원 정지<input	type="checkbox" name="mb_stop">회원 정지 해제<input
+											type="checkbox" name="mb_stop_date_check"
+											th:checked="${#dates.format(admUseSel.mb_stop_date, 'yyyy-MM-dd') !=null ? true : false}">
+										</td>
 									</tr>
 									<tr>
 										<th><label>회원 탈퇴일</label></th>
