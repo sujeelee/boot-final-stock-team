@@ -529,7 +529,7 @@ public class AdminController {
 	public String plusMinus(Model model, @RequestParam String mb_id, @RequestParam int po_num,@RequestParam String pointType, @RequestParam String po_content) {
 		MemberVO user = memberService.findById(mb_id);
 		if(user != null) {
-			admPointService.plusminus(user.getMb_id(), po_num,pointType, po_content);
+			admPointService.plusminus(user.getMb_id(), po_num, pointType, po_content);
 			model.addAttribute("msg", "정상 처리되었습니다.");
 			model.addAttribute("url", "/admin/admPoint/admPointPage");
 			return "util/msg";

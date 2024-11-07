@@ -68,7 +68,7 @@
 				        th:if="${item.mb_id != userInfo}"
 				        th:classappend="${#strings.equals(item.following, 'y')} ? 'follower' : ''"
 				        onclick="follower(this)"
-				        th:text="${#strings.equals(item.following, 'y')} ? '팔로우 중' : '팔로우'"></button>                  
+				        th:text="${#strings.equals(item.following, 'y')} ? '팔로우' : '언팔로우'"></button>                  
 	                    <button class="btn-save" style="display:none; margin-top: auto;"
 	                    th:attr="data-wr-no=${item.wr_no}"                     
 	            		onclick="board_action(this.closest('.board-body'), 'update')">
