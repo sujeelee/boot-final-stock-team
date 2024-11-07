@@ -83,7 +83,7 @@
                     			<i class="fa-solid fa-plus"></i>
                     		</span>
                     	</div>
-						<div class="terms-info terms-display active">
+						<div class="terms-info terms-display actives">
 							<div class="terms-content" th:text="${config.cf_info}"></div>
 						</div>
 						<div class="terms-title" onclick="view_terms('terms-privacy');">
@@ -92,7 +92,7 @@
                     			<i class="fa-solid fa-plus"></i>
                     		</span>
                     	</div>
-						<div class="terms-privacy terms-display active">
+						<div class="terms-privacy terms-display actives">
 							<div class="terms-content" th:text="${config.cf_privacy}"></div>
 						</div>
                     </div>
@@ -105,12 +105,12 @@
 
 <script>
 function view_terms(terms){
-    if($("."+terms).hasClass("active")){
+    if($("."+terms).hasClass("actives")){
         $("."+terms).fadeOut(150);
-        $(".terms-display").removeClass("active");
+        $(".terms-display").removeClass("actives");
     } else {
         $("."+terms).fadeIn(150);
-        $("."+terms).addClass("active");
+        $("."+terms).addClass("actives");
     }
 }
 $('#email').click(Email_Check);
