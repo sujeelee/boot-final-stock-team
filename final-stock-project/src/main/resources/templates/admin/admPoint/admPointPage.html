@@ -20,7 +20,7 @@
 				<form action="/admin/admPoint/admPointPage/pointSearch" method="get" onsubmit="return unableform()"
 					class="local_sch">
 					<input type="text" name="mb_id" placeholder="사용자 ID" required id="point_user"
-						class="in_sch" th:placeholder="${mb_id}" style="margin-top: 2px;">
+						class="in_sch" th:placeholder="${mb_id != null ? mb_id : '아이디를 입력하세요'}" style="margin-top: 2px;">
 					<button type="submit" class="btn_submit btn in_sch" style="width: 50px;">검색</button>
 					<a type="submit" href="/admin/admPoint/admPointPage"
 						class="btn_submit btn btn_a" style="padding-top: 7px;">초기화</a>
