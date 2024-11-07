@@ -14,4 +14,5 @@ public class AdmApprovalVO {
 	private String mp_datetime;
 	private String mp_app_date;
 	private int mb_no;
+	private String mb_id; 
 }
