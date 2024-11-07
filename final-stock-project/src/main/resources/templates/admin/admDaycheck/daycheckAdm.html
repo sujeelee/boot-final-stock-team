@@ -21,8 +21,8 @@
 			<div id="container_main" class="content">
 				<form action="/admin/admDaycheck/daycheckAdm/Search" method="get" onsubmit="return unableform()"
 					style="text-align: left;">
-					<input type="text" name="mb_id" placeholder="출석 체크 회원 아이디" required id="day_user"
-						class="in_sch" th:placeholder="${mb_id}">
+					<input type="text" name="mb_id" required id="day_user"
+						class="in_sch" th:placeholder="${mb_id != null ? mb_id : '아이디를 입력하세요'}">
 					<button type="submit" class="btn_submit btn in_sch"
 						style="width: 50px;">검색</button>
 					<a type="submit" href="/admin/admDaycheck/daycheckAdm"
