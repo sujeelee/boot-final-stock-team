@@ -1,5 +1,6 @@
 package kh.st.boot.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +37,26 @@ public class AdminUserService {
 	}
 
 	public boolean getAdmUserUpd(AdmMemberVO admMemberVO) {
+		AdmMemberVO existingMember = getAdmUseSel(admMemberVO.getMb_no());
+	    int emailing = admMemberVO.getMb_emailing_test() != null ? 1 : 0;
+	    String encodePw;
+	    // 입력된 비밀번호와 기존 비밀번호를 비교
+	    if (!admMemberVO.getMb_password().equals(existingMember.getMb_password())) {
+	        // 기존 비밀번호와 다르면 인코딩 진행
+	        encodePw = passwordEncoder.encode(admMemberVO.getMb_password());
+	    } else {
+	        // 기존 비밀번호와 같으면 그대로 사용
+	        encodePw = admMemberVO.getMb_password();
+	    }
+		/*
 		int emailing;
 		if(admMemberVO.getMb_emailing_test() != null) {
 			emailing = 1;
 		}else {
 			emailing = 0;
 		}
-		
 		String encodePw = passwordEncoder.encode(admMemberVO.getMb_password());
+		*/
 		admMemberVO.setMb_emailing(emailing);
 		admMemberVO.setMb_password(encodePw);
 		adminuserDAO.UseUpdate(admMemberVO);

@@ -16,17 +16,21 @@
 	select count(*) from member where mb_id = #{mb_id}
 	</select>
 
-	<update id="UseUpdate"> UPDATE member SET mb_id = #{mb_id}, mb_password =
+	<update id="UseUpdate"> UPDATE member SET 
+	
+	mb_id = #{mb_id}, mb_password =
 		#{mb_password}, mb_name = #{mb_name}, mb_nick = #{mb_nick},
 		mb_ph =
 		#{mb_ph}, mb_email = #{mb_email}, mb_zip = #{mb_zip}, mb_addr
 		=
 		#{mb_addr}, mb_addr2 = #{mb_addr2}, mb_birth = #{mb_birth},
 		mb_level =
-		#{mb_level}, mb_edit_date = NOW(),
+		#{mb_level}, mb_edit_date = NOW(),<if test="mb_stop_date_check == null"> mb_stop_date = null,</if>
+		<if test="mb_stop != null"> mb_stop_date = now(),</if>
 		mb_point = #{mb_point}, mb_emailing
 		= #{mb_emailing},
 		mb_account = #{mb_account} where mb_no = #{mb_no}
+	
 	</update>
 	<delete id="UserDelete" parameterType="int">
 		DELETE FROM member WHERE
