@@ -30,4 +30,6 @@ public class CommentVO {
 	//join해서 가져올 것
 	private String cg_like; //좋아요 눌렀는지 확인
 	private String cg_report; // 신고 눌렀는지 확인
+	private int mb_level;
+	private String lv_txt; //회원 레벨에 따른 명칭노출
 }

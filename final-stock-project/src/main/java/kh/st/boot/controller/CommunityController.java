@@ -307,6 +307,10 @@ public class CommunityController {
 	    
 	    // 댓글 목록 가져오기
 	    List<CommentVO> colist = communityService.getCommentList(wr_no, mb_id);
+	    for(CommentVO tmp : colist) {
+			String txt = configService.getLvTxt(tmp.getMb_level());
+			tmp.setLv_txt(txt);
+		}
 	 
 	    if (principal != null) {
 	        mo.addAttribute("userInfo", principal.getName());
