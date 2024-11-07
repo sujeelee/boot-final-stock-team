@@ -60,7 +60,6 @@ public class AdminApprovalService {
 	}
 
 	public List<AdmApprovalVO> search(AdmApprovalCriteria cri) {
-
 		return adminApprovalDAO.searchApproval(cri);
 
 	}

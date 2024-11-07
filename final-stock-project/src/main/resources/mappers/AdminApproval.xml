@@ -3,9 +3,10 @@
 <mapper namespace="kh.st.boot.dao.AdminApprovalDAO">
 
 	<select id="SelectAll" resultType="AdmApprovalVO">
-		SELECT
-		* FROM
+		SELECT * FROM
 		member_approve
+		JOIN member 
+		USING(mb_no)
 	</select>
 
 	<select id="selectCountList" resultType="int"> SELECT COUNT(*) FROM
@@ -34,6 +35,7 @@
 	<select id="searchApproval" resultType="AdmApprovalVO">
 		SELECT * FROM
 		member_approve
+		JOIN member USING(mb_no)
 		WHERE mp_company LIKE CONCAT('%', #{mp_company}, '%')
 		LIMIT #{pageStart}, #{perPageNum}
 	</select>

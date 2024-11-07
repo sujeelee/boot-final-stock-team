@@ -21,7 +21,7 @@
 }
 
 .modal_body {
-	width: 400px;
+	width: 1000px;
 	height: 600px;
 	padding: 40px;
 	text-align: center;
@@ -44,6 +44,23 @@ td {
 	text-align: center;
 	width: 60px;
 }
+.stock_p{
+text-align: left;
+font-size: 16px;
+margin-bottom: 5px;
+}
+
+.close-modal2,
+.close-modal{
+font-size: 18px;
+background-color: #17a2b8;
+color: white;
+border-radius: 6px;
+padding: 3px 14px;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -87,24 +104,24 @@ td {
 
 				<div class="modal">
 					<div class="modal_body">
-						<h2 style="text-align: left">데이터 처리</h2>
-						<p>
+						<h2 style="  font-size: 26px; text-align: left;">데이터 처리</h2>
+						<p class="stock_p">
 							소각/발행값: <span id="modal-sa_qty"></span>
 						</p>
-						<p>
+						<p class="stock_p">
 							요청사 ID: <span id="modal-mb_id"></span>
 						</p>
-						<p>
+						<p class="stock_p">
 							요청사유: <span id="modal-sa_content"></span>
-						</p>
+						<p class="stock_p">
 						<form action="/admin/admStock/admStock_add/choose" method="post">
-							<div>
-								<select id="sa_yn" name="sa_yn">
+						<p class="stock_p" >
+								처리: <select id="sa_yn" name="sa_yn" style="width: 75px; height: 26px;">
 									<option value="y">승인</option>
 									<option value="n">거절</option>
 								</select>
-							</div>
-							<p>관리자 코멘트</p>
+							</p>
+							<p class="stock_p">관리자 코멘트</p>
 							<textarea name="sa_feedback" style="width: 100%; height: 300px"></textarea>
 
 							<!-- sa_qty 값을 전달하기 위한 hidden input 필드 추가 -->
@@ -113,16 +130,15 @@ td {
 
 							<!-- 기존 hidden input 필드들 -->
 							<input type="hidden" id="hidden-sa_no" name="sa_no">
-
-							<button class="close-modal" type="button"
-								style="background-color: red">닫기</button>
-							<button type="submit">처리</button>
+							<button type="submit" class="close-modal2">처리</button>
+							<button type="button" class="close-modal">닫기</button>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>  
+	
 
 	<script>
     const modal = document.querySelector('.modal');
