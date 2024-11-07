@@ -26,8 +26,12 @@
         const today = new Date();
         const year = today.getFullYear();
         const month = today.getMonth(); // 0부터 시작 (0: 1월)
-        const date = today.getDate();
-        const daysInMonth = 31; // 10월의 일수
+        const date = today.getDate(); 
+        //const daysInMonth = 31; // 10월의 일수
+        const firstDayOfNextMonth = new Date(year, month + 1, 1); // 다음 달의 첫 번째 날짜
+		const lastDayOfCurrentMonth = new Date(firstDayOfNextMonth - 1); // 현재 월의 마지막 날짜
+		const daysInMonth = lastDayOfCurrentMonth.getDate(); // 현재 월의 일수
+
         const calendar = document.getElementById("calendar");
         const checkInButton = document.getElementById("checkInButton");
         const message = document.getElementById("message");
