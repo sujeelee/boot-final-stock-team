@@ -23,6 +23,7 @@ import kh.st.boot.model.vo.CommunityActionVO;
 import kh.st.boot.model.vo.FollowVO;
 import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.CommunityService;
+import kh.st.boot.service.ConfigService;
 import kh.st.boot.service.StocksHeaderService;
 import lombok.AllArgsConstructor;
 
@@ -33,6 +34,8 @@ public class CommunityController {
 
 	private CommunityService communityService;
 	private StocksHeaderService stocksHeaderService;//
+	private ConfigService configService;
+	
 	private MemberDAO memberDao;
 
 	@GetMapping
@@ -45,7 +48,10 @@ public class CommunityController {
 	        mo.addAttribute("userInfo", mb_id);
 	    }
 		List<BoardVO> list = communityService.getBoardList(st_code, mb_id);
-
+		for(BoardVO tmp : list) {
+			String txt = configService.getLvTxt(tmp.getMb_level());
+			tmp.setLv_txt(txt);
+		}
 		mo.addAttribute("bolist", list);
 		return "community/community";
 	}

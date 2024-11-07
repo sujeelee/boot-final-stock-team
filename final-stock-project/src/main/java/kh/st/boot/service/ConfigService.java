@@ -180,7 +180,12 @@ public class ConfigService {
 	}
 
 	public List<BoardVO> getCommunityList(String code) {
-		return searchDao.getCommunityList(code);
+		List<BoardVO> list = searchDao.getCommunityList(code);
+		for(BoardVO tmp : list) {
+			String txt = getLvTxt(tmp.getMb_level());
+			tmp.setLv_txt(txt);
+		}
+		return list;
 	}
 
 	public MemberVO getConfigLv(MemberVO member) {
@@ -188,9 +193,13 @@ public class ConfigService {
 		int followCnt = member.getMb_follow(); //회원을 팔로우하고 있는 회원 수를 가져올게요
 		List<AdminLevelPageVO> lvConfig = levelAdminDao.getAllssltAdminLevelPage(); //일단 모든 레벨을 가져옵니다.
 		int newMbLv = member.getMb_level();
-		if(orgMbLv > 7) {
+		
+		member.setLv_txt(lvConfig.get(orgMbLv - 1).getLv_name());
+		
+		if(orgMbLv > 6) {
 			return member;
 		}
+		
 		for(AdminLevelPageVO tmp : lvConfig) {
 			if(tmp.getLv_auto_use().equals("N")) {
 				if(followCnt <= tmp.getLv_up_limit()) {
@@ -202,11 +211,23 @@ public class ConfigService {
 		
 		if(orgMbLv != newMbLv) {
 				member.setMb_level(newMbLv);
+				member.setLv_txt(lvConfig.get(newMbLv - 1).getLv_name());
 			if(memberDao.updateLevel(member) == false) {
 				member.setMb_level(orgMbLv);
+				member.setLv_txt(lvConfig.get(orgMbLv - 1).getLv_name());
 			}
 		}  
 		return member;
+	}
+	
+	public String getLvTxt(int level) {
+		String txt = "게스트";
+		
+		List<AdminLevelPageVO> lvConfig = levelAdminDao.getAllssltAdminLevelPage(); //일단 모든 레벨을 가져옵니다.
+		
+		txt = lvConfig.get(level - 1).getLv_name();
+		
+		return txt;
 	}
 	
 }
