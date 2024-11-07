@@ -20,15 +20,18 @@
 		<div id="container">
 			<h1 id="container_title">신문사 리스트</h1>
 			<div id="container_main" class="content">
-			<div id="select_left">
-				<!-- 검색기능 form -->
-				<form action="/admin/admNews/news/search" method="get" onsubmit="return unableform()"
-					class="local_sch" style="text-align: left;">
-					<input type="text" name="np_name" required class="in_sch" id="newspaper_sh"
-						th:placeholder="${np_name}"> <input type="submit"
-						value="검색" class="btn_submit btn in_sch" accesskey="5">
-						<a type="submit" href="/admin/admNews/news" class="btn_submit btn btn_a" >초기화</a>
-				</form>
+				<div id="select_left">
+					<!-- 검색기능 form -->
+					<form action="/admin/admNews/news/search" method="get"
+						onsubmit="return unableform()" class="local_sch"
+						style="text-align: left;">
+						<input type="text" name="np_name" required class="in_sch"
+							id="newspaper_sh"
+							th:placeholder="${np_name != null ? np_name : '신문사명을 입력하세요'}">
+						<input type="submit" value="검색" class="btn_submit btn in_sch"
+							accesskey="5"> <a type="submit"
+							href="/admin/admNews/news" class="btn_submit btn btn_a">초기화</a>
+					</form>
 				</div>
 				<div class="tbl_col">
 					<table>
@@ -44,7 +47,8 @@
 							<!-- 값 불러오기 -->
 							<tr th:each="newspaper : ${newspapers}">
 								<td th:text="${newspaper.np_name}" class="new_td"></td>
-								<td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}" class="new_td"></td>
+								<td th:text="${newspaper.np_use == 1 ? '사용 중' : '사용 안 함'}"
+									class="new_td"></td>
 								<td class="td_upd new_td" style="text-align: center;"><form
 										action="/admin/admNews/newspapers/usechange" method="post">
 										<input type="hidden" name="np_no"
@@ -66,7 +70,7 @@
 
 								</td>
 							</tr>
-							<tr th:if="${#lists.isEmpty(newspapers)}" >
+							<tr th:if="${#lists.isEmpty(newspapers)}">
 								<td colspan="4" class="no-data not_search">검색 결과가 없습니다.</td>
 							</tr>
 						</tbody>
@@ -141,8 +145,9 @@
 			</footer>
 		</div>
 		<script>
-		function unableform() {
-				const newspaper_sh = document.getElementById("newspaper_sh").value.replace(/\s/g, '');
+			function unableform() {
+				const newspaper_sh = document.getElementById("newspaper_sh").value
+						.replace(/\s/g, '');
 				document.getElementById('newspaper_sh').value = newspaper_sh;
 			}
 		</script>

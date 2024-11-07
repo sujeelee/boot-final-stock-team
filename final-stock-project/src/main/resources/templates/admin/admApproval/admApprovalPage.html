@@ -18,7 +18,7 @@
 				<div id="select_left">
 					<form action="/admin/admApproval/admApprovalPage/search"
 						method="get" class="local_sch" onsubmit="return unableform()">
-						<input type="text" name="mp_company" id="mp_company" required placeholder="요청사 이름"
+						<input type="text" name="mp_company" id="mp_company" required th:placeholder="${mb_id != null ? mb_id : '아이디를 입력하세요'}"
 							class="in_sch" style="height: 30px">
 						<button type="submit" class="btn_submit btn"
 							style="margin-left: 2px;">검색</button>
