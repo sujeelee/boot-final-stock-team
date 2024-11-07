@@ -12,8 +12,11 @@
 			NEWSPAPER
 		JOIN
 			NEWS ON NEWSPAPER.NP_NO = NEWS.NP_NO
-		LEFT JOIN
-			FILE ON NE_NO = FI_REG_NO
+		LEFT JOIN(
+			SELECT * FROM
+			file 
+			WHERE fi_type = 'news'
+		) as FILE ON NE_NO = FI_REG_NO
 		WHERE
 			NE_DATETIME LIKE CONCAT(#{formatDate}, '%')
 		GROUP BY
@@ -32,8 +35,11 @@
 		SELECT *
 		FROM
 			NEWS
-		LEFT JOIN
-			FILE ON NE_NO = FI_REG_NO
+		LEFT JOIN(
+			SELECT * FROM
+			file 
+			WHERE fi_type = 'news'
+		) as FILE ON NE_NO = FI_REG_NO
 		WHERE
 			NP_NO = #{np_no}
 			AND NE_DATETIME LIKE CONCAT(SUBSTRING(#{ne_datetime},1,7), '%')
@@ -156,8 +162,11 @@
 			NEWS
 		JOIN
 			NEWSPAPER ON NEWSPAPER.NP_NO = NEWS.NP_NO
-		LEFT JOIN
-			FILE ON NE_NO = FI_REG_NO
+		LEFT JOIN(
+			SELECT * FROM
+			file 
+			WHERE fi_type = 'news'
+		) as FILE ON NE_NO = FI_REG_NO
 		WHERE
 			NE_TITLE LIKE CONCAT('%', #{st_name}, '%')
 			OR NE_CONTENT LIKE CONCAT('%', #{st_name}, '%')
@@ -170,8 +179,11 @@
 			NEWS
 		JOIN
 			NEWSPAPER ON NEWSPAPER.NP_NO = NEWS.NP_NO
-		JOIN
-			FILE ON NE_NO = FI_REG_NO
+		JOIN(
+			SELECT * FROM
+			file 
+			WHERE fi_type = 'news'
+		) as FILE ON NE_NO = FI_REG_NO
 		ORDER BY NE_DATETIME DESC
 		LIMIT 0,4
 	</select>
@@ -183,7 +195,7 @@
 		JOIN 
 			NEWSPAPER ON NEWSPAPER.NP_NO = NEWS.NP_NO
 		WHERE 
-			NOT EXISTS (SELECT 1 FROM FILE WHERE FILE.FI_REG_NO = NEWS.NE_NO)
+			NOT EXISTS (SELECT 1 FROM FILE WHERE FILE.FI_REG_NO = NEWS.NE_NO and FILE.fi_type = 'news')
 		ORDER BY NEWS.NE_DATETIME DESC
 		LIMIT 0, 4
 	</select>
