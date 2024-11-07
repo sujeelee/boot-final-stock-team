@@ -235,8 +235,7 @@ public class CommunityService {
 	}
 
 	public boolean updateBoard(BoardVO board) {
-		
-		return communityDao.updateBoard(board) > 0;
+		return communityDao.updateBoard(board);
 	}
 
 	public CommentVO getCommentbyID(int wr_no, int co_id) {

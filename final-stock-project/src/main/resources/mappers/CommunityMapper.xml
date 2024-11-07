@@ -146,8 +146,8 @@
     
      <update id="updateBoard">
         UPDATE board
-        SET wr_content = #{board.wr_content}
-        WHERE wr_no = #{board.wr_no} AND mb_id = #{board.mb_id}
+        SET wr_content = #{bo.wr_content}
+        WHERE wr_no = #{bo.wr_no} AND mb_id = #{bo.mb_id}
     </update>
     
     <select id="getCommentbyID" resultType="CommentVO">
