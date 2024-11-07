@@ -25,5 +25,7 @@ public interface AdmPointDAO {
 
 	void downPoint(String mb_id, int po_num, String po_content);
 
+	void updateUserPoint(String mb_id, int po_num);
+
 	
 }
