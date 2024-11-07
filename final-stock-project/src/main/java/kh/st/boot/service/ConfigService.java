@@ -192,7 +192,7 @@ public class ConfigService {
 			return member;
 		}
 		for(AdminLevelPageVO tmp : lvConfig) {
-			if(tmp.getLv_auto_use().equals("Y")) {
+			if(tmp.getLv_auto_use().equals("N")) {
 				if(followCnt <= tmp.getLv_up_limit()) {
 					newMbLv = tmp.getLv_num();
 					break;
