@@ -34,7 +34,7 @@
 	</insert>
 	
 	<update id="updateUserPoint">
-		UPDATE MEMBER SET MB_POINT + #{po_num} WHERE MB_ID = #{mb_id}
+		UPDATE MEMBER SET MB_POINT = MB_POINT + #{po_num} WHERE MB_ID = #{mb_id}
 	</update>
 
 	<delete id="deletPoint">

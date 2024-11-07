@@ -17,7 +17,7 @@
 			<h1 id="container_title">포인트 관리</h1>
 			<div id="container_main" class="content">
 				<!-- 검색기능 form -->
-				<form action="/admin/admPoint/admPointPage/pointSearch" method="get" onsubmit="return unableform()"
+				<form action="/admin/admPoint/admPointPage/pointSearch" method="get" onsubmit="return findId()"
 					class="local_sch">
 					<input type="text" name="mb_id" placeholder="사용자 ID" required id="point_user"
 						class="in_sch" th:placeholder="${mb_id != null ? mb_id : '아이디를 입력하세요'}" style="margin-top: 2px;">
@@ -92,9 +92,9 @@
 					</div>
 				</div>
 				<section id="sec_ing">
-					<h2 id="point_ins_txt">개별회원 포인트 추가</h2>
+					<h2 id="point_ins_txt">개별회원 포인트 증/감가</h2>
 					<form action="/admin/admPoint/admPointPage/point" method="post"
-						onsubmit="return unableform()">
+						onsubmit="return pointSubmit()">
 						<table>
 							<colgroup>
 								<col id="grid_4">
@@ -136,7 +136,7 @@
 			</footer>
 		</div>
 		<script>
-			function unableform() {
+			function pointSubmit() {
 				const pattern = /^[0-9]/g; // 숫자 앞에 + 또는 - 기호 가능
 				const pointInput = document.getElementById("point");
 				const pointMsg = document.getElementById("pointMsg");
@@ -151,7 +151,7 @@
 			}
 		</script>
 		<script>
-			function unableform() {
+			function findId() {
 				const point_user = document.getElementById("point_user").value.replace(/\s/g, '');
 				document.getElementById('point_user').value = point_user;
 			}
