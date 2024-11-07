@@ -40,7 +40,7 @@ public class SecurityConfig{
                 //위 URL을 권한이 "USER"인 회원만 접근하도록 설정
                 //.hasRole(UserRole.USER.name())
                 //위 URL권한이 "ROLE_USER"인 회원만 접근하도록 설정
-                .hasAnyAuthority(UserRole.USER.name(), UserRole.ADMIN.name()) //여러 권한 설정
+                .hasAnyAuthority(UserRole.USER.name(), UserRole.ADMIN.name(), UserRole.NEWS.name(), UserRole.STOCK.name()) //여러 권한 설정
                 .requestMatchers("/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll()  // 그 외 요청은 인증 필요
             )
