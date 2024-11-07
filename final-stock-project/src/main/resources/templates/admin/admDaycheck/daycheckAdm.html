@@ -33,17 +33,17 @@
 					<thead>
 						<tr>
 							<th>출석 체크 회원 아이디</th>
-							<th>출석 체크일</th>
-							<th>지급된 출석체크 포인트</th>
 							<th>이번달 출석일</th>
+							<th>지급된 출석체크 포인트</th>
+							<th>출석 체크일</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="list : ${list}">
 							<td th:text="${list.mb_id}"></td>
-							<td th:text="${list.dc_datetime}"></td>
-							<td th:text="${list.po_num}"></td>
 							<td th:text="${list.countDay}"></td>
+							<td th:text="${list.po_num}"></td>
+							<td th:text="${list.dc_datetime}"></td>
 						</tr>
 						<tr th:if="${#lists.isEmpty(list)}">
 							<td colspan="9" class="no-data not_search">검색 결과가
