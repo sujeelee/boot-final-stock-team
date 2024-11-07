@@ -204,7 +204,6 @@ function board_action(form, type) {
         const updatedContent = $(form).find('.edit-input').val();
         param = { wr_no: no, wr_content: updatedContent };
     }
-
     $.ajax({
         url: url,
         type: "post",

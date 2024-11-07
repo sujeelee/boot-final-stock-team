@@ -118,7 +118,7 @@ public class CommunityController {
 	}
 	@PostMapping("/update")
 	@ResponseBody
-	public Map<String, Object> updata(@RequestParam int wr_no,@RequestParam String wr_content, Principal principal) {
+	public Map<String, Object> updata(@RequestParam int wr_no, @RequestParam String wr_content, Principal principal) {
 		Map<String, Object> result = new HashMap<>();
 		String mb_id = principal.getName();
 		BoardVO board = communityService.getBoardbyID(wr_no,mb_id);
