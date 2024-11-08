@@ -318,24 +318,24 @@ public class MyAccountController {
 	
 	@ResponseBody
 	@PostMapping("/deleteMember")
-	public Map<String, Object> deleteMember(Principal principal){
+	public ResponseEntity<Map<String, Object>> deleteMember(Principal principal){
 		Map<String, Object> map = new HashMap<String, Object>();
 		String mb_id = principal.getName();
 		MemberVO user = memberService.findById(mb_id);
 		String status = myAccountService.getMemberStatus(user.getMb_no(), user.getMb_id());
-		System.out.println(user.getMb_no());
-		System.out.println(status);
 		boolean res = myAccountService.deleteMemberApprove(user.getMb_no());
 		if(res) {
 			if(myAccountService.deleteMemberStatus(user.getMb_no(), status)) {
 				map.put("status", true);
+				return ResponseEntity.ok(map);
 			}else {
 				map.put("status", false);
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
 			}
 		}else {
 			map.put("status", false);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
 		}
-		return map;
 	}
 	
 	@ResponseBody
