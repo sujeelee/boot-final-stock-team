@@ -64,7 +64,7 @@
 	                </span>
 	                <div class="board-body" th:data-id="${item.wr_no}">
 	                    <p class="board-text" th:text="${item.wr_content}?:_"></p>
-	                    <button class="follower-btn" th:data-mbid="${item.mb_id}"
+	                    <button th:class="'follower-btn ' + ${item.mb_id}" th:data-mbid="${item.mb_id}"
 				        th:if="${item.mb_id != userInfo}"
 				        th:classappend="${#strings.equals(item.following, 'y')} ? 'follower' : ''"
 				        onclick="follower(this)"
@@ -179,12 +179,11 @@ function follower(button) {
 	       	
 	       	var color = '';
 	    	if(response.text == '언팔로우'){
-	    		$(thisBtn).addClass("follower");
+	    		$("."+mb_id).addClass("follower");
 	    	} else {
-	    		$(thisBtn).removeClass("follower");
+	    		$("."+mb_id).removeClass("follower");
 	    	}
-			//$(thisBtn).text(response.text).css('background-color', color);
-			$(thisBtn).text(response.text);
+			$("."+mb_id).text(response.text);
         },
         error: function(xhr, status, error) {
             alert("오류가 발생했습니다. 다시 시도해주세요.");
