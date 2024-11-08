@@ -106,8 +106,6 @@
 									<tr>
 										<th><label for="lvl">회원 레벨</label></th>
 										<td><select name="mb_level" class="menu_input">
-												<option th:if="${level == null}" disabled selected>레벨
-													설정</option>
 												<option th:each="i : ${#numbers.sequence(1, 10)}"
 													th:value="${i}" th:text="${i}"></option>
 										</select></td>
@@ -233,7 +231,7 @@
 				// 정규식 패턴 설정
 				const idPattern = /^[a-zA-Z0-9]{4,20}$/; // 아이디: 영문 또는 숫자 4~20자
 				const passwordPattern = /^(?=.*[!@#$])(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$]{8,}$/; // 비밀번호: 최소 8자, 문자 및 숫자 포함
-				const phonePattern = /^01[016789]\d{3,4}\d{4}$/; // 전화번호: 한국 전화번호 형식 (예: 010-1234-5678)
+				const phonePattern = /^01[016789]-\d{3,4}-\d{4}$/; // 전화번호: 한국 전화번호 형식 (예: 010-1234-5678)
 				const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일: 일반 이메일 형식
 				const datePattern = /^\d{4}-\d{2}-\d{2}$/; // 생년월일: YYYY-MM-DD 형식
 
