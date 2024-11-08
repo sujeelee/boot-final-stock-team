@@ -292,4 +292,15 @@ public class EventController {
         return res;
     }
 
+    // 참여형 이벤트 (A event)
+    @GetMapping("/Revent/{ev_no}")
+    public String Revent(Model mo, @PathVariable("ev_no") int ev_no, Principal principal) {
+
+
+        
+
+        return "/eventSeason2024/event202410Revent";
+    }
+
+
 }

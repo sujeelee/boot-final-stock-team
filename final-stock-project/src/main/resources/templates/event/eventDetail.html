@@ -45,6 +45,11 @@
 						<a th:href="@{/event/Aevent/{ev_no}(ev_no = ${event.ev_no})}"> ▶이벤트 페이지◀</a>
 					</div>
 
+					<div class="tab" th:if="${event.ev_form} == 'RouletteEvent'" style="text-align: center; ">
+						<a th:href="@{/event/Revent/{ev_no}(ev_no = ${event.ev_no})}"> ▶이벤트 페이지◀</a>
+					</div>
+
+
 					<!--/* 로그인을 했고 + 아이디 권한이 9 이상이면 보임 */-->
 					<div class="form-group" sec:authorize="isAuthenticated()" th:if="${#authentication.Principal.member.mb_level} >= 9">
 						<a class="btn btn-outline-secondary" style="position: absolute; right: 1%;"
