@@ -90,11 +90,19 @@
                         <a th:href="@{/event/eventUpdate/{eventStatus}/{ev_no}(ev_no = ${event.ev_no}, eventStatus = ${event.ev_status})}"
                         class="btn btn-info edit-event-btn">
                         이벤트 수정</a>
+
                         <a th:id="'addPrize' + ${event.ev_no}"
                         th:if="${event.ev_form == 'Participatory'}"
                         th:href="@{/event/eventATypeWrite(evNum=${event.ev_no})}"
                         class="btn btn-success add-product-btn">
                         상품 추가(5개 까지)</a>
+
+                        <a th:id="'addPrize' + ${event.ev_no}"
+                        th:if="${event.ev_form == 'RouletteEvent'}"
+                        th:href="@{/event/eventRTypeWrite(evNum=${event.ev_no})}"
+                        class="btn btn-success add-product-btn">
+                        상품 추가(5개 까지)</a>
+
                     </div>
 
 

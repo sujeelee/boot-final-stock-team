@@ -134,9 +134,9 @@ public class EventController {
 
         boolean res = eventService.setPrizeToBeUsedFromTheEvent(prize, file);
         if (res) {
-            return "redirect:/event/eventATypeWrite";
-        } else {
             return "redirect:/event/eventhome/Opening";
+        } else {
+            return "redirect:/event/eventATypeWrite";
         }
     }
 
@@ -292,15 +292,29 @@ public class EventController {
         return res;
     }
 
-    // 참여형 이벤트 (A event)
+    // 룰렛 이벤트 (R event)
     @GetMapping("/Revent/{ev_no}")
     public String Revent(Model mo, @PathVariable("ev_no") int ev_no, Principal principal) {
-
-
         
-
         return "/eventSeason2024/event202410Revent";
     }
 
+    @GetMapping("/eventRTypeWrite")
+    public String eventRTypeWrite(Model mo) {
+        List<EventVO> eventList = eventService.getEventListByEventForm("RouletteEvent");
+        mo.addAttribute("eventList", eventList);
+        return "/event/eventRTypeWrite";
+    }
+
+    @PostMapping("/eventRTypeWrite")
+    public String eventRTypeWrite_post(PrizeVO prize, MultipartFile file) {
+
+        boolean res = eventService.setPrizeToBeUsedFromTheEvent(prize, file);
+        if (res) {
+            return "redirect:/event/eventhome/Opening";
+        } else {
+            return "redirect:/event/eventRTypeWrite";
+        }
+    }
 
 }

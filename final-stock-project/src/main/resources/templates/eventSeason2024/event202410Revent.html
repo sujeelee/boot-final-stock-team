@@ -8,105 +8,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>시드키 : 이벤트 : 룰렛</title>
     <style>
-        /* 룰렛 스타일 */
-        #roulette {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 5px solid #333;
+        .rouletter {
             position: relative;
-            margin: 0 auto;
-            font-size: 20px;
-            text-align: center;
-            background: conic-gradient(
-                #f94144 0% 20%, #f3722c 20% 40%, 
-                #f8961e 40% 60%, #f9c74f 60% 80%, 
-                #90be6d 80% 100%);
-            transition: transform 4s ease-out;
+            width: 400px;
+            height: 400px;
+            margin: auto;
+            margin-top: 100px;
+        }
+        .rouletter-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            border-radius: 350px;
             overflow: hidden;
         }
-
-        /* 각 상품명을 회전 섹션과 함께 고정시킴 */
-        .section-text {
-            position: absolute;
-            width: 100px;
-            height: 50px;
-            left: 50%;
-            top: 50%;
-            transform-origin: center -100px; /* 룰렛 원의 중심에서 바깥쪽으로 배치 */
-            color: white;
-            font-weight: bold;
-            text-align: center;
+        .rouletter-wacu {
+            width: 100%;
+            height: 100%;
+            background: #f5f5f2 no-repeat;
+            background-size: 100%;
+            transform-origin: center;
+            transition-timing-function: ease-in-out;
+            transition: 2s;
         }
-
-        /* 각 섹션에 대한 회전 각도 설정 */
-        .section1 { transform: rotate(18deg) translateX(-50%); }
-        .section2 { transform: rotate(90deg) translateX(-50%); }
-        .section3 { transform: rotate(162deg) translateX(-50%); }
-        .section4 { transform: rotate(234deg) translateX(-50%); }
-        .section5 { transform: rotate(306deg) translateX(-50%); }
-
-        #spinButton {
-            margin-top: 20px;
+        .rouletter-arrow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 1px;
+            border-right: 10px solid transparent;
+            border-left: 10px solid transparent;
+            border-top: 40px solid red;
+            border-bottom: 0px solid transparent;
+        }
+        .rouletter-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 80px;
+            background: #fff;
+            border-image: linear-gradient(to right, #fbfcb9be, #ffcdf3aa, #65d3ffaa);
+            border: 2px solid;
+        }
+        .hidden-input {
+            display: none;
         }
     </style>
 </head>
 
 <body>
     <main layout:fragment="content">
-        <div class="container text-center">
-            <h2>룰렛 이벤트</h2>
-            <div id="roulette">
-                <!-- 각 섹션에 상품명 표시 -->
-                <div class="section-text section1">상품1</div>
-                <div class="section-text section2">상품2</div>
-                <div class="section-text section3">상품3</div>
-                <div class="section-text section4">상품4</div>
-                <div class="section-text section5">상품5</div>
-                <div id="roulette-text">룰렛을 돌려보세요!</div>
-            </div>
-            <button id="spinButton" class="btn btn-primary mt-3">돌려!</button>
-        </div>
+        <div id="app"></div>
 
-        <script>
-            $(document).ready(function() {
-                const items = ["상품1", "상품2", "상품3", "상품4", "상품5"];
-                let isSpinning = false;
-                let currentRotation = 0;  // 현재 회전 상태를 저장할 변수
+        <script th:inline="javascript">
+            var rolLength = 0; // 룰렛 항목 갯수
+            var setNum; // 랜덤으로 선택된 번호
+            var hiddenInput = document.createElement("input");
+            hiddenInput.className = "hidden-input";
+            var products = []; // 상품 목록
+            const ev_no = /*[[${ev_no}]]*/ '';
 
-                $("#spinButton").click(function() {
-                    if (isSpinning) return; // 중복 클릭 방지
-                    isSpinning = true;
+            // 랜덤숫자 생성 함수
+            const rRandom = () => {
+                var min = Math.ceil(0);
+                var max = Math.floor(rolLength - 1);
+                return Math.floor(Math.random() * (max - min)) + min;
+            };
 
-                    // 기존 텍스트 및 스타일 초기화
-                    $("#roulette-text").text("룰렛을 돌려보세요!");
-                    $("#spinButton").text("돌리는 중...");
-                    $("#roulette").css("transition", "none"); // 애니메이션 제거
+            // 룰렛 회전 함수
+            const rRotate = () => {
+                var panel = document.querySelector(".rouletter-wacu");
+                var btn = document.querySelector(".rouletter-btn");
+                var deg = [];
+                
+                // 룰렛 각도 설정
+                for (var i = 1, len = rolLength; i <= len; i++) {
+                    deg.push((360 / len) * i);
+                }
+                
+                // 랜덤으로 선택된 번호를 히든 인풋에 저장
+                var num = 0;
+                document.body.append(hiddenInput);
+                setNum = hiddenInput.value = rRandom();
+                
+                // 애니메이션 설정
+                var ani = setInterval(() => {
+                    num++;
+                    panel.style.transform = "rotate(" + 360 * num + "deg)";
+                    btn.disabled = true; // 버튼 비활성화
+                    btn.style.pointerEvents = "none"; // 버튼 클릭 방지
+                    
+                    // 회전이 끝날 때, 마지막 위치로 조정
+                    if (num === 50) {
+                        clearInterval(ani);
+                        panel.style.transform = `rotate(${deg[setNum]}deg)`;
+                    }
+                }, 50);
+            };
 
-                    // 초기화된 상태로 돌린 후 새로운 회전 각도 적용
-                    currentRotation = currentRotation % 360; // 각도 값 유지
-                    $("#roulette").css("transform", `rotate(${currentRotation}deg)`);
+            // 상품에 맞는 알림 팝업 표시
+            const rLayerPopup = (num) => {
+                var product = products[num];
+                alert(`당첨!! ${product.name} (${product.pay}원)`);
+            };
 
-                    setTimeout(function() {
-                        // 새 랜덤 각도 설정
-                        let randomIndex = Math.floor(Math.random() * items.length);
-                        let degree = currentRotation + 3600 + (360 / items.length) * randomIndex;  // 3600도 추가 회전
+            // 버튼 클릭 후 초기화 함수
+            const rReset = (ele) => {
+                setTimeout(() => {
+                    ele.disabled = false;
+                    ele.style.pointerEvents = "auto";
+                    rLayerPopup(setNum);
+                    hiddenInput.remove();
+                }, 5500);
+            };
 
-                        currentRotation = degree; // 현재 각도를 업데이트
-                        $("#roulette").css({
-                            "transform": "rotate(" + degree + "deg)",
-                            "transition": "transform 4s ease-out"
-                        });
+            // 룰렛을 초기화하는 함수
+            const initializeRoulette = () => {
+                // AJAX로 상품 목록을 받아옵니다
+                $.ajax({
+                    url: '/event/api/eventR_prize_insert', // EventController에서 상품 목록을 제공하는 URL
+                    type: 'POST',
+                    data: { ev_no: ev_no }, // 이벤트 번호 전송
+                    success: function(data) {
+                        products = data.products; // 서버에서 전달된 상품 데이터
+                        rolLength = products.length; // 상품 개수
+                        
+                        // 룰렛 항목을 동적으로 생성
+                        var panel = document.querySelector(".rouletter-wacu");
+                        var itemDeg = 360 / rolLength;
 
-                        // 룰렛 멈춤 후 결과 표시
-                        setTimeout(function() {
-                            $("#roulette-text").text(items[randomIndex]);
-                            $("#spinButton").text("다시 돌리기");
-                            isSpinning = false;
-                        }, 4000);
-                    }, 50); // CSS 리셋 후 적용할 딜레이
+                        for (var i = 0; i < rolLength; i++) {
+                            var item = document.createElement("div");
+                            item.className = "rouletter-item";
+                            item.style.transform = `rotate(${itemDeg * i}deg)`;
+                            item.innerHTML = `<span>${products[i].name}</span>`;
+                            panel.appendChild(item);
+                        }
+                    }
                 });
+            };
+
+            // 버튼 클릭 이벤트 처리
+            $(document).on("click", ".rouletter-btn", function() {
+                rRotate();
+                rReset(this);
             });
+
+            // 룰렛 기본 HTML 설정
+            $("#app").html(`
+                <div class="rouletter">
+                    <div class="rouletter-bg">
+                        <div class="rouletter-wacu"></div>
+                    </div>
+                    <div class="rouletter-arrow"></div>
+                    <button class="rouletter-btn">start</button>
+                </div>
+            `);
+
+            // 룰렛 초기화
+            initializeRoulette();
+
         </script>
     </main>
 </body>
