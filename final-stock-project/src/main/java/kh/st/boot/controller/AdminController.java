@@ -95,7 +95,6 @@ public class AdminController {
 	// 관리자 설정 페이지 값 변경
 	@PostMapping("/adminHome/update")
 	public String admUpdate(AdminVO adminVO, Model model) {
-		System.out.println("페이지 값 받아오기" + adminVO);
 		boolean res = adminService.admUpdate(adminVO);
 		if (res == false) {
 			model.addAttribute("msg", "실패");
@@ -463,7 +462,6 @@ public class AdminController {
 	public String nullSltApproval(Model model, Criteria cri) {
 		cri.setPerPageNum(8);
 		List<AdmApprovalVO> nullSlt = adminApprovalService.allSelect(cri);
-		System.out.println(nullSlt);
 		PageMaker pm_Approval = adminApprovalService.getPageMaker(cri);
 		model.addAttribute("pm_Approval", pm_Approval);
 		model.addAttribute("list", nullSlt);
@@ -591,9 +589,7 @@ public class AdminController {
 	// 검색하기
 	@PostMapping("/admStock/admStock_add/search")
 	public String Stock_addSearch(Model model, String mb_id) {
-		System.out.println(mb_id);
 		List<AdminStock_addVO> search = adminStock_addService.search(mb_id);
-		System.out.println(mb_id);
 		model.addAttribute("list", search);
 		return "/admin/admStock/admStock_add";
 	}

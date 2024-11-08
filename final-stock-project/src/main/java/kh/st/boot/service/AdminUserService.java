@@ -97,7 +97,7 @@ public class AdminUserService {
 		admMemberVO.setMb_emailing(emailing);
 		admMemberVO.setMb_password(encodePw);
 		boolean res = adminuserDao.UserInsert(admMemberVO);
-		if(!res) {
+		if(res == false) {
         	return false;
         } else {
         	checkAccountNum(admMemberVO.getMb_id());

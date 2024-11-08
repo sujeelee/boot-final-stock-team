@@ -284,6 +284,16 @@
 					alert("생년월일은 YYYY-MM-DD 형식으로 입력하세요.");
 					return false;
 				}
+				
+				// 2. 날짜를 Date 객체로 변환
+			    const [year, month, day] = birth.split('-');
+			    const date = new Date(year, month - 1, day);  // month는 0부터 시작하므로 1을 빼줘야 함
+
+			    var bol = date.getFullYear() === parseInt(year) && date.getMonth() === parseInt(month) - 1 && date.getDate() === parseInt(day);
+			    if(bol == false){
+			    	alert("유효하지 않은 생년월일입니다.");
+			    	return false;
+			    }
 
 				return true; // 모든 검증 통과 시 폼 제출 허용
 			}
