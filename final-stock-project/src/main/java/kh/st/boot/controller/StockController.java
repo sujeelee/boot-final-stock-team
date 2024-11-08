@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kh.st.boot.model.dto.MyStocksDTO;
 import kh.st.boot.model.vo.ReservationVO;
 import kh.st.boot.model.vo.StockPriceVO;
@@ -157,7 +158,7 @@ public class StockController {
 	}
 	
 	@PostMapping("orderupdate")
-	public String stockOrder(@RequestParam Map<String, Object> form, Model model, Principal principal) {
+	public String stockOrder(@RequestParam Map<String, Object> form, Model model, Principal principal, HttpServletRequest request) {
 		String st_code = (String) form.get("od_st_code");
 		//로그인상태가 아닐 시
         if (principal == null) {
@@ -168,7 +169,7 @@ public class StockController {
         }
 		String result = orderService.orderUpdate(form, model);
 		String msg = "정상적으로 처리되지 않았습니다.";
-		String url = "/stock/" + st_code;
+		String url = request.getHeader("Referer"); //이전 페이지 값
 		if(!result.equals("실패")) {
 			msg = result + "처리 되었습니다.";
 		}

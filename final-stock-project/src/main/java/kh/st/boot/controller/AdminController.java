@@ -151,8 +151,10 @@ public class AdminController {
 	// 이건 잘 모르겠음
 	@PostMapping("/admMember/adminUser/delete")
 	public String admUserDelete(int mb_no) {
-		boolean admimUserDel = admUserService.getAdmUseDel(mb_no);
-
+		boolean res = admUserService.deleteUserAccount(mb_no);
+		if(res) {
+			admUserService.getAdmUseDel(mb_no);
+		}
 		return "redirect:/admin/admMember/adminUser";
 	}
 
@@ -461,6 +463,7 @@ public class AdminController {
 	public String nullSltApproval(Model model, Criteria cri) {
 		cri.setPerPageNum(8);
 		List<AdmApprovalVO> nullSlt = adminApprovalService.allSelect(cri);
+		System.out.println(nullSlt);
 		PageMaker pm_Approval = adminApprovalService.getPageMaker(cri);
 		model.addAttribute("pm_Approval", pm_Approval);
 		model.addAttribute("list", nullSlt);

@@ -47,4 +47,6 @@ public interface MyAccountDAO {
 	List<StockAddVO> selectStockAddList(String mb_id, Criteria cri);
 
 	int getCountByStockAdd(String mb_id);
+
+	void updateMemberLevel(int mb_no);
 }

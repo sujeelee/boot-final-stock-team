@@ -11,7 +11,7 @@
 	<groupId>kr.kh</groupId>
 	<artifactId>boot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>boot</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>

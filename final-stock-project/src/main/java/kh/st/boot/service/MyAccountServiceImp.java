@@ -241,6 +241,7 @@ public class MyAccountServiceImp implements MyAccountService {
 		if(status == "none") {
 			return false;
 		}
+		myAccountDao.updateMemberLevel(mb_no);
 		return myAccountDao.deleteMemberStatus(mb_no, status);
 	}
 

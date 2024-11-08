@@ -87,6 +87,7 @@
 		WHERE
 			ST_CODE = #{mp_company}
 	</select>
+	
 	<select id="selectNewsMember" resultType="NewsMemberVO">
 		SELECT *
 		FROM
@@ -94,6 +95,7 @@
 		WHERE
 			MB_NO = #{mb_no}
 	</select>
+	
 	<select id="selectStockMember" resultType="StockMemberVO">
 		SELECT *
 		FROM
@@ -101,12 +103,15 @@
 		WHERE
 			MB_NO = #{mb_no}
 	</select>
+	
 	<delete id="deleteNewsMember">
 		DELETE FROM NEWS_MEMBER WHERE MB_NO = #{mb_no}
 	</delete>
+	
 	<delete id="deleteStockMember">
 		DELETE FROM STOCK_MEMBER WHERE MB_NO = #{mb_no}
 	</delete>
+	
 	<select id="selectMyStockList" resultType="kh.st.boot.model.dto.MyAccountStocksDTO">
 		SELECT 
 		    a.st_code AS stockCode, 
@@ -134,6 +139,7 @@
 		ORDER BY 
 		    a.st_name ASC;
 	</select>
+	
 	<select id="selectMemberStatus" resultType="String">
 	    SELECT 
 	        CASE 
@@ -146,6 +152,7 @@
 	    WHERE
 	    	MB_ID = #{mb_id}
 	</select>
+	
 	<delete id="deleteMemberStatus">
 		<choose>
 	        <when test="status == 'news'">
@@ -156,10 +163,12 @@
 	        </when>
 	    </choose>
 	</delete>
+	
 	<insert id="insertStockAdd">
 		INSERT INTO STOCK_ADD (SA_QTY, MB_ID, SA_DATETIME, SA_CONTENT) VALUES
 		(#{sa_qty}, #{mb_id}, NOW(), #{sa_content})
 	</insert>
+	
 	<select id="selectStockAddList" resultType="StockAddVO">
 		SELECT *
 		FROM
@@ -169,6 +178,7 @@
 		ORDER BY SA_DATETIME DESC
 		LIMIT #{cri.pageStart}, #{cri.perPageNum}
 	</select>
+	
 	<select id="getCountByStockAdd" resultType="int">
 		SELECT COUNT(*)
 		FROM
@@ -176,4 +186,8 @@
 		WHERE
 			MB_ID = #{mb_id}
 	</select>
+	
+	<update id="updateMemberLevel">
+		UPDATE MEMBER SET MB_LEVEL = 1 WHERE MB_NO = #{mb_no}
+	</update>
 </mapper>
