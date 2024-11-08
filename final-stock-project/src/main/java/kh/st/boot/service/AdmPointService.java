@@ -36,7 +36,6 @@ public class AdmPointService {
 			admPointDAO.updateUserPoint(mb_id, po_num);
 		}else if(pointType.equals("minus")) {
 			po_num = -po_num;
-			System.out.println(po_num);
 			admPointDAO.downPoint(mb_id,po_num,po_content);
 			admPointDAO.updateUserPoint(mb_id, po_num);
 		}
