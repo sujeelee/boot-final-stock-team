@@ -25,15 +25,15 @@ public interface AdminUserDAO {
 
 	int UserDelete(int mb_no);
 
-	List<AdmMemberVO> selectUser(@Param("use_sh") String use_sh, @Param("cri") UserCriteria cri // UserCriteria로 변경
-	);
+	List<AdmMemberVO> selectUser(@Param("use_sh") String use_sh, @Param("cri") UserCriteria cri); // UserCriteria로 변경
 
-	int selectUserCount(@Param("use_sh") String use_sh, @Param("cri") UserCriteria cri // UserCriteria로 변경
-	);
+	int selectUserCount(@Param("use_sh") String use_sh, @Param("cri") UserCriteria cri); // UserCriteria로 변경
 
-	void UserInsert(AdmMemberVO admMemberVO);
+	boolean UserInsert(AdmMemberVO admMemberVO);
 
 	int MemberCheck(String mb_id);
+
+	boolean deleteUserAccount(int mb_no);
 	
 	
 }

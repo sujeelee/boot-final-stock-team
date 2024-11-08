@@ -142,7 +142,6 @@ public class MemberServiceImp implements MemberService{
 
 
         boolean res = memberDao.join(New_User);
-        System.out.println(res);
         if(!res) {
         	return false;
         } else {
@@ -199,6 +198,7 @@ public class MemberServiceImp implements MemberService{
 		}
 		return "SID-" + first + "-" + second;
 	} // 계좌번호 생성 메소드입니다.
+	
     @Override
     public MemberVO findByEmail(String email) {
         if (email.isBlank()) {
