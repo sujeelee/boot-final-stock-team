@@ -170,8 +170,8 @@
 			WHERE fi_type = 'news'
 		) as FILE ON NE_NO = FI_REG_NO
 		WHERE
-			NE_TITLE LIKE CONCAT('%', #{st_name}, '%')
-			OR NE_CONTENT LIKE CONCAT('%', #{st_name}, '%')
+			NE_TITLE LIKE CONCAT('%', #{st_name}, '%') OR
+			REGEXP_REPLACE(NE_CONTENT, '&lt;[^>]*&gt;', '') LIKE CONCAT('%', '#{st_name}', '%')
 		ORDER BY NE_DATETIME DESC
 	</select>
 	
