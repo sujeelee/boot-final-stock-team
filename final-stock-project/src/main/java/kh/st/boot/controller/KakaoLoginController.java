@@ -42,6 +42,7 @@ public class KakaoLoginController {
             String info = "Kakao";
             mo.addAttribute("where", info);
             mo.addAttribute("userInfo", userInfo.getKakaoAccount().getEmail());
+            mo.addAttribute("snsUser", "k"+ userInfo.getKakaoAccount().getEmail().split("@")[0]);
             //회원가입 페이지로 이동 후 이메일을 아이디, 인증 요소로 사용
             return "member/join"; // join.html로 렌더링
         } catch (Exception e) {

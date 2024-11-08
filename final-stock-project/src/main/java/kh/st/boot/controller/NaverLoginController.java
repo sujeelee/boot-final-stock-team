@@ -40,6 +40,7 @@ public class NaverLoginController {
             mo.addAttribute("where", info);
             mo.addAttribute("userPhone", userInfo.getResponse().getPhone());
             mo.addAttribute("userInfo", userInfo.getResponse().getEmail());// 이메일을 아이디로 사용
+            mo.addAttribute("snsUser", "n"+ userInfo.getResponse().getEmail().split("@")[0]);
             // 회원가입 페이지로 이동 후 이메일을 아이디, 인증 요소로 사용
             return "member/join";
 

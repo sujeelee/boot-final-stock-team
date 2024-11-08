@@ -29,7 +29,7 @@
                     <input type="text" name="id" placeholder="ID" id="id"
                     title="주의사항" data-toggle="popover" data-ok="false"
                     data-trigger="focus" data-content="영문 숫자 포함 8~20, 중복 될 수 없습니다."
-                    th:value="${not #strings.isEmpty(userInfo)} ? ${userInfo}"
+                    th:value="${not #strings.isEmpty(userInfo)} ? ${snsUser}"
                     th:readonly="${not #strings.isEmpty(userInfo)} ? 'readonly'"
                     th:onchange="duplicationCheck(this)"
                     >
