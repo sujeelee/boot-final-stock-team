@@ -169,7 +169,7 @@ public class StockController {
         }
 		String result = orderService.orderUpdate(form, model);
 		String msg = "정상적으로 처리되지 않았습니다.";
-		String url = request.getHeader("Referer");//"/stock/" + st_code;
+		String url = request.getHeader("Referer"); //이전 페이지 값
 		if(!result.equals("실패")) {
 			msg = result + "처리 되었습니다.";
 		}
