@@ -53,7 +53,14 @@ public class KakaoLoginController {
             MemberVO user = memberService.findById(snsUser);
             
             if(user != null) {
-            	//로그인 된거로 변경
+                // 이미 존재하는 사용자라면 로그인 처리
+                log.info("로그인된 사용자: {}", snsUser);
+                
+                // 로그인 처리 로직 추가 (세션이나 JWT 토큰 등을 이용한 로그인 처리)
+                // 예를 들어, 세션에 사용자 정보 저장:
+                mo.addAttribute("user", user);  // 세션 또는 사용자 정보 전달
+                
+                return "redirect:/"; // 로그인 후 메인 페이지로 리디렉션
             }
             
             //회원가입 페이지로 이동 후 이메일을 아이디, 인증 요소로 사용

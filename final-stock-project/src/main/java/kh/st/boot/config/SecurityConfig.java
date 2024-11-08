@@ -14,6 +14,7 @@ import kh.st.boot.dao.MemberDAO;
 import kh.st.boot.handler.LoginFailHandler;
 import kh.st.boot.handler.LoginSuccessHandler;
 import kh.st.boot.model.util.UserRole;
+import kh.st.boot.service.CustomOAuth2UserService;
 import kh.st.boot.service.MemberDetailService;
 
 @Configuration
@@ -28,6 +29,10 @@ public class SecurityConfig{
 
     @Autowired
     private MemberDAO memberDao;
+    
+    @Autowired
+    private CustomOAuth2UserService oAuth2UserService;
+
 	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,7 +71,12 @@ public class SecurityConfig{
             		.clearAuthentication(true)
             		.invalidateHttpSession(true)
             		.deleteCookies("AUTO_LOGIN", "JSESSIONID") // 로그아웃 성공 시 제거할 쿠키명그아웃 성공 시 제거할 쿠키명
-            		.permitAll());  // 로그아웃도 모두 접근 가능
+            		.permitAll())
+            .oauth2Login((oauth2) -> oauth2
+                    .userInfoEndpoint()
+                        .userService(oAuth2UserService)  // 커스터마이징된 OAuth2UserService
+            );  // 로그아웃도 모두 접근 가능
+        
         return http.build();
 
     }
