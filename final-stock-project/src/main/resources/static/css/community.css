@@ -335,6 +335,10 @@ h2 {
   border-radius: 5px; /* 버튼 모서리 둥글게 */
   margin-left: auto;
 }
+.follower{
+	background-color: #888; /* 버튼 배경색 (파란색) */
+  	color: #ffffff; /* 버튼 글자색 (흰색) */
+}
 .comment-body {
   margin-top: 10px;
 }
