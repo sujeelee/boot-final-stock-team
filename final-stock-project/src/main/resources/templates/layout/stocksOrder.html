@@ -265,8 +265,8 @@
 				var total = org_qty * parseInt($("#od_st_price").val());
 				total += Math.floor(total * percent / 100);
 				if(total > deposit){
-					if(confirm("최대 구매 가능 금액은 " + addCommas(deposit) + "원 입니다.\n예치금을 충전하러 가시겠습니까?")){
-						location.href="/deposit";
+					if(confirm("최대 구매 가능 금액은 " + addCommas(deposit) + "원 입니다.\n예치금을 충전하시겠습니까?")){
+						open_window('deposit', 1250, 800);
 					}
 					org_qty = deposit / (parseInt($("#od_st_price").val()) + Math.floor(parseInt($("#od_st_price").val()) * percent / 100));
 					org_qty = Math.floor(org_qty);

@@ -294,8 +294,9 @@ h2 {
 .comment-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
   margin-bottom: -10px;
+  gap: 8px;
 }
 .comment-author {
   display: flex;
