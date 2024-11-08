@@ -137,10 +137,11 @@
 			function hyphen(item, type){
 				var val = $(item).val();
 				if(type == 'birth'){
-					val = val.replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/, `$1-$2-$3`);
-				} else {
-					val = val.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/, `$1-$2-$3`);
-				}
+					val = val.replace(/^(\d{4})(\d{2})(\d{2})$/, `$1-$2-$3`);
+			    } else {
+			        val = val.replace(/^(\d{3})(\d{4})(\d{4})$/, `$1-$2-$3`);
+			    }
+
 				$(item).val(val);
 			}
 			// 우편번호 찾기 찾기 화면을 넣을 element
