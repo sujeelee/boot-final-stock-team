@@ -87,13 +87,12 @@ public class MailController {
     }
 
     //테스트용입니다.
-    @GetMapping("/test")
-    public String emailTest(){
-        int code = customUtil.getCustomNumber(6);
-        boolean res = mailSend("bnbz201@naver.com", "SID 인증 이메일", "<p>test 이메일입니다.<p> 이건 태그 안들어감 <p>받아온 코드 : " + code + "</p>");
-        System.out.println(res);
-        return "redirect:/";
-    }
+	/*
+	 * @GetMapping("/test") public String emailTest(){ int code =
+	 * customUtil.getCustomNumber(6); boolean res = mailSend("bnbz201@naver.com",
+	 * "SID 인증 이메일", "<p>test 이메일입니다.<p> 이건 태그 안들어감 <p>받아온 코드 : " + code + "</p>");
+	 * return "redirect:/"; }
+	 */
 
     @ResponseBody
     @PostMapping("/ajax/sendCustomPw")

@@ -130,10 +130,8 @@ public class CommunityController {
 		BoardVO board = communityService.getBoardbyID(wr_no,mb_id);
 	    if (board != null) {
 	        board.setWr_content(wr_content);
-	        System.out.println(board);
 	        // 서비스 메서드를 호출하여 업데이트 수행
 	        boolean updateSuccess = communityService.updateBoard(board);
-	        System.out.println(updateSuccess);
 	        
 	        // 결과에 따라 메시지 설정
 	        if (updateSuccess) {
