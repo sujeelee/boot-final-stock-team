@@ -23,7 +23,7 @@
 		<div class="login-wrapper">
 	        <h2 th:text="${where == 'internal'} ? 'Join' : ${where}+' join'">Join</h2>
 	        <div class="divider"></div> <!-- 줄 추가 -->
-	        <form method="post" onsubmit="return join(this)" name="joinform" id="login-form">
+	        <form action="/member/join" method="post" onsubmit="return join(this)" name="joinform" id="login-form">
                 <div class="wrapper">
                 <div class="name-wrapper">
                     <input type="text" name="id" placeholder="ID" id="id"
@@ -270,7 +270,7 @@ document.onkeydown = NotReload;
 
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
+<script th:inline="javascript">
     // 우편번호 찾기 찾기 화면을 넣을 element
     var element_wrap = document.getElementById('wrap');
 
@@ -414,6 +414,12 @@ function phoneNumberCheck(that){
 
 function join(that){
     $('#alertText').remove();
+    var sns = /*[[${snsUser}]]*/'';
+    
+    if(sns != ''){
+    	$('#id').attr('data-ok', 'true');
+    }
+    
     if(that.id.dataset.ok == 'false'){
         $('#joinBtn').before(alertText('경고!', '아이디가 중복되거나 규칙에 올바르지 않습니다.'));
         that.id.focus();

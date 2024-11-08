@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kh.st.boot.info.KakaoUserInfo;
+import kh.st.boot.model.vo.MemberVO;
 import kh.st.boot.service.KakaoService;
+import kh.st.boot.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -18,6 +20,9 @@ public class KakaoLoginController {
     @Autowired
     private KakaoService kakaoService;
 
+    @Autowired
+    private MemberService memberService;
+    
     @GetMapping("/oauth/kakao/callback")
     public String callback(@RequestParam("code") String code, Model mo) {
 
@@ -40,9 +45,17 @@ public class KakaoLoginController {
             log.info("Kakao userInfo email: {}", userInfo.getKakaoAccount().getEmail());
 
             String info = "Kakao";
+            String snsUser = "k"+ userInfo.getKakaoAccount().getEmail().split("@")[0];
             mo.addAttribute("where", info);
             mo.addAttribute("userInfo", userInfo.getKakaoAccount().getEmail());
-            mo.addAttribute("snsUser", "k"+ userInfo.getKakaoAccount().getEmail().split("@")[0]);
+            mo.addAttribute("snsUser", snsUser);
+            
+            MemberVO user = memberService.findById(snsUser);
+            
+            if(user != null) {
+            	//로그인 된거로 변경
+            }
+            
             //회원가입 페이지로 이동 후 이메일을 아이디, 인증 요소로 사용
             return "member/join"; // join.html로 렌더링
         } catch (Exception e) {
