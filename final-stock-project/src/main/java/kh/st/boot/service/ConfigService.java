@@ -129,10 +129,19 @@ public class ConfigService {
 			List<DashListDTO> stocks = searchDao.stockSearch(stx);
 			List<NewsVO> news = searchDao.newsSearch(stx);
 			
+			int newsCnt = 0, stockCnt = 0;
+			if(news.isEmpty() == false) {
+				newsCnt = news.size();
+			}
+			if (stocks.isEmpty() == false) {
+				stockCnt = stocks.size();
+			}
+			
 			if(stocks.isEmpty() == false) {
 				for(DashListDTO tmps : stocks) { 
 					SearchDTO newSearch = new SearchDTO();
 					newSearch.setStockCnt(stocks.size());
+					newSearch.setNewsCnt(newsCnt);
 					newSearch.setCode(tmps.getCode());
 					newSearch.setFlt(tmps.getFlt());
 					newSearch.setPrice(tmps.getPrice());
@@ -145,6 +154,7 @@ public class ConfigService {
 				for(NewsVO tmps : news) { 
 					SearchDTO newSearch = new SearchDTO();
 					newSearch.setNewsCnt(news.size());
+					newSearch.setStockCnt(stockCnt);
 					newSearch.setCode(Integer.toString(tmps.getNe_no()));
 					newSearch.setTitle(tmps.getNe_title());
 					newSearch.setDate(formatter.format(tmps.getNe_datetime()));
@@ -154,15 +164,14 @@ public class ConfigService {
 				}
 			}
 			SearchDTO newSearch = new SearchDTO();
-			int newsCnt = 0, stockCnt = 0;
 			if(news.isEmpty() == false) {
 				newsCnt = news.size();
 			}
 			if (stocks.isEmpty() == false) {
 				stockCnt = stocks.size();
 			}
-			newSearch.setNewsCnt(stockCnt);
-			newSearch.setStockCnt(newsCnt);
+			newSearch.setNewsCnt(newsCnt);
+			newSearch.setStockCnt(stockCnt);
 			list.add(newSearch);
 		}
 		
