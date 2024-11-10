@@ -8,8 +8,8 @@
 <meta charset="UTF-8">
 <title>시드키 : 이벤트 작성</title>
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui.min.css}"> 
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui.min.css}"> 
 </head>
 <body>
 	<main layout:fragment="content">
@@ -29,10 +29,10 @@
 				<label>이벤트 상태:</label>
 				<select name="ev_status" class="custom-select mb-3">
 					<option selected>이벤트 상태 선택 (반드시 선택해 주세요.)</option>
-					<option value="Opening">Opening</option>
-					<option value="Ending">Ending</option>
-					<option value="resUser">resUser</option>
-					<option value="Hidden">Hidden</option>
+					<option value="Opening">진행중</option>
+					<option value="Ending">종료</option>
+					<option value="resUser">당첨자 발표</option>
+					<option value="Hidden">숨기기</option>
 				</select>
 
 				<label>이벤트 폼 종류:</label>

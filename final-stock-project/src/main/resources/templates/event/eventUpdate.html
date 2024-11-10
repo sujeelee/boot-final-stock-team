@@ -31,10 +31,10 @@
 				<label>이벤트 상태:</label>
 				<select name="ev_status" class="custom-select mb-3" th:value="${event.ev_status}">
 					<option selected>이벤트 상태 선택 (반드시 선택해 주세요.)</option>
-					<option value="Opening" th:selected="${event.ev_status} == 'Opening'">Opening</option>
-					<option value="Ending" th:selected="${event.ev_status} == 'Ending'">Ending</option>
-					<option value="resUser" th:selected="${event.ev_status} == 'resUser'">resUser</option>
-					<option value="Hidden" th:selected="${event.ev_status} == 'Hidden'">Hidden</option>
+					<option value="Opening" th:selected="${event.ev_status} == 'Opening'">진행중</option>
+					<option value="Ending" th:selected="${event.ev_status} == 'Ending'">종료</option>
+					<option value="resUser" th:selected="${event.ev_status} == 'resUser'">당첨자 발표</option>
+					<option value="Hidden" th:selected="${event.ev_status} == 'Hidden'">숨기기</option>
 				</select>
 
 				<label>이벤트 폼 종류:</label>
