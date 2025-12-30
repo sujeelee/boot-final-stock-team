@@ -49,7 +49,6 @@
 					                <span class="user-name" th:text="${list.po_content}"></span>
 					                <span class="transaction-type"><span th:text="${#strings.substring(list.po_datetime, 11, 16)}"></span> ㅣ <span th:text="${type == 'use' ? '사용' : '획득'}"></span></span>
 					            </div>
-					
 					            <!-- 금액 정보 -->
 					            <div class="amount-info">
 					                <span class="amount"><span th:text="${#numbers.formatInteger(list.po_num,0,'COMMA')}"></span>P</span>

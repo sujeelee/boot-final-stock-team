@@ -89,7 +89,6 @@ public class NewsController {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String ne_datetime = format.format(news.getNe_datetime());
 		int np_no = news.getNp_no();
-		// 서비스에게 날짜와 뉴스페이퍼 번호를 주고 리스트를 가져옴
 		List<NewsVO> newsList = newsService.getNewsList(np_no, ne_datetime);
 		map.put("newsList", newsList);
 		return map;
@@ -118,26 +117,18 @@ public class NewsController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		emoji.setMb_id(principal.getName());
 		NewsVO news = newsService.getNews(emoji.getNe_no());
-		// 이전에 선택한 이모지
 		NewsEmojiVO prevEmoji = newsService.getNewsEmoji(emoji);
 		if(prevEmoji == null) {
-			// 사용자가 처음으로 선택한 이모지
 			newsService.insertNewsEmoji(emoji);
-			// 새로운 반응에 대한 카운트 증가
 			newsService.updateNewsEmojiCount(emoji, 1);
 			news = newsService.getNews(emoji.getNe_no());
 		} else {
-			// 사용자가 다른 반응으로 바꾼 경우
 			if(prevEmoji.getEm_act() != emoji.getEm_act()) {
-				// 이전 카운트를 감소
 				newsService.updateNewsEmojiCount(prevEmoji, -1);
-				// 새로운 이모지 카운트 증가
 				newsService.updateNewsEmojiCount(emoji, 1);
-				// 이모지 업데이트
 				newsService.updateNewsEmoji(emoji);
 				news = newsService.getNews(emoji.getNe_no());
 			}
-			// 사용자가 같은 반응을 클릭한 경우
 			else {
 				newsService.updateNewsEmojiCount(prevEmoji, -1);
 				newsService.deleteNewsEmoji(emoji);
@@ -157,6 +148,7 @@ public class NewsController {
 	
 	@PostMapping("/newsInsert/{np_no}")
 	public String insertPost(Model model, @PathVariable int np_no ,NewsVO news, Principal principal, MultipartFile file) {
+		System.out.println(news);
 		String mb_id = principal.getName();
 		boolean res = newsService.insertNews(news, mb_id, file);
 		if(res) {
@@ -172,9 +164,7 @@ public class NewsController {
 	
 	@GetMapping("/newsUpdate/{ne_no}")
 	public String update(Model model, @PathVariable int ne_no) {
-		// 게시글을 가져옴
 		NewsVO news = newsService.getNews(ne_no);
-		// 첨부파일 가져옴
 		FileVO file = newsService.getFile(ne_no);
 		model.addAttribute("news", news);
 		model.addAttribute("file", file);

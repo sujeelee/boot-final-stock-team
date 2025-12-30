@@ -34,12 +34,11 @@ public class MainController {
 	@GetMapping("/")
 	public String home(Model mo, HttpSession session) {
 		MemberVO user = (MemberVO)session.getAttribute("user");
-		List<NewsVO> newsImgList = newsService.getNewsListByImg(); 	// 썸네일 있는 뉴스 최신순으로 4개
-		List<NewsVO> newsList = newsService.getNewsListByNoImg();	// 썸네일 없는 뉴스 최신순으로 4개 
+		List<NewsVO> newsImgList = newsService.getNewsListByImg();
+		List<NewsVO> newsList = newsService.getNewsListByNoImg();
 		List<EventVO> eventList = eventService.getEventListForMainBanner();
 		
 		List<ComRankDTO> comRanks = configService.getCommunityRank();
-
 		mo.addAttribute("eventList", eventList);
 		mo.addAttribute("user", user);
 		mo.addAttribute("newsImgList", newsImgList);
