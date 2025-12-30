@@ -48,7 +48,6 @@ public class MyAccountController {
 	
 	@GetMapping("/asset")
 	public String asset(Model model, Principal principal) {
-		//로그인상태가 아닐 시
         if (principal == null) {
         	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
@@ -56,39 +55,32 @@ public class MyAccountController {
             return "util/msg";
         }
 		String mb_id = principal.getName();
-		// 회원 아이디로 예치금 잔액을 가져오는 코드
 		AccountVO account = myAccountService.getAccountById(mb_id);
-		String lastWeek = DateUtil.getLastWeek(); // 지난주 날짜 정보
-		// 일주일 전까지의 거래 내역을 가져옴
+		String lastWeek = DateUtil.getLastWeek();
 		List<DepositVO> depositList = myAccountService.getDepositListByDate(mb_id, lastWeek);
-		int money = 0;			// 얻은 이익
-		int rateOfReturn = 0;	// 수익률
+		int money = 0;	
+		int rateOfReturn = 0;
 		List<Map<String, Object>> graphData = new ArrayList<>();
 		if(depositList != null) {
 			for(DepositVO deposit : depositList) {
 				money += deposit.getDe_num();
-				// 각 거래의 날짜와 금액을 graphData에 추가
 		        Map<String, Object> graphItem = new HashMap<>();
-		        graphItem.put("date", deposit.getDe_datetime());	// 거래 날짜
-		        graphItem.put("amount", deposit.getDe_num());		// 거래 금액
+		        graphItem.put("date", deposit.getDe_datetime());
+		        graphItem.put("amount", deposit.getDe_num());
 		        graphData.add(graphItem);
-	
 			}
-			int begin = account.getAc_deposit() - money; // 초기 금액
+			int begin = account.getAc_deposit() - money;
 			if (begin != 0) {
 			    rateOfReturn = (money * 100) / begin;
 			}
 		}
-		// 구매 가능 금액 account.ac_deposit
-		// 투자 중인 금액
-		int stockMoney = 0; // 투자중인 금액
+		int stockMoney = 0;
 		List<MyAccountStocksDTO> myStockList = myAccountService.getMyStockList(mb_id);
 		for(MyAccountStocksDTO tmp : myStockList) {
 			if(myStockList != null) {
 				stockMoney += tmp.getStockOrignPrice();
 			}
 		}
-		// 월 수익
 		Date now = new Date();
 		int buyAmount = 0, sellAmount = 0;
         String today = new SimpleDateFormat("yyyy-MM").format(now);
@@ -105,7 +97,6 @@ public class MyAccountController {
         	}
         }
         int proceeds = sellAmount - buyAmount;
-        // 전체 수익
         List<OrderVO> buyListAll = myAccountService.getOrderListByBuy(mb_id);
         List<OrderVO> sellListAll = myAccountService.getOrderListBySell(mb_id);
         int buyAmountAll = 0;
@@ -120,9 +111,7 @@ public class MyAccountController {
         		sellAmountAll += order.getOd_price();
         	}
         }
-        // 수익 금액
         int proceedsAll = sellAmountAll - buyAmountAll;
-        // 포인트
 		MemberVO user = memberService.findById(mb_id);
 		int point = user.getMb_point();
 		model.addAttribute("money", money);
@@ -145,44 +134,36 @@ public class MyAccountController {
 		String text = "";
 		switch(period) {
 		case "1week":
-			// 지난주 날짜 
 			date = DateUtil.getLastWeek();
 			text = "지난주";
 			break;
 		case "1month":
-			// 지난달 날짜
 			date = DateUtil.getLastMonth();
 			text = "지난달";
 			break;
 		case "3month":
-			// 3달전 날짜
 			date = DateUtil.getLast3Month();
 			text = "3달전";
 			break;
 		case "1year":
-			// 1년전 날짜
 			date = DateUtil.getLastYear();
 			text = "1년전";
 			break;
 		}
-		// 회원 아이디로 예치금 잔액을 가져오는 코드
 		AccountVO account = myAccountService.getAccountById(mb_id);
-		// 해당 기간들의 거래내역들을 가져옴
 		List<DepositVO> depositList = myAccountService.getDepositListByDate(mb_id, date);
-		int money = 0;			// 얻은 이익
-		int rateOfReturn = 0;	// 수익률
+		int money = 0;
+		int rateOfReturn = 0;
 		List<Map<String, Object>> graphData = new ArrayList<>();
 		if(depositList != null) {
 			for(DepositVO deposit : depositList) {
 				money += deposit.getDe_num();
-				// 각 거래의 날짜와 금액을 graphData에 추가
 		        Map<String, Object> graphItem = new HashMap<>();
-		        graphItem.put("date", deposit.getDe_datetime());	// 거래 날짜
-		        graphItem.put("amount", deposit.getDe_num());		// 거래 금액
+		        graphItem.put("date", deposit.getDe_datetime());
+		        graphItem.put("amount", deposit.getDe_num());
 		        graphData.add(graphItem);
-	
 			}
-			int begin = account.getAc_deposit() - money;	// 초기 금액
+			int begin = account.getAc_deposit() - money;
 			if (begin != 0) {
 			    rateOfReturn = (money * 100) / begin;
 			}
@@ -190,13 +171,12 @@ public class MyAccountController {
 		map.put("text", text);
 		map.put("money", money);
 		map.put("rateOfReturn", rateOfReturn);
-		map.put("graphData", graphData);  // 그래프에 사용할 데이터 추가
+		map.put("graphData", graphData);
 		return map;
 	}
 	
 	@GetMapping("/settings")
 	public String settings(Model model, Principal principal) {
-		//로그인상태가 아닐 시
         if (principal == null) {
         	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
@@ -384,16 +364,12 @@ public class MyAccountController {
 		if(principal == null) {
 			model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
-        	
             return "util/msg";
 		}
 		String mb_id = principal.getName();
-		cri.setPerPageNum(10); //여기서는 한번에 n개까지 보여줄게요
-		// 거래내역을 가져오는 코드
+		cri.setPerPageNum(10);
 		List<DepositVO> list = myAccountService.getDepositList(mb_id, cri);
-		//페이지를 넣게 되
 		PageMaker pm = myAccountService.getPageMaker(cri, mb_id);
-		//계좌 잔액을 가져오게 되
 		AccountVO ac = myAccountService.getAccountAmt(mb_id);
 		
 		for(DepositVO tmps : list) {
@@ -406,7 +382,7 @@ public class MyAccountController {
 		model.addAttribute("account", ac);
 		model.addAttribute("list", list);
 		model.addAttribute("type", type);
-		model.addAttribute("pm", pm); // 페이지 정보 추가
+		model.addAttribute("pm", pm);
 		
 		return "myaccount/transactions";
 	}
@@ -420,12 +396,9 @@ public class MyAccountController {
             return "util/msg";
 		}
 		String mb_id = principal.getName();
-		cri.setPerPageNum(10); //여기서는 한번에 n개까지 보여줄게요
-		// 거래내역을 가져오는 코드
+		cri.setPerPageNum(10);
 		List<DepositVO> list = myAccountService.getDepositList(mb_id, cri);
-		//페이지를 넣게 되
 		PageMaker pm = myAccountService.getPageMaker(cri, mb_id);
-		//계좌 잔액을 가져오게 되
 		AccountVO ac = myAccountService.getAccountAmt(mb_id);
 		
 		for(DepositVO tmps : list) {
@@ -438,26 +411,22 @@ public class MyAccountController {
 		model.addAttribute("list", list);
 		model.addAttribute("type", type);
 		model.addAttribute("detail", detail);
-		model.addAttribute("pm", pm); // 페이지 정보 추가
+		model.addAttribute("pm", pm);
 		return "myaccount/transactions";
 	}
 	
 	@GetMapping("/profit")
 	public String profit(Model model, Principal principal) {
-		//로그인상태가 아닐 시
         if (principal == null) {
         	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
-        	
             return "util/msg";
         }
         String mb_id = principal.getName();
-        // 주식 구매를 한 거래 내역만 가져옴
         List<OrderVO> buyList = myAccountService.getOrderListByBuy(mb_id);
-        // 주식 판매를 한 거래 내역만 가져옴
         List<OrderVO> sellList = myAccountService.getOrderListBySell(mb_id);
-        int buyAmount = 0; // 주식 구매의 총 금액
-        int sellAmount = 0; // (주식 판매 - 수수료)의 총 금액
+        int buyAmount = 0;
+        int sellAmount = 0;
         if(buyList != null && buyList.size() != 0) {
 	        for(OrderVO order : buyList) {
 	        	buyAmount += order.getOd_price();
@@ -468,16 +437,12 @@ public class MyAccountController {
         		sellAmount += order.getOd_price();
         	}
         }
-        // 수익 금액
         int proceeds = sellAmount - buyAmount;
-        // 수익률
         int rateOfReturn = 0;
         if(buyAmount != 0) {
         	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
         }
-        // 주식 구매/판매 전체 리스트
         List<OrderVO> list = myAccountService.getOrderList(mb_id);
-        // 회원가입일
         MemberVO user = memberService.findById(mb_id);
         String mb_datetime = new SimpleDateFormat("yyyy. MM. dd").format(user.getMb_datetime());
         Date d = new Date();
@@ -502,9 +467,7 @@ public class MyAccountController {
         Date d = new Date();
 		switch(date) {
 		case "all":
-			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuy(mb_id);
-	        // 주식 판매를 한 거래 내역만 가져옴
 	        sellList = myAccountService.getOrderListBySell(mb_id);
 	        if(buyList != null && buyList.size() != 0) {
 		        for(OrderVO order : buyList) {
@@ -520,9 +483,7 @@ public class MyAccountController {
 	        if(buyAmount != 0) {
 	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
 	        }
-	        // 주식 구매/판매 전체 리스트
 	        list = myAccountService.getOrderList(mb_id);
-	        // 회원가입일
 	        String mb_datetime = new SimpleDateFormat("yyyy. MM. dd").format(user.getMb_datetime());
 	        now = new SimpleDateFormat("yyyy. MM. dd").format(d); 
 	        map.put("list", list);
@@ -535,9 +496,7 @@ public class MyAccountController {
 		case "day":
 	        now = new SimpleDateFormat("yyyy. MM. dd").format(d);
 	        today = new SimpleDateFormat("yyyy-MM-dd").format(d);
-			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
-	        // 주식 판매를 한 거래 내역만 가져옴
 	        sellList = myAccountService.getOrderListBySellDate(mb_id, today);
 	        if(buyList != null && buyList.size() != 0) {
 		        for(OrderVO order : buyList) {
@@ -553,7 +512,6 @@ public class MyAccountController {
 	        if(buyAmount != 0) {
 	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
 	        }
-	        // 주식 구매/판매 전체 리스트
 	        list = myAccountService.getOrderListByDate(mb_id, today);
 	        map.put("list", list);
 	        map.put("proceeds", proceeds);
@@ -564,9 +522,7 @@ public class MyAccountController {
 		case "month":
 	        now = new SimpleDateFormat("yyyy. MM").format(d); 
 	        today = new SimpleDateFormat("yyyy-MM").format(d);
-			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
-	        // 주식 판매를 한 거래 내역만 가져옴
 	        sellList = myAccountService.getOrderListBySellDate(mb_id, today);
 	        if(buyList != null && buyList.size() != 0) {
 		        for(OrderVO order : buyList) {
@@ -582,7 +538,6 @@ public class MyAccountController {
 	        if(buyAmount != 0) {
 	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
 	        }
-	        // 주식 구매/판매 전체 리스트
 	        list = myAccountService.getOrderListByDate(mb_id, today);
 	        map.put("list", list);
 	        map.put("proceeds", proceeds);
@@ -593,9 +548,7 @@ public class MyAccountController {
 		case "year":
 	        now = new SimpleDateFormat("yyyy").format(d);
 	        today = new SimpleDateFormat("yyyy").format(d);
-			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, today);
-	        // 주식 판매를 한 거래 내역만 가져옴
 	        sellList = myAccountService.getOrderListBySellDate(mb_id, today);
 	        if(buyList != null && buyList.size() != 0) {
 		        for(OrderVO order : buyList) {
@@ -611,7 +564,6 @@ public class MyAccountController {
 	        if(buyAmount != 0) {
 	        	rateOfReturn = (sellAmount - buyAmount) / buyAmount * 100;
 	        }
-	        // 주식 구매/판매 전체 리스트
 	        list = myAccountService.getOrderListByDate(mb_id, today);
 	        map.put("list", list);
 	        map.put("proceeds", proceeds);
@@ -635,9 +587,7 @@ public class MyAccountController {
 		case "day":
 			date = new SimpleDateFormat("yyyy-MM-dd").format(today);
 			list = myAccountService.getOrderListByDate(mb_id, date);
-			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, date);
-	        // 주식 판매를 한 거래 내역만 가져옴
 	        sellList = myAccountService.getOrderListBySellDate(mb_id, date);
 	        if(buyList != null && buyList.size() != 0) {
 		        for(OrderVO order : buyList) {
@@ -660,9 +610,7 @@ public class MyAccountController {
 		case "month":
 			date = new SimpleDateFormat("yyyy-MM").format(today);
 			list = myAccountService.getOrderListByDate(mb_id, date);
-			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, date);
-	        // 주식 판매를 한 거래 내역만 가져옴
 	        sellList = myAccountService.getOrderListBySellDate(mb_id, date);
 	        if(buyList != null && buyList.size() != 0) {
 		        for(OrderVO order : buyList) {
@@ -685,9 +633,7 @@ public class MyAccountController {
 		case "year":
 			date = new SimpleDateFormat("yyyy").format(today);
 			list = myAccountService.getOrderListByDate(mb_id, date);
-			// 주식 구매를 한 거래 내역만 가져옴
 	        buyList = myAccountService.getOrderListByBuyDate(mb_id, date);
-	        // 주식 판매를 한 거래 내역만 가져옴
 	        sellList = myAccountService.getOrderListBySellDate(mb_id, date);
 	        if(buyList != null && buyList.size() != 0) {
 		        for(OrderVO order : buyList) {
@@ -713,7 +659,6 @@ public class MyAccountController {
 	
 	@GetMapping("/point/{type}")
 	public String point(Model model, Principal principal, TransCriteria cri, @PathVariable String type) {
-		//로그인상태가 아닐 시
         if (principal == null) {
         	model.addAttribute("msg", "회원만 이용가능합니다.\n로그인 페이지로 이동합니다.");
         	model.addAttribute("url", "/member/login");
